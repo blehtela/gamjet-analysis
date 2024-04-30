@@ -588,10 +588,10 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2024"))
     //LoadJSON("files/Collisions24_13p6TeV_378981_379355_DCSOnly_TkPx.json");
     //LoadJSON("files/Collisions24_13p6TeV_378981_379774_DCSOnly_TkPx.json"); //daily json from 22.4. -> used with w12
-    LoadJSON("files/Collisions24_13p6TeV_378981_380074_DCSOnly_TkPx.json"); //daily json from 28.4. (and 29.4. same) -> used also with w12
+    //LoadJSON("files/Collisions24_13p6TeV_378981_380074_DCSOnly_TkPx.json"); //daily json from 28.4. (and 29.4. same) -> used also with w12
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
-    //LoadJSON("files/Cert_Collisions2024_378981_379470_Golden.json"); //golden json from 30.4.
+    LoadJSON("files/Cert_Collisions2024_378981_379470_Golden.json"); //golden json from 30.4.
 
 
   //Cert_Collisions2023_370354_370790_Golden.json");
