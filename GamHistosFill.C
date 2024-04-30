@@ -537,7 +537,8 @@ void GamHistosFill::Loop()
   }
   //data2024
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
-    jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //Winter2024 L2Rel, and 2023D-L2L3Res (w12, 30.04.2024)
+    //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
   assert(jec);
@@ -586,7 +587,12 @@ void GamHistosFill::Loop()
 //for prompt data 2024B - UPDATE THIS REGULARLY
   if (TString(ds.c_str()).Contains("2024"))
     //LoadJSON("files/Collisions24_13p6TeV_378981_379355_DCSOnly_TkPx.json");
-    LoadJSON("files/Collisions24_13p6TeV_378981_379774_DCSOnly_TkPx.json");
+    //LoadJSON("files/Collisions24_13p6TeV_378981_379774_DCSOnly_TkPx.json"); //daily json from 22.4. -> used with w12
+    LoadJSON("files/Collisions24_13p6TeV_378981_380074_DCSOnly_TkPx.json"); //daily json from 28.4. (and 29.4. same) -> used also with w12
+
+    //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
+    //LoadJSON("files/Cert_Collisions2024_378981_379470_Golden.json"); //golden json from 30.4.
+
 
   //Cert_Collisions2023_370354_370790_Golden.json");
 
@@ -2965,7 +2971,7 @@ void GamHistosFill::Loop()
     cout << endl << "Finished loop, writing file." << endl << flush;
     cout << "Processed " << _nevents << " events\n";
     cout << "Skipped " << _nbadevents_json << " events due to JSON ("
-	 << (100.*_nbadevents_json/_nevents) << "%) \n";
+	 << (100.*_nbadevents_json/_nevents) << "%) \n"; //why not _ntot?
     cout << "Skipped " << _nbadevents_trigger << " events due to trigger ("
       	 << (100.*_nbadevents_trigger/_ntot) << "%) \n";
     cout << "Skipped " << _nbadevents_veto << " events due to veto ("

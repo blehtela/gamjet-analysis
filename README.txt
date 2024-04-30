@@ -49,6 +49,7 @@ CHANGELOG (latest first):
 To-do later: 
 - update h2r9vspt r9 binning. Check if r9 cut makes sense at pT>230 GeV for Photon200 trigger, and if efficiency drops too much
 
+w13: Using 2024Winter corrections for L2Relative jec, using daily JSON from 29.04.2024 (is the same as 28.04.2024)
 w12: changed eta-binning in Gamjet2 folder (using now dijet narrow eta binning)
 w11: first time running with 2024 data
 w10: upper pT bins in some histograms were combined for better statistics. (might want to change this back?)
