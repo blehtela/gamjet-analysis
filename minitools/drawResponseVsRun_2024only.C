@@ -63,7 +63,7 @@ TH1D *hadd(string name, TProfile *p1, TProfile *p2) {
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w12") {
+void drawResponseVsRun_2024only(string version = "w13-1") {
 
     //const char *cyear = year.c_str();
     const char *cv = version.c_str();
@@ -83,25 +83,26 @@ void drawResponseVsRun_2024only(string version = "w12") {
     TDirectory *d = gDirectory;
 
     // Load input profiles + clean the errors (what should i set the maxerr to? tried to be generous now)
-    TProfile *pr30b = (TProfile*)d->Get("pr30b"); clean(pr30b,0.02); //b = balance
-    TProfile *pr30m = (TProfile*)d->Get("pr30m"); clean(pr30m,0.02); //m = mpf
-    TProfile *pr50b = (TProfile*)d->Get("pr50b"); clean(pr50b,0.02); 
-    TProfile *pr50m = (TProfile*)d->Get("pr50m"); clean(pr50m,0.02); 
-    TProfile *pr110b = (TProfile*)d->Get("pr110b"); clean(pr110b,0.02);
-    TProfile *pr110m = (TProfile*)d->Get("pr110m"); clean(pr110m,0.02);
+    double maxerr = 0.3; //apply same maxerr cleaning to all paths, so it is less confusing
+    //TProfile *pr30b = (TProfile*)d->Get("pr30b"); clean(pr30b,maxerr); //b = balance
+    //TProfile *pr30m = (TProfile*)d->Get("pr30m"); clean(pr30m,maxerr); //m = mpf
+    TProfile *pr50b = (TProfile*)d->Get("pr50b"); clean(pr50b,maxerr); 
+    TProfile *pr50m = (TProfile*)d->Get("pr50m"); clean(pr50m,maxerr); 
+    TProfile *pr110b = (TProfile*)d->Get("pr110b"); clean(pr110b,maxerr);
+    TProfile *pr110m = (TProfile*)d->Get("pr110m"); clean(pr110m,maxerr);
     //TProfile *pr230b = (TProfile*)d->Get("pr230b"); //clean(pr230b,0.003);
     //TProfile *pr230m = (TProfile*)d->Get("pr230m"); //clean(pr230m,0.003);
 
  
     // Scale BAL and pT30 results
     double kbal = 1.13;
-    pr30b->Scale(kbal);
+    //pr30b->Scale(kbal);
     pr110b->Scale(kbal);
     double kpt30 = 0.98;
-    pr30b->Scale(kpt30);
-    pr30m->Scale(kpt30);
+    //pr30b->Scale(kpt30);
+    //pr30m->Scale(kpt30);
     double kbal30 = 0.96;
-    pr30b->Scale(kbal30);
+    //pr30b->Scale(kbal30);
     if (pr50b && pr50m) { //in 2024 always
         pr50b->Scale(kbal);
         double kpt50 = 0.99;//0.98;
@@ -114,7 +115,7 @@ void drawResponseVsRun_2024only(string version = "w12") {
 
     // Setup canvas
     //TH1D *h = tdrHist("h","Response",0.92,1.08,"Run",366000,381300); //should start later when dropping 2022 data (here some before 2023C)
-    TH1D *h = tdrHist("h","Response",0.92,1.08,"Run",378900,380200); //2024 only
+    TH1D *h = tdrHist("h","Response",0.86,1.06,"Run",378900,380200); //2024 only (standard was to display from 0.92 to 1.08, now zooming in for 2024
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     lumi_136TeV = Form("Photon+jet, Run 3 2024, %s",cv); //for 2024-only version
     extraText = "Private";
@@ -151,16 +152,29 @@ void drawResponseVsRun_2024only(string version = "w12") {
     infotext->SetTextSize(0.036);
     infotext->SetTextColor(12);
     infotext->SetTextFont(52);
-    infotext->DrawLatex(0.53,0.18, Form("Error cleaning applied (0.02)."));
+    infotext->DrawLatex(0.53,0.18, Form("Error cleaning applied (%.2f).",maxerr));
     infotext->DrawLatex(0.53,0.13, Form("The dotted line is: start-15 and end+15."));
 
 
+    //pr50m->GetXaxis()->SetAxisColor(kRed);
+
 
     //tdrDraw(pr30b,"Pz",kOpenSquare,kBlue,kSolid); pr30b->SetMarkerSize(0.7);
-    tdrDraw(pr30m,"Pz",kFullCircle,kBlue,kSolid); pr30m->SetMarkerSize(0.6);
+    //tdrDraw(pr30m,"Pz",kFullCircle,kBlue,kSolid); pr30m->SetMarkerSize(0.6);
     //tdrDraw(pr110b,"Pz",kOpenCircle,kRed,kSolid); pr110b->SetMarkerSize(0.7);
-    tdrDraw(pr50m,"Pz",kFullCircle,kGreen+2,kSolid); pr50m->SetMarkerSize(0.6);
-    tdrDraw(pr110m,"Pz",kFullCircle,kRed,kSolid); pr110m->SetMarkerSize(0.6);
+    tdrDraw(pr50b,"Pz",kOpenSquare,kBlue,kSolid); pr50b->SetMarkerSize(0.5);            //balance --> instead of MPF30, showing DB50
+    tdrDraw(pr110m,"Pz",kFullCircle,kRed,kSolid); pr110m->SetMarkerSize(0.5);           //print this one first, as 50EB captures also everything that goes through 110EB
+    tdrDraw(pr50m,"Pz",kFullCircle,kGreen+2,kSolid); pr50m->SetMarkerSize(0.5);         //marker size 0.06 or 0.05?
+
+    //set the axis labels custom?
+    TAxis *xaxis = pr50b->GetXaxis();
+    xaxis->SetAxisColor(kGreen);
+    //xaxis->LabelsOption("d");
+    //h->LabelsOption("d","X");
+    //xaxis->Draw();
+    //pr50m->SetXLabels();
+    pr50m->LabelsOption("d","X");
+
     //tdrDraw(pr230m,"Pz",kFullCircle,kGray,kSolid); pr230m->SetMarkerSize(0.6);
 
 
@@ -171,12 +185,13 @@ void drawResponseVsRun_2024only(string version = "w12") {
     leg->AddEntry(pr110m,"MPF 110EB","PLE");
     //leg->AddEntry(pr110b,"BAL 110EB","PLE");
     leg->AddEntry(pr50m,"MPF 50EB","PLE");
-    leg->AddEntry(pr30m,"MPF 30EB","PLE");
+    leg->AddEntry(pr50b,"BAL 50EB","PLE");
+    //leg->AddEntry(pr30m,"MPF 30EB","PLE");
 
 
     //leg->AddEntry(pr30b,"BAL 30EB","PLE");
 
-    c1->SaveAs(Form("pdf/drawResponseVsRun_2024only_%s_TEST.pdf",cv));
+    c1->SaveAs(Form("pdf/drawResponseVsRun_2024only_%s.pdf",cv));
 
 
     // Extra composition plots dropped --> see old script for those (drawPFcompVsRun(version);)

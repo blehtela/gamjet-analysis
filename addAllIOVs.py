@@ -16,7 +16,7 @@ IOV_list_of_lists = [
 #    ['Run3','2022C','2022D','2022E','2022F','2022G',
 #     '2023Cv123','2023Cv4','2023D']
 ##    ['Run3Summer23', '2023Cv123', '2023Cv4','2023D'],
-    ['2024only', '2024B', '2024C']
+    ['2024only', '2024B', '2024C', '2024D']
 #    ['Run3', '2023Cv123', '2023Cv4','2023D']
     ]
 MC_list_of_lists = [
@@ -26,7 +26,7 @@ MC_list_of_lists = [
 ##    ['Run3Summer23', '2023P8', '2023P8-BPix'] # !! does not make sense to merge these together? - double check!!
     ]
 
-version = 'w14'
+version = 'w13-1'
 
 os.system("ls rootfiles/GamHistosFill_data_*_"+version+".root")
 for IOV_list in IOV_list_of_lists:
