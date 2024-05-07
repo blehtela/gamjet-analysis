@@ -63,7 +63,7 @@ TH1D *hadd(string name, TProfile *p1, TProfile *p2) {
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w13-1") {
+void drawResponseVsRun_2024only(string version = "w15") { //switched to w15 soon
 
     //const char *cyear = year.c_str();
     const char *cv = version.c_str();
@@ -119,6 +119,13 @@ void drawResponseVsRun_2024only(string version = "w13-1") {
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     lumi_136TeV = Form("Photon+jet, Run 3 2024, %s",cv); //for 2024-only version
     extraText = "Private";
+
+    //set the axis labels custom?
+    TAxis *xaxis = h->GetXaxis();
+    xaxis->SetAxisColor(kGreen);
+    //gPad->Update();
+ 
+
     TCanvas *c1 = tdrCanvas("c1",h,8,11);
     TLine *l = new TLine();
     TLatex *t = new TLatex();
@@ -167,13 +174,17 @@ void drawResponseVsRun_2024only(string version = "w13-1") {
     tdrDraw(pr50m,"Pz",kFullCircle,kGreen+2,kSolid); pr50m->SetMarkerSize(0.5);         //marker size 0.06 or 0.05?
 
     //set the axis labels custom?
-    TAxis *xaxis = pr50b->GetXaxis();
-    xaxis->SetAxisColor(kGreen);
+    TAxis *xaxis2 = h->GetXaxis();
+    xaxis2->SetAxisColor(kGreen);
+    gPad->RedrawAxis();
+    gPad->Update();
+    //xaxis->Draw();
     //xaxis->LabelsOption("d");
     //h->LabelsOption("d","X");
     //xaxis->Draw();
     //pr50m->SetXLabels();
-    pr50m->LabelsOption("d","X");
+    //h->LabelsOption("d","X");
+    //pr50m->Draw(); //draw again to colour axis?
 
     //tdrDraw(pr230m,"Pz",kFullCircle,kGray,kSolid); pr230m->SetMarkerSize(0.6);
 

@@ -537,7 +537,7 @@ void GamHistosFill::Loop()
   }
   //data2024
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w13-1 and w14-1 (06.05.24)
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w15 and w16 (starting 06.05.24)
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //Winter2024 L2Rel, and 2023D-L2L3Res (w12, 30.04.2024)
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
@@ -590,7 +590,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_379355_DCSOnly_TkPx.json");
     //LoadJSON("files/Collisions24_13p6TeV_378981_379774_DCSOnly_TkPx.json"); //daily json from 22.4. -> used with w12
     //LoadJSON("files/Collisions24_13p6TeV_378981_380074_DCSOnly_TkPx.json"); //daily json from 28.4. (and 29.4. same) -> used also with w12
-    LoadJSON("files/Collisions24_13p6TeV_378981_380403_DCSOnly_TkPx.json"); //daily json from 06.05. around noon
+    LoadJSON("files/Collisions24_13p6TeV_378981_380403_DCSOnly_TkPx.json"); //daily json from 06.05. around noon --> w15
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
     //LoadJSON("files/Cert_Collisions2024_378981_379470_Golden.json"); //golden json from 30.4.
