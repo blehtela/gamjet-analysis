@@ -63,7 +63,7 @@ TH1D *hadd(string name, TProfile *p1, TProfile *p2) {
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w15") { //switched to w15 soon
+void drawResponseVsRun_2024only(string version = "w16") { //switched to w15 and w16
 
     //const char *cyear = year.c_str();
     const char *cv = version.c_str();
