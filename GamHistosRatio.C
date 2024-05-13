@@ -47,7 +47,7 @@ void replacePt(TGraphErrors *g, TH1 *h) {
 void GamHistosRatios(string ver, string iov);
 
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
-void GamHistosRatio(string ver = "w16") { 
+void GamHistosRatio(string ver = "w17") { 
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
   //GamHistosRatios(ver,"2017BCDEF");
@@ -75,7 +75,7 @@ void GamHistosRatio(string ver = "w16") {
   //GamHistosRatios(ver,"2023D");
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
-  GamHistosRatios(ver,"2024D");
+  //GamHistosRatios(ver,"2024D");
   //GamHistosRatios(ver, "2024BCD");
 
 
