@@ -66,7 +66,7 @@ void drawPFcompVsRun_2024only(string version);
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w17") { //switched to w15 and w16; w17 and w18
+void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and w16; w17 and w18
 
     //const char *cyear = year.c_str();
     const char *cv = version.c_str();
