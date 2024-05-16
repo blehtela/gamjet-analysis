@@ -17,8 +17,9 @@ bool addG12toMPF = false;
 //string id = "wX22full-data_w5-mc"; //testing summer22 corrections with data files and summer23 corrections on mc files
 //string id = "wX22full-data_w5-mc_plus-extra"; //displaying even more data and mc results.
 //string id = "w7-29feb2024"; //comparing: Cv123, Cv4, D, P8, P8-BPix, P8QCD and P8QCD-BPix for 2023
-string id = "w8-09mar2024"; //comparing: Cv123, Cv4, D, P8, P8-BPix, P8QCD and P8QCD-BPix for 2023 (after bug-fix)
-string id = "w9-13mar2024"; //comparing: Cv123, Cv4, D, P8, P8-BPix, P8QCD and P8QCD-BPix for 2023 (using jetvetomaps for photons)
+//string id = "w8-09mar2024"; //comparing: Cv123, Cv4, D, P8, P8-BPix, P8QCD and P8QCD-BPix for 2023 (after bug-fix)
+//string id = "w9-13mar2024"; //comparing: Cv123, Cv4, D, P8, P8-BPix, P8QCD and P8QCD-BPix for 2023 (using jetvetomaps for photons)
+string id = "w17"; //comparing 2024B and 2024C
 //string id = "various comparions"; //displaying even more data and mc results.
 
 
@@ -55,12 +56,13 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
   //string iovs[] = {"2016BCDEF","2016FGH","2017BCDEF","2018ABCD"};
   //string mcs[] = {"2016APVP8","2016P8","2017P8","2018P8"};
   string iovs_long[] = {
-    "2022C","2022D","2022E","2022F","2022G",
-    "2023Cv123","2023Cv4","2023D"
+    //"2022C","2022D","2022E","2022F","2022G", "2023Cv123","2023Cv4","2023D"
+    "2024B", "2024C", "2024D"
   };
   string iovs_short[] = {
     //"2018ABCD","Run3",
-    "2023Cv123","2023Cv4","2023D"//, //hadd <-- change back to this after testing single files
+    //"2023Cv123","2023Cv4","2023D"//, //hadd <-- change back to this after testing single files
+    "2024B", "2024C", "2024D"
     //"2018ABCD" //added UL2018, use v20 for this
   };
 
@@ -70,7 +72,8 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
   };
   string mcs_short[] = {
     //"2023P8QCD","2023P8QCD","2023-BPixP8QCD" //in principle use QCD
-    "2023P8","2023P8","2023P8-BPix"//, //<-- change back to this after testing single files
+    //"2023P8","2023P8","2023P8-BPix"//, //<-- change back to this after testing single files
+    "2023P8-BPix", "2023P8-BPix", "2023P8-BPix" //for 2024
     //"2018P8" //use v20 for this
   };
   const int niov_long = sizeof(iovs_long)/sizeof(iovs_long[0]);
@@ -105,6 +108,7 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
   mcolor["2022P8"] = kRed;
 
 
+  //NOTE: TO DO - SHOULD START HANDLING THIS AS A MAP OR DICT
  
 
   map<string,int> mmarker;
@@ -120,13 +124,23 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
   mmarker["2023D"] = kOpenTriangleDown;//kOpenDiamond;
   mmarker["2018ABCD"] = kFullSquare;
 
+  //2024
+  mmarker["2024B"] = kFullDiamond;//kFullCircle;
+  mmarker["2024C"] = kFullTriangleDown;//kFullDiamond;
+  mmarker["2024D"] = kOpenCircle;
+  mcolor["2024B"] = kBlue;//kGreen+2;
+  mcolor["2024C"] = kGreen+2;
+  mcolor["2024D"] = kOrange+2;
+ 
  
   
   const char *cvar = var.c_str();
   const char *cname = name.c_str();
 
   TH1D *h = tdrHist("h",cvar,y1,y2);
-  TH1D *h2 = tdrHist("h2","Data/MC(noQCD)",z1,z2);
+  //TH1D *h2 = tdrHist("h2","Data/MC(noQCD)",z1,z2);
+  TH1D *h2 = tdrHist("h2","Data/MC",z1,z2);
+
   //lumi_13TeV = "Run2 v16";
   //lumi_13TeV = "Run3 v21";
   lumi_13TeV = "Run2"; // 4=13 TeV
@@ -142,7 +156,14 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
   gPad->SetLogx();
 
   //TLegend *leg = tdrLeg(0.60,0.90-niov*0.06,0.80,0.90);
-  TLegend *leg = tdrLeg(0.60,0.90-niov*0.045,0.80,0.90);
+  //TLegend *leg = tdrLeg(0.60,0.90-niov*0.045,0.80,0.90);
+  TLegend *leg = tdrLeg(0.60,0.90-niov*0.08,0.80,0.90);
+  //TLegend *leg = tdrLeg(0.60,0.90-niov*0.06,0.80,0.90);
+
+  leg->SetTextFont(42);
+
+
+
 
   c1->cd(2);
   gPad->SetLogx();
@@ -159,9 +180,10 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
     TFile *fd(0), *fm(0);
 
     //getting the correct input files (as they also differ in code version)
-    if (iovs[i]=="2023Cv123" || iovs[i]=="2023Cv4" || iovs[i]=="2023D") {
-      fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w8.root",ciov)); //newest ones
-      fm = new TFile(Form("rootfiles/GamHistosFill_mc_%s_w8.root",cmc));    //newest ones
+    if (iovs[i]=="2023Cv123" || iovs[i]=="2023Cv4" || iovs[i]=="2023D" || 
+        iovs[i]=="2024B" || iovs[i]=="2024C" || iovs[i]=="2024D") {
+      fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w17.root",ciov)); //newest ones
+      fm = new TFile(Form("rootfiles/GamHistosFill_mc_%s_w13.root",cmc));    //newest ones
       //fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_wX22full.root",ciov)); //newest data but with 2022 correctiongs
       //fm = new TFile(Form("rootfiles/GamHistosFill_mc_%s_wX22full.root",cmc));    //newest  data but with 2022 correctiongs
     }
@@ -231,6 +253,11 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
 	    (mcolor[iov] ? mcolor[iov] : kBlack));
     
     leg->AddEntry(hd,ciov,"PLE");
+    
+    //to add one info on mc?
+    if(iovs[i]=="2024D"){
+        leg->AddEntry(hm,"2023 bpix mc","PLE");
+    }
 
     c1->cd(2);
     gPad->SetLogx();
@@ -244,8 +271,8 @@ void drawPhotonJetVsPtVsIOVscomparisons(string so, string var, string name,
     TFile *fmc(0);
     TFile *fmcbpix(0);
     //fmc = new TFile(Form("rootfiles/GamHistosFill_mc_2022P8_v32.root"));
-    fmc = new TFile(Form("rootfiles/GamHistosMix_mc_2023P8QCD_w8.root")); //add P8QCD (mix)
-    fmcbpix = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_w8.root")); //add P8QCD-BPix (mix)
+    fmc = new TFile(Form("rootfiles/GamHistosMix_mc_2023P8QCD_w13.root")); //add P8QCD (mix)
+    fmcbpix = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_w13.root")); //add P8QCD-BPix (mix)
     TObject *omc = fmc->Get(Form(so.c_str(),"MC")); assert(omc);
     TObject *omcbpix = fmcbpix->Get(Form(so.c_str(),"MC")); assert(omcbpix);
 
