@@ -39,7 +39,7 @@ TH1D *hadd(string name, TProfile *p1, TProfile *p2) {
 void drawPFcompVsRun(string version);
 
 // v26->v29->(v30)->v31(after L2L3Res_V2)->v32(L2L3Res_V3) ==> these are Mikko's versions, mine are with "wX"
-void drawResponseVsRun(string version = "w12") {
+void drawResponseVsRun(string version = "w15") {
 
   const char *cv = version.c_str();
   
@@ -47,8 +47,13 @@ void drawResponseVsRun(string version = "w12") {
   TDirectory *curdir = gDirectory;
 
   // Open input files
+
+  TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_2024BCD_%s.root",cv),"READ");
+	
+/*
   TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_Run3_%s.root",cv),
 		       "READ"); //is this the entire run 3 data with all runperiods?
+*/
   assert(f && !f->IsZombie());
 
   //f->cd("control"); // v29
