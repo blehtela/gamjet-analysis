@@ -593,7 +593,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_380074_DCSOnly_TkPx.json"); //daily json from 28.4. (and 29.4. same) -> used also with w12
     //LoadJSON("files/Collisions24_13p6TeV_378981_380403_DCSOnly_TkPx.json"); //daily json from 06.05. around noon --> w15
     //LoadJSON("files/Collisions24_13p6TeV_378981_380627_DCSOnly_TkPx.json"); //daily json from 12.05. --> w17
-    LoadJSON("files/Collisions24_13p6TeV_378981_380649_DCSOnly_TkPx.json"); //daily json from 15.05. --> w19
+    //LoadJSON("files/Collisions24_13p6TeV_378981_380649_DCSOnly_TkPx.json"); //daily json from 15.05. --> w19
 
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
@@ -601,6 +601,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_eraB_Golden.json");             //golden json for 2024B only from 03.05.
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 03.05.
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
+    LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
+
 
 
   //Cert_Collisions2023_370354_370790_Golden.json");

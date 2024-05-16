@@ -49,6 +49,7 @@ CHANGELOG (latest first):
 To-do later: 
 - update h2r9vspt r9 binning. Check if r9 cut makes sense at pT>230 GeV for Photon200 trigger, and if efficiency drops too much
 
+w20: New Golden JSON (13.05.), otherwise identical to w17, w18 and w19.
 w19: New Daily JSON (15.05.), otherwise same as w17 and w18.
 w18: Golden JSON (03.05.), but with new version V2 of L2L3Residuals and jetvetomap. Otherwise like w17.
 w17: New DAILY json (12.5.), more data; new L2L3Residual corrections (V2); new jetvetomap (V2). (data + json from 12.05.2024)
