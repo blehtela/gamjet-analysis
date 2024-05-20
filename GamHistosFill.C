@@ -11,6 +11,18 @@
 #include "TStopwatch.h"
 
 #include <iostream>
+//used for lumimap
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <map>
+
+//typedef for lumimap
+typedef std::map<int,double> LumiMap;
+
+
+
 using namespace std;
 //using namespace GamHistosFill;
 
@@ -594,6 +606,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_380403_DCSOnly_TkPx.json"); //daily json from 06.05. around noon --> w15
     //LoadJSON("files/Collisions24_13p6TeV_378981_380627_DCSOnly_TkPx.json"); //daily json from 12.05. --> w17
     //LoadJSON("files/Collisions24_13p6TeV_378981_380649_DCSOnly_TkPx.json"); //daily json from 15.05. --> w19
+    LoadJSON("files/Collisions24_13p6TeV_378981_380883_DCSOnly_TkPx.json"); //daily json from 19.05. --> w21
 
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
@@ -601,7 +614,9 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_eraB_Golden.json");             //golden json for 2024B only from 03.05.
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 03.05.
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
-    LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
+    //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
+    //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22
+    bool golden=0;
 
 
 
@@ -612,6 +627,26 @@ void GamHistosFill::Loop()
 
   // Load pileup profiles
   LoadPU();
+
+
+  //Get recorded luminosity for different triggers, pb=in picobarn:
+  LumiMap lumi30, lumi50, lumi110, lumi200;
+  if(golden){
+      lumi30 = LoadLumi("files/lumi2024_378981_380470_Golden_photon30eb_pb.csv");
+      lumi50 = LoadLumi("files/lumi2024_378981_380470_Golden_photon50eb_pb.csv");
+      lumi110 = LoadLumi("files/lumi2024_378981_380470_Golden_photon110eb_pb.csv");
+      lumi200 = LoadLumi("files/lumi2024_378981_380470_Golden_photon200_pb.csv");
+  }
+  else{
+      lumi30 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon30eb_pb.csv");
+      lumi50 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon50eb_pb.csv");
+      lumi110 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon110eb_pb.csv");
+      lumi200 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon200_pb.csv");
+  }
+
+
+
+
   
   // Load veto maps
   // JECDatabase/jet_veto_maps/Summer19UL16_V0/hotjets-UL16.root
@@ -665,7 +700,9 @@ void GamHistosFill::Loop()
   // h2hot_ul16_plus_hbm2_hbp12_qie11 + h2hot_mc (for UL16)
   // h2hot_ul17_plus_hep17_plus_hbpw89 (UL17)
   // h2hot_ul18_plus_hem1516_and_hbp2m1 (UL18)
+  // bpix added beginning 2023D, now also applying to 2024 data
   TH2D *h2jv = 0;
+  TH2D *bpixjv = 0;
   if (TString(ds.c_str()).Contains("2016")) {
     h2jv = (TH2D*)fjv->Get("h2hot_ul16_plus_hbm2_hbp12_qie11");
     assert(h2jv);
@@ -681,8 +718,12 @@ void GamHistosFill::Loop()
       TString(ds.c_str()).Contains("2023") ||
       TString(ds.c_str()).Contains("2024"))
     h2jv = (TH2D*)fjv->Get("jetvetomap");
+  if (TString(ds.c_str()).Contains("2024"))
+    bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpis vetomap
   if (!h2jv) cout << "Jetvetomap histo not found for " << ds << endl << flush;
   assert(h2jv);
+  if (!bpixjv) cout << "Jetvetomap for bpix not found for " << ds << endl << flush;
+  assert(bpixjv);
 
   // Setup B and C tagging thresholds according to Z+jet settings (Sami)
   double bthr(0.7527), cthr(0.3985), frac(0.5);
@@ -944,6 +985,13 @@ void GamHistosFill::Loop()
   TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",26000,355000.5,381000.5);
   TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",26000,355000.5,381000.5);
   TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",26000,355000.5,381000.5);
+
+  //time stability of xs, with actual N/lumi (added 17.5.24 for monitoring of new '24 data)
+  TH1D *pr30xs = new TH1D("pr30xs",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr50xs = new TH1D("pr50xs",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr110xs = new TH1D("pr110xs",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr230xs = new TH1D("pr230xs",";Run;xs (pb);",26000,355000.5,381000.5);
+ 
   
   // Time stability of JEC
   TProfile *pr30b = new TProfile("pr30b",";Run;BAL;",26000,355000.5,381000.5);
@@ -2434,7 +2482,8 @@ void GamHistosFill::Loop()
       if (true) { // jet veto
         int i1 = h2jv->GetXaxis()->FindBin(jet.Eta());
         int j1 = h2jv->GetYaxis()->FindBin(jet.Phi());
-        if (h2jv->GetBinContent(i1,j1)>0) {
+        //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied
+        if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix
           //++_nbadevents_veto;
 	  //pass_veto = false;
           pass_jetveto = false;
@@ -2443,7 +2492,8 @@ void GamHistosFill::Loop()
       if (true) { // photon veto
         int i1 = h2jv->GetXaxis()->FindBin(gam.Eta());
         int j1 = h2jv->GetYaxis()->FindBin(gam.Phi());
-        if (h2jv->GetBinContent(i1,j1)>0) {
+        //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied
+        if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix
           //++_nbadevents_veto;
 	  //pass_veto = false;
           pass_gamveto = false; //reject also photons that end up in bad regions
@@ -2492,6 +2542,7 @@ void GamHistosFill::Loop()
       if (pass_all) {
 	if (itrg==30 && ptgam>30) {
 	  pr30n->Fill(run, w); 
+          pr30xs->Fill(run, lumi30[30] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
 	  pr30b->Fill(run, bal, w); 
 	  pr30m->Fill(run, mpf, w);
 	  pr30chf->Fill(run, Jet_chHEF[iJet], w);
@@ -2500,6 +2551,7 @@ void GamHistosFill::Loop()
 	}
         if (itrg==50 && ptgam>50) {
 	  pr50n->Fill(run, w); 
+          pr50xs->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.); //new (can remove this when pr50n one above shows xs)
 	  pr50b->Fill(run, bal, w); 
 	  pr50m->Fill(run, mpf, w);
 	  pr50chf->Fill(run, Jet_chHEF[iJet], w);
@@ -2508,6 +2560,7 @@ void GamHistosFill::Loop()
 	}
 	if (itrg==110 && ptgam>110) {
 	  pr110n->Fill(run, w);
+          pr110xs->Fill(run, lumi110[run] ? 1./lumi110[run] : 1.); //new
 	  pr110b->Fill(run, bal, w); 
 	  pr110m->Fill(run, mpf, w);
 	  pr110chf->Fill(run, Jet_chHEF[iJet], w);
@@ -2516,6 +2569,7 @@ void GamHistosFill::Loop()
 	}
 	if (itrg==200 && ptgam>230) {
 	  pr230n->Fill(run, w);
+          pr200xs->Fill(run, lumi200[run] ? 1./lumi200[run] : 1.); //new
 	  pr230b->Fill(run, bal, w); 
 	  pr230m->Fill(run, mpf, w);
 	  pr230chf->Fill(run, Jet_chHEF[iJet], w);
@@ -3025,7 +3079,7 @@ bool GamHistosFill::LoadJSON(string json)
   ifstream file(json, ios::in);
   if (!file.is_open()) { assert(false); return false; }
   char c;
-  string s, s2, s3;
+  string s, s2, s3, s4, s5;
   char s1[256];
   int rn(0), ls1(0), ls2(0), nrun(0), nls(0);
   file.get(c);
@@ -3038,7 +3092,8 @@ bool GamHistosFill::LoadJSON(string json)
     ++nrun;
 
     bool endrun = false;
-    while (!endrun and file >> s >> s2 and (sscanf((s+s2).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3 or (file >> s3 and sscanf((s+s2+s3).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3))) {
+    while (!endrun and file >> s >> s2 and (sscanf((s+s2).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3 or (file >> s3 and sscanf((s+s2+s3).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3) or 
+            (file >> s4 and sscanf((s+s2+s3+s4).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3) or (file >> s5 and sscanf((s+s2+s3+s4+s5).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3))) {
 
       s2 = s1;
       if (s2=="]") { file >> s3; s2 += s3; }
@@ -3176,3 +3231,67 @@ void GamHistosFill::LoadPU() {
 
   return;
 } // LoadPU
+
+
+
+
+//void lumimap() {
+LumiMap GamHistosFill::LoadLumi(string filename){
+    //the file(s) where lumi is stored for trigger
+    fstream lumifile; //pointer to file
+
+    //read in the .csv file for, e.g. 50EB, photon trigger
+    //TFile* lumifile =;
+    //lumifile.open("files/lumi2024_378981_380115_Golden_photon50eb.csv", ios::in);
+    lumifile.open(filename, ios::in);
+    LumiMap lumi;
+
+    //reading (use vector of strings)
+    vector<string> row;
+    string currline, colentry, temp;
+
+    //read the file
+    int nrows=0;
+    while(getline(lumifile, currline)){
+        row.clear();
+
+        //break words
+        stringstream str(currline);
+
+        //delimiter
+        char delim = ',';
+        //go through columns of this row
+        while(getline(str, colentry, delim)){
+            //add current column's entry to row vector
+            row.push_back(colentry);
+        }
+
+        //show FIRST and LAST entry of row
+        if(row.at(0)[0]!='#'){ //check if first entry isn't starting with # (as these would be comments)
+            nrows+=1; //increase valid row counter by one
+            //cout << "row (first element = run number): " << row.at(0) << endl; // first element
+            //cout << "row (last element = recorded lumi): " << row.back() << endl;
+            
+            stringstream runstring;
+            int runnum;
+            runstring << row.at(0);
+            runstring >> runnum;
+
+            stringstream lumistring;
+            double currlum; 
+            lumistring << row.back();
+            lumistring >> currlum;
+
+            lumi.emplace(runnum, currlum); //fill value to lumimap
+        }
+    }//stop reading file
+
+    //print the lumi map
+    /*
+    for(const auto& elem : lumi50){ //iterator through map's elements
+        cout << "run#: " << elem.first << " lumi: " << elem.second << " " << endl;
+    }
+    */
+
+    return lumi; //return the lumimap
+}//end of lumimap
