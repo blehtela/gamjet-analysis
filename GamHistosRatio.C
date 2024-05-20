@@ -47,7 +47,7 @@ void replacePt(TGraphErrors *g, TH1 *h) {
 void GamHistosRatios(string ver, string iov);
 
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
-void GamHistosRatio(string ver = "w19") { 
+void GamHistosRatio(string ver = "w21") { 
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
   //GamHistosRatios(ver,"2017BCDEF");
@@ -75,9 +75,9 @@ void GamHistosRatio(string ver = "w19") {
   //GamHistosRatios(ver,"2023D");
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
-  //GamHistosRatios(ver,"2024D");
-  //GamHistosRatios(ver, "2024BCD");
-  GamHistosRatios(ver, "2024BC");
+  GamHistosRatios(ver,"2024D");
+  GamHistosRatios(ver, "2024BCD");
+  //GamHistosRatios(ver, "2024BC");
 
 
 
@@ -223,11 +223,11 @@ void GamHistosRatios(string ver, string iov) {
       if (iov=="2023D" || iov=="2024B" || iov=="2024C" || iov=="2024D" || iov=="2024BC" || iov=="2024BCD") { //BPix issue, for now use this also for early 2024 data
         fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
         //fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_%s.root",cv),"READ");  //hard-coded version w13 for now, change when updated with vetomap
-        fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_w13.root"),"READ");     //replace this by line above when MC again updated (now fixed to mc w13)
-        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPixQCD_%s.root",ci,cv),"RECREATE"); //changed name!!
+        //fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_w13.root"),"READ");     //replace this by line above when MC again updated (now fixed to mc w13)
+        //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPixQCD_%s.root",ci,cv),"RECREATE"); //changed name!!
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root",cv),"READ"); //NO QCD (remove later)
-        //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_w13.root"),"READ"); //replace with line above when mc updated (now fixed to mc w13)
-        //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
+        fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_w13.root"),"READ"); //replace with line above when mc updated (now fixed to mc w13)
+        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
       }
   if (iov=="Run3") {
 
