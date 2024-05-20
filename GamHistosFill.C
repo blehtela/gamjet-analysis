@@ -1869,7 +1869,7 @@ void GamHistosFill::Loop()
       
       // Leading tight photon(s)
       // R9>0.94 to avoid bias wrt R9Id90 triggers and from photon conversions
-      if (Photon_pt[i]>15 && Photon_cutBased[i]==3 && Photon_hoe[i]<0.02148 &&
+      if (Photon_pt[i]>15 && Photon_cutBased[i]==3 && Photon_hoe[i]<0.02148 && // id cut should be >=3, in case there's tighter ones
 	  Photon_r9[i]>0.94) {
 	++nGam;
 	if (iGam==-1) {
@@ -2569,7 +2569,7 @@ void GamHistosFill::Loop()
 	}
 	if (itrg==200 && ptgam>230) {
 	  pr230n->Fill(run, w);
-          pr200xs->Fill(run, lumi200[run] ? 1./lumi200[run] : 1.); //new
+          pr230xs->Fill(run, lumi200[run] ? 1./lumi200[run] : 1.); //new
 	  pr230b->Fill(run, bal, w); 
 	  pr230m->Fill(run, mpf, w);
 	  pr230chf->Fill(run, Jet_chHEF[iJet], w);
