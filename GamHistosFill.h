@@ -28,6 +28,10 @@
 #include <string>
 using namespace std;
 
+//typedef for lumimap
+typedef std::map<int,double> LumiMap;
+
+
 // Header file for the classes stored in the TTree if any.
 
 class GamHistosFill {
@@ -528,6 +532,7 @@ public :
    void PrintInfo(string info, bool printcout);
    bool LoadJSON(string json);
    void LoadPU();
+   LumiMap LoadLumi(string filename); //added function for writing lumimap based on brilcalc input file
    std::map<int, std::map<int, int> > _json;
    map<string, map<int, TH1D*> > _pu;
    map<string, map<int, double> >  _lumi;
