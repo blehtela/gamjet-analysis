@@ -49,6 +49,7 @@ CHANGELOG (latest first):
 To-do later: 
 - update h2r9vspt r9 binning. Check if r9 cut makes sense at pT>230 GeV for Photon200 trigger, and if efficiency drops too much
 
+w22: same as w22 but with lumi and json for golden json (16.5.)
 w21: using bpix veto again (for jet and for photon, see bpixjv), added cross section histograms (pr50xs, etc.), 
         using integrated lumi calculated with brilcalc (this needs to be updated with each new JSON!), 
         updated to new JSON files (daily 19.5. and golden 16.5.); this code version is run with daily JSON.
