@@ -1071,19 +1071,19 @@ void GamHistosFill::Loop()
   TProfile *pr110m_eta4to5 = new TProfile("pr110m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
 
   //Time stability of h vs em in HF
-  TH1D *pr30hfEmEF_eta3to4 = new TH1D("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50hfEmEF_eta3to4 = new TH1D("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110hfEmEF_eta3to4 = new TH1D("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr30hfHEF_eta3to4 = new TH1D("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50hfHEF_eta3to4 = new TH1D("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110hfHEF_eta3to4 = new TH1D("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr30hfEmEF_eta3to4 = new TProfile("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr50hfEmEF_eta3to4 = new TProfile("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr110hfEmEF_eta3to4 = new TProfile("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr30hfHEF_eta3to4 = new TProfile("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr50hfHEF_eta3to4 = new TProfile("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr110hfHEF_eta3to4 = new TProfile("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
 
-  TH1D *pr30hfEmEF_eta3to4 = new TH1D("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50hfEmEF_eta3to4 = new TH1D("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110hfEmEF_eta3to4 = new TH1D("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr30hfHEF_eta4to5 = new TH1D("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50hfHEF_eta4to5 = new TH1D("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110hfHEF_eta4to5 = new TH1D("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr30hfEmEF_eta4to5 = new TProfile("pr30hfEmEF_eta4to5","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr50hfEmEF_eta4to5 = new TProfile("pr50hfEmEF_eta4to5","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr110hfEmEF_eta4to5 = new TProfile("pr110hfEmEF_eta4to5","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr30hfHEF_eta4to5 = new TTProfile("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr50hfHEF_eta4to5 = new TTProfile("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr110hfHEF_eta4to5 = new TProfile("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
 
 
 
