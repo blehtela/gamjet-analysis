@@ -117,6 +117,10 @@ public :
    Float_t         Jet_chEmEF[nJetMax];
    Float_t         Jet_muEF[nJetMax];
    //Float_t         Jet_chFPV0EF[nJetMax];   //[nJet]
+
+   Float_t         Jet_hfEmEF[nJetMax];   //[nJet]
+   Float_t         Jet_hfHEF[nJetMax];   //[nJet]
+
   
    //Int_t           Jet_nConstituents[nJetMax];   //[nJet]
    //Int_t           Jet_nElectrons[nJetMax];   //[nJet]
@@ -320,6 +324,9 @@ public :
    TBranch        *b_Jet_muonSubtrFactor;   //!
    TBranch        *b_Jet_neEmEF;   //!
    TBranch        *b_Jet_neHEF;   //!
+   TBranch        *b_Jet_hfEmEF;   //! new
+   TBranch        *b_Jet_hfHEF;   //! new
+ 
    TBranch        *b_Jet_phi;   //!
    TBranch        *b_Jet_pt;   //!
    //TBranch        *b_Jet_puIdDisc;   //!
@@ -683,6 +690,10 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Jet_muonSubtrFactor", Jet_muonSubtrFactor, &b_Jet_muonSubtrFactor);
    fChain->SetBranchAddress("Jet_neEmEF", Jet_neEmEF, &b_Jet_neEmEF);
    fChain->SetBranchAddress("Jet_neHEF", Jet_neHEF, &b_Jet_neHEF);
+
+   fChain->SetBranchAddress("Jet_hfEmEF", Jet_hfEmEF, &b_Jet_hfEmEF);   //new
+   fChain->SetBranchAddress("Jet_hfHEF", Jet_hfHEF, &b_Jet_hfHEF);      //new
+
    fChain->SetBranchAddress("Jet_phi", Jet_phi, &b_Jet_phi);
    fChain->SetBranchAddress("Jet_pt", Jet_pt, &b_Jet_pt);
    //fChain->SetBranchAddress("Jet_puIdDisc", Jet_puIdDisc, &b_Jet_puIdDisc);
