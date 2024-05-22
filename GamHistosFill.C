@@ -354,6 +354,10 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_muEF",1);
     //if (!isRun3) fChain->SetBranchStatus("Jet_chFPV0EF",1);
 
+    //new: HF stuff
+    fChain->SetBranchStatus("Jet_hfEmEF",1);    //electromagnetic Energy Fraction in HF
+    fChain->SetBranchStatus("Jet_hfHEF",1);     //hadronic Energy Fraction in HF
+
     if (isMC) fChain->SetBranchStatus("Jet_genJetIdx",1);
     
     if (!isRun3) fChain->SetBranchStatus("Jet_btagDeepB",1);
@@ -1023,6 +1027,87 @@ void GamHistosFill::Loop()
   TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,381000.5);
   TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",26000,355000.5,381000.5);
   TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",26000,355000.5,381000.5);
+
+  // - - - - - - - high jet eta investigations - - - - - - - - //
+  //histograms for investigation of high jet eta (couldn't these be added as a loop???)
+  //like: TH1D *pr30n, *pr50n, *pr110n
+  //for(histi=0; histi<histos.size(); histi++){<create histos>}
+  fout->mkdir("runs_high-jeteta");
+  fout->cd("runs_high-jeteta");
+
+  // Time stability of xsec
+  TH1D *pr30n_eta3to4 = new TH1D("pr30n_eta3to4","3 <= #eta_jet{} < 4;Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr50n_eta3to4 = new TH1D("pr50n_eta3to4",";Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr110n_eta3to4 = new TH1D("pr110n_eta3to4",";Run;N_{events};",26000,355000.5,381000.5);
+
+  TH1D *pr30n_eta4to5 = new TH1D("pr30n_eta4to5","4 <= jet_eta < 5;Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr50n_eta4to5 = new TH1D("pr50n_eta4to5",";Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr110n_eta4to5 = new TH1D("pr110n_eta4to5",";Run;N_{events};",26000,355000.5,381000.5);
+
+
+  //time stability of xs, with actual N/lumi (added 17.5.24 for monitoring of new '24 data)
+  TH1D *pr30xs_eta3to4 = new TH1D("pr30xs_eta3to4",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr50xs_eta3to4 = new TH1D("pr50xs_eta3to4",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr110xs_eta3to4 = new TH1D("pr110xs_eta3to4",";Run;xs (pb);",26000,355000.5,381000.5);
+
+  TH1D *pr30xs_eta4to5 = new TH1D("pr30xs_eta4to5",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr50xs_eta4to5 = new TH1D("pr50xs_eta4to5",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr110xs_eta4to5 = new TH1D("pr110xs_eta4to5",";Run;xs (pb);",26000,355000.5,381000.5);
+ 
+  
+  // Time stability of JEC
+  TProfile *pr30b_eta3to4 = new TProfile("pr30b_eta3to4",";Run;BAL;",26000,355000.5,381000.5);
+  TProfile *pr50b_eta3to4 = new TProfile("pr50b_eta3to4",";Run;BAL;",26000,355000.5,381000.5);
+  TProfile *pr110b_eta3to4 = new TProfile("pr110b_eta3to4",";Run;BAL;",26000,355000.5,381000.5);
+  TProfile *pr30m_eta3to4 = new TProfile("pr30m_eta3to4",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr50m_eta3to4 = new TProfile("pr50m_eta3to4",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr110m_eta3to4 = new TProfile("pr110m_eta3to4",";Run;MPF;",26000,355000.5,381000.5);
+
+  TProfile *pr30b_eta4to5 = new TProfile("pr30b_eta4to5",";Run;BAL;",26000,355000.5,381000.5);
+  TProfile *pr50b_eta4to5 = new TProfile("pr50b_eta4to5",";Run;BAL;",26000,355000.5,381000.5);
+  TProfile *pr110b_eta4to5 = new TProfile("pr110b_eta4to5",";Run;BAL;",26000,355000.5,381000.5);
+  TProfile *pr30m_eta4to5 = new TProfile("pr30m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr50m_eta4to5 = new TProfile("pr50m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr110m_eta4to5 = new TProfile("pr110m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
+
+  //Time stability of h vs em in HF
+  TH1D *pr30hfEmEF_eta3to4 = new TH1D("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr50hfEmEF_eta3to4 = new TH1D("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr110hfEmEF_eta3to4 = new TH1D("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr30hfHEF_eta3to4 = new TH1D("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr50hfHEF_eta3to4 = new TH1D("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr110hfHEF_eta3to4 = new TH1D("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+
+  TH1D *pr30hfEmEF_eta3to4 = new TH1D("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr50hfEmEF_eta3to4 = new TH1D("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr110hfEmEF_eta3to4 = new TH1D("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr30hfHEF_eta4to5 = new TH1D("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr50hfHEF_eta4to5 = new TH1D("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr110hfHEF_eta4to5 = new TH1D("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+
+
+
+
+  // Time stability of PF composition -- not yet for high jet eta... do this later if needed
+  /*
+  TProfile *pr30chf_eta3to4 = new TProfile("pr30chf",";Run;CHF;",26000,355000.5,381000.5);
+  TProfile *pr50chf_eta3to4 = new TProfile("pr50chf",";Run;CHF;",26000,355000.5,381000.5);
+  TProfile *pr110chf_eta3to4 = new TProfile("pr110chf",";Run;CHF;",26000,355000.5,381000.5);
+  //
+  TProfile *pr30nhf_eta3to4 = new TProfile("pr30nhf",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr50nhf_eta3to4 = new TProfile("pr50nhf",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr110nhf_eta3to4 = new TProfile("pr110nhf",";Run;NHF;",26000,355000.5,381000.5);
+  //
+  TProfile *pr30nef_eta3to4 = new TProfile("pr30nef",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr50nef_eta3to4 = new TProfile("pr50nef",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr110nef_eta3to4 = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,381000.5);
+  */
+
+
+
+
+
+
 
   // Control plots stored in a separate directory
   fout->mkdir("control");
@@ -1896,6 +1981,15 @@ void GamHistosFill::Loop()
       double f = 4.57516e-02 + log(x) * ( -1.27462e-02 + log(x) * 1.07760e-03);
       rawgam *= (1+f);
     }
+
+    //TO DO
+    /*
+    //create new script to calculate the factor needed for scale correction
+    if (is24 && run=< NUMBER && iGam!=-1 && !isMC) {
+        gam *= 1./1.01 //from comparison Z vs gamma, to account for the "step"/"jump", to permille precision
+    }
+    */
+     
    
     // Photon-jet: uncorrected jet minus (uncorr.) photon minus L1RC
     if (iGam!=-1 && Photon_jetIdx[iGam]!=-1) {
@@ -2542,7 +2636,7 @@ void GamHistosFill::Loop()
       if (pass_all) {
 	if (itrg==30 && ptgam>30) {
 	  pr30n->Fill(run, w); 
-          pr30xs->Fill(run, lumi30[30] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
+          pr30xs->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
 	  pr30b->Fill(run, bal, w); 
 	  pr30m->Fill(run, mpf, w);
 	  pr30chf->Fill(run, Jet_chHEF[iJet], w);
@@ -2585,6 +2679,127 @@ void GamHistosFill::Loop()
 	  prg1nef->Fill(run, Jet_neEmEF[iJet], w);
 	}
       }
+
+      //for high eta
+      // Time controls for JES and PF composition in HIGH ETA range
+      //NEW: (jet eta) 3<=eta<4 and TO DO:  4<=eta<5
+      //do this eta investigation for all histograms, might not be so useful for composition plots, but check
+      if (pass_basic_ext and pass_alpha100 and fabs(Jet_eta[iJet])>=3.0 and fabs(Jet_eta[iJet])<4.0) {
+	if (itrg==30 && ptgam>30) {
+	  pr30n_eta3to4->Fill(run, w); 
+          pr30xs_eta3to4->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
+	  pr30b_eta3to4->Fill(run, bal, w); 
+	  pr30m_eta3to4->Fill(run, mpf, w);
+	  //pr30chf->Fill(run, Jet_chHEF[iJet], w);
+	  //pr30nhf->Fill(run, Jet_neHEF[iJet], w);
+	  //pr30nef->Fill(run, Jet_neEmEF[iJet], w);
+          pr30hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
+          pr30hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+	}
+        if (itrg==50 && ptgam>50) {
+          pr50n_eta3to4->Fill(run, w);
+          pr50xs_eta3to4->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.);
+          pr50b_eta3to4->Fill(run, bal, w);
+          pr50m_eta3to4->Fill(run, mpf, w);
+	  //pr50chf->Fill(run, Jet_chHEF[iJet], w);
+	  //pr50nhf->Fill(run, Jet_neHEF[iJet], w);
+	  //pr50nef->Fill(run, Jet_neEmEF[iJet], w);
+          pr50hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
+          pr50hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+	}
+	if (itrg==110 && ptgam>110) {
+	  pr110n_eta3to4->Fill(run, w);
+          pr110xs_eta3to4->Fill(run, lumi110[run] ? 1./lumi110[run] : 1.); //new
+	  pr110b_eta3to4->Fill(run, bal, w); 
+	  pr110m_eta3to4->Fill(run, mpf, w);
+	  //pr110chf->Fill(run, Jet_chHEF[iJet], w);
+	  //pr110nhf->Fill(run, Jet_neHEF[iJet], w);
+	  //pr110nef->Fill(run, Jet_neEmEF[iJet], w);
+          pr110hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
+          pr110hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+	}
+        /*
+	if (itrg==200 && ptgam>230) {
+	  pr230n->Fill(run, w);
+          pr230xs->Fill(run, lumi200[run] ? 1./lumi200[run] : 1.); //new
+	  pr230b->Fill(run, bal, w); 
+	  pr230m->Fill(run, mpf, w);
+	  pr230chf->Fill(run, Jet_chHEF[iJet], w);
+	  pr230nhf->Fill(run, Jet_neHEF[iJet], w);
+	  pr230nef->Fill(run, Jet_neEmEF[iJet], w);
+	}
+	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
+	  prg1n->Fill(run, w);
+	  prg1b->Fill(run, bal, w); 
+	  prg1m->Fill(run, mpf, w);
+	  prg1chf->Fill(run, Jet_chHEF[iJet], w);
+	  prg1nhf->Fill(run, Jet_neHEF[iJet], w);
+	  prg1nef->Fill(run, Jet_neEmEF[iJet], w);
+	}
+        */
+      }
+
+      //JET ETA between 4.0 and 5.0
+      if (pass_basic_ext and pass_alpha100 and fabs(Jet_eta[iJet])>=4.0 and fabs(Jet_eta[iJet])<5.0) {
+	if (itrg==30 && ptgam>30) {
+	  pr30n_eta4to5->Fill(run, w); 
+          pr30xs_eta4to5->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
+	  pr30b_eta4to5->Fill(run, bal, w); 
+	  pr30m_eta4to5->Fill(run, mpf, w);
+	  //pr30chf->Fill(run, Jet_chHEF[iJet], w);
+	  //pr30nhf->Fill(run, Jet_neHEF[iJet], w);
+	  //pr30nef->Fill(run, Jet_neEmEF[iJet], w);
+          pr30hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
+          pr30hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+	}
+        if (itrg==50 && ptgam>50) {
+          pr50n_eta4to5->Fill(run, w);
+          pr50xs_eta4to5->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.);
+          pr50b_eta4to5->Fill(run, bal, w);
+          pr50m_eta4to5->Fill(run, mpf, w);
+	  //pr50chf->Fill(run, Jet_chHEF[iJet], w);
+	  //pr50nhf->Fill(run, Jet_neHEF[iJet], w);
+	  //pr50nef->Fill(run, Jet_neEmEF[iJet], w);
+          pr50hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
+          pr50hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+	}
+	if (itrg==110 && ptgam>110) {
+	  pr110n_eta4to5->Fill(run, w);
+          pr110xs_eta4to5->Fill(run, lumi110[run] ? 1./lumi110[run] : 1.); //new
+	  pr110b_eta4to5->Fill(run, bal, w); 
+	  pr110m_eta4to5->Fill(run, mpf, w);
+	  //pr110chf->Fill(run, Jet_chHEF[iJet], w);
+	  //pr110nhf->Fill(run, Jet_neHEF[iJet], w);
+	  //pr110nef->Fill(run, Jet_neEmEF[iJet], w);
+          pr110hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
+          pr110hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+	}
+        /*
+	if (itrg==200 && ptgam>230) {
+	  pr230n->Fill(run, w);
+          pr230xs->Fill(run, lumi200[run] ? 1./lumi200[run] : 1.); //new
+	  pr230b->Fill(run, bal, w); 
+	  pr230m->Fill(run, mpf, w);
+	  pr230chf->Fill(run, Jet_chHEF[iJet], w);
+	  pr230nhf->Fill(run, Jet_neHEF[iJet], w);
+	  pr230nef->Fill(run, Jet_neEmEF[iJet], w);
+	}
+	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
+	  prg1n->Fill(run, w);
+	  prg1b->Fill(run, bal, w); 
+	  prg1m->Fill(run, mpf, w);
+	  prg1chf->Fill(run, Jet_chHEF[iJet], w);
+	  prg1nhf->Fill(run, Jet_neHEF[iJet], w);
+	  prg1nef->Fill(run, Jet_neEmEF[iJet], w);
+	}
+        */
+      }
+
+
+
+
+
+
 
       if (_gh_debug100 && jentry<100) {
 	cout << "Event " << jentry << " decisions" << endl;
