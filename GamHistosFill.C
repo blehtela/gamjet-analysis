@@ -611,7 +611,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_380627_DCSOnly_TkPx.json"); //daily json from 12.05. --> w17
     //LoadJSON("files/Collisions24_13p6TeV_378981_380649_DCSOnly_TkPx.json"); //daily json from 15.05. --> w19
     //LoadJSON("files/Collisions24_13p6TeV_378981_380883_DCSOnly_TkPx.json"); //daily json from 19.05. --> w21
-    LoadJSON("files/Collisions24_13p6TeV_378981_381053_DCSOnly_TkPx.json"); //daily json from 22.05. --> w23
+    //LoadJSON("files/Collisions24_13p6TeV_378981_381053_DCSOnly_TkPx.json"); //daily json from 22.05. --> w23
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
     //LoadJSON("files/Cert_Collisions2024_378981_379470_Golden.json"); //golden json from 30.4.
@@ -619,7 +619,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 03.05.
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
-    //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22
+    LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
     bool golden=1;
 
 

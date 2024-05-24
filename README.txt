@@ -49,6 +49,7 @@ CHANGELOG (latest first):
 To-do later: 
 - update h2r9vspt r9 binning. Check if r9 cut makes sense at pT>230 GeV for Photon200 trigger, and if efficiency drops too much
 
+w24: Same as w23, but used for running with golden json.
 w23: Added time-stability histograms for high jet-eta regions (3 <= eta < 4 and 4<= eta < 5). Added use of HF branches (composition: EM vs hadronic). Use new daily json (22.5.).
 w22: same as w22 but with lumi and json for golden json (16.5.)
 w21: using bpix veto again (for jet and for photon, see bpixjv), added cross section histograms (pr50xs, etc.), 
