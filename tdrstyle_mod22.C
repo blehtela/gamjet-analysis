@@ -75,6 +75,8 @@ TH1D *tdrHist(string name="h", string ylabel="Response",
 
   TH1D *h = new TH1D(name.c_str(), Form(";%s;%s",xlabel.c_str(),ylabel.c_str()),
 		     max(1,int(fabs(x2-x1))), x1, x2);
+//		     min(100,max(1,int(fabs(x2-x1)))), x1, x2);
+
   h->GetXaxis()->SetMoreLogLabels();
   h->GetXaxis()->SetNoExponent();
   h->SetMinimum(y1);
@@ -265,7 +267,7 @@ void setTDRStyle() {
 TString cmsText     = "CMS";
 float cmsTextFont   = 61;  // default is helvetic-bold
 
-bool writeExtraText = true;//false;
+bool writeExtraText = false;//true;//false;
 TString extraText   = "Preliminary";
 TString extraText2   = ""; // For Simulation Preliminary on two lines
 float extraTextFont = 52;  // default is helvetica-italics
@@ -533,7 +535,8 @@ TCanvas* tdrCanvas(const char* canvName, TH1D *h,
   assert(h);
   h->GetYaxis()->SetTitleOffset(square ? 1.25 : 1);
   h->GetXaxis()->SetTitleOffset(square ? 1.0 : 0.9);
-  h->Draw("AXIS");
+  //h->Draw("AXIS");
+  h->Draw("");
 
   // writing the lumi information and the CMS "logo"
   CMS_lumi( canv, iPeriod, iPos );
