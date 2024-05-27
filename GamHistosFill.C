@@ -647,6 +647,8 @@ void GamHistosFill::Loop()
       lumi110 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon110eb_pb.csv");
       lumi200 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon200_pb.csv");
   }
+  //cout << "Use lumi files: " << endl << flush;
+  //PrintInfo(string("Use lumi files") + json + ":",true);
 
 
 
@@ -1284,7 +1286,7 @@ void GamHistosFill::Loop()
   TProfile *prmpf12 = new TProfile("prmpf12","",nx,vx);
   
   // Plots for photon trigger efficiencies
-  // TBD: need to create these more systematically with a loop
+  // TBD: need to create these more systematically with a loop (yep, agree... will look into this, - Bettina)
   TH1D *hgam0_data = new TH1D("hgam0_data","",197,15,1000);
   TH1D *hgam0_mc = new TH1D("hgam0_mc","",197,15,1000);
   TH1D *hgam0 = new TH1D("hgam0","",197,15,1000);
@@ -1302,6 +1304,7 @@ void GamHistosFill::Loop()
   TH1D *hgam200 = new TH1D("hgam200","",197,15,1000);
   TH1D *hgam300 = new TH1D("hgam300","",197,15,1000);
   TH1D *hgam30t = new TH1D("hgam30t","",197,15,1000);
+  TH1D *hgam50t = new TH1D("hgam50t","",197,15,1000); //new (27.05.2024)
   TH1D *hgam100t = new TH1D("hgam100t","",197,15,1000);
   TH1D *hgam110t = new TH1D("hgam110t","",197,15,1000);
   TH1D *hgam120t = new TH1D("hgam120t","",197,15,1000);
@@ -2532,6 +2535,7 @@ void GamHistosFill::Loop()
       if (HLT_Photon110EB_TightID_TightIso) hgam110t->Fill(ptgam, w);
       if (HLT_Photon100EB_TightID_TightIso) hgam100t->Fill(ptgam, w);
       if (HLT_Photon30EB_TightID_TightIso) hgam30t->Fill(ptgam, w);
+      if (HLT_Photon50EB_TightID_TightIso) hgam50t->Fill(ptgam, w); //new, added hgam50t (27.05.2024)
       // 60-105 GeV with medium triggers. NB: conflicting ID?
       if (HLT_Photon165_R9Id90_HE10_IsoM) hgam165m->Fill(ptgam, w);
       if (HLT_Photon120_R9Id90_HE10_IsoM) hgam120m->Fill(ptgam, w);
