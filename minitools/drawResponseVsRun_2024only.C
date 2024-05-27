@@ -66,7 +66,7 @@ void drawPFcompVsRun_2024only(string version);
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and w16; w17 and w18; w19 and w20
+void drawResponseVsRun_2024only(string version = "w23") { //switched to w15 and w16; w17 and w18; w19 and w20
 
     //const char *cyear = year.c_str();
     const char *cv = version.c_str();
@@ -95,6 +95,8 @@ void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and 
     TProfile *pr110m = (TProfile*)d->Get("pr110m"); clean(pr110m,maxerr);
     //TProfile *pr230b = (TProfile*)d->Get("pr230b"); //clean(pr230b,0.003);
     //TProfile *pr230m = (TProfile*)d->Get("pr230m"); //clean(pr230m,0.003);
+
+
 
  
     // Scale BAL and pT30 results
@@ -129,6 +131,13 @@ void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and 
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     lumi_136TeV = Form("Photon+jet, Run 3 2024, %s",cv); //for 2024-only version
     extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
+
+    //in case we look at high etas, write it into plot
+    /*
+    if(eta3==true){
+        lumi_136TeV = Form("Photon+jet, Run3 2024, 3<#eta<4, %s",cv);
+    }
+    */
 
     //set the axis labels custom?
     //TAxis *xaxis = h->GetXaxis();
@@ -176,7 +185,9 @@ void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and 
     l->DrawLine(run24d_start,y1+0.045,run24d_start,y2-0.035);
     //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
     t->DrawLatex(run24d_start,0.960,"24D");
-    l->DrawLine(380649,y1+0.045,380649,y2-0.035); //"preliminary" end of D, until we have real one
+    //l->DrawLine(380649,y1+0.045,380649,y2-0.035); //"preliminary" end of D, until we have real one
+    l->DrawLine(380883,y1+0.045,380883,y2-0.035); //"preliminary" end of D, until we have real one
+
 
     //first run number for each era
     TLatex *runstart = new TLatex();
@@ -187,7 +198,9 @@ void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and 
     runstart->DrawLatex(run24c_start, 0.955, Form("%.f",run24c_start));
     runstart->DrawLatex(run24d_start, 0.955, Form("%.f",run24d_start));
 
-    runstart->DrawLatex(380649, 0.960, "380649"); //preliminary end of 24D
+    //runstart->DrawLatex(380649, 0.960, "380649"); //preliminary end of 24D
+    runstart->DrawLatex(380883, 0.960, "380883"); //preliminary end of 24D
+
 
 
 
@@ -292,7 +305,7 @@ void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and 
     //information on JSON used
     linktext->SetTextColor(kRed+2);
     linktext->SetTextFont(82);
-    linktext->DrawLatex(0.13,0.09, "Created on 16.05.2024 using daily JSON: Collisions24_13p6TeV_378981_380649_DCSOnly_TkPx.json");
+    linktext->DrawLatex(0.13,0.09, "Created on 21.05.2024 using daily JSON: Collisions24_13p6TeV_378981_380883_DCSOnly_TkPx.json");
 
 
 
@@ -401,6 +414,7 @@ void drawResponseVsRun_2024only(string version = "w19") { //switched to w15 and 
 
     // Extra composition plots also modified.
     drawPFcompVsRun_2024only(version);
+
 
 } // drawResponseVsRun_2024only
 
