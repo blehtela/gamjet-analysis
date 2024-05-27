@@ -612,6 +612,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_380649_DCSOnly_TkPx.json"); //daily json from 15.05. --> w19
     //LoadJSON("files/Collisions24_13p6TeV_378981_380883_DCSOnly_TkPx.json"); //daily json from 19.05. --> w21
     //LoadJSON("files/Collisions24_13p6TeV_378981_381053_DCSOnly_TkPx.json"); //daily json from 22.05. --> w23
+    LoadJSON("files/Collisions24_13p6TeV_378981_381199_DCSOnly_TkPx.json"); //daily json from 26.05. --> w25
+
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
     //LoadJSON("files/Cert_Collisions2024_378981_379470_Golden.json"); //golden json from 30.4.
@@ -619,8 +621,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 03.05.
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
-    LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
-    bool golden=1;
+    //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
+    bool golden=0;
 
 
 
@@ -642,10 +644,10 @@ void GamHistosFill::Loop()
       lumi200 = LoadLumi("files/lumi2024_378981_380470_Golden_photon200_pb.csv");
   }
   else{
-      lumi30 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon30eb_pb.csv");
-      lumi50 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon50eb_pb.csv");
-      lumi110 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon110eb_pb.csv");
-      lumi200 = LoadLumi("files/lumi2024_378981_380883_DCSOnly_photon200_pb.csv");
+      lumi30 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon30eb_pb.csv");
+      lumi50 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon50eb_pb.csv");
+      lumi110 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon110eb_pb.csv");
+      lumi200 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon200_pb.csv");
   }
   //cout << "Use lumi files: " << endl << flush;
   //PrintInfo(string("Use lumi files") + json + ":",true);

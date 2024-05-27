@@ -20,7 +20,7 @@ void clean(TH1 *p, double maxerr = 0.005) {
 //void drawGainsVsPt(string era = "2023D", string version = "w8") {
 //void drawGainsVsPt(string era = "2023Cv4", string version = "w8") {
 //void drawGainsVsPt(string era = "2023D", string version = "w9") {
-void drawGainsVsPt(string era = "2024BCD", string version = "w23") {
+void drawGainsVsPt(string era = "2024BCD", string version = "w25") {
 //void drawGainsVsPt(string era = "2023Cv4", string version = "w9") {
   //void drawGainsVsPt(string era = "Run2", string version = "v18") {
 
