@@ -76,7 +76,8 @@ void GamHistosRatio(string ver = "w23") {
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
   GamHistosRatios(ver,"2024D");
-  GamHistosRatios(ver, "2024BCD");
+  GamHistosRatios(ver,"2024E");
+  GamHistosRatios(ver, "2024BCDE");
   //GamHistosRatios(ver, "2024BC");
 
 
