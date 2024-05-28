@@ -127,7 +127,7 @@ void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and 
 
     // Setup canvas
     //TH1D *h = tdrHist("h","Response",0.92,1.08,"Run",366000,381300); //should start later when dropping 2022 data (here some before 2023C)
-    TH1D *h = tdrHist("h","Response",0.92,1.06,"Run",378900,380900); //2024 only (standard was to display from 0.92 to 1.08, now zooming in for 2024
+    TH1D *h = tdrHist("h","Response",0.92,1.06,"Run",378900,383000); //2024 only (standard was to display from 0.92 to 1.08, now zooming in for 2024
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     lumi_136TeV = Form("Photon+jet, Run 3 2024, %s",cv); //for 2024-only version
     extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
@@ -181,12 +181,17 @@ void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and 
     l->DrawLine(run24c_end,y1+0.045,run24c_end,y2-0.035);
     t->DrawLatex(run24c_start,0.960,"24C");
 
-    double run24d_start(380253); //, run24d_end(380600); //(first run#), ends?
+    double run24d_start(380253), run24d_end(380947); //(first run#), ends?
     l->DrawLine(run24d_start,y1+0.045,run24d_start,y2-0.035);
-    //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
+    l->DrawLine(run24d_end,y1+0.045,run24d_end,y2-0.035);
     t->DrawLatex(run24d_start,0.960,"24D");
-    //l->DrawLine(380649,y1+0.045,380649,y2-0.035); //"preliminary" end of D, until we have real one
-    l->DrawLine(380883,y1+0.045,380883,y2-0.035); //"preliminary" end of D, until we have real one
+
+    double run24e_start(380948); //, run24e_end(382600); //(first run#), ends?
+    l->DrawLine(run24e_start,y1+0.045,run24e_start,y2-0.035);
+    //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
+    t->DrawLatex(run24d_start,0.960,"24E");
+    l->DrawLine(381212,y1+0.045,381212,y2-0.035); //"preliminary" end of E, until we have real one
+
 
 
     //first run number for each era
@@ -199,7 +204,7 @@ void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and 
     runstart->DrawLatex(run24d_start, 0.955, Form("%.f",run24d_start));
 
     //runstart->DrawLatex(380649, 0.960, "380649"); //preliminary end of 24D
-    runstart->DrawLatex(380883, 0.960, "380883"); //preliminary end of 24D
+    runstart->DrawLatex(381212, 0.960, "381212"); //preliminary end of 24E
 
 
 
@@ -508,7 +513,7 @@ void drawPFcompVsRun_2024only(string version) {
 
     // Setup canvas
     //TH1D *h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,380800);
-    TH1D *h = tdrHist("h2","PF composition offset",-0.025,+0.025,"Run",378900,380800);
+    TH1D *h = tdrHist("h2","PF composition offset",-0.025,+0.025,"Run",378900,383000);
     //TH1D *h = tdrHist("h2","PF composition offset",-0.80,+0.80,"Run",378900,380600);
 
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
@@ -530,7 +535,9 @@ void drawPFcompVsRun_2024only(string version) {
     // https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun3Analysis#2024_Era_definition
     double run24b_start(378971), run24b_end(379411);
     double run24c_start(379412), run24c_end(380252);
-    double run24d_start(380253); //, run24d_end();
+    double run24d_start(380253), run24d_end(380947);
+    double run24e_start(380948); //, run24e_end();
+
 
     //l->SetLineStyle(kDashed);
     l->SetLineColor(kGray);
@@ -540,6 +547,10 @@ void drawPFcompVsRun_2024only(string version) {
     l->DrawLine(run24c_start,y1,run24c_start,y2);
     l->DrawLine(run24c_end,y1,run24c_end,y2);
     l->DrawLine(run24d_start,y1,run24d_start,y2);
+    l->DrawLine(run24d_end,y1,run24d_end,y2);
+    l->DrawLine(run24e_start,y1,run24e_start,y2);
+
+
  
     //text for eras
     /*
@@ -550,6 +561,7 @@ void drawPFcompVsRun_2024only(string version) {
     t->DrawLatex(run24b_start+10,-0.020,"24B");
     t->DrawLatex(run24c_start+10,-0.020,"24C");
     t->DrawLatex(run24d_start+10,-0.020,"24D");
+    t->DrawLatex(run24e_start+10,-0.020,"24E");
 
 
 
