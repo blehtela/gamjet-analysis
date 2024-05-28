@@ -989,49 +989,49 @@ void GamHistosFill::Loop()
   //TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",16000,355000.5,371000.5);
   //TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",16000,355000.5,371000.5);
   //TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",16000,355000.5,371000.5);
-  TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50n = new TH1D("pr50n",";Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr50n = new TH1D("pr50n",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",26000,355000.5,383000.5);
 
   //time stability of xs, with actual N/lumi (added 17.5.24 for monitoring of new '24 data)
-  TH1D *pr30xs = new TH1D("pr30xs",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr50xs = new TH1D("pr50xs",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr110xs = new TH1D("pr110xs",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr230xs = new TH1D("pr230xs",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr30xs = new TH1D("pr30xs",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr50xs = new TH1D("pr50xs",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr110xs = new TH1D("pr110xs",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr230xs = new TH1D("pr230xs",";Run;xs (pb);",26000,355000.5,383000.5);
  
   
   // Time stability of JEC
-  TProfile *pr30b = new TProfile("pr30b",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr50b = new TProfile("pr50b",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr110b = new TProfile("pr110b",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr230b = new TProfile("pr230b",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *prg1b = new TProfile("prg1b",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr30m = new TProfile("pr30m",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr50m = new TProfile("pr50m",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr110m = new TProfile("pr110m",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr230m = new TProfile("pr230m",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *prg1m = new TProfile("prg1m",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr30b = new TProfile("pr30b",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr50b = new TProfile("pr50b",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr110b = new TProfile("pr110b",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr230b = new TProfile("pr230b",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *prg1b = new TProfile("prg1b",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr30m = new TProfile("pr30m",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr50m = new TProfile("pr50m",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr110m = new TProfile("pr110m",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr230m = new TProfile("pr230m",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *prg1m = new TProfile("prg1m",";Run;MPF;",26000,355000.5,383000.5);
 
   // Time stability of PF composition
-  TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",26000,355000.5,381000.5);
-  TProfile *pr50chf = new TProfile("pr50chf",";Run;CHF;",26000,355000.5,381000.5);
-  TProfile *pr110chf = new TProfile("pr110chf",";Run;CHF;",26000,355000.5,381000.5);
-  TProfile *pr230chf = new TProfile("pr230chf",";Run;CHF;",26000,355000.5,381000.5);
-  TProfile *prg1chf = new TProfile("prg1chf",";Run;CHF;",26000,355000.5,381000.5);
+  TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *pr50chf = new TProfile("pr50chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *pr110chf = new TProfile("pr110chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *pr230chf = new TProfile("pr230chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *prg1chf = new TProfile("prg1chf",";Run;CHF;",26000,355000.5,383000.5);
   //
-  TProfile *pr30nhf = new TProfile("pr30nhf",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr50nhf = new TProfile("pr50nhf",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr110nhf = new TProfile("pr110nhf",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr230nhf = new TProfile("pr230nhf",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *prg1nhf = new TProfile("prg1nhf",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr30nhf = new TProfile("pr30nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr50nhf = new TProfile("pr50nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr110nhf = new TProfile("pr110nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr230nhf = new TProfile("pr230nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *prg1nhf = new TProfile("prg1nhf",";Run;NHF;",26000,355000.5,383000.5);
   //
-  TProfile *pr30nef = new TProfile("pr30nef",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr50nef = new TProfile("pr50nef",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr30nef = new TProfile("pr30nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr50nef = new TProfile("pr50nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",26000,355000.5,383000.5);
 
   // - - - - - - - high jet eta investigations - - - - - - - - //
   //histograms for investigation of high jet eta (couldn't these be added as a loop???)
@@ -1041,71 +1041,71 @@ void GamHistosFill::Loop()
   fout->cd("runs_high-jeteta");
 
   // Time stability of xsec
-  TH1D *pr30n_eta3to4 = new TH1D("pr30n_eta3to4","3 <= #eta_jet{} < 4;Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50n_eta3to4 = new TH1D("pr50n_eta3to4",";Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110n_eta3to4 = new TH1D("pr110n_eta3to4",";Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr30n_eta3to4 = new TH1D("pr30n_eta3to4","3 <= #eta_jet{} < 4;Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr50n_eta3to4 = new TH1D("pr50n_eta3to4",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr110n_eta3to4 = new TH1D("pr110n_eta3to4",";Run;N_{events};",26000,355000.5,383000.5);
 
-  TH1D *pr30n_eta4to5 = new TH1D("pr30n_eta4to5","4 <= jet_eta < 5;Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr50n_eta4to5 = new TH1D("pr50n_eta4to5",";Run;N_{events};",26000,355000.5,381000.5);
-  TH1D *pr110n_eta4to5 = new TH1D("pr110n_eta4to5",";Run;N_{events};",26000,355000.5,381000.5);
+  TH1D *pr30n_eta4to5 = new TH1D("pr30n_eta4to5","4 <= jet_eta < 5;Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr50n_eta4to5 = new TH1D("pr50n_eta4to5",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr110n_eta4to5 = new TH1D("pr110n_eta4to5",";Run;N_{events};",26000,355000.5,383000.5);
 
 
   //time stability of xs, with actual N/lumi (added 17.5.24 for monitoring of new '24 data)
-  TH1D *pr30xs_eta3to4 = new TH1D("pr30xs_eta3to4",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr50xs_eta3to4 = new TH1D("pr50xs_eta3to4",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr110xs_eta3to4 = new TH1D("pr110xs_eta3to4",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr30xs_eta3to4 = new TH1D("pr30xs_eta3to4",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr50xs_eta3to4 = new TH1D("pr50xs_eta3to4",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr110xs_eta3to4 = new TH1D("pr110xs_eta3to4",";Run;xs (pb);",26000,355000.5,383000.5);
 
-  TH1D *pr30xs_eta4to5 = new TH1D("pr30xs_eta4to5",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr50xs_eta4to5 = new TH1D("pr50xs_eta4to5",";Run;xs (pb);",26000,355000.5,381000.5);
-  TH1D *pr110xs_eta4to5 = new TH1D("pr110xs_eta4to5",";Run;xs (pb);",26000,355000.5,381000.5);
+  TH1D *pr30xs_eta4to5 = new TH1D("pr30xs_eta4to5",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr50xs_eta4to5 = new TH1D("pr50xs_eta4to5",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr110xs_eta4to5 = new TH1D("pr110xs_eta4to5",";Run;xs (pb);",26000,355000.5,383000.5);
  
   
   // Time stability of JEC
-  TProfile *pr30b_eta3to4 = new TProfile("pr30b_eta3to4",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr50b_eta3to4 = new TProfile("pr50b_eta3to4",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr110b_eta3to4 = new TProfile("pr110b_eta3to4",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr30m_eta3to4 = new TProfile("pr30m_eta3to4",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr50m_eta3to4 = new TProfile("pr50m_eta3to4",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr110m_eta3to4 = new TProfile("pr110m_eta3to4",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr30b_eta3to4 = new TProfile("pr30b_eta3to4",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr50b_eta3to4 = new TProfile("pr50b_eta3to4",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr110b_eta3to4 = new TProfile("pr110b_eta3to4",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr30m_eta3to4 = new TProfile("pr30m_eta3to4",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr50m_eta3to4 = new TProfile("pr50m_eta3to4",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr110m_eta3to4 = new TProfile("pr110m_eta3to4",";Run;MPF;",26000,355000.5,383000.5);
 
-  TProfile *pr30b_eta4to5 = new TProfile("pr30b_eta4to5",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr50b_eta4to5 = new TProfile("pr50b_eta4to5",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr110b_eta4to5 = new TProfile("pr110b_eta4to5",";Run;BAL;",26000,355000.5,381000.5);
-  TProfile *pr30m_eta4to5 = new TProfile("pr30m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr50m_eta4to5 = new TProfile("pr50m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
-  TProfile *pr110m_eta4to5 = new TProfile("pr110m_eta4to5",";Run;MPF;",26000,355000.5,381000.5);
+  TProfile *pr30b_eta4to5 = new TProfile("pr30b_eta4to5",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr50b_eta4to5 = new TProfile("pr50b_eta4to5",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr110b_eta4to5 = new TProfile("pr110b_eta4to5",";Run;BAL;",26000,355000.5,383000.5);
+  TProfile *pr30m_eta4to5 = new TProfile("pr30m_eta4to5",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr50m_eta4to5 = new TProfile("pr50m_eta4to5",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr110m_eta4to5 = new TProfile("pr110m_eta4to5",";Run;MPF;",26000,355000.5,383000.5);
 
   //Time stability of h vs em in HF
-  TProfile *pr30hfEmEF_eta3to4 = new TProfile("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr50hfEmEF_eta3to4 = new TProfile("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr110hfEmEF_eta3to4 = new TProfile("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr30hfHEF_eta3to4 = new TProfile("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr50hfHEF_eta3to4 = new TProfile("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr110hfHEF_eta3to4 = new TProfile("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr30hfEmEF_eta3to4 = new TProfile("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr50hfEmEF_eta3to4 = new TProfile("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr110hfEmEF_eta3to4 = new TProfile("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr30hfHEF_eta3to4 = new TProfile("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr50hfHEF_eta3to4 = new TProfile("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr110hfHEF_eta3to4 = new TProfile("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
 
-  TProfile *pr30hfEmEF_eta4to5 = new TProfile("pr30hfEmEF_eta4to5","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr50hfEmEF_eta4to5 = new TProfile("pr50hfEmEF_eta4to5","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr110hfEmEF_eta4to5 = new TProfile("pr110hfEmEF_eta4to5","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr30hfHEF_eta4to5 = new TProfile("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr50hfHEF_eta4to5 = new TProfile("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,381000.5);
-  TProfile *pr110hfHEF_eta4to5 = new TProfile("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,381000.5);
+  TProfile *pr30hfEmEF_eta4to5 = new TProfile("pr30hfEmEF_eta4to5","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr50hfEmEF_eta4to5 = new TProfile("pr50hfEmEF_eta4to5","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr110hfEmEF_eta4to5 = new TProfile("pr110hfEmEF_eta4to5","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr30hfHEF_eta4to5 = new TProfile("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr50hfHEF_eta4to5 = new TProfile("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr110hfHEF_eta4to5 = new TProfile("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
 
 
 
 
   // Time stability of PF composition -- not yet for high jet eta... do this later if needed
   /*
-  TProfile *pr30chf_eta3to4 = new TProfile("pr30chf",";Run;CHF;",26000,355000.5,381000.5);
-  TProfile *pr50chf_eta3to4 = new TProfile("pr50chf",";Run;CHF;",26000,355000.5,381000.5);
-  TProfile *pr110chf_eta3to4 = new TProfile("pr110chf",";Run;CHF;",26000,355000.5,381000.5);
+  TProfile *pr30chf_eta3to4 = new TProfile("pr30chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *pr50chf_eta3to4 = new TProfile("pr50chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *pr110chf_eta3to4 = new TProfile("pr110chf",";Run;CHF;",26000,355000.5,383000.5);
   //
-  TProfile *pr30nhf_eta3to4 = new TProfile("pr30nhf",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr50nhf_eta3to4 = new TProfile("pr50nhf",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr110nhf_eta3to4 = new TProfile("pr110nhf",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr30nhf_eta3to4 = new TProfile("pr30nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr50nhf_eta3to4 = new TProfile("pr50nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr110nhf_eta3to4 = new TProfile("pr110nhf",";Run;NHF;",26000,355000.5,383000.5);
   //
-  TProfile *pr30nef_eta3to4 = new TProfile("pr30nef",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr50nef_eta3to4 = new TProfile("pr50nef",";Run;NHF;",26000,355000.5,381000.5);
-  TProfile *pr110nef_eta3to4 = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,381000.5);
+  TProfile *pr30nef_eta3to4 = new TProfile("pr30nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr50nef_eta3to4 = new TProfile("pr50nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr110nef_eta3to4 = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,383000.5);
   */
 
 
