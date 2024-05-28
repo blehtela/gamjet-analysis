@@ -623,7 +623,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
     //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
-    bool golden=0;
+    bool golden=0; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
 
 
 
@@ -645,14 +645,13 @@ void GamHistosFill::Loop()
       lumi200 = LoadLumi("files/lumi2024_378981_380470_Golden_photon200_pb.csv");
   }
   else{
-      lumi30 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon30eb_pb.csv");
-      lumi50 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon50eb_pb.csv");
-      lumi110 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon110eb_pb.csv");
-      lumi200 = LoadLumi("files/lumi2024_378981_381199_DCSOnly_photon200_pb.csv");
+      lumi30 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon30eb_pb.csv");
+      lumi50 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon50eb_pb.csv");
+      lumi110 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon110eb_pb.csv");
+      lumi200 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon200_pb.csv");
   }
   //cout << "Use lumi files: " << endl << flush;
   //PrintInfo(string("Use lumi files") + json + ":",true);
-
 
 
 
