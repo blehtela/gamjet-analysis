@@ -552,7 +552,7 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
   //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w15 and w16 (starting 06.05.24)
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //Winter2024 L2Rel, and 2023D-L2L3Res (w12, 30.04.2024)
@@ -588,7 +588,7 @@ void GamHistosFill::Loop()
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E") sera = "2024";
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO") sera = "2024";
   assert(sera!="");
 
   // Load JSON files
@@ -613,7 +613,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_380883_DCSOnly_TkPx.json"); //daily json from 19.05. --> w21
     //LoadJSON("files/Collisions24_13p6TeV_378981_381053_DCSOnly_TkPx.json"); //daily json from 22.05. --> w23
     //LoadJSON("files/Collisions24_13p6TeV_378981_381199_DCSOnly_TkPx.json"); //daily json from 26.05. --> not used (went with newer one)
-    LoadJSON("files/Collisions24_13p6TeV_378981_381212_DCSOnly_TkPx.json"); //daily json from 27.05. --> w25
+    //LoadJSON("files/Collisions24_13p6TeV_378981_381212_DCSOnly_TkPx.json"); //daily json from 27.05. --> w25
 
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
@@ -623,7 +623,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
     //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
-    bool golden=0; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
+    LoadJSON("files/Cert_Collisions2024_378981_380649_Golden.json");  //golden json from 27.05. --> w26
+    bool golden=1; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
 
 
 
@@ -639,10 +640,10 @@ void GamHistosFill::Loop()
   //Get recorded luminosity for different triggers, pb=in picobarn:
   LumiMap lumi30, lumi50, lumi110, lumi200;
   if(golden){
-      lumi30 = LoadLumi("files/lumi2024_378981_380470_Golden_photon30eb_pb.csv");
-      lumi50 = LoadLumi("files/lumi2024_378981_380470_Golden_photon50eb_pb.csv");
-      lumi110 = LoadLumi("files/lumi2024_378981_380470_Golden_photon110eb_pb.csv");
-      lumi200 = LoadLumi("files/lumi2024_378981_380470_Golden_photon200_pb.csv");
+      lumi30 = LoadLumi("files/lumi2024_378981_380649_golden_photon30eb_pb.csv"); //could maybe add an assertion checking whather name matches with json used
+      lumi50 = LoadLumi("files/lumi2024_378981_380649_golden_photon50eb_pb.csvv");
+      lumi110 = LoadLumi("files/lumi2024_378981_380649_golden_photon110eb_pb.csvv");
+      lumi200 = LoadLumi("files/lumi2024_378981_380649_golden_photon200_pb.csv");
   }
   else{
       lumi30 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon30eb_pb.csv");
@@ -652,7 +653,6 @@ void GamHistosFill::Loop()
   }
   //cout << "Use lumi files: " << endl << flush;
   //PrintInfo(string("Use lumi files") + json + ":",true);
-
 
 
   
@@ -698,7 +698,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024B") ||
         TString(ds.c_str()).Contains("2024C") ||
         TString(ds.c_str()).Contains("2024D") ||
-        TString(ds.c_str()).Contains("2024E"))
+        TString(ds.c_str()).Contains("2024E") ||
+        TString(ds.c_str()).Contains("2024B-ECALRATIO"))
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
         fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
   }

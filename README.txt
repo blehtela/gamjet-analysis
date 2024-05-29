@@ -49,6 +49,7 @@ CHANGELOG (latest first):
 To-do later: 
 - update h2r9vspt r9 binning. Check if r9 cut makes sense at pT>230 GeV for Photon200 trigger, and if efficiency drops too much
 
+w26: Using golden JSON (27.5.) to run 2024 prompt data. This is also the first version used for re-reco (ECALRATIO).
 w25: Added hgam50t to control-directory (tight 50GeV photon trigger); updated daily JSON (27.5.); updated lumi-files accordingly; still using same jetveto and same JEC as previous versions.
 w24: Same as w23, but used for running with golden json.
 w23: Added time-stability histograms for high jet-eta regions (3 <= eta < 4 and 4<= eta < 5). Added use of HF branches (composition: EM vs hadronic). Use new daily json (22.5.).
