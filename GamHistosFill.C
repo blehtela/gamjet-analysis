@@ -552,7 +552,7 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
   //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w15 and w16 (starting 06.05.24)
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //Winter2024 L2Rel, and 2023D-L2L3Res (w12, 30.04.2024)
@@ -588,7 +588,7 @@ void GamHistosFill::Loop()
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO") sera = "2024";
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") sera = "2024";
   assert(sera!="");
 
   // Load JSON files
@@ -699,7 +699,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024C") ||
         TString(ds.c_str()).Contains("2024D") ||
         TString(ds.c_str()).Contains("2024E") ||
-        TString(ds.c_str()).Contains("2024B-ECALRATIO"))
+        TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
+        TString(ds.c_str()).Contains("2024C-ECALRATIO"))
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
         fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
   }
@@ -2642,8 +2643,9 @@ void GamHistosFill::Loop()
 
       // Time controls for JES and PF composition
       if (pass_all) {
-	if (itrg==30 && ptgam>30) {
+	if (itrg==30 && ptgam>30) { //check turn-on curves
 	  pr30n->Fill(run, w); 
+	  // TO DO: make this pr30xs plot (below) without jet requirements (photon passes trigger + has required pT)
           pr30xs->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
 	  pr30b->Fill(run, bal, w); 
 	  pr30m->Fill(run, mpf, w);
@@ -2651,7 +2653,7 @@ void GamHistosFill::Loop()
 	  pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr30nef->Fill(run, Jet_neEmEF[iJet], w);
 	}
-        if (itrg==50 && ptgam>50) {
+        if (itrg==50 && ptgam>50) { //ptgam>53 (to avoid trouble with hlt scale)
 	  pr50n->Fill(run, w); 
           pr50xs->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.); //new (can remove this when pr50n one above shows xs)
 	  pr50b->Fill(run, bal, w); 

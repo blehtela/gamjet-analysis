@@ -72,7 +72,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w26") { //using w-
 		  dataset=="2023Cv123X" || dataset=="2023Cv4X" || dataset=="2023DX" || //for my test wX23
 		  dataset=="2023B" || dataset=="2023Cv123" ||
 		  dataset=="2023Cv4" || dataset=="2023D" ||
-                  dataset=="2024B" || dataset=="2024C" || dataset=="2024D" || dataset=="2024E" || dataset=="2024B-ECALRATIO" ||
+                  dataset=="2024B" || dataset=="2024C" || dataset=="2024D" || dataset=="2024E" || dataset=="2024B-ECALRATIO" || dataset=="2024C-ECALRATIO" ||
                   dataset=="2024B-PromptReco-v1");
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
