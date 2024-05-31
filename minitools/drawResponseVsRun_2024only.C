@@ -61,7 +61,7 @@ TH1D *hadd(string name, TProfile *p1, TProfile *p2) {
 } // hadd
 
 
-void drawPFcompVsRun_2024only(string version);
+void drawPFcompVsRun_2024only(string version, bool rereco);
 
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
