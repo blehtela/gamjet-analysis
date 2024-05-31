@@ -83,11 +83,11 @@ void drawResponseVsRun_2024only(string version = "w26", bool rereco = 1) { //swi
     
     if(!rereco){
 	cout << "Looking at 2024 prompt data." << endl;
-    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
     }
     else if(rereco){
 	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
-    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
     }
     else{
 	cout << "Check rereco boolian. Something's wrong." << endl;
@@ -460,11 +460,11 @@ void drawPFcompVsRun_2024only(string version, bool rereco) {
 
     if(!rereco){
 	cout << "Looking at 2024 prompt data." << endl;
-    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
     }
     else if(rereco){
 	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
-    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
     }
     else{
 	cout << "Check rereco boolian. Something's wrong." << endl;
