@@ -66,7 +66,8 @@ void drawPFcompVsRun_2024only(string version);
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and w16; w17 and w18; w19 and w20
+void drawResponseVsRun_2024only(string version = "w26", bool rereco = 1) { //switched to w15 and w16; w17 and w18; w19 and w20
+    //bool rereco = 1;
 
     //const char *cyear = year.c_str();
     const char *cv = version.c_str();
@@ -77,7 +78,21 @@ void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and 
     // Open input files
     //TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_Run3_%s.root",cv), "READ"); //is this the entire run 3 data with all runperiods?
     //TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_Run3Summer23_%s.root",cv), "READ"); //for now: hadd on 2023 Cv123, Cv4, D
-    TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    
+    TFile *f(0);
+    
+    if(!rereco){
+	cout << "Looking at 2024 prompt data." << endl;
+    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    }
+    else if(rereco){
+	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
+    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    }
+    else{
+	cout << "Check rereco boolian. Something's wrong." << endl;
+	exit(0);
+    }
 
     assert(f && !f->IsZombie());
 
@@ -414,11 +429,17 @@ void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and 
     cout << "Labels? " << xaxis->GetLabels() << endl;
 
 
-    c1->SaveAs(Form("pdf/drawResponseVsRun_2024only_%s.pdf",cv));
+    if(!rereco){
+    	c1->SaveAs(Form("pdf/drawResponseVsRun_2024only_%s.pdf",cv));
+    }
+    else if(rereco){
+    	c1->SaveAs(Form("pdf/drawResponseVsRun_2024-ECALRATIO_%s.pdf",cv));
+    }
+
 
 
     // Extra composition plots also modified.
-    drawPFcompVsRun_2024only(version);
+    drawPFcompVsRun_2024only(version, rereco);
 
 
 } // drawResponseVsRun_2024only
@@ -426,7 +447,7 @@ void drawResponseVsRun_2024only(string version = "w25") { //switched to w15 and 
 
 
 //start of PF composition versus run, modified for 2024 only; for now focus on 50EB trigger
-void drawPFcompVsRun_2024only(string version) {
+void drawPFcompVsRun_2024only(string version, bool rereco) {
 
     const char *cv = version.c_str();
 
@@ -434,10 +455,26 @@ void drawPFcompVsRun_2024only(string version) {
     TDirectory *curdir = gDirectory;
 
     // Open input files
-    TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv),"READ");
+    //TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv),"READ");
+    TFile *f(0);
+
+    if(!rereco){
+	cout << "Looking at 2024 prompt data." << endl;
+    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    }
+    else if(rereco){
+	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
+    	*f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    }
+    else{
+	cout << "Check rereco boolian. Something's wrong." << endl;
+	exit(0);
+    }
     assert(f && !f->IsZombie());
     f->cd("runs");
     TDirectory *d = gDirectory;
+
+
 
     /*
     TFile *fr = new TFile("rootfiles/GamHistosFill_data_Run3_v29.root","READ");
@@ -517,7 +554,12 @@ void drawPFcompVsRun_2024only(string version) {
     //TH1D *h = tdrHist("h2","PF composition offset",-0.80,+0.80,"Run",378900,380600);
 
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
-    lumi_136TeV = Form("Photon+jet, 2024only, %s",cv);
+    if(rereco){
+	lumi_136TeV = Form("Photon+jet, 2024 ECALRATIO, %s",cv);
+    }
+    else{
+    	lumi_136TeV = Form("Photon+jet, 2024only, %s",cv);
+    }
     extraText = "Private";
     TCanvas *c1 = tdrCanvas("c2",h,8,11);
     TLine *l = new TLine();
@@ -654,9 +696,16 @@ void drawPFcompVsRun_2024only(string version) {
     leg->AddEntry(hr50nhf, Form("NHF 50EB %.3f",hr50nhfoff), "PLE");
  
 
+    if(rereco){
     //c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s.pdf",cv));
     c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s_zoomed.pdf",cv));
     //c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s_new.pdf",cv));
+    }
+    else{
+     //c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s.pdf",cv));
+    c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024-ECALRATIO_%s_zoomed.pdf",cv));
+    //c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s_new.pdf",cv));
+    }
 
 
 } // drawPFcompVsRun_2024only
