@@ -797,7 +797,17 @@ void GamHistosFill::Loop()
 		 -1.044, -0.783, -0.522, -0.261, 0.000, 0.261, 0.522, 0.783,
 		 1.044, 1.305, 1.479, 1.653, 1.930, 2.172, 2.322, 2.500,
 		 2.650, 2.853, 2.964, 3.139, 3.489, 3.839, 5.191};
+
+
+	//TO DO: etabinning (barrel only) also to neg. values, used for 2Dprofiles checking gain 1/6/12
+  double veta[] = {-1.653, -1.566, -1.479, -1.392, -1.305, -1.218, -1.131, -1.044, -0.957, -0.879, 
+					-0.783, -0.696, -0.609, -0.522, -0.435, -0.348, -0.261, -0.174, -0.087, 
+					0, 0.087, 0.174, 0.261, 0.348, 0.435, 0.522, 0.609, 0.696, 0.783, 0.879, 
+					0.957, 1.044, 1.131, 1.218, 1.305, 1.392, 1.479, 1.566, 1.653}
+
   const int ny = sizeof(vy)/sizeof(vy[0])-1;
+  const int nveta = sizeof(veta)/sizeof(veta[0])-1;
+
 
   string dir = (isMC ? "MC" : "DATA");
   
@@ -1189,6 +1199,14 @@ void GamHistosFill::Loop()
   TH2D *h2r9vspt = new TH2D("h2r9vspt","",nx,vx,150,0.90,1.05);
   TProfile *pr9vspt = new TProfile("pr9vspt","",nx,vx);
 
+	//new (w27+w28): 2D plots for gain vs pt and eta (nx = #xbins, vx = pt-xbins, ny=#ybins, vy=eta-ybins)
+	//changed to narrower eta-bins called veta, #bins=nveta
+  TProfile2D *pgain1vsptvseta = new TProfile2D("pgain1vsptvseta","",nx,vx,nveta,veta);
+  TProfile2D *pgain6vsptvseta = new TProfile2D("pgain6vsptvseta","",nx,vx,nveta,veta);
+  TProfile2D *pgain12vsptvseta = new TProfile2D("pgain12vsptvseta","",nx,vx,nveta,veta);
+  TProfile2D *pgainvsptvseta = new TProfile2D("pgainvsptvseta","",nx,vx,nveta,veta);
+ 
+
   // 2D plots for jet response
   TH2D *h2bal = new TH2D("h2bal","",nx,vx,200,0,4);
   TH2D *h2mpf = new TH2D("h2mpf","",nx,vx,300,-2,4);
@@ -1289,6 +1307,19 @@ void GamHistosFill::Loop()
   TProfile *prmpf6 = new TProfile("prmpf6","",nx,vx);
   TProfile *prbal12 = new TProfile("prbal12","",nx,vx);
   TProfile *prmpf12 = new TProfile("prmpf12","",nx,vx);
+
+	//new (w27+w28): 2D plots for gain vs pt and eta (nx = #xbins, vx = pt-xbins, ny=#ybins, vy=eta-ybins)
+	//changed to narrower eta-bins called veta, #bins=nveta
+  TProfile2D *pr2bal = new TProfile2D("pr2bal","",nx,vx,nveta,veta);
+  TProfile2D *pr2mpf = new TProfile2D("pr2mpf","",nx,vx,nveta,veta);
+  TProfile2D *pr2bal1 = new TProfile2D("pr2bal1","",nx,vx,nveta,veta);
+  TProfile2D *pr2mpf1 = new TProfile2D("pr2mpf1","",nx,vx,nveta,veta);
+  TProfile2D *pr2bal6 = new TProfile2D("pr2bal6","",nx,vx,nveta,veta);
+  TProfile2D *pr2mpf6 = new TProfile2D("pr2mpf6","",nx,vx,nveta,veta);
+  TProfile2D *pr2bal12 = new TProfile2D("pr2bal12","",nx,vx,nveta,veta);
+  TProfile2D *pr2mpf12 = new TProfile2D("pr2mpf12","",nx,vx,nveta,veta);
+
+
   
   // Plots for photon trigger efficiencies
   // TBD: need to create these more systematically with a loop (yep, agree... will look into this, - Bettina)
@@ -2566,7 +2597,7 @@ void GamHistosFill::Loop()
 	hgamtrg->Fill(ptgam, w); // wider binning to higher pT (=hgam)
       }
       //if (ptgam>=105 && fabs(gam.Eta())<1.3 && pass_trig) {
-      if (ptgam>=110 && pass_trig && pass_filt) {
+      if (ptgam>=110 && pass_trig && pass_filt) { //why this pt cut??
 	//HLT_Photon110EB_TightID_TightIso) {
 	h2gametaphi->Fill(gam.Eta(), gam.Phi(), w);
 	h2gametaphi2->Fill(gam.Eta(), gam.Phi(), w);
@@ -2643,7 +2674,7 @@ void GamHistosFill::Loop()
 
       // Time controls for JES and PF composition
       if (pass_all) {
-	if (itrg==30 && ptgam>30) { //check turn-on curves
+	if (itrg==30 && ptgam>32) { //check turn-on curves, changed offline cut to ptgam>32 (used to be at 30gev)
 	  pr30n->Fill(run, w); 
 	  // TO DO: make this pr30xs plot (below) without jet requirements (photon passes trigger + has required pT)
           pr30xs->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
@@ -2653,7 +2684,7 @@ void GamHistosFill::Loop()
 	  pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr30nef->Fill(run, Jet_neEmEF[iJet], w);
 	}
-        if (itrg==50 && ptgam>50) { //ptgam>53 (to avoid trouble with hlt scale)
+        if (itrg==50 && ptgam>53) { //ptgam>53 (to avoid trouble with hlt scale) (used to be ptgam>50)
 	  pr50n->Fill(run, w); 
           pr50xs->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.); //new (can remove this when pr50n one above shows xs)
 	  pr50b->Fill(run, bal, w); 
@@ -2662,7 +2693,7 @@ void GamHistosFill::Loop()
 	  pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr50nef->Fill(run, Jet_neEmEF[iJet], w);
 	}
-	if (itrg==110 && ptgam>110) {
+	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
 	  pr110n->Fill(run, w);
           pr110xs->Fill(run, lumi110[run] ? 1./lumi110[run] : 1.); //new
 	  pr110b->Fill(run, bal, w); 
@@ -2695,7 +2726,7 @@ void GamHistosFill::Loop()
       //NEW: (jet eta) 3<=eta<4 and TO DO:  4<=eta<5
       //do this eta investigation for all histograms, might not be so useful for composition plots, but check
       if (pass_basic_ext and pass_alpha100 and fabs(Jet_eta[iJet])>=3.0 and fabs(Jet_eta[iJet])<4.0) {
-	if (itrg==30 && ptgam>30) {
+	if (itrg==30 && ptgam>32) {
 	  pr30n_eta3to4->Fill(run, w); 
           pr30xs_eta3to4->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
 	  pr30b_eta3to4->Fill(run, bal, w); 
@@ -2706,7 +2737,7 @@ void GamHistosFill::Loop()
           pr30hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
           pr30hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
 	}
-        if (itrg==50 && ptgam>50) {
+        if (itrg==50 && ptgam>53) {
           pr50n_eta3to4->Fill(run, w);
           pr50xs_eta3to4->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.);
           pr50b_eta3to4->Fill(run, bal, w);
@@ -2717,7 +2748,7 @@ void GamHistosFill::Loop()
           pr50hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
           pr50hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
 	}
-	if (itrg==110 && ptgam>110) {
+	if (itrg==110 && ptgam>120) {
 	  pr110n_eta3to4->Fill(run, w);
           pr110xs_eta3to4->Fill(run, lumi110[run] ? 1./lumi110[run] : 1.); //new
 	  pr110b_eta3to4->Fill(run, bal, w); 
@@ -2751,7 +2782,7 @@ void GamHistosFill::Loop()
 
       //JET ETA between 4.0 and 5.0
       if (pass_basic_ext and pass_alpha100 and fabs(Jet_eta[iJet])>=4.0 and fabs(Jet_eta[iJet])<5.0) {
-	if (itrg==30 && ptgam>30) {
+	if (itrg==30 && ptgam>32) {
 	  pr30n_eta4to5->Fill(run, w); 
           pr30xs_eta4to5->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
 	  pr30b_eta4to5->Fill(run, bal, w); 
@@ -2762,7 +2793,7 @@ void GamHistosFill::Loop()
           pr30hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
           pr30hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
 	}
-        if (itrg==50 && ptgam>50) {
+        if (itrg==50 && ptgam>53) {
           pr50n_eta4to5->Fill(run, w);
           pr50xs_eta4to5->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.);
           pr50b_eta4to5->Fill(run, bal, w);
@@ -2773,7 +2804,7 @@ void GamHistosFill::Loop()
           pr50hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
           pr50hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
 	}
-	if (itrg==110 && ptgam>110) {
+	if (itrg==110 && ptgam>120) {
 	  pr110n_eta4to5->Fill(run, w);
           pr110xs_eta4to5->Fill(run, lumi110[run] ? 1./lumi110[run] : 1.); //new
 	  pr110b_eta4to5->Fill(run, bal, w); 
@@ -3015,6 +3046,8 @@ void GamHistosFill::Loop()
 	  if (pass_jeteta && pass_alpha100) {
 	    prbal1->Fill(ptgam, bal, w);
 	    prmpf1->Fill(ptgam, mpf, w);
+	    pr2bal1->Fill(ptgam, gam.Eta(), bal, w); //new in w27+w28
+	    pr2mpf1->Fill(ptgam, gam.Eta(), mpf, w);
 	  }
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==6) {
@@ -3023,6 +3056,8 @@ void GamHistosFill::Loop()
 	  if (pass_jeteta && pass_alpha100) {
 	    prbal6->Fill(ptgam, bal, w);
 	    prmpf6->Fill(ptgam, mpf, w);
+	    pr2bal6->Fill(ptgam, gam.Eta(), bal, w);
+	    pr2mpf6->Fill(ptgam, gam.Eta(), mpf, w);
 	  }
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==12) {
@@ -3031,12 +3066,16 @@ void GamHistosFill::Loop()
 	  if (pass_jeteta && pass_alpha100) {
 	    prbal12->Fill(ptgam, bal, w);
 	    prmpf12->Fill(ptgam, mpf, w);
+	    pr2bal12->Fill(ptgam, gam.Eta(), bal, w);
+	    pr2mpf12->Fill(ptgam, gam.Eta(), mpf, w);
 	  }
 	}
 
 	if (pass_jeteta && pass_alpha100) {
 	  prbal->Fill(ptgam, bal, w);
 	  prmpf->Fill(ptgam, mpf, w);
+	  pr2bal->Fill(ptgam, gam.Eta(), bal, w);
+	  pr2mpf->Fill(ptgam, gam.Eta(), mpf, w);
 	  prbal0->Fill(ptgam, bal, w);
 	  prmpf0->Fill(ptgam, mpf, w);
 	  
@@ -3106,6 +3145,13 @@ void GamHistosFill::Loop()
 	    pgain6vspt->Fill(ptgam, Photon_seedGain[iGam]==6 ? 1 : 0, w);
 	    pgain12vspt->Fill(ptgam, Photon_seedGain[iGam]==12 ? 1 : 0, w);
 	    pgainvspt->Fill(ptgam, Photon_seedGain[iGam], w);
+
+			//2D profiles (vs pt, vs eta)
+	    pgain1vsptvseta->Fill(ptgam, gam.Eta(), Photon_seedGain[iGam]==1 ? 1 : 0, w);
+	    pgain6vsptvseta->Fill(ptgam, gam.Eta(), Photon_seedGain[iGam]==6 ? 1 : 0, w);
+	    pgain12vsptvseta->Fill(ptgam, gam.Eta(), Photon_seedGain[iGam]==12 ? 1 : 0, w);
+	    pgainvsptvseta->Fill(ptgam, gam.Eta(), Photon_seedGain[iGam], w);
+
 	    if (b_Photon_eCorr) // safety for 2016
 	      pcorrvspt->Fill(ptgam, Photon_eCorr[iGam], w);
 	    perrvspt->Fill(ptgam, Photon_energyErr[iGam], w);
