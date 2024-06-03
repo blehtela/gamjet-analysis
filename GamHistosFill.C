@@ -552,13 +552,17 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
   //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E" || ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024E") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
+    //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w15 and w16 (starting 06.05.24)
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //Winter2024 L2Rel, and 2023D-L2L3Res (w12, 30.04.2024)
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
+	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //for 2024 re-reco data
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
+	}
   assert(jec);
 
   
@@ -624,7 +628,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
     //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
     LoadJSON("files/Cert_Collisions2024_378981_380649_Golden.json");  //golden json from 27.05. --> w26
-    bool golden=1; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
+    bool golden=0; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
 
 
 
@@ -646,11 +650,13 @@ void GamHistosFill::Loop()
       lumi200 = LoadLumi("files/lumi2024_378981_380649_golden_photon200_pb.csv");
   }
   else{
-      lumi30 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon30eb_pb.csv");
-      lumi50 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon50eb_pb.csv");
-      lumi110 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon110eb_pb.csv");
-      lumi200 = LoadLumi("files/lumi2024_378981_381212_DCSOnly_photon200_pb.csv");
+      lumi30 = LoadLumi("files/lumi2024_378981_381478_daily_photon30eb_pb.csv");
+      lumi50 = LoadLumi("files/lumi2024_378981_381478_daily_photon50eb_pb.csv");
+      lumi110 = LoadLumi("files/lumi2024_378981_381478_daily_photon110eb_pb.csv");
+      lumi200 = LoadLumi("files/lumi2024_378981_381478_daily_photon200_pb.csv");
   }
+
+
   //cout << "Use lumi files: " << endl << flush;
   //PrintInfo(string("Use lumi files") + json + ":",true);
 
@@ -702,7 +708,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO"))
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
-        fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
+      //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
+        fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
@@ -730,7 +737,7 @@ void GamHistosFill::Loop()
       TString(ds.c_str()).Contains("2024"))
     h2jv = (TH2D*)fjv->Get("jetvetomap");
   if (TString(ds.c_str()).Contains("2024"))
-    bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpis vetomap
+    bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpix vetomap for all '24 stuff
   if (!h2jv) cout << "Jetvetomap histo not found for " << ds << endl << flush;
   assert(h2jv);
   if (!bpixjv) cout << "Jetvetomap for bpix not found for " << ds << endl << flush;
