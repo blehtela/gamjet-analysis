@@ -1963,7 +1963,7 @@ void GamHistosFill::Loop()
       // Leading tight photon(s)
       // R9>0.94 to avoid bias wrt R9Id90 triggers and from photon conversions
       if (Photon_pt[i]>15 && Photon_cutBased[i]==3 && Photon_hoe[i]<0.02148 && // id cut should be >=3, in case there's tighter ones
-	  Photon_r9[i]>0.94) {
+	  Photon_r9[i]>0.94 && Photon_r9[i]<1.00) { //added photon cut R9<1.00
 	++nGam;
 	if (iGam==-1) {
 	  iGam = i;
