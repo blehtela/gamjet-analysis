@@ -618,6 +618,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_381053_DCSOnly_TkPx.json"); //daily json from 22.05. --> w23
     //LoadJSON("files/Collisions24_13p6TeV_378981_381199_DCSOnly_TkPx.json"); //daily json from 26.05. --> not used (went with newer one)
     //LoadJSON("files/Collisions24_13p6TeV_378981_381212_DCSOnly_TkPx.json"); //daily json from 27.05. --> w25
+		//LoadJSON("files/Collisions24_13p6TeV_378981_381478_DCSOnly_TkPx.json"); //daily json from 03.06. --> w27
 
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
@@ -627,8 +628,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_379866_Golden.json");    //golden json from 06.05. --> w16, w18
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
     //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
-    LoadJSON("files/Cert_Collisions2024_378981_380649_Golden.json");  //golden json from 27.05. --> w26
-    bool golden=0; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
+    LoadJSON("files/Cert_Collisions2024_378981_380649_Golden.json");  //golden json from 27.05. --> w26, w28
+    bool golden=1; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
 
 
 

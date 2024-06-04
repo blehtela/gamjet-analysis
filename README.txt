@@ -49,6 +49,7 @@ CHANGELOG (latest first):
 To-do later: 
 - update h2r9vspt r9 binning. Check if r9 cut makes sense at pT>230 GeV for Photon200 trigger, and if efficiency drops too much
 
+w28: same as w27, but with previous golden json (27.5.).
 w27: New offline pt cuts for photon triggers in time-control histograms (i.e. vs run-number). Also added some new TProfile2D histograms (vs pt vs eta) for gain1/gain6/gain12 studies in barrel region. Added new Photon_r9[i]<1.00 cut. Using new daily JSON from 02.06.2024, and according lumi information (calculated with brilcalc but without normtag). Also updated JEC and jetveto map.
 w26: Using golden JSON (27.5.) to run 2024 prompt data. This is also the first version used for re-reco (ECALRATIO).
 w25: Added hgam50t to control-directory (tight 50GeV photon trigger); updated daily JSON (27.5.); updated lumi-files accordingly; still using same jetveto and same JEC as previous versions.
