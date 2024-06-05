@@ -1213,7 +1213,21 @@ void GamHistosFill::Loop()
   TProfile2D *pgain6vsptvseta = new TProfile2D("pgain6vsptvseta","",nx,vx,nveta,veta);
   TProfile2D *pgain12vsptvseta = new TProfile2D("pgain12vsptvseta","",nx,vx,nveta,veta);
   TProfile2D *pgainvsptvseta = new TProfile2D("pgainvsptvseta","",nx,vx,nveta,veta);
- 
+
+	//new (w29): 2D plots (vs eta vs phi) for jet response (for 30GeV, 50GeV and 110GeV photon trigger)
+	//TH2D *h2balvsetavsphi
+	TH2D *h2bal50_jetetaphi = new TH2D("h2bal50_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi()); //same #phibins as h2gametaphi (72); etabins as above (veta)
+	TH2D *h2mpf50_jetetaphi = new TH2D("h2mpf50_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2bal110_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+	TH2D *h2mpf110_jetetaphi = new TH2D("h2mpf110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2bal200_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+	TH2D *h2mpf200_jetetaphi = new TH2D("h2mpf110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+
+	//new (w29): 2D plots (vs eta vs phi) for jet rate (for 30GeV, 50GeV and 110GeV photon trigger)
+	TH2D *h2n50_jetetaphi = new TH2D("h2bal50_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+
 
   // 2D plots for jet response
   TH2D *h2bal = new TH2D("h2bal","",nx,vx,200,0,4);
@@ -2012,6 +2026,7 @@ void GamHistosFill::Loop()
     } // for i in nPhoton
 
     // Correct photon for gain1 and MPF for "footprint" (photon vs PFgamma)
+		// TO DO: in the same way as for gain1, we should also correct for jump in the end of 24C
     rawgam = gam;
     if (iGam!=-1 && Photon_seedGain[iGam]==1 && !isMC) {
       //gam *= 1./1.01;
