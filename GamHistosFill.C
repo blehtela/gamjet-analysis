@@ -552,16 +552,24 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
   //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
+    //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w15 and w16 (starting 06.05.24)
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //Winter2024 L2Rel, and 2023D-L2L3Res (w12, 30.04.2024)
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
-	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //for 2024 re-reco data
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
+  if (ds=="2024Ev1" || ds=="2024Ev2") { //separated 24E corrections starting from V4M jecs
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
+	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" ) { //for 2024 re-reco data
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
+    //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
+	}
+	if (ds=="2024C-ECALR-HCALDI" ) { //for 2024 re-reco data
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); 
 	}
   assert(jec);
 
@@ -592,7 +600,8 @@ void GamHistosFill::Loop()
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") sera = "2024";
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || 
+			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI") sera = "2024";
   assert(sera!="");
 
   // Load JSON files
@@ -619,8 +628,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions24_13p6TeV_378981_381199_DCSOnly_TkPx.json"); //daily json from 26.05. --> not used (went with newer one)
     //LoadJSON("files/Collisions24_13p6TeV_378981_381212_DCSOnly_TkPx.json"); //daily json from 27.05. --> w25
 		//LoadJSON("files/Collisions24_13p6TeV_378981_381478_DCSOnly_TkPx.json"); //daily json from 03.06. --> w27
-		LoadJSON("files/Collisions24_13p6TeV_378981_381516_DCSOnly_TkPx.json"); //daily json from 04.06.?? --> used for Ev2 with w27
-
+		//LoadJSON("files/Collisions24_13p6TeV_378981_381516_DCSOnly_TkPx.json"); //daily json from 04.06.?? --> used for Ev2 with w27
 
 
     //LoadJSON("files/Cert_Collisions2024_378981_379075_Golden.json"); //preliminary golden json (only until B?)
@@ -631,7 +639,12 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Cert_Collisions2024_378981_380115_Golden.json");    //golden json from 15.05. --> w20
     //LoadJSON("files/Cert_Collisions2024_378981_380470_Golden.json");  //golden json from 16.05. --> w22, w24
     //LoadJSON("files/Cert_Collisions2024_378981_380649_Golden.json");  //golden json from 27.05. --> w26, w28
-    bool golden=0; //IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
+
+
+    //bool golden=0; // --> not used anymore, but was IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
+	
+		//hybrid JSON! from w29 onwards
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to381152_DCSRuns_381153to381594_.json"); //hybrid json --> w29
 
 
 
@@ -646,6 +659,14 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
   LumiMap lumi30, lumi50, lumi110, lumi200;
+	lumi30 = LoadLumi("files/lumi2024_hybridjson-w29_photon30eb_pb.csv");
+	lumi50 = LoadLumi("files/lumi2024_hybridjson-w29_photon50eb_pb.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybridjson-w29_photon110eb_pb.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybridjson-w29_photon200_pb.csv");
+
+
+	/*
+  LumiMap lumi30, lumi50, lumi110, lumi200;
   if(golden){
       lumi30 = LoadLumi("files/lumi2024_378981_380649_golden_photon30eb_pb.csv"); //could maybe add an assertion checking whather name matches with json used
       lumi50 = LoadLumi("files/lumi2024_378981_380649_golden_photon50eb_pb.csvv");
@@ -658,6 +679,7 @@ void GamHistosFill::Loop()
       lumi110 = LoadLumi("files/lumi2024_378981_381478_daily_photon110eb_pb.csv");
       lumi200 = LoadLumi("files/lumi2024_378981_381478_daily_photon200_pb.csv");
   }
+	*/
 
 
   //cout << "Use lumi files: " << endl << flush;
@@ -710,7 +732,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Ev1") ||
         TString(ds.c_str()).Contains("2024Ev2") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
-        TString(ds.c_str()).Contains("2024C-ECALRATIO"))
+        TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
+        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI"))
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
         fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
@@ -1012,49 +1035,54 @@ void GamHistosFill::Loop()
   //TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",16000,355000.5,371000.5);
   //TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",16000,355000.5,371000.5);
   //TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",16000,355000.5,371000.5);
-  TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr50n = new TH1D("pr50n",";Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",26000,355000.5,383000.5);
+
+	double xmax = 383000.5;
+	double xmin = 355000.5;
+	double histnx = xmax-xmin; //should be int of course
+  //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
+	TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr50n = new TH1D("pr50n",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",histnx,xmin,xmax);
 
   //time stability of xs, with actual N/lumi (added 17.5.24 for monitoring of new '24 data)
-  TH1D *pr30xs = new TH1D("pr30xs",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr50xs = new TH1D("pr50xs",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr110xs = new TH1D("pr110xs",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr230xs = new TH1D("pr230xs",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr30xs = new TH1D("pr30xs",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr50xs = new TH1D("pr50xs",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr110xs = new TH1D("pr110xs",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr230xs = new TH1D("pr230xs",";Run;xs (pb);",histnx,xmin,xmax);
  
   
   // Time stability of JEC
-  TProfile *pr30b = new TProfile("pr30b",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr50b = new TProfile("pr50b",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr110b = new TProfile("pr110b",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr230b = new TProfile("pr230b",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *prg1b = new TProfile("prg1b",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr30m = new TProfile("pr30m",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr50m = new TProfile("pr50m",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr110m = new TProfile("pr110m",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr230m = new TProfile("pr230m",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *prg1m = new TProfile("prg1m",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr30b = new TProfile("pr30b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr50b = new TProfile("pr50b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr110b = new TProfile("pr110b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr230b = new TProfile("pr230b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *prg1b = new TProfile("prg1b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr30m = new TProfile("pr30m",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr50m = new TProfile("pr50m",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr110m = new TProfile("pr110m",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr230m = new TProfile("pr230m",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *prg1m = new TProfile("prg1m",";Run;MPF;",histnx,xmin,xmax);
 
   // Time stability of PF composition
-  TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",26000,355000.5,383000.5);
-  TProfile *pr50chf = new TProfile("pr50chf",";Run;CHF;",26000,355000.5,383000.5);
-  TProfile *pr110chf = new TProfile("pr110chf",";Run;CHF;",26000,355000.5,383000.5);
-  TProfile *pr230chf = new TProfile("pr230chf",";Run;CHF;",26000,355000.5,383000.5);
-  TProfile *prg1chf = new TProfile("prg1chf",";Run;CHF;",26000,355000.5,383000.5);
+  TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",histnx,xmin,xmax);
+  TProfile *pr50chf = new TProfile("pr50chf",";Run;CHF;",histnx,xmin,xmax);
+  TProfile *pr110chf = new TProfile("pr110chf",";Run;CHF;",histnx,xmin,xmax);
+  TProfile *pr230chf = new TProfile("pr230chf",";Run;CHF;",histnx,xmin,xmax);
+  TProfile *prg1chf = new TProfile("prg1chf",";Run;CHF;",histnx,xmin,xmax);
   //
-  TProfile *pr30nhf = new TProfile("pr30nhf",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *pr50nhf = new TProfile("pr50nhf",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *pr110nhf = new TProfile("pr110nhf",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *pr230nhf = new TProfile("pr230nhf",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *prg1nhf = new TProfile("prg1nhf",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr30nhf = new TProfile("pr30nhf",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr50nhf = new TProfile("pr50nhf",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr110nhf = new TProfile("pr110nhf",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr230nhf = new TProfile("pr230nhf",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *prg1nhf = new TProfile("prg1nhf",";Run;NHF;",histnx,xmin,xmax);
   //
-  TProfile *pr30nef = new TProfile("pr30nef",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *pr50nef = new TProfile("pr50nef",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",26000,355000.5,383000.5);
-  TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",26000,355000.5,383000.5);
+  TProfile *pr30nef = new TProfile("pr30nef",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr50nef = new TProfile("pr50nef",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",histnx,xmin,xmax);
 
   // - - - - - - - high jet eta investigations - - - - - - - - //
   //histograms for investigation of high jet eta (couldn't these be added as a loop???)
@@ -1064,54 +1092,54 @@ void GamHistosFill::Loop()
   fout->cd("runs_high-jeteta");
 
   // Time stability of xsec
-  TH1D *pr30n_eta3to4 = new TH1D("pr30n_eta3to4","3 <= #eta_jet{} < 4;Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr50n_eta3to4 = new TH1D("pr50n_eta3to4",";Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr110n_eta3to4 = new TH1D("pr110n_eta3to4",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr30n_eta3to4 = new TH1D("pr30n_eta3to4","3 <= #eta_jet{} < 4;Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr50n_eta3to4 = new TH1D("pr50n_eta3to4",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr110n_eta3to4 = new TH1D("pr110n_eta3to4",";Run;N_{events};",histnx,xmin,xmax);
 
-  TH1D *pr30n_eta4to5 = new TH1D("pr30n_eta4to5","4 <= jet_eta < 5;Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr50n_eta4to5 = new TH1D("pr50n_eta4to5",";Run;N_{events};",26000,355000.5,383000.5);
-  TH1D *pr110n_eta4to5 = new TH1D("pr110n_eta4to5",";Run;N_{events};",26000,355000.5,383000.5);
+  TH1D *pr30n_eta4to5 = new TH1D("pr30n_eta4to5","4 <= jet_eta < 5;Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr50n_eta4to5 = new TH1D("pr50n_eta4to5",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr110n_eta4to5 = new TH1D("pr110n_eta4to5",";Run;N_{events};",histnx,xmin,xmax);
 
 
   //time stability of xs, with actual N/lumi (added 17.5.24 for monitoring of new '24 data)
-  TH1D *pr30xs_eta3to4 = new TH1D("pr30xs_eta3to4",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr50xs_eta3to4 = new TH1D("pr50xs_eta3to4",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr110xs_eta3to4 = new TH1D("pr110xs_eta3to4",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr30xs_eta3to4 = new TH1D("pr30xs_eta3to4",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr50xs_eta3to4 = new TH1D("pr50xs_eta3to4",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr110xs_eta3to4 = new TH1D("pr110xs_eta3to4",";Run;xs (pb);",histnx,xmin,xmax);
 
-  TH1D *pr30xs_eta4to5 = new TH1D("pr30xs_eta4to5",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr50xs_eta4to5 = new TH1D("pr50xs_eta4to5",";Run;xs (pb);",26000,355000.5,383000.5);
-  TH1D *pr110xs_eta4to5 = new TH1D("pr110xs_eta4to5",";Run;xs (pb);",26000,355000.5,383000.5);
+  TH1D *pr30xs_eta4to5 = new TH1D("pr30xs_eta4to5",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr50xs_eta4to5 = new TH1D("pr50xs_eta4to5",";Run;xs (pb);",histnx,xmin,xmax);
+  TH1D *pr110xs_eta4to5 = new TH1D("pr110xs_eta4to5",";Run;xs (pb);",histnx,xmin,xmax);
  
   
   // Time stability of JEC
-  TProfile *pr30b_eta3to4 = new TProfile("pr30b_eta3to4",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr50b_eta3to4 = new TProfile("pr50b_eta3to4",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr110b_eta3to4 = new TProfile("pr110b_eta3to4",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr30m_eta3to4 = new TProfile("pr30m_eta3to4",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr50m_eta3to4 = new TProfile("pr50m_eta3to4",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr110m_eta3to4 = new TProfile("pr110m_eta3to4",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr30b_eta3to4 = new TProfile("pr30b_eta3to4",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr50b_eta3to4 = new TProfile("pr50b_eta3to4",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr110b_eta3to4 = new TProfile("pr110b_eta3to4",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr30m_eta3to4 = new TProfile("pr30m_eta3to4",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr50m_eta3to4 = new TProfile("pr50m_eta3to4",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr110m_eta3to4 = new TProfile("pr110m_eta3to4",";Run;MPF;",histnx,xmin,xmax);
 
-  TProfile *pr30b_eta4to5 = new TProfile("pr30b_eta4to5",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr50b_eta4to5 = new TProfile("pr50b_eta4to5",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr110b_eta4to5 = new TProfile("pr110b_eta4to5",";Run;BAL;",26000,355000.5,383000.5);
-  TProfile *pr30m_eta4to5 = new TProfile("pr30m_eta4to5",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr50m_eta4to5 = new TProfile("pr50m_eta4to5",";Run;MPF;",26000,355000.5,383000.5);
-  TProfile *pr110m_eta4to5 = new TProfile("pr110m_eta4to5",";Run;MPF;",26000,355000.5,383000.5);
+  TProfile *pr30b_eta4to5 = new TProfile("pr30b_eta4to5",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr50b_eta4to5 = new TProfile("pr50b_eta4to5",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr110b_eta4to5 = new TProfile("pr110b_eta4to5",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr30m_eta4to5 = new TProfile("pr30m_eta4to5",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr50m_eta4to5 = new TProfile("pr50m_eta4to5",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr110m_eta4to5 = new TProfile("pr110m_eta4to5",";Run;MPF;",histnx,xmin,xmax);
 
   //Time stability of h vs em in HF
-  TProfile *pr30hfEmEF_eta3to4 = new TProfile("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr50hfEmEF_eta3to4 = new TProfile("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr110hfEmEF_eta3to4 = new TProfile("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr30hfHEF_eta3to4 = new TProfile("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr50hfHEF_eta3to4 = new TProfile("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr110hfHEF_eta3to4 = new TProfile("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr30hfEmEF_eta3to4 = new TProfile("pr30hfEmEF_eta3to4","HF em energy fraction (30EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr50hfEmEF_eta3to4 = new TProfile("pr50hfEmEF_eta3to4","HF em energy fraction (50EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr110hfEmEF_eta3to4 = new TProfile("pr110hfEmEF_eta3to4","HF em energy fraction (110EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr30hfHEF_eta3to4 = new TProfile("pr30hfHEF_eta3to4","HF had energy fraction (30EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr50hfHEF_eta3to4 = new TProfile("pr50hfHEF_eta3to4","HF had energy fraction (50EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr110hfHEF_eta3to4 = new TProfile("pr110hfHEF_eta3to4","HF had energy fraction (110EB);Run;N_{events};",histnx,xmin,xmax);
 
-  TProfile *pr30hfEmEF_eta4to5 = new TProfile("pr30hfEmEF_eta4to5","HF em energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr50hfEmEF_eta4to5 = new TProfile("pr50hfEmEF_eta4to5","HF em energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr110hfEmEF_eta4to5 = new TProfile("pr110hfEmEF_eta4to5","HF em energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr30hfHEF_eta4to5 = new TProfile("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr50hfHEF_eta4to5 = new TProfile("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",26000,355000.5,383000.5);
-  TProfile *pr110hfHEF_eta4to5 = new TProfile("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",26000,355000.5,383000.5);
+  TProfile *pr30hfEmEF_eta4to5 = new TProfile("pr30hfEmEF_eta4to5","HF em energy fraction (30EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr50hfEmEF_eta4to5 = new TProfile("pr50hfEmEF_eta4to5","HF em energy fraction (50EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr110hfEmEF_eta4to5 = new TProfile("pr110hfEmEF_eta4to5","HF em energy fraction (110EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr30hfHEF_eta4to5 = new TProfile("pr30hfHEF_eta4to5","HF had energy fraction (30EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr50hfHEF_eta4to5 = new TProfile("pr50hfHEF_eta4to5","HF had energy fraction (50EB);Run;N_{events};",histnx,xmin,xmax);
+  TProfile *pr110hfHEF_eta4to5 = new TProfile("pr110hfHEF_eta4to5","HF had energy fraction (110EB);Run;N_{events};",histnx,xmin,xmax);
 
 
 
