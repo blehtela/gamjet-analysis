@@ -354,9 +354,9 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_muEF",1);
     //if (!isRun3) fChain->SetBranchStatus("Jet_chFPV0EF",1);
 
-    //new: HF stuff
-    fChain->SetBranchStatus("Jet_hfEmEF",1);    //electromagnetic Energy Fraction in HF
-    fChain->SetBranchStatus("Jet_hfHEF",1);     //hadronic Energy Fraction in HF
+    //new: HF stuff (branches only available in 2024 onwards)
+    if (is24) fChain->SetBranchStatus("Jet_hfEmEF",1);    //electromagnetic Energy Fraction in HF
+    if (is24) fChain->SetBranchStatus("Jet_hfHEF",1);     //hadronic Energy Fraction in HF
 
     if (isMC) fChain->SetBranchStatus("Jet_genJetIdx",1);
     
@@ -561,7 +561,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
-  if (ds=="2024Ev1" || ds=="2024Ev2") { //separated 24E corrections starting from V4M jecs
+  if (ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F") { //separated 24E corrections starting from V4M jecs
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
 	}
 	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" ) { //for 2024 re-reco data
@@ -601,7 +601,7 @@ void GamHistosFill::Loop()
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || 
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI") sera = "2024";
   assert(sera!="");
 
@@ -645,8 +645,8 @@ void GamHistosFill::Loop()
     //bool golden=0; // --> not used anymore, but was IMPORTANT SWITCH, could also try to check that last run# in json name and in lumi name match, as long as using my naming.
 	
 		//hybrid JSON! from w29 onwards
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to381152_DCSRuns_381153to381594_.json"); //hybrid json --> w29
-
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to381152_DCSRuns_381153to381594_.json"); //hybrid json --> w29
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378981to382329_DCSRuns_382343to378981_382330to382749_.json"); //hybrid json --> w31 (05.07.2024)
 
 
   //Cert_Collisions2023_370354_370790_Golden.json");
@@ -660,10 +660,11 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybridjson-w29_photon30eb_pb.csv");
-	lumi50 = LoadLumi("files/lumi2024_hybridjson-w29_photon50eb_pb.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybridjson-w29_photon110eb_pb.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybridjson-w29_photon200_pb.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w31.csv");
+	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w31.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w31.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w31.csv");
+
 
 
 	/*
@@ -732,6 +733,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024D") ||
         TString(ds.c_str()).Contains("2024Ev1") ||
         TString(ds.c_str()).Contains("2024Ev2") ||
+        TString(ds.c_str()).Contains("2024F") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI"))
@@ -768,8 +770,10 @@ void GamHistosFill::Loop()
     bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpix vetomap for all '24 stuff
   if (!h2jv) cout << "Jetvetomap histo not found for " << ds << endl << flush;
   assert(h2jv);
-  if (!bpixjv) cout << "Jetvetomap for bpix not found for " << ds << endl << flush;
-  assert(bpixjv);
+  if (!bpixjv && TString(ds.c_str()).Contains("2024")){ //need extra bpix veto map only for 2024 data (for 2023 handled differntly via 2023D, see above)
+		cout << "Jetvetomap for bpix not found for " << ds << endl << flush; //
+  	assert(bpixjv);
+	}
 
   // Setup B and C tagging thresholds according to Z+jet settings (Sami)
   double bthr(0.7527), cthr(0.3985), frac(0.5);
@@ -2671,22 +2675,34 @@ void GamHistosFill::Loop()
       if (true) { // jet veto
         int i1 = h2jv->GetXaxis()->FindBin(jet.Eta());
         int j1 = h2jv->GetYaxis()->FindBin(jet.Phi());
-        //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied
-        if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix
+        //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied (in 2023: handle bpix veto differently)
+			if(is24){
+        if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix (2024 onwards)
           //++_nbadevents_veto;
 	  //pass_veto = false;
           pass_jetveto = false;
-	}
+				}
+			} else{ //if not 2024
+					if (h2jv->GetBinContent(i1,j1)>0) {
+						pass_jetveto = false;
+					}
+				}
       } // jet veto
       if (true) { // photon veto
         int i1 = h2jv->GetXaxis()->FindBin(gam.Eta());
         int j1 = h2jv->GetYaxis()->FindBin(gam.Phi());
         //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied
-        if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix
-          //++_nbadevents_veto;
-	  //pass_veto = false;
-          pass_gamveto = false; //reject also photons that end up in bad regions
-	}
+				if(is24){
+        	if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix
+          	//++_nbadevents_veto;
+	  				//pass_veto = false;
+          	pass_gamveto = false; //reject also photons that end up in bad regions
+					}
+				}else{//if not 2024
+					if (h2jv->GetBinContent(i1,j1)>0) {
+						pass_gamveto = false;
+					}
+				}
       } // photon veto
       /* NOTE: REMOVE ALSO PHOTONS ACCORDING TO JETVETOMPA pass_veto_gam = false --> add it also to pass_basic*/
       if(pass_jetveto==false || pass_gamveto==false){//increase counter if event gets discarded either due to jet-veto or photon-veto
@@ -2789,8 +2805,10 @@ void GamHistosFill::Loop()
 	  //pr30chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr30nef->Fill(run, Jet_neEmEF[iJet], w);
-          pr30hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
-          pr30hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+					if(is24){ //HF branches only since 2024
+          		pr30hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
+          		pr30hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+					}
 	}
         if (itrg==50 && ptgam>53) {
           pr50n_eta3to4->Fill(run, w);
@@ -2800,8 +2818,10 @@ void GamHistosFill::Loop()
 	  //pr50chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr50nef->Fill(run, Jet_neEmEF[iJet], w);
-          pr50hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
-          pr50hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+					if(is24){ //HF branches only since 2024
+							pr50hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
+							pr50hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+					}
 	}
 	if (itrg==110 && ptgam>120) {
 	  pr110n_eta3to4->Fill(run, w);
@@ -2811,8 +2831,10 @@ void GamHistosFill::Loop()
 	  //pr110chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr110nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr110nef->Fill(run, Jet_neEmEF[iJet], w);
-          pr110hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
-          pr110hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+					if(is24){ //HF branches only since 2024
+						pr110hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
+						pr110hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
+				}
 	}
         /*
 	if (itrg==200 && ptgam>230) {
@@ -2845,8 +2867,10 @@ void GamHistosFill::Loop()
 	  //pr30chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr30nef->Fill(run, Jet_neEmEF[iJet], w);
-          pr30hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
-          pr30hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+					if(is24){ //HF branches only since 2024
+          		pr30hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
+          		pr30hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+					}
 	}
         if (itrg==50 && ptgam>53) {
           pr50n_eta4to5->Fill(run, w);
@@ -2856,8 +2880,10 @@ void GamHistosFill::Loop()
 	  //pr50chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr50nef->Fill(run, Jet_neEmEF[iJet], w);
-          pr50hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
-          pr50hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+					if(is24){ //HF branches only since 2024
+          		pr50hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
+          		pr50hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+					}
 	}
 	if (itrg==110 && ptgam>120) {
 	  pr110n_eta4to5->Fill(run, w);
@@ -2867,8 +2893,10 @@ void GamHistosFill::Loop()
 	  //pr110chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr110nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr110nef->Fill(run, Jet_neEmEF[iJet], w);
-          pr110hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
-          pr110hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+					if(is24){ //HF branches only since 2024
+          		pr110hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
+          		pr110hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
+					}
 	}
         /*
 	if (itrg==200 && ptgam>230) {
