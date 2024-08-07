@@ -1012,9 +1012,14 @@ void GamHistosFill::Init(TTree *tree)
    if (is24){
        //fChain->SetBranchAddress("HLT_Photon50EB_TightID_TightIso_PFJet30", &HLT_Photon50EB_TightID_TightIso_PFJet30, &b_HLT_Photon50EB_TightID_TightIso_PFJet30);
        fChain->SetBranchAddress("HLT_Photon50EB_TightID_TightIso", &HLT_Photon50EB_TightID_TightIso, &b_HLT_Photon50EB_TightID_TightIso);
-       fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
+       //fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon75EB_TightID_TightIso", &HLT_Photon75EB_TightID_TightIso, &b_HLT_Photon75EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon90EB_TightID_TightIso", &HLT_Photon90EB_TightID_TightIso, &b_HLT_Photon90EB_TightID_TightIso);
+
+			 if(!isMC){//somehow not found for winter2024P8, so only use for data
+       	fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
+			 }
+
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso", &HLT_Photon110EB_TightID_TightIso, &b_HLT_Photon110EB_TightID_TightIso);
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso_PFJet30", &HLT_Photon110EB_TightID_TightIso_PFJet30, &b_HLT_Photon110EB_TightID_TightIso_PFJet30);
    } // is24

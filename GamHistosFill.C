@@ -223,9 +223,12 @@ void GamHistosFill::Loop()
     }
     if (is24) { //new 2024 trigger paths
       fChain->SetBranchStatus("HLT_Photon50EB_TightID_TightIso",1);
-      fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1);
+      //fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon75EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon90EB_TightID_TightIso",1);
+			if(!isMC){ //did not work for winter2024P8, so do it only for data
+	      fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1);
+			}
     }
 
     // Triggers to recover 60-105 GeV range. However, inefficient up to high pT
