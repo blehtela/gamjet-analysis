@@ -551,6 +551,10 @@ void GamHistosFill::Loop()
 		 //"Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi", ""); //old 
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
+	//mc2024
+  if (ds=="winter2024P8") { //7th of Aug2024, w32 onwards
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
+  }
   //data2024
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
@@ -564,7 +568,7 @@ void GamHistosFill::Loop()
   if (ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F") { //separated 24E corrections starting from V4M jecs
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
 	}
-	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" ) { //for 2024 re-reco data
+	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //|| ds=="2024C-ECALR-HCALDI" ) { //for 2024 re-reco data
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
@@ -603,6 +607,7 @@ void GamHistosFill::Loop()
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI") sera = "2024";
+  if (ds=="winter2024P8" || ds=="2024QCD" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32)
   assert(sera!="");
 
   // Load JSON files
@@ -646,7 +651,9 @@ void GamHistosFill::Loop()
 	
 		//hybrid JSON! from w29 onwards
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to381152_DCSRuns_381153to381594_.json"); //hybrid json --> w29
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378981to382329_DCSRuns_382343to378981_382330to382749_.json"); //hybrid json --> w31 (05.07.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to382329_DCSRuns_382343to378981_382330to382749_.json"); //hybrid json --> w31 (05.07.2024)
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024)
+
 
 
   //Cert_Collisions2023_370354_370790_Golden.json");
@@ -660,10 +667,10 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w31.csv");
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w31.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w31.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w31.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w32.csv");
+	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w32.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w32.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w32.csv");
 
 
 
@@ -736,7 +743,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024F") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
-        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI"))
+        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI" ||
+        TString(ds.c_str()).Contains("winter2024P8")) //also for MC now 2024.
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
         fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)

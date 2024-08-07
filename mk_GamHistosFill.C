@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string version = "w31") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string version = "w32") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string dataset = "X", string version = "wX23") { //using version wX23 for summer23 corrections TEST (with one single file per iov)
 //void mk_GamHistosFill(string dataset = "X", string version = "wX22full") { //using version wX22full for summer23 corrections TEST (with all files, but old jec)
 
@@ -82,7 +82,9 @@ void mk_GamHistosFill(string dataset = "X", string version = "w31") { //using w-
 		dataset=="2022EEP8" || //dataset=="2022EEQCD" ||
                 dataset=="2023P8X" || dataset=="2023P8-BPixX"|| //for my test wX23
 		dataset=="2023P8" || //);// || dataset=="2023QCD");
-  		dataset=="2023P8-BPix"); //added the BPix MC files
+  		dataset=="2023P8-BPix" || //added the BPix MC files
+  		dataset=="winter2024P8"); //winter 2024 madgraph p8 (added on 07.08.2024)
+
 
   bool addQCD = (dataset=="2016QCD" || dataset=="2016APVQCD" || 
 		 dataset=="2017QCD" || dataset=="2018QCD" ||

@@ -577,13 +577,15 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	  ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix"|| ds=="2023QCD" || ds=="2023QCD-BPix"); //added 2023P8_BPix
   is24 = (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" ||
 					ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" ||
-          ds=="2024P8" || ds=="2024QCD"); //added these already, even though no MC for 2024 yet
+					ds=="winter2024P8" ||  //in use since 07.08.2024
+          ds=="2024P8" || ds=="2024QCD"); //added these already, even though no summer MC for 2024 yet, use winter2024P8 right now.
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	   ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
            ds=="2023QCD" || ds=="2023QCD-BPix" || 
            ds=="2024QCD"); //added 2024QCD already here
   isMG = (ds=="2022P8" || ds=="2022EEP8" || ds=="2022QCD" || ds=="2022EEQCD" ||
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
+					 ds=="winter2024P8" ||
            ds=="2024P8");  //added already here
   isRun3 = (is22 || is23 || is24);
   isRun2 = (is16  || is17 || is18);
