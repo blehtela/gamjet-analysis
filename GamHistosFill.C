@@ -743,7 +743,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024F") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
-        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI" ||
+        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
         TString(ds.c_str()).Contains("winter2024P8")) //also for MC now 2024.
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
