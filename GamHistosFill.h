@@ -59,7 +59,7 @@ public :
    // nCorrT1MetJet, nFatJet, nJet, nSoftActivityJet, nSubJet
    static const int nJetMax = 200;
    // nPhoton, nFsrPhoton, nGenIsolatedPhoton
-   static const int nPhotonMax = 200;//100;//20;
+   static const int nPhotonMax = 300; //200;//100;//20; //needed to go to higher number, as 24F had an event with more than 200 photons...
    // nElectron, nGenDressedLepton
    static const int nElectronMax = 10;
    static const int nTauMax = 10;
@@ -583,7 +583,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	   ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
            ds=="2023QCD" || ds=="2023QCD-BPix" || 
            ds=="2024QCD"); //added 2024QCD already here
-  isMG = (ds=="2022P8" || ds=="2022EEP8" || ds=="2022QCD" || ds=="2022EEQCD" ||
+  isMG = (ds=="winter2024P8" || ds=="2022P8" || ds=="2022EEP8" || ds=="2022QCD" || ds=="2022EEQCD" || //added winter24 here, too.. checking
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
 					 ds=="winter2024P8" ||
            ds=="2024P8");  //added already here
