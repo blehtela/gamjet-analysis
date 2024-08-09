@@ -74,7 +74,9 @@ public :
    static const int nTrigObjMax = 50;
    static const int nSVMax = 100;
 
-   static const int nPSWeightMax = 4;
+   static const int nPSWeightMax = 4; //THIS SHOULD BE USED PER DEFAULT - FOUR WEIGHT VARIATIONS
+   //static const int nPSWeightMax = 44; //THIS IS JUST A TEST for winter2024 madgraph samples
+
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
