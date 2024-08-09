@@ -1768,7 +1768,7 @@ void GamHistosFill::Loop()
   //int skip = 14648973; // 2017C bad HDM
 
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+  for (Long64_t jentry=0; jentry<nentries;jentry++) { //is this the start of the analysis loop? (trying to find event 0..)
 
     // Skip events, typically for debugging purposes
     //if (jentry<skip) continue;
@@ -2010,6 +2010,19 @@ void GamHistosFill::Loop()
     // Sanity check PS weights
     if (!isMC) { nPSWeight = 0; }
     //if (!isMC || is22 || is23) { nPSWeight = 0; }
+		//cout << "\n" << "nPSWeight: " << nPSWeight << endl; //test
+		//cout << "nPSWeightMax: " << nPSWeightMax << endl; //test
+
+		//check first event and whether it has 4 weight variations or 44
+		if(jentry==0){
+			cout << "\n" << "nPSWeight: " << nPSWeight << endl;
+			if(nPSWeight==4){
+				nPSWeightMax = 4;
+			}
+			else if(nPSWeight==44){
+				nPSWeightMax = 44;
+			}
+		}
     assert(nPSWeight<=nPSWeightMax);
 
     // Does the run/LS pass the latest JSON selection?
