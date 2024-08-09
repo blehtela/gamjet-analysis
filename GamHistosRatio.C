@@ -47,7 +47,7 @@ void replacePt(TGraphErrors *g, TH1 *h) {
 void GamHistosRatios(string ver, string iov);
 
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
-void GamHistosRatio(string ver = "w31") { 
+void GamHistosRatio(string ver = "w32") { 
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
   //GamHistosRatios(ver,"2017BCDEF");
@@ -74,7 +74,7 @@ void GamHistosRatio(string ver = "w31") {
   //GamHistosRatios(ver,"2023Cv4");
   //GamHistosRatios(ver,"2023D");
 
-/*
+
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
   GamHistosRatios(ver,"2024D");
@@ -87,13 +87,17 @@ void GamHistosRatio(string ver = "w31") {
 
   GamHistosRatios(ver,"2024BC"); //keep this combo as well
   GamHistosRatios(ver,"2024BCD");
-  GamHistosRatios(ver,"2024BCDEv1");
+  //GamHistosRatios(ver,"2024BCDEv1");
   GamHistosRatios(ver,"2024BCDE");
   GamHistosRatios(ver,"2024BCDEF");
-*/
+
+	//ilman Btä
+  GamHistosRatios(ver,"2024CDE");
+  GamHistosRatios(ver,"2024CDEF");
+
+
 
   GamHistosRatios(ver,"2024CD");
-/*
   GamHistosRatios(ver,"2024EF");
 
  
@@ -104,7 +108,6 @@ void GamHistosRatio(string ver = "w31") {
 
   GamHistosRatios(ver, "2024C-ECALR-HCALDI");
 
-*/
 
 
 
@@ -254,9 +257,11 @@ void GamHistosRatios(string ver, string iov) {
         //fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_%s.root",cv),"READ");  //hard-coded version w13 for now, change when updated with vetomap
         //fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_w13.root"),"READ");     //replace this by line above when MC again updated (now fixed to mc w13)
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPixQCD_%s.root",ci,cv),"RECREATE"); //changed name!!
-        fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root",cv),"READ"); //NO QCD (remove later)
+        //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root",cv),"READ"); //NO QCD (remove later)
+        fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_%s.root",cv),"READ"); //NO QCD, winter24 madgraph (NOT v14, but the old)
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_w13.root"),"READ"); //replace with line above when mc updated (now fixed to mc w13)
-        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
+        //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
+        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME
       }
   if (iov=="Run3") {
 
