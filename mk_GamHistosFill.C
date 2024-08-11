@@ -126,6 +126,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w32") { //using w-
   // Automatically figure out where we are running the job
   bool runGPU = (path=="/media/storage/gamjet" ||
 		  path=="/home/bschilli/Cern/gamjet-analysis" || //); //on Vulcan, I have this home directory (should fix this code, as i have same directory also locally...)
+		  path=="/media/Duo2/bschilli/Cern/gamjet-analysis" || //new directory on vulcan
 	  	  path=="/media/storage/bschilli/gamjet-analysis"); //hefaistos
   bool runLocal = (path=="/Users/voutila/Dropbox/Cern/gamjet" ||
 		   path=="/Users/voutila/Library/CloudStorage/Dropbox/Cern/gamjet" ||
