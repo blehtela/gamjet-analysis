@@ -575,7 +575,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
-	if (ds=="2024C-ECALR-HCALDI" || ds=="2024F") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+	if (ds=="2024C-ECALR-HCALDI" || ds=="2024F" || ds=="2024G") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); 
 	}
@@ -608,7 +608,7 @@ void GamHistosFill::Loop()
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" ||
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI") sera = "2024";
   if (ds=="winter2024P8" || ds=="2024QCD" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32)
   assert(sera!="");
@@ -744,6 +744,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Ev1") ||
         TString(ds.c_str()).Contains("2024Ev2") ||
         TString(ds.c_str()).Contains("2024F") ||
+        TString(ds.c_str()).Contains("2024G") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
