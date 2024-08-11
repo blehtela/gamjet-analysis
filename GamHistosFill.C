@@ -655,7 +655,7 @@ void GamHistosFill::Loop()
 		//hybrid JSON! from w29 onwards
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to381152_DCSRuns_381153to381594_.json"); //hybrid json --> w29
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to382329_DCSRuns_382343to378981_382330to382749_.json"); //hybrid json --> w31 (05.07.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024)
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024) and w33 (11.08.2024)
 
 
 
@@ -670,7 +670,7 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w32.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w32.csv"); //w32 also used for w33
 	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w32.csv");
 	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w32.csv");
 	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w32.csv");
@@ -2015,6 +2015,7 @@ void GamHistosFill::Loop()
 		//cout << "nPSWeightMax: " << nPSWeightMax << endl; //test
 
 		//check first event and whether it has 4 weight variations or 44
+		/*
 		if(jentry==0){
 			cout << "\n" << "nPSWeight: " << nPSWeight << endl;
 			if(nPSWeight==4){
@@ -2024,6 +2025,7 @@ void GamHistosFill::Loop()
 				nPSWeightMax = 44;
 			}
 		}
+		*/
     assert(nPSWeight<=nPSWeightMax);
 
     // Does the run/LS pass the latest JSON selection?
