@@ -47,7 +47,7 @@ void replacePt(TGraphErrors *g, TH1 *h) {
 void GamHistosRatios(string ver, string iov);
 
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
-void GamHistosRatio(string ver = "w32") { 
+void GamHistosRatio(string ver = "w33") { 
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
   //GamHistosRatios(ver,"2017BCDEF");
@@ -101,13 +101,14 @@ void GamHistosRatio(string ver = "w32") {
   GamHistosRatios(ver,"2024EF");
 
  
+/*
   GamHistosRatios(ver, "2024B-ECALRATIO");
   GamHistosRatios(ver, "2024C-ECALRATIO");
 	GamHistosRatios(ver, "2024BC-ECALRATIO");
 
 
   GamHistosRatios(ver, "2024C-ECALR-HCALDI");
-
+*/
 
 
 
@@ -250,6 +251,7 @@ void GamHistosRatios(string ver, string iov) {
       }
       //if (iov=="2023D") { //BPix issue (GamHistosMix_mc_2023-BPixP8QCD_w4.root) //should adjust the naming in the other programs!
       if (iov=="2023D" || iov=="2024B" || iov=="2024C" || iov=="2024D" || iov=="2024Ev1" || iov=="2024Ev2" || iov=="2024E" || iov=="2024F" || iov=="2024CD" || iov=="2024EF" ||
+						iov=="2024CDE" || iov=="2024CDEF" ||
 						iov=="2024BC" || iov=="2024BCD" || iov=="2024BCDE" || iov=="2024BCDEF" ||
 						iov=="2024BCDEv1" || iov=="2024BC-ECALRATIO" ||
 						iov=="2024B-ECALRATIO" || iov=="2024C-ECALRATIO" || iov=="2024C-ECALR-HCALDI") { //BPix issue, for now use this also for early 2024 data
@@ -309,6 +311,7 @@ void GamHistosRatios(string ver, string iov) {
   bool debug = false;//true;
   while ( (key = dynamic_cast<TKey*>(itkey.Next())) ) {
     if (debug) cout << key->GetName() << endl << flush;
+		if (TString(key->GetName()).Contains("_ps")) continue;
     obj = key->ReadObj(); assert(obj);
 
     fm->cd();
@@ -318,10 +321,17 @@ void GamHistosRatios(string ver, string iov) {
       TString mcname = obj->GetName();
       TString dataname = mcname;
       dataname.ReplaceAll("MC","DATA");
+
+			for(int i=44; i!=-1; --i){
+				 dataname.ReplaceAll(Form("_ps%d",i),""); // w32
+			}
+
+/*
       dataname.ReplaceAll("_ps0",""); // v20
       dataname.ReplaceAll("_ps1",""); // v20
       dataname.ReplaceAll("_ps2",""); // v20
       dataname.ReplaceAll("_ps3",""); // v20
+*/
       TProfile *pd = (TProfile*)fd->Get(dataname.Data());
       if (!pd && dataname.Contains("Rho")) continue; // v19
       if (!pd && dataname.Contains("_ps")) continue; // v19
@@ -437,10 +447,18 @@ void GamHistosRatios(string ver, string iov) {
 
       TString dataname = mcname;
       dataname.ReplaceAll("MC","DATA");
+
+			for(int i=44; i!=-1; --i){
+				 dataname.ReplaceAll(Form("_ps%d",i),""); // w32
+			}
+
+
+/*
       dataname.ReplaceAll("_ps0",""); // v20
       dataname.ReplaceAll("_ps1",""); // v20
       dataname.ReplaceAll("_ps2",""); // v20
       dataname.ReplaceAll("_ps3",""); // v20
+*/
       TH1D *hd = (TProfile*)fd->Get(dataname.Data());
       if (!hd && dataname.Contains("Xsec")) continue; // v19
       if (!hd && dataname.Contains("_ps")) continue; // v19
