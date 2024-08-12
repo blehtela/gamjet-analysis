@@ -51,7 +51,9 @@ void GamHistosMix() {
 
   //w1
   //GamHistosMixEra("2023","w14"); //make this contain MC without BPix issue
-  GamHistosMixEra("2023-BPix","w31"); //MC accounted for BPix issue
+  //GamHistosMixEra("2023-BPix","w31"); //MC accounted for BPix issue
+  GamHistosMixEra("2023-BPix","w33"); //MC accounted for BPix issue
+
 }
 
 TF1 *_f1p(0);
@@ -64,19 +66,29 @@ void GamHistosMixEra(string sepoch, string sver) {
   string sqepoch = (sepoch=="2022EE"||sepoch=="Run3" ? "2022" : sepoch);//patch
   const char *qepoch = sqepoch.c_str();
   const char *ver = sver.c_str();
-  TFile *fout = new TFile(Form("rootfiles/GamHistosMix_mc_%sP8QCD_%s.root",
-			       epoch,ver),"RECREATE");
+  //TFile *fout = new TFile(Form("rootfiles/GamHistosMix_mc_%sP8QCD_%s.root",
+	//		       epoch,ver),"RECREATE");
+	TFile *fout(0); //only for now with winter24p8 and 23-bpix QCD
 
   TFile *fgam(0);
   TFile *fqcd(0);
 
     //loading input files, needed if-condition due to different naming of BPix files. (TO DO: adjust this in GamHistosFill, so the if gets obsolete)
     if(TString(sepoch.c_str()).Contains("2023-BPix")){
-        fgam = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root", //needed to change this to different naming due to BPix samples.
-                                ver),"READ");			                //e.g. GamHistosFill_mc_2023P8-BPix_w4.root
+        //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root", //needed to change this to different naming due to BPix samples.
+        //                        ver),"READ");			                //e.g. GamHistosFill_mc_2023P8-BPix_w4.root
+        fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_%s.root", //for now the madgraph sample from 2024.. just interim result
+                                ver),"READ");			 
+
+  			fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_%s.root", epoch,ver),"RECREATE"); //only for now...
+
+
+
         assert(fgam && !fgam->IsZombie());
-        fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_2023QCD-BPix_%s.root", //GamHistosFill_mc_2023QCD-BPix_w4.root
-                                ver),"READ");
+        //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_2023QCD-BPix_%s.root", //GamHistosFill_mc_2023QCD-BPix_w4.root
+        //                        ver),"READ");
+				fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_2023QCD-BPix_w31.root"),"READ");
+
         assert(fqcd && !fqcd->IsZombie());
     }
     else{ //the usual way of loading the files (i.e. no BPix era)
@@ -200,6 +212,7 @@ void recurseGamHistosFile(TDirectory *gamdir, TDirectory *qcddir,
       // Start adding photon+jet signal and QCD backgrounds
       hout->Reset();
       TH1D *hingam = (TH1D*)gamdir->Get(key->GetName());
+			cout << "key->GetName(): " << key->GetName() << endl;
       TH1D *hinqcd = (TH1D*)qcddir->Get(key->GetName()); assert(hinqcd);
       
       // Project TProfiles to TH1D for easier handling
