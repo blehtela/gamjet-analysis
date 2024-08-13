@@ -66,7 +66,7 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom);
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w32", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
+void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
     //bool rereco = 1;
 
     //const char *cyear = year.c_str();
@@ -84,7 +84,7 @@ void drawResponseVsRun_2024only(string version = "w32", int rereco = 0) { //swit
     if(rereco==0){
 	cout << "Looking at 2024 prompt data." << endl;
     	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
-    }
+    } //currently same as: GamHistosFill_data_2024BCDEF_w33.root
     else if(rereco==1){
 	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
     	f = new TFile(Form("rootfiles/GamHistosFill_data_2024-ECALRATIO_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
