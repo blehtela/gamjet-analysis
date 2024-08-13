@@ -166,6 +166,7 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     }
 
     extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
+		h->GetXaxis()->SetLabelSize(0.30);
 
 
     //in case we look at high etas, write it into plot
@@ -238,7 +239,7 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     l->DrawLine(run24f_end,y1+0.035,run24f_end,y2-0.050);
     t->DrawLatex(run24f_start,0.960,"24F");
 
-    double run24g_start(); //, run24g_end(); //(first run#), ends?
+    double run24g_start(383780); //, run24g_end(); //(first run#), ends?
     l->DrawLine(run24g_start,y1+0.045,run24g_start,y2-0.035);
     //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
     t->DrawLatex(run24g_start,0.960,"24G");
@@ -677,7 +678,9 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     double run24c_start(379412), run24c_end(380252);
     double run24d_start(380253), run24d_end(380947);
     double run24ev1_start(380948), run24ev1_end(381383);
-    double run24ev2_start(381384); //, run24ev2_end(); //(first run#), ends?
+    double run24ev2_start(381384), run24ev2_end(381943); //(first run#), ends?
+    double run24f_start(381944), run24f_end(383779);
+    double run24g_start(383780); //, run24ev2_end(); //(first run#), ends?
  
 
 
@@ -692,6 +695,9 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     l->DrawLine(run24d_end,y1,run24d_end,y2);
     l->DrawLine(run24ev1_start,y1,run24ev1_start,y2);
     l->DrawLine(run24ev2_start,y1,run24ev2_start,y2);
+    l->DrawLine(run24f_start,y1,run24f_start,y2);
+    l->DrawLine(run24g_start,y1,run24g_start,y2);
+
 
 
  
@@ -714,6 +720,9 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     t->DrawLatex(run24d_start+10,textposy,"24D");
     t->DrawLatex(run24ev1_start+10,textposy,"24Ev1");
     t->DrawLatex(run24ev2_start+10,textposy,"24Ev2");
+    t->DrawLatex(run24f_start+10,textposy,"24F");
+    t->DrawLatex(run24g_start+10,textposy,"24G");
+
 
 
 
