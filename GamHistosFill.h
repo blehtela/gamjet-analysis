@@ -74,8 +74,8 @@ public :
    static const int nTrigObjMax = 50;
    static const int nSVMax = 100;
 
-   static const int nPSWeightMax = 4; //THIS SHOULD BE USED PER DEFAULT - FOUR WEIGHT VARIATIONS
-   //static const int nPSWeightMax = 44; //THIS IS JUST A TEST for winter2024 madgraph samples
+   //static const int nPSWeightMax = 4; //THIS SHOULD BE USED PER DEFAULT - FOUR WEIGHT VARIATIONS
+   static const int nPSWeightMax = 44; //THIS IS JUST A TEST for winter2024 madgraph samples
 
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -587,7 +587,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="2024QCD"); //added 2024QCD already here
   isMG = (ds=="winter2024P8" || ds=="2022P8" || ds=="2022EEP8" || ds=="2022QCD" || ds=="2022EEQCD" || //added winter24 here, too.. checking
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
-					 ds=="winter2024P8" ||
+					 ds=="winter2024P8" || ds=="2024QCD" ||
            ds=="2024P8");  //added already here
   isRun3 = (is22 || is23 || is24);
   isRun2 = (is16  || is17 || is18);
