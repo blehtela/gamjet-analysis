@@ -52,7 +52,9 @@ void GamHistosMix() {
   //w1
   //GamHistosMixEra("2023","w14"); //make this contain MC without BPix issue
   //GamHistosMixEra("2023-BPix","w31"); //MC accounted for BPix issue
-  GamHistosMixEra("2023-BPix","w33"); //MC accounted for BPix issue
+  //GamHistosMixEra("2023-BPix","w33"); //MC accounted for BPix issue
+  GamHistosMixEra("2024","w33"); //MC accounted for BPix issue
+
 
 }
 
@@ -93,10 +95,12 @@ void GamHistosMixEra(string sepoch, string sver) {
     }
     else{ //the usual way of loading the files (i.e. no BPix era)
         //TFile *fgam = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_%s.root", //this is how it usually is (GamHistosFill_mc_2023P8_w4.root)
-        fgam = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_%s.root",
-				       epoch,ver),"READ");
-	assert(fgam && !fgam->IsZombie());
-	//TFile *fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root", //GamHistosFill_mc_2023QCD_w4.root
+        //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_%s.root",
+				//       epoch,ver),"READ");
+        fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_%s.root",epoch,ver),"READ"); //workaround as our mc is currently winter2024P8 instead of 2024P8
+				assert(fgam && !fgam->IsZombie());
+
+				//TFile *fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root", //GamHistosFill_mc_2023QCD_w4.root
         fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root",
 				       qepoch,ver),"READ");
 	assert(fqcd && !fqcd->IsZombie());
