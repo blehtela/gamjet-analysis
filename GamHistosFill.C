@@ -33,6 +33,7 @@ bool _gh_debug100 = false;
 
 bool doGamjet = true;
 bool doGamjet2 = true;
+bool doJetveto = true; //like in dijet: eta-phi maps
 bool smearJets = false;
 
 // Error counters
@@ -1263,19 +1264,19 @@ void GamHistosFill::Loop()
   TProfile2D *pgain12vsptvseta = new TProfile2D("pgain12vsptvseta","",nx,vx,nveta,veta);
   TProfile2D *pgainvsptvseta = new TProfile2D("pgainvsptvseta","",nx,vx,nveta,veta);
 
-	//new (w29): 2D plots (vs eta vs phi) for jet response (for 30GeV, 50GeV and 110GeV photon trigger)
+	//new (w34): 2D plots (vs eta vs phi) for jet response (for 30GeV, 50GeV and 110GeV photon trigger)
 	//TH2D *h2balvsetavsphi
-	TH2D *h2bal50_jetetaphi = new TH2D("h2bal50_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi()); //same #phibins as h2gametaphi (72); etabins as above (veta)
-	TH2D *h2mpf50_jetetaphi = new TH2D("h2mpf50_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
- 	TH2D *h2bal110_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
-	TH2D *h2mpf110_jetetaphi = new TH2D("h2mpf110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
- 	TH2D *h2bal200_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
-	TH2D *h2mpf200_jetetaphi = new TH2D("h2mpf110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+	TProfile2D *p2bal50_jetetaphi = new TProfile2D("p2bal50_jetetaphi", ";#eta_{j1};#phi_{j1};BAL50", nveta, veta, 72, -TMath::Pi(), TMath::Pi()); //same #phibins as h2gametaphi (72); etabins as above (veta)
+	//TH2D *h2mpf50_jetetaphi = new TH2D("h2mpf50_jetetaphi", ";#eta;#phi;MPF50", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TProfile2D *p2bal110_jetetaphi = new TProfile2D("p2bal110_jetetaphi", ";#eta_{j1};#phi_{j1};BAL110", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+	//TH2D *h2mpf110_jetetaphi = new TH2D("h2mpf110_jetetaphi", ";#eta;#phi;MPF110", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TProfile2D *p2bal200_jetetaphi = new TProfile2D("p2bal110_jetetaphi", ";#eta_{j1};#phi_{j1};BAL200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+	//TH2D *h2mpf200_jetetaphi = new TH2D("h2mpf110_jetetaphi", ";#eta;#phi;MPF200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 
-	//new (w29): 2D plots (vs eta vs phi) for jet rate (for 30GeV, 50GeV and 110GeV photon trigger)
-	TH2D *h2n50_jetetaphi = new TH2D("h2bal50_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
- 	TH2D *h2n110_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
- 	TH2D *h2n200_jetetaphi = new TH2D("h2bal110_jetetaphi", "", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+	//new (w34): 2D plots (vs jet eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+	TH2D *h2n50_jetetaphi = new TH2D("h2bal50_jetetaphi", "Rate for 50GeV trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_jetetaphi = new TH2D("h2bal110_jetetaphi", "Rate for 110GeV trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_jetetaphi = new TH2D("h2bal110_jetetaphi", "Rate for 200GeV trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 
 
   // 2D plots for jet response
@@ -2771,7 +2772,7 @@ void GamHistosFill::Loop()
 	hdr->Fill(gam.DeltaR(jet), w);
       }
 
-      // Time controls for JES and PF composition
+      // 1) Time controls for JES and PF composition; 2) etaphi maps (for jet veto) with response over eta and phi; 3) etaphi maps for rate (n jets)
       if (pass_all) {
 	if (itrg==30 && ptgam>32) { //check turn-on curves, changed offline cut to ptgam>32 (used to be at 30gev)
 	  pr30n->Fill(run, w); 
@@ -2791,6 +2792,13 @@ void GamHistosFill::Loop()
 	  pr50chf->Fill(run, Jet_chHEF[iJet], w);
 	  pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr50nef->Fill(run, Jet_neEmEF[iJet], w);
+
+		//etaphi maps:
+		p2bal50_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
+		//h2mpf50_jetetaphi->Fill(gam.Eta(), gam.Phi(), mpf, w);
+		h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+
+		
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
 	  pr110n->Fill(run, w);
@@ -2800,6 +2808,11 @@ void GamHistosFill::Loop()
 	  pr110chf->Fill(run, Jet_chHEF[iJet], w);
 	  pr110nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr110nef->Fill(run, Jet_neEmEF[iJet], w);
+
+		//etaphi maps:
+		p2bal110_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
+		h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+
 	}
 	if (itrg==200 && ptgam>230) {
 	  pr230n->Fill(run, w);
@@ -2809,6 +2822,12 @@ void GamHistosFill::Loop()
 	  pr230chf->Fill(run, Jet_chHEF[iJet], w);
 	  pr230nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr230nef->Fill(run, Jet_neEmEF[iJet], w);
+
+		//etaphi maps:
+		p2bal200_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
+		h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+
+
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
 	  prg1n->Fill(run, w);
