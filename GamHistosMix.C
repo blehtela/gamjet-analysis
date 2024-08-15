@@ -158,6 +158,8 @@ void recurseGamHistosFile(TDirectory *gamdir, TDirectory *qcddir,
     if (_debug) cout << Form(c," ",gamdir->GetName(),key->GetName())
 		     << endl << flush;
     obj = key->ReadObj(); assert(obj);
+		if (TString(key->GetName()).Contains("_ps")) continue; //added this for w33, might need to remove it again
+
 
     // Found a subdirectory: copy it to output and go deeper                   
     if (obj->InheritsFrom("TDirectory")) {
