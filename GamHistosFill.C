@@ -1278,6 +1278,13 @@ void GamHistosFill::Loop()
  	TH2D *h2n110_jetetaphi = new TH2D("h2bal110_jetetaphi", "Rate for 110GeV trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_jetetaphi = new TH2D("h2bal110_jetetaphi", "Rate for 200GeV trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 
+	//new (w34): 2D plots (vs PHOTON eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gagetaphi", "Rate for 50GeV trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 200GeV trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+
+
+
 
   // 2D plots for jet response
   TH2D *h2bal = new TH2D("h2bal","",nx,vx,200,0,4);
@@ -2797,7 +2804,7 @@ void GamHistosFill::Loop()
 		p2bal50_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		//h2mpf50_jetetaphi->Fill(gam.Eta(), gam.Phi(), mpf, w);
 		h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
-
+		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 		
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
@@ -2812,6 +2819,7 @@ void GamHistosFill::Loop()
 		//etaphi maps:
 		p2bal110_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+		h2n110_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 	}
 	if (itrg==200 && ptgam>230) {
@@ -2826,7 +2834,7 @@ void GamHistosFill::Loop()
 		//etaphi maps:
 		p2bal200_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
-
+		h2n200_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
