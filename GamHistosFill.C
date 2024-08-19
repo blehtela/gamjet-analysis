@@ -752,7 +752,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Ev2") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
-        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
+        TString(ds.c_str()).Contains("2024C-ECALR-HCALDI")) //||
         //TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         //TString(ds.c_str()).Contains("2024QCD")) //also for MC now 2024.
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
@@ -760,7 +760,7 @@ void GamHistosFill::Loop()
       //fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
 				fjv = new TFile("files/jetveto2024BCDE.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
     if (TString(ds.c_str()).Contains("2024F") ||
-        TString(ds.c_str()).Contains("2024G"))
+        TString(ds.c_str()).Contains("2024G") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD")) //also for MC now 2024.
         fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
@@ -2845,9 +2845,9 @@ void GamHistosFill::Loop()
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 		//jet1 eta distribution for different jet-pt
-		if(jet.Pt() > 30){h50n_j1eta_j1pt30->Fill(jet.Eta())};
-		if(jet.Pt() > 40){h50n_j1eta_j1pt40->Fill(jet.Eta())};
-		if(jet.Pt() > 50){h50n_j1eta_j1pt50->Fill(jet.Eta())};
+		if(jet.Pt() > 30){ h50n_j1eta_j1pt30->Fill(jet.Eta()); };
+		if(jet.Pt() > 40){ h50n_j1eta_j1pt40->Fill(jet.Eta()); };
+		if(jet.Pt() > 50){ h50n_j1eta_j1pt50->Fill(jet.Eta()); };
 		
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
@@ -2865,9 +2865,9 @@ void GamHistosFill::Loop()
 		h2n110_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 		//jet1 eta distribution for different jet-pt
-		if(jet.Pt() > 30){h110n_j1eta_j1pt30->Fill(jet.Eta())};
-		if(jet.Pt() > 40){h110n_j1eta_j1pt40->Fill(jet.Eta())};
-		if(jet.Pt() > 50){h110n_j1eta_j1pt50->Fill(jet.Eta())};
+		if(jet.Pt() > 30){ h110n_j1eta_j1pt30->Fill(jet.Eta()); };
+		if(jet.Pt() > 40){ h110n_j1eta_j1pt40->Fill(jet.Eta()); };
+		if(jet.Pt() > 50){ h110n_j1eta_j1pt50->Fill(jet.Eta()); };
 
 	}
 	if (itrg==200 && ptgam>230) {
@@ -2885,9 +2885,9 @@ void GamHistosFill::Loop()
 		h2n200_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 		//jet1 eta distribution for different jet-pt
-		if(jet.Pt() > 30){h200n_j1eta_j1pt30->Fill(jet.Eta())};
-		if(jet.Pt() > 40){h200n_j1eta_j1pt40->Fill(jet.Eta())};
-		if(jet.Pt() > 50){h200n_j1eta_j1pt50->Fill(jet.Eta())};
+		if(jet.Pt() > 30){ h200n_j1eta_j1pt30->Fill(jet.Eta()); };
+		if(jet.Pt() > 40){ h200n_j1eta_j1pt40->Fill(jet.Eta()); };
+		if(jet.Pt() > 50){ h200n_j1eta_j1pt50->Fill(jet.Eta()); };
 
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
