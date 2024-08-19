@@ -561,7 +561,8 @@ void GamHistosFill::Loop()
   }
   //data2024
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 onwards (16.08.2024), V5M
+    //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w15 and w16 (starting 06.05.24)
@@ -570,14 +571,16 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
   if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
+    //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
 	}
 	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //|| ds=="2024C-ECALR-HCALDI" ) { //for 2024 re-reco data
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
 	if (ds=="2024C-ECALR-HCALDI" || ds=="2024F" || ds=="2024G") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
+    //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); 
 	}
   assert(jec);
@@ -656,7 +659,9 @@ void GamHistosFill::Loop()
 		//hybrid JSON! from w29 onwards
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to381152_DCSRuns_381153to381594_.json"); //hybrid json --> w29
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to382329_DCSRuns_382343to378981_382330to382749_.json"); //hybrid json --> w31 (05.07.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024) and w33 (11.08.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024) and w33 (11.08.2024)
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378981to383724_DCSRuns_383740to378981_383725to384491_.json"); //hybrid json --> w34 (16.08.2024)
+
 
 
 
@@ -670,11 +675,12 @@ void GamHistosFill::Loop()
 
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
+	//w32 also used for w33
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w32.csv"); //w32 also used for w33
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w32.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w32.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w32.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w34.csv"); //w34
+	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w34.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w34.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w34.csv");
 
 
 
@@ -744,8 +750,6 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024D") ||
         TString(ds.c_str()).Contains("2024Ev1") ||
         TString(ds.c_str()).Contains("2024Ev2") ||
-        TString(ds.c_str()).Contains("2024F") ||
-        TString(ds.c_str()).Contains("2024G") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
@@ -753,7 +757,13 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024QCD")) //also for MC now 2024.
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
-        fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
+      //fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
+				fjv = new TFile("files/jetveto2024BCDE.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
+    if (TString(ds.c_str()).Contains("2024F") ||
+        TString(ds.c_str()).Contains("2024G"))
+        //TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
+        //TString(ds.c_str()).Contains("2024QCD")) //also for MC now 2024.
+        fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
@@ -1055,7 +1065,8 @@ void GamHistosFill::Loop()
   //TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",16000,355000.5,371000.5);
   //TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",16000,355000.5,371000.5);
 
-	double xmax = 383000.5;
+	//double xmax = 383000.5; //need to update this regularly
+	double xmax = 385000.5;
 	double xmin = 355000.5;
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
