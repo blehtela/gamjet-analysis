@@ -2844,11 +2844,6 @@ void GamHistosFill::Loop()
 		h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
-		//jet1 eta distribution for different jet-pt
-		if(jet.Pt() > 30){ h50n_j1eta_j1pt30->Fill(jet.Eta()); };
-		if(jet.Pt() > 40){ h50n_j1eta_j1pt40->Fill(jet.Eta()); };
-		if(jet.Pt() > 50){ h50n_j1eta_j1pt50->Fill(jet.Eta()); };
-		
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
 	  pr110n->Fill(run, w);
@@ -2863,11 +2858,6 @@ void GamHistosFill::Loop()
 		p2bal110_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n110_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
-
-		//jet1 eta distribution for different jet-pt
-		if(jet.Pt() > 30){ h110n_j1eta_j1pt30->Fill(jet.Eta()); };
-		if(jet.Pt() > 40){ h110n_j1eta_j1pt40->Fill(jet.Eta()); };
-		if(jet.Pt() > 50){ h110n_j1eta_j1pt50->Fill(jet.Eta()); };
 
 	}
 	if (itrg==200 && ptgam>230) {
@@ -2884,11 +2874,6 @@ void GamHistosFill::Loop()
 		h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n200_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
-		//jet1 eta distribution for different jet-pt
-		if(jet.Pt() > 30){ h200n_j1eta_j1pt30->Fill(jet.Eta()); };
-		if(jet.Pt() > 40){ h200n_j1eta_j1pt40->Fill(jet.Eta()); };
-		if(jet.Pt() > 50){ h200n_j1eta_j1pt50->Fill(jet.Eta()); };
-
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
 	  prg1n->Fill(run, w);
@@ -2898,13 +2883,41 @@ void GamHistosFill::Loop()
 	  prg1nhf->Fill(run, Jet_neHEF[iJet], w);
 	  prg1nef->Fill(run, Jet_neEmEF[iJet], w);
 	}
-      }
+      } //end of "if(pass_all)"
+
+		// Leading jet's eta distribution (approximately from -5.2 to 5.2)	//
+		//------------------------------------------------------------------//
+		if(pass_basic_ext && pass_alpha100){ //same as pass_all but WITHOUT pass_jeteta 
+    	if (itrg==50 && ptgam>53) { //ptgam>53 (to avoid trouble with hlt scale) (used to be ptgam>50)
+				//jet1 eta distribution for different jet-pt
+				if(jet.Pt() > 30){ h50n_j1eta_j1pt30->Fill(jet.Eta()); };
+				if(jet.Pt() > 40){ h50n_j1eta_j1pt40->Fill(jet.Eta()); };
+				if(jet.Pt() > 50){ h50n_j1eta_j1pt50->Fill(jet.Eta()); };
+			}
+			if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
+				//jet1 eta distribution for different jet-pt
+				if(jet.Pt() > 30){ h110n_j1eta_j1pt30->Fill(jet.Eta()); };
+				if(jet.Pt() > 40){ h110n_j1eta_j1pt40->Fill(jet.Eta()); };
+				if(jet.Pt() > 50){ h110n_j1eta_j1pt50->Fill(jet.Eta()); };
+			}
+			if (itrg==200 && ptgam>230) {
+				//jet1 eta distribution for different jet-pt
+				if(jet.Pt() > 30){ h200n_j1eta_j1pt30->Fill(jet.Eta()); };
+				if(jet.Pt() > 40){ h200n_j1eta_j1pt40->Fill(jet.Eta()); };
+				if(jet.Pt() > 50){ h200n_j1eta_j1pt50->Fill(jet.Eta()); };
+			}
+		}//end of jet1 eta distribution plots
+ 
+
+
+
+
 
       //for high eta
       // Time controls for JES and PF composition in HIGH ETA range
       //NEW: (jet eta) 3<=eta<4 and TO DO:  4<=eta<5
       //do this eta investigation for all histograms, might not be so useful for composition plots, but check
-      if (pass_basic_ext and pass_alpha100 and fabs(Jet_eta[iJet])>=3.0 and fabs(Jet_eta[iJet])<4.0) {
+      if (pass_basic_ext and pass_alpha100 and fabs(Jet_eta[iJet])>=3.0 and fabs(Jet_eta[iJet])<4.0) { //shouldn't this be just jet?
 	if (itrg==30 && ptgam>32) {
 	  pr30n_eta3to4->Fill(run, w); 
           pr30xs_eta3to4->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
