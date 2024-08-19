@@ -1296,6 +1296,33 @@ void GamHistosFill::Loop()
 
 
 
+	//Narrow eta-binning (from dijet), but also to negative values
+  double etabins[] = {-5.191, -4.889, -4.716, -4.538, -4.363, -4.191, -4.013, -3.839, -3.664, -3.489, -3.314, -3.139, -2.964, 
+											-2.853, -2.65, -2.5, -2.322, -2.172, -2.043, -1.93, -1.83, -1.74, -1.653, -1.566, -1.479, -1.392, -1.305, 
+											-1.218, -1.131, -1.044, -0.957, -0.879, -0.783, -0.696, -0.609, -0.522, -0.435, -0.348, -0.261, -0.174, -0.087, 
+											0, 0.087, 0.174, 0.261, 0.348, 0.435, 0.522, 0.609, 0.696, 0.783, 0.879, 0.957, 1.044, 1.131, 1.218, 1.305,
+       								1.392, 1.479, 1.566, 1.653, 1.74, 1.83, 1.93, 2.043, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.314, 
+       								3.489, 3.664, 3.839, 4.013, 4.191, 4.363, 4.538, 4.716, 4.889, 5.191};
+  const int netabins = sizeof(etabins)/sizeof(etabins[0])-1;
+
+
+	//new (w35): N_events over leading jet's eta for each photon trigger and for three different jet-pt-thresholds
+	TH1D *h50n_j1eta_j1pt30 = new TH1D("h50n_j1eta_j1pt30","p_{T,jet1} > 30GeV;#eta_{j1};N_{events};",netabins,etabins); //j1pt > 30GeV
+	TH1D *h50n_j1eta_j1pt40 = new TH1D("h50n_j1eta_j1pt40",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 40GeV
+	TH1D *h50n_j1eta_j1pt50 = new TH1D("h50n_j1eta_j1pt50",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 50GeV
+
+	TH1D *h110n_j1eta_j1pt30 = new TH1D("h110n_j1eta_j1pt30","p_{T,jet1} > 30GeV;#eta_{j1};N_{events};",netabins,etabins); //j1pt > 30GeV
+	TH1D *h110n_j1eta_j1pt40 = new TH1D("h110n_j1eta_j1pt40",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 40GeV
+	TH1D *h110n_j1eta_j1pt50 = new TH1D("h110n_j1eta_j1pt50",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 50GeV
+
+	TH1D *h200n_j1eta_j1pt30 = new TH1D("h200n_j1eta_j1pt30","p_{T,jet1} > 30GeV;#eta_{j1};N_{events};",netabins,etabins); //j1pt > 30GeV
+	TH1D *h200n_j1eta_j1pt40 = new TH1D("h200n_j1eta_j1pt40",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 40GeV
+	TH1D *h200n_j1eta_j1pt50 = new TH1D("h200n_j1eta_j1pt50",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 50GeV
+
+
+
+
+
 
   // 2D plots for jet response
   TH2D *h2bal = new TH2D("h2bal","",nx,vx,200,0,4);
@@ -2816,6 +2843,11 @@ void GamHistosFill::Loop()
 		//h2mpf50_jetetaphi->Fill(gam.Eta(), gam.Phi(), mpf, w);
 		h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
+
+		//jet1 eta distribution for different jet-pt
+		if(jet.Pt() > 30){h50n_j1eta_j1pt30->Fill(jet.Eta())};
+		if(jet.Pt() > 40){h50n_j1eta_j1pt40->Fill(jet.Eta())};
+		if(jet.Pt() > 50){h50n_j1eta_j1pt50->Fill(jet.Eta())};
 		
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
@@ -2832,6 +2864,11 @@ void GamHistosFill::Loop()
 		h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n110_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
+		//jet1 eta distribution for different jet-pt
+		if(jet.Pt() > 30){h110n_j1eta_j1pt30->Fill(jet.Eta())};
+		if(jet.Pt() > 40){h110n_j1eta_j1pt40->Fill(jet.Eta())};
+		if(jet.Pt() > 50){h110n_j1eta_j1pt50->Fill(jet.Eta())};
+
 	}
 	if (itrg==200 && ptgam>230) {
 	  pr230n->Fill(run, w);
@@ -2846,6 +2883,11 @@ void GamHistosFill::Loop()
 		p2bal200_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n200_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
+
+		//jet1 eta distribution for different jet-pt
+		if(jet.Pt() > 30){h200n_j1eta_j1pt30->Fill(jet.Eta())};
+		if(jet.Pt() > 40){h200n_j1eta_j1pt40->Fill(jet.Eta())};
+		if(jet.Pt() > 50){h200n_j1eta_j1pt50->Fill(jet.Eta())};
 
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
