@@ -83,7 +83,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w35") { //using w-
                 dataset=="2023P8X" || dataset=="2023P8-BPixX"|| //for my test wX23
 		dataset=="2023P8" || //);// || dataset=="2023QCD");
   		dataset=="2023P8-BPix" || //added the BPix MC files
-  		dataset=="winter2024P8"); //winter 2024 madgraph p8 (added on 07.08.2024)
+  		dataset=="winter2024P8" || dataset=="winter2024P8-v14"); //winter 2024 madgraph p8 (added on 07.08.2024)
 
 
   bool addQCD = (dataset=="2016QCD" || dataset=="2016APVQCD" || 
