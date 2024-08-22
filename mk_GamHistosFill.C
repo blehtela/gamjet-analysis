@@ -91,7 +91,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w35") { //using w-
 		 dataset=="2022QCD" || dataset=="2022EEQCD" ||
                  dataset=="2023QCDX" || dataset=="2023QCD-BPixX" || //for my test wX23
 		 dataset=="2023QCD" || dataset=="2023QCD-BPix" ||  //added BPix QCD MC
-		 dataset=="2024QCD"); //added BPix QCD MC
+		 dataset=="2024QCD" || dataset=="2024QCD-v14"); //added BPix QCD MC
 
 
   //cout << "Clean old shared objects and link files" << endl << flush;

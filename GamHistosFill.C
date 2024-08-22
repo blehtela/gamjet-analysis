@@ -556,7 +556,7 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
 	//mc2024
-  if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
+  if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
   //data2024
@@ -617,7 +617,7 @@ void GamHistosFill::Loop()
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
-  if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
+  if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
 
   // Load JSON files
@@ -767,7 +767,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024G") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
-        TString(ds.c_str()).Contains("2024QCD")) //also for MC now 2024.
+        TString(ds.c_str()).Contains("2024QCD") //also for MC now 2024.
+        TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
