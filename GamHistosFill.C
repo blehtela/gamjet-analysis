@@ -767,7 +767,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024G") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
-        TString(ds.c_str()).Contains("2024QCD") //also for MC now 2024.
+        TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
   }
