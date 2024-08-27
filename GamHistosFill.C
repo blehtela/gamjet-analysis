@@ -1291,15 +1291,27 @@ void GamHistosFill::Loop()
 	//TH2D *h2mpf200_jetetaphi = new TH2D("h2mpf110_jetetaphi", ";#eta;#phi;MPF200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 
 	//new (w34): 2D plots (vs jet eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+/*
 	TH2D *h2n50_jetetaphi = new TH2D("h2n50_jetetaphi", "Rate for 50GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n110_jetetaphi = new TH2D("h2n110_jetetaphi", "Rate for 110GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_jetetaphi = new TH2D("h2n200_jetetaphi", "Rate for 200GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+*/
+	//larger eta-range.. going up to 5.19
+	TH2D *h2n50_jetetaphi = new TH2D("h2n50_jetetaphi", "Rate for 50GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_jetetaphi = new TH2D("h2n110_jetetaphi", "Rate for 110GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_jetetaphi = new TH2D("h2n200_jetetaphi", "Rate for 200GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+
 
 	//new (w34): 2D plots (vs PHOTON eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+/*
 	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gagetaphi", "Rate for 50GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_gametaphi = new TH2D("h2bal200_gametaphi", "Rate for 200GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
-
+*/
+	//larger eta-range.. going up to 5.19
+	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gagetaphi", "Rate for 50GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_gametaphi = new TH2D("h2bal200_gametaphi", "Rate for 200GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
 
 
 	//Narrow eta-binning (from dijet), but also to negative values
