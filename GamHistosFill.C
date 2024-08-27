@@ -1290,16 +1290,20 @@ void GamHistosFill::Loop()
  	TProfile2D *p2bal200_jetetaphi = new TProfile2D("p2bal200_jetetaphi", ";#eta_{j1};#phi_{j1};BAL200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 	//TH2D *h2mpf200_jetetaphi = new TH2D("h2mpf110_jetetaphi", ";#eta;#phi;MPF200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 
-	//new (w34): 2D plots (vs jet eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+
 /*
+	//new (w34): 2D plots (vs jet eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
 	TH2D *h2n50_jetetaphi = new TH2D("h2n50_jetetaphi", "Rate for 50GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n110_jetetaphi = new TH2D("h2n110_jetetaphi", "Rate for 110GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_jetetaphi = new TH2D("h2n200_jetetaphi", "Rate for 200GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 */
-	//larger eta-range.. going up to 5.19
+
+/*
+	//larger eta-range (w35f).. going up to 5.19
 	TH2D *h2n50_jetetaphi = new TH2D("h2n50_jetetaphi", "Rate for 50GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n110_jetetaphi = new TH2D("h2n110_jetetaphi", "Rate for 110GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_jetetaphi = new TH2D("h2n200_jetetaphi", "Rate for 200GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+*/
 
 
 	//new (w34): 2D plots (vs PHOTON eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
@@ -1308,10 +1312,13 @@ void GamHistosFill::Loop()
  	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_gametaphi = new TH2D("h2bal200_gametaphi", "Rate for 200GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 */
-	//larger eta-range.. going up to 5.19
+
+/*
+	//larger eta-range (w35f).. going up to 5.19
 	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gagetaphi", "Rate for 50GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_gametaphi = new TH2D("h2bal200_gametaphi", "Rate for 200GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+*/
 
 
 	//Narrow eta-binning (from dijet), but also to negative values
@@ -1322,6 +1329,20 @@ void GamHistosFill::Loop()
        								1.392, 1.479, 1.566, 1.653, 1.74, 1.83, 1.93, 2.043, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.314, 
        								3.489, 3.664, 3.839, 4.013, 4.191, 4.363, 4.538, 4.716, 4.889, 5.191};
   const int netabins = sizeof(etabins)/sizeof(etabins[0])-1;
+
+
+	//updated (w35f-small-etabins): 2D plots (vs jet eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+	//larger eta-range.. going up to 5.19
+	TH2D *h2n50_jetetaphi = new TH2D("h2n50_jetetaphi", "Rate for 50GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", netabins, etabins, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_jetetaphi = new TH2D("h2n110_jetetaphi", "Rate for 110GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", netabins, etabins, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_jetetaphi = new TH2D("h2n200_jetetaphi", "Rate for 200GeV #gamma-trigger;#eta_{j1};#phi_{j1};N_{evt}", netabins, etabins, 72, -TMath::Pi(), TMath::Pi());
+
+	//updated (w35f-small-etabins): 2D plots (vs PHOTON eta vs jet phi) for event rate (for 30GeV, 50GeV and 110GeV photon trigger)
+	//larger eta-range.. going up to 5.19
+	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gagetaphi", "Rate for 50GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", netabins, etabins, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", netabins, etabins, 72, -TMath::Pi(), TMath::Pi());
+ 	TH2D *h2n200_gametaphi = new TH2D("h2bal200_gametaphi", "Rate for 200GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", netabins, etabins, 72, -TMath::Pi(), TMath::Pi());
+
 
 
 	//new (w35): N_events over leading jet's eta for each photon trigger and for three different jet-pt-thresholds
