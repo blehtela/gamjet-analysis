@@ -266,7 +266,7 @@ void GamHistosRatios(string ver, string iov) {
 						iov=="2024BCDEv1" || iov=="2024BC-ECALRATIO" ||
 						iov=="2024B-ECALRATIO" || iov=="2024C-ECALRATIO" || iov=="2024C-ECALR-HCALDI" || iov=="2024C-ECALCC-HCALDI") { //BPix issue, for now use this also for early 2024 data
         //fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
-				fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%sf.root",ci,cv),"READ");
+				fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%sf-small-etabins.root",ci,cv),"READ");
 
 
 				// MC and output file when QCD in the Mix
@@ -295,7 +295,7 @@ void GamHistosRatios(string ver, string iov) {
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME
         ////fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME, V14 (!)
-        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_%sf.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME, V14 (!)
+        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_%sf-small-etabins.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME, V14 (!)
 
 
       }
