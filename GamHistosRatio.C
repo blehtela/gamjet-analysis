@@ -74,7 +74,7 @@ void GamHistosRatio(string ver = "w35") {
   //GamHistosRatios(ver,"2023Cv4");
   //GamHistosRatios(ver,"2023D");
 
-
+/*
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
   GamHistosRatios(ver,"2024D");
@@ -109,18 +109,17 @@ void GamHistosRatio(string ver = "w35") {
 
 
  
-/*
-  GamHistosRatios(ver, "2024B-ECALRATIO");
-  GamHistosRatios(ver, "2024C-ECALRATIO");
-	GamHistosRatios(ver, "2024BC-ECALRATIO");
+  //GamHistosRatios(ver, "2024B-ECALRATIO");
+  //GamHistosRatios(ver, "2024C-ECALRATIO");
+	//GamHistosRatios(ver, "2024BC-ECALRATIO");
 
 
   GamHistosRatios(ver, "2024C-ECALR-HCALDI");
-*/
+
   GamHistosRatios(ver, "2024C-ECALCC-HCALDI");
+*/
 
-
-
+	GamHistosRatios(ver,"2024F");
 
   //GamHistosRatios(ver,"2023Cv4D");
   //GamHistosRatios(ver,"Run3");
@@ -266,7 +265,9 @@ void GamHistosRatios(string ver, string iov) {
 						iov=="2024BC" || iov=="2024BCD" || iov=="2024BCDE" || iov=="2024BCDEF" || iov=="2024BCDEFG" ||
 						iov=="2024BCDEv1" || iov=="2024BC-ECALRATIO" ||
 						iov=="2024B-ECALRATIO" || iov=="2024C-ECALRATIO" || iov=="2024C-ECALR-HCALDI" || iov=="2024C-ECALCC-HCALDI") { //BPix issue, for now use this also for early 2024 data
-        fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
+        //fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
+				fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%sf.root",ci,cv),"READ");
+
 
 				// MC and output file when QCD in the Mix
 				fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_2024QCD_V14_%s.root",cv),"READ"); //new PUPPI version V14 for both MCs
@@ -278,7 +279,10 @@ void GamHistosRatios(string ver, string iov) {
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPixQCD_%s.root",ci,cv),"RECREATE"); //changed name!!
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8-2023BPixQCD_%s.root",ci,cv),"RECREATE"); //with old QCD in the mix, NEW NAME
 				//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_%s.root",ci,cv),"RECREATE"); //changed name!!
-				fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%s.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
+
+				//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%s.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
+				fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%sf.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
+
 
 				//MC and output file when NO QCD
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root",cv),"READ"); //NO QCD (remove later)
