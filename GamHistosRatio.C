@@ -270,7 +270,7 @@ void GamHistosRatios(string ver, string iov) {
 
 
 				// MC and output file when QCD in the Mix
-				fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_2024QCD_V14_%s.root",cv),"READ"); //new PUPPI version V14 for both MCs
+				////fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_2024QCD_V14_%s.root",cv),"READ"); //new PUPPI version V14 for both MCs
 				//fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_2024QCD_%s.root",cv),"READ"); //old puppi version
         //fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_%s.root",cv),"READ");  //hard-coded version w13 for now, change when updated with vetomap
         //fm = new TFile(Form("rootfiles/GamHistosMix_mc_2023-BPixP8QCD_w13.root"),"READ");     //replace this by line above when MC again updated (now fixed to mc w13)
@@ -281,17 +281,22 @@ void GamHistosRatios(string ver, string iov) {
 				//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_%s.root",ci,cv),"RECREATE"); //changed name!!
 
 				//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%s.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
-				fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%sf.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
+				////fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%sf.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
 
 
 				//MC and output file when NO QCD
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_%s.root",cv),"READ"); //NO QCD (remove later)
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_%s.root",cv),"READ"); //NO QCD, winter24 madgraph (NOT v14, but the old)
         ////fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8-v14_%s.root",cv),"READ"); //NO QCD, winter24 madgraph (PUPPI version V14)
+				fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8-v14_%s.root",cv),"READ"); //NO QCD, winter24 madgraph (PUPPI version V14)
+
+
         //fm = new TFile(Form("rootfiles/GamHistosFill_mc_2023P8-BPix_w13.root"),"READ"); //replace with line above when mc updated (now fixed to mc w13)
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8BPix-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
         //fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME
         ////fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME, V14 (!)
+        fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_%sf.root",ci,cv),"RECREATE"); //when no QCD in the mix, NEW NAME, V14 (!)
+
 
       }
   if (iov=="Run3") {
