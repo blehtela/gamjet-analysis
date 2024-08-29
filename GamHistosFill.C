@@ -2880,7 +2880,7 @@ void GamHistosFill::Loop()
 		//etaphi maps:
 		p2bal50_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		//h2mpf50_jetetaphi->Fill(gam.Eta(), gam.Phi(), mpf, w);
-		h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+		///h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 	}
@@ -2895,7 +2895,7 @@ void GamHistosFill::Loop()
 
 		//etaphi maps:
 		p2bal110_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
-		h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+		///h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n110_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 	}
@@ -2910,7 +2910,7 @@ void GamHistosFill::Loop()
 
 		//etaphi maps:
 		p2bal200_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
-		h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+		//h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n200_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
 	}
@@ -2928,18 +2928,28 @@ void GamHistosFill::Loop()
 		//------------------------------------------------------------------//
 		if(pass_basic_ext && pass_alpha100){ //same as pass_all but WITHOUT pass_jeteta 
     	if (itrg==50 && ptgam>53) { //ptgam>53 (to avoid trouble with hlt scale) (used to be ptgam>50)
+				//jet veto map
+				h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+
 				//jet1 eta distribution for different jet-pt
 				if(jet.Pt() > 30){ h50n_j1eta_j1pt30->Fill(jet.Eta()); };
 				if(jet.Pt() > 40){ h50n_j1eta_j1pt40->Fill(jet.Eta()); };
 				if(jet.Pt() > 50){ h50n_j1eta_j1pt50->Fill(jet.Eta()); };
 			}
 			if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
+				//jet veto map
+				h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+
 				//jet1 eta distribution for different jet-pt
 				if(jet.Pt() > 30){ h110n_j1eta_j1pt30->Fill(jet.Eta()); };
 				if(jet.Pt() > 40){ h110n_j1eta_j1pt40->Fill(jet.Eta()); };
 				if(jet.Pt() > 50){ h110n_j1eta_j1pt50->Fill(jet.Eta()); };
+
 			}
 			if (itrg==200 && ptgam>230) {
+				//jet veto map
+				h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
+
 				//jet1 eta distribution for different jet-pt
 				if(jet.Pt() > 30){ h200n_j1eta_j1pt30->Fill(jet.Eta()); };
 				if(jet.Pt() > 40){ h200n_j1eta_j1pt40->Fill(jet.Eta()); };
