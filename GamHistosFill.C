@@ -34,6 +34,7 @@ bool _gh_debug100 = false;
 bool doGamjet = true;
 bool doGamjet2 = true;
 bool doJetveto = true; //like in dijet: eta-phi maps
+bool doPFComposition = true; //Gamjet2 (added by Mikko)
 bool smearJets = false;
 
 // Error counters
@@ -97,6 +98,29 @@ public:
 
   // Smearing controls
   TProfile2D *p2jsf;//, *p2jsftc, *p2jsfpf;
+
+	//Took the following from Mikko's code modifications:
+  // (Optional) composition plots
+  TProfile2D *p2pt, *p2rho, *p2chf, *p2nef, *p2nhf, *p2cef, *p2muf;
+  TProfile *ppt13, *prho13, *pchf13, *pnef13, *pnhf13, *pcef13, *pmuf13;
+};
+
+// Adapted from: https://github.com/NestorMancilla/dijet/blob/master/src/DijetHistosFill.C
+// Use Photon50EB trigger only, so no extra trigger information needed
+class jetvetoHistos {
+ public:
+
+  // Jet counts
+  TH2D *h2phieta;
+
+  // Asymm
+  //TH3D *h3asymm;
+
+  // Balancing
+  TProfile2D *p2mpf, *p2asymm, *p2asymm_noveto;
+
+  // Composition plots
+  TProfile2D *p2chf, *p2nhf, *p2nef;
 };
 
 // Helper function to retrieve FactorizedJetCorrector 
@@ -665,6 +689,7 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024) and w33 (11.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to383724_DCSRuns_383740to378981_383725to384491_.json"); //hybrid json --> w34 (16.08.2024)
 		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to384052_DCSRuns_378981to378985_384053to384614_.json"); //hybrid json --> w35 (19.08.2024)
+//TO DO: update JSON
 
 
 
@@ -1736,8 +1761,99 @@ void GamHistosFill::Loop()
     h->p2mupf = new TProfile2D("p2mupf",";#eta;p_{T,probe} (GeV);MPFu",
 			       nxd,vxd, nptd, vptd);
     */    
+
+		//from Mikko's code modifications
+    if (doPFComposition) {
+
+      fout->mkdir("Gamjet2/PFcomposition");
+      fout->cd("Gamjet2/PFcomposition");
+
+      h->p2pt = new TProfile2D("p2pt", ";#eta;p_{T,#gamma} (GeV);p_{T,jet}",
+			       nxd, vxd, nptd, vptd);
+      h->p2rho = new TProfile2D("p2rho", ";#eta;p_{T,#gamma} (GeV);#rho",
+				nxd, vxd, nptd, vptd);
+      h->p2chf = new TProfile2D("p2chf", ";#eta;p_{T,#gamma} (GeV);CHF",
+				nxd, vxd, nptd, vptd);
+      h->p2nhf = new TProfile2D("p2nhf", ";#eta;p_{T,#gamma} (GeV);NHF",
+				nxd, vxd, nptd, vptd);
+      h->p2nef = new TProfile2D("p2nef", ";#eta;p_{T,#gamma} (GeV);NEF",
+				nxd, vxd, nptd, vptd);
+      h->p2cef = new TProfile2D("p2cef", ";#eta;p_{T,#gamma} (GeV);CEF",
+				nxd, vxd, nptd, vptd);
+      h->p2muf = new TProfile2D("p2muf", ";#eta;p_{T,#gamma} (GeV);MUF",
+				nxd, vxd, nptd, vptd);
+      
+      h->ppt13 = new TProfile("ppt13", ";p_{T,#gamma} (GeV);p_{T,jet}",
+			      nptd, vptd);
+      h->prho13 = new TProfile("prho13", ";p_{T,#gamma} (GeV);#rho",
+			       nptd, vptd);
+      h->pchf13 = new TProfile("pchf13", ";p_{T,#gamma} (GeV);CHF",
+			       nptd, vptd);
+      h->pnhf13 = new TProfile("pnhf13", ";p_{T,#gamma} (GeV);NHF",
+			       nptd, vptd);
+      h->pnef13 = new TProfile("pnef13", ";p_{T,#gamma} (GeV);NEF",
+			       nptd, vptd);
+      h->pcef13 = new TProfile("pcef13", ";p_{T,#gamma} (GeV);CEF",
+			       nptd, vptd);
+      h->pmuf13 = new TProfile("pmuf13", ";p_{T,#gamma} (GeV);MUF",
+			       nptd, vptd);
+      }
   } // doGamjet2
   
+
+	//from Mikko's code modifications (29.08.2024)
+  // Jet veto maps for Photon50EB, pTgamma>55 GeV
+  // Leading jet pT>30 GeV and >0.5*pTgamma, <1.5*pTgamma
+  jetvetoHistos *hjv(0);
+  if (doJetveto) {
+    if (debug)
+      cout << "Setup doJetveto " << "Photon50EB" << endl << flush;
+    
+    fout->mkdir("Jetveto");
+    fout->cd("Jetveto");
+    
+    jetvetoHistos *h = new jetvetoHistos();
+    hjv = h;
+
+    // Regular L2Relative eta binning
+    double vx[] =
+      {-5.191,
+       -4.889, -4.716, -4.538, -4.363, -4.191, -4.013, -3.839, -3.664, -3.489,
+       -3.314, -3.139, -2.964, -2.853, -2.65, -2.5, -2.322, -2.172, -2.043,
+       -1.93, -1.83, -1.74, -1.653, -1.566, -1.479, -1.392, -1.305, -1.218,
+       -1.131, -1.044, -0.957, -0.879, -0.783, -0.696, -0.609, -0.522, -0.435,
+       -0.348, -0.261, -0.174, -0.087, 0, 0.087, 0.174, 0.261, 0.348, 0.435,
+       0.522, 0.609, 0.696, 0.783, 0.879, 0.957, 1.044, 1.131, 1.218, 1.305,
+       1.392, 1.479, 1.566, 1.653, 1.74, 1.83, 1.93, 2.043, 2.172, 2.322, 2.5,
+       2.65, 2.853, 2.964, 3.139, 3.314, 3.489, 3.664, 3.839, 4.013, 4.191,
+       4.363, 4.538, 4.716, 4.889, 5.191};
+    const int nx = sizeof(vx) / sizeof(vx[0]) - 1;
+    
+    // Plots with leading jet selection
+    h->h2phieta = new TH2D("h2phieta", ";#eta;#phi;N_{jet}",
+			   nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    
+    h->p2chf = new TProfile2D("p2chf", ";#eta;#phi;CHF (DM)",
+			      nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    h->p2nef = new TProfile2D("p2nef", ";#eta;#phi;NEF (DM)",
+			      nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    h->p2nhf = new TProfile2D("p2nhf", ";#eta;#phi;NHF (DM)",
+			      nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    
+    // Plots with photon+jet selection, pTgam bins
+    h->p2mpf = new TProfile2D("p2mpf", ";#eta;#phi;MPF",
+			      nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    h->p2asymm = new TProfile2D("p2asymm", ";#eta;#phi;Asymmetry",
+				nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    h->p2asymm_noveto = new TProfile2D("p2asymm_noveto",
+				       ";#eta;#phi;Asymmetry_noveto",
+				       nx, vx, 72, -TMath::Pi(), +TMath::Pi());
+    //h->h3asymm = new TH3D("h3asymm", ";#eta;#phi;h3asymm",
+    //nx, vx, phi_vx.size()-1,
+    //phi_vx.data(),asymm_vx.size()-1, asymm_vx.data());
+  } // doJetVeto
+
+
 
   fout->cd();
   
@@ -2826,6 +2942,14 @@ void GamHistosFill::Loop()
 			 pass_gameta && pass_dphi && pass_jetid && 
                          pass_jetveto && pass_gamveto && //pass_veto &&
 			 pass_leak); // add pass_gameta v19 / 202111122 !
+
+      // For doJetveto (Mikko)
+      bool pass_basic_notrig_noveto =
+	(/*pass_trig &&*/ pass_filt && pass_ngam && pass_njet &&
+	 pass_gameta && pass_dphi && pass_jetid && 
+	 /*pass_jetveto &&*/ /*pass_gamveto && */
+	 pass_leak);
+ 
       
       // Control plots for jet response
       bool pass_bal = (fabs(1-bal)<0.7);
@@ -3555,8 +3679,58 @@ void GamHistosFill::Loop()
 	  h->p2mnx->Fill(abseta, ptgam, mpfnx, w);
 	  h->p2mux->Fill(abseta, ptgam, mpfux, w);
 	  h->p2mnux->Fill(abseta, ptgam, mpfnux, w);
+
+		//from Mikko's modifications
+	  if (doPFComposition) {
+	    h->p2pt->Fill(abseta, ptgam, Jet_pt[iJet], w);
+	    h->p2rho->Fill(abseta, ptgam, fixedGridRhoFastjetAll, w);
+	    h->p2chf->Fill(abseta, ptgam, Jet_chHEF[iJet], w);
+	    h->p2nhf->Fill(abseta, ptgam, Jet_neHEF[iJet], w);
+	    h->p2nef->Fill(abseta, ptgam, Jet_neEmEF[iJet], w);
+	    h->p2cef->Fill(abseta, ptgam, Jet_chEmEF[iJet], w);
+	    h->p2muf->Fill(abseta, ptgam, Jet_muEF[iJet], w);
+
+	    if (abseta<1.3) {
+	      h->ppt13->Fill(ptgam, Jet_pt[iJet], w);
+	      h->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);
+	      h->pchf13->Fill(ptgam, Jet_chHEF[iJet], w);
+	      h->pnhf13->Fill(ptgam, Jet_neHEF[iJet], w);
+	      h->pnef13->Fill(ptgam, Jet_neEmEF[iJet], w);
+	      h->pcef13->Fill(ptgam, Jet_chEmEF[iJet], w);
+	      h->pmuf13->Fill(ptgam, Jet_muEF[iJet], w);
+	    }
+	  } // doPFComposition
+
 	}
       } // doGamjet2
+
+		//from Mikko's modifications: 
+      // Jet veto maps
+      if (doJetveto) {
+
+	jetvetoHistos *h = hjv;
+	assert(h);
+	double eta = Jet_eta[iJet];
+	//double abseta = fabs(eta);
+	double phi = Jet_phi[iJet];
+	double ptjet = Jet_pt[iJet];//p4.Pt();
+	
+	if (pass_basic_notrig_noveto &&
+	    HLT_Photon50EB_TightID_TightIso && ptgam>=55. && ptjet>30.) {
+	  //ptjet>30. && ptjet>0.5*ptgam && ptjet<1.5*ptgam) {
+	  
+	  //h->h2pteta_sel->Fill(p4.Eta(), p4.Pt(), w);
+
+	  h->p2mpf->Fill(eta, phi, mpf, w);
+	  h->p2asymm->Fill(eta, phi, ptjet/ptgam-1, w);
+	  h->p2asymm_noveto->Fill(eta, phi, ptjet/ptgam-1, w);
+	  
+	  h->h2phieta->Fill(eta, phi, w);
+	  h->p2chf->Fill(eta, phi, Jet_chHEF[iJet], w);
+	  h->p2nef->Fill(eta, phi, Jet_neEmEF[iJet], w);
+	  h->p2nhf->Fill(eta, phi, Jet_neHEF[iJet], w);
+	}
+      } // doJetVeto
       
     } // for jentry in nentries
     cout << endl << "Finished loop, writing file." << endl << flush;
