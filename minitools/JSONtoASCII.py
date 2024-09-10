@@ -7,6 +7,11 @@ f = open(sys.argv[1])
 map = json.load(f)
 f.close()
 
-for run, lumis in map.iteritems():
+outfile = open("pu_file-new.txt", "w")
+
+for run, lumis in map.items():
    for lumi in lumis:
-       print run, " ".join([str(num) for num in lumi])
+				print(run, " ".join([str(num) for num in lumi]))
+				outfile.write(run+" ".join([str(num) for num in lumi]))
+
+outfile.close()
