@@ -585,6 +585,8 @@ void GamHistosFill::Loop()
   }
   //data2024
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+  //if (ds.Contains("2024B-PromptReco-v1") || ds.Contains("2024B") || ds.Contains("2024C") || ds.Contains("2024D")) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 onwards (16.08.2024), V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
@@ -602,7 +604,8 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
-	if (ds=="2024F" || ds=="2024G" || ds=="2024Gtest") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024G" || ds=="2024Gtest" || 
+			ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
@@ -641,6 +644,7 @@ void GamHistosFill::Loop()
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
+  if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd") sera = "2024";
   if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
 
@@ -688,7 +692,9 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to382329_DCSRuns_382343to378981_382330to382749_.json"); //hybrid json --> w31 (05.07.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024) and w33 (11.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to383724_DCSRuns_383740to378981_383725to384491_.json"); //hybrid json --> w34 (16.08.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to384052_DCSRuns_378981to378985_384053to384614_.json"); //hybrid json --> w35 (19.08.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to384052_DCSRuns_378981to378985_384053to384614_.json"); //hybrid json --> w35 (19.08.2024)
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024)
+
 //TO DO: update JSON
 
 
@@ -696,7 +702,9 @@ void GamHistosFill::Loop()
   //Cert_Collisions2023_370354_370790_Golden.json");
 
   // Load pileup JSON
-  parsePileUpJSON("files/pileup_ASCII_UL16-UL18.txt");
+  //parsePileUpJSON("files/pileup_ASCII_UL16-UL18.txt");
+	parsePileUpJSON("files/pu_2024BCDEFG_w36.txt"); //currently on status of w36
+
 
   // Load pileup profiles
   LoadPU();
@@ -705,10 +713,10 @@ void GamHistosFill::Loop()
   //Get recorded luminosity for different triggers, pb=in picobarn:
 	//w32 also used for w33
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w35.csv"); //w34
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w35.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w35.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w35.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w36.csv"); //w34
+	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w36.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w36.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w36.csv");
 
 
 
@@ -788,8 +796,8 @@ void GamHistosFill::Loop()
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
       //fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
 				fjv = new TFile("files/jetveto2024BCDE.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
-    if (TString(ds.c_str()).Contains("2024F") ||
-        TString(ds.c_str()).Contains("2024G") ||
+    if (TString(ds.c_str()).Contains("2024F") || //should include Fa, Fb, Fc, Fd
+        TString(ds.c_str()).Contains("2024G") || //should include Ga, Gb, Gc, Gd
         TString(ds.c_str()).Contains("2024Gtest") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
@@ -1098,7 +1106,7 @@ void GamHistosFill::Loop()
   //TH1D *prg1n = new TH1D("prg1n",";Run;N_{events};",16000,355000.5,371000.5);
 
 	//double xmax = 383000.5; //need to update this regularly
-	double xmax = 386000.5;
+	double xmax = 389000.5; //386000.5
 	double xmin = 355000.5;
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
@@ -3825,15 +3833,20 @@ void GamHistosFill::LoadPU() {
   TDirectory *curdir = gDirectory;
 
   string eras[] =
-    {"2016P8",/*"2016APVP8",*/"2016P8APV","2017P8", "2018P8",
-     "2016QCD",/*"2016APVQCD",*/"2016QCDAPV","2017QCD", "2018QCD",
+		{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", //data
+			"winter2024P8", "2024QCD"}//mc
+/*
+    {"2016P8","2016APVP8","2016P8APV","2017P8", "2018P8",
+     "2016QCD","2016APVQCD","2016QCDAPV","2017QCD", "2018QCD",
      "2016APV","2016FGH","2017","2018",
      "2022P8", "2022EEP8","2022QCD", "2022EEQCD"};
   //"2016BCD","2016EF","2016FGH",
   //"2017B","2017C","2017D","2017E","2017F",
   //"2018A","2018B","2018C","2018D"};
+*/
   const int neras = sizeof(eras)/sizeof(eras[0]);
   map<string, vector<string> > trigs;
+
   trigs["2016P8"].push_back("mc");
   trigs["2016APVP8"] = trigs["2017P8"] = trigs["2018P8"] = 
     trigs["2016QCD"] =  trigs["2016APVQCD"] = trigs["2017QCD"] =
@@ -3882,8 +3895,76 @@ void GamHistosFill::LoadPU() {
   trigs["2022"].push_back("HLT_Photon110EB_TightID_TightIso");
   trigs["2022"].push_back("HLT_Photon200");
 
+	//comment out the once for which I haven't produced a pileup histogram yet
+  trigs["winter2024P8"].push_back("mc"); //photon mc
+  trigs["2024QCD"].push_back("mc"); //qcd mc
+  //trigs["2024"].push_back("HLT_Photon20_HoverELoose");
+  //trigs["2024"].push_back("HLT_Photon30_HoverELoose");
+  trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
+  trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
+  //trigs["2024"].push_back("HLT_Photon50_R9Id90_HE10_IsoM");
+  //trigs["2024"].push_back("HLT_Photon75_R9Id90_HE10_IsoM");
+  //trigs["2024"].push_back("HLT_Photon90_R9Id90_HE10_IsoM");
+  //trigs["2024"].push_back("HLT_Photon100EBHE10");
+  trigs["2024"].push_back("HLT_Photon110EB_TightID_TightIso");
+  trigs["2024"].push_back("HLT_Photon200");
+
+
+/*
+	//update way of doing this, have all pileup histos in one file
+	TFile *fpu = new TFile("files/pileup-histos_2024_w36.root", "RECREATE"); //need to update this manually for now, together with new JSON
+  assert(fmc && !fmc->IsZombie());
+
+  for (int i = 0; i != neras; ++i) {
+    string se = eras[i]; const char *ce = se.c_str();
+    for (unsigned int j = 0; j != trigs[se].size(); ++j) { //go through all triggers (j) of that era (se)
+      string st = trigs[se][j]; const char *ct = st.c_str();
+
+      // Read trigger threshold from trigger name
+      int itrg(0);
+      if (st=="mc") itrg = 1;	//for mc samples
+      else sscanf(ct,"HLT_Photon%d*",&itrg); //for data
+      
+      TFile *fdt(0);
+      TH1D *h(0);
+      if (st=="mc") {
+				h = (TH1D*)fmc->Get(Form("pileup_%s",ce));
+				if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
+				assert(h);
+      }
+      else {
+				// data files from Laura (on CERNbox)
+				//fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ");
+				//created new ones:
+				fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ"); //ce=era, ct=trigger
+				assert(fdt && !fdt->IsZombie());
+				h = (TH1D*)fdt->Get("pileup");
+				assert(h);
+      }
+      assert(h);
+
+      curdir->cd();
+      h = (TH1D*)h->Clone(Form("pileup_%s_%s",ce,ct)); //for example: pileup_2024G_HLT_Photon50EB_TightID_TightIso
+      double lumi = h->Integral();
+      h->Scale(1./lumi);
+      _pu[se][itrg] = h;
+      _lumi[se][itrg] = lumi;
+
+      cout << Form("%s/%s (%d): %1.3g %s\n",ce,ct,itrg,
+		   lumi,st=="mc" ? "events" : "fb-1");
+
+      if (fdt) fdt->Close();
+    } // for j in trigs
+  } // for i in eras
+  fpu->Close();
+  cout << endl << flush;
+
+*/
+
+
+
   // files/pileup.root updated with tchain.C on Hefaistos
-  TFile *fmc = new TFile("files/pileup.root","READ");
+  TFile *fmc = new TFile("files/pileup_mc_2024.root","READ"); //contains pileup histograms for MC. NEED TO CREATE THIS, wrote GamHistosPileup.C for it, did QCD and GJ extra, should do one with ALL eras and mc for 2024.
   assert(fmc && !fmc->IsZombie());
 
   for (int i = 0; i != neras; ++i) {
@@ -3899,21 +3980,23 @@ void GamHistosFill::LoadPU() {
       TFile *fdt(0);
       TH1D *h(0);
       if (st=="mc") {
-	h = (TH1D*)fmc->Get(Form("pileup_%s",ce));
-	if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
-	assert(h);
+				h = (TH1D*)fmc->Get(Form("pileup_%s",ce));
+				if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
+				assert(h);
       }
       else {
-	// data files from Laura (on CERNbox)
-	fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ");
-	assert(fdt && !fdt->IsZombie());
-	h = (TH1D*)fdt->Get("pileup");
-	assert(h);
+				// data files from Laura (on CERNbox)
+				//fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ");
+				//created new ones:
+				fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ"); //ce=era, ct=trigger
+				assert(fdt && !fdt->IsZombie());
+				h = (TH1D*)fdt->Get("pileup");
+				assert(h);
       }
       assert(h);
 
       curdir->cd();
-      h = (TH1D*)h->Clone(Form("pileup_%s_%s",ce,ct));
+      h = (TH1D*)h->Clone(Form("pileup_%s_%s",ce,ct)); //for example: pileup_2024G_HLT_Photon50EB_TightID_TightIso
       double lumi = h->Integral();
       h->Scale(1./lumi);
       _pu[se][itrg] = h;
