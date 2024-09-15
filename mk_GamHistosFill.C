@@ -46,9 +46,18 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string version = "w35f-small-etabins") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string version = "w36") { //using w-version names for my code (Bettina).
+//void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
+
+
 //void mk_GamHistosFill(string dataset = "X", string version = "wX23") { //using version wX23 for summer23 corrections TEST (with one single file per iov)
 //void mk_GamHistosFill(string dataset = "X", string version = "wX22full") { //using version wX22full for summer23 corrections TEST (with all files, but old jec)
+
+	//map the different parts of the dataset to the actual main dataset, less confusion in GamHistosFill - TEST IT
+/*
+	string dataset;
+	if(inputlist.Contains("2024G")) dataset = "2024G"; //covers 2024Ga, 2024Gb
+*/
 
 
 
@@ -72,7 +81,9 @@ void mk_GamHistosFill(string dataset = "X", string version = "w35f-small-etabins
 		  dataset=="2023Cv123X" || dataset=="2023Cv4X" || dataset=="2023DX" || //for my test wX23
 		  dataset=="2023B" || dataset=="2023Cv123" ||
 		  dataset=="2023Cv4" || dataset=="2023D" ||
-      dataset=="2024B" || dataset=="2024C" || dataset=="2024D" || dataset=="2024Ev1" || dataset=="2024Ev2" || dataset=="2024F" || dataset=="2024G" || dataset=="2024Gtest" ||
+      dataset=="2024B" || dataset=="2024C" || dataset=="2024D" || dataset=="2024Ev1" || dataset=="2024Ev2" || 
+			dataset=="2024F" || dataset=="2024Fa" || dataset=="2024Fb" || dataset=="2024Fc" || dataset=="2024Fd" || 
+			dataset=="2024G" || dataset=="2024Ga" || dataset=="2024Gb" || dataset=="2024Gc" || dataset=="2024Gd" || dataset=="2024Gtest" ||
 									dataset=="2024B-ECALRATIO" || dataset=="2024C-ECALRATIO" || dataset=="2024C-ECALR-HCALDI" || dataset=="2024C-ECALCC-HCALDI" ||
                   dataset=="2024B-PromptReco-v1");
 
@@ -141,7 +152,8 @@ void mk_GamHistosFill(string dataset = "X", string version = "w35f-small-etabins
   
   if (addData) {
     ifstream fin(runLocal ? Form("input_files/dataFiles_local_Run%s.txt",dataset.c_str()) : 
-		 Form("input_files/dataFiles_Run%s.txt",dataset.c_str()), ios::in);
+		Form("input_files/dataFiles_Run%s.txt",dataset.c_str()), ios::in);
+		//Form("input_files/dataFiles_Run%s.txt",inputlist.c_str()), ios::in);
     string filename;
     cout << "Chaining data files:" << endl << flush;
     int nFiles(0), nFilesMax(827);//9999);
