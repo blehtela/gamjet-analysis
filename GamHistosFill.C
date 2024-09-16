@@ -703,11 +703,11 @@ void GamHistosFill::Loop()
 
   // Load pileup JSON
   //parsePileUpJSON("files/pileup_ASCII_UL16-UL18.txt");
-	parsePileUpJSON("files/pu_2024BCDEFG_w36.txt"); //currently on status of w36
+	/// parsePileUpJSON("files/pu_2024BCDEFG_w36.txt"); //currently on status of w36 COMMENT OUT FOR w36... ADD for W37
 
 
   // Load pileup profiles
-  LoadPU();
+  LoadPU(); //in use for w37
 
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
@@ -2586,23 +2586,24 @@ void GamHistosFill::Loop()
     assert(itrg>0 || !pass_trig);
 
     // Reweight MC pileup (except for 22-23)
-    if (isMC && pass_trig && !isRun3) {
-      TH1D *hm = _pu[dataset][1]; assert(hm);
-      TH1D *hd = _pu[sera][itrg];
+    //if (isMC && pass_trig && !isRun3) { //previously (before w37)
+    if (isMC && pass_trig && is24) { //now also for Run3 (only 2024 so far)
+      TH1D *hm = _pu[dataset][1]; assert(hm); //_pu contains pileup histograms; dataset is just the mc name here (?)
+      TH1D *hd = _pu[sera][itrg]; //check format in which "itrg" //sera for example "2024"
       if (!hd) cout << "Missing _pu[sera="<<sera<<"][itrg="<<itrg<<"]"
 		    << endl << flush;
       assert(hd);
       assert(hm->GetNbinsX()==hd->GetNbinsX());
       int k = hm->FindBin(Pileup_nTrueInt);
       assert(hm->GetBinLowEdge(k)==hd->GetBinLowEdge(k));
-      double nm  = hm->GetBinContent(k);
+      double nm  = hm->GetBinContent(k); // 
       assert(nm>0); // should never get here if hm made from fullMC
-      double nd  = hd->GetBinContent(k);
-      double wt = (nm>0 ? nd / nm : 0);
+      double nd  = hd->GetBinContent(k); //
+      double wt = (nm>0 ? nd / nm : 0); // divide pu from data by pu from mc --> this will be the weight
       w *= wt;
     }
     // Normalize data luminosity (except for 22-23)
-    if (!isMC && pass_trig && !isRun3) {
+    if (!isMC && pass_trig && !isRun3) { // i think i did this somewhere else already
       double lumi = _lumi[sera][itrg];
       assert(lumi>0);
       w *= 1./lumi;
@@ -3834,7 +3835,7 @@ void GamHistosFill::LoadPU() {
 
   string eras[] =
 		{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", //data
-			"winter2024P8", "2024QCD"}//mc
+			"winter2024P8", "2024QCD"};//mc
 /*
     {"2016P8","2016APVP8","2016P8APV","2017P8", "2018P8",
      "2016QCD","2016APVQCD","2016QCDAPV","2017QCD", "2018QCD",
@@ -3910,35 +3911,36 @@ void GamHistosFill::LoadPU() {
   trigs["2024"].push_back("HLT_Photon200");
 
 
-/*
 	//update way of doing this, have all pileup histos in one file
-	TFile *fpu = new TFile("files/pileup-histos_2024_w36.root", "RECREATE"); //need to update this manually for now, together with new JSON
-  assert(fmc && !fmc->IsZombie());
+	TFile *fpu = new TFile("files/pileup-histos_2024_w36.root", "READ"); //need to update this manually for now, together with new JSON
+  assert(fpu && !fpu->IsZombie());
 
-  for (int i = 0; i != neras; ++i) {
+  for (int i = 0; i != neras; ++i) {//here "era" can also just mean year... but technically can be done per era as key in  map
     string se = eras[i]; const char *ce = se.c_str();
     for (unsigned int j = 0; j != trigs[se].size(); ++j) { //go through all triggers (j) of that era (se)
-      string st = trigs[se][j]; const char *ct = st.c_str();
+      string st = trigs[se][j]; const char *ct = st.c_str(); //st = "string trigger", ct = "char trigger" (rename for clarity...)
 
       // Read trigger threshold from trigger name
       int itrg(0);
       if (st=="mc") itrg = 1;	//for mc samples
-      else sscanf(ct,"HLT_Photon%d*",&itrg); //for data
+      else sscanf(ct,"HLT_Photon%d*",&itrg); //for data 
+			// sscanf reads e.g. "50EB_TightID_TightIso" into itrg -- not sure why we do it this way instead of using full trigger name....
+			// doesn't this read more than just the treshold? doesn't look like it's getting trunkated anywhere, 
+			//but maybe reading stops when number is over as we use %d
       
-      TFile *fdt(0);
-      TH1D *h(0);
-      if (st=="mc") {
-				h = (TH1D*)fmc->Get(Form("pileup_%s",ce));
+      //TFile *fdt(0); //not needed, have all pu histos in one file now
+      TH1D *h(0); 		//store pu histo into this variable
+      if (st=="mc") { //when working with mc set, called trigger "mc"
+				h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc?
 				if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
 				assert(h);
       }
-      else {
-				// data files from Laura (on CERNbox)
-				//fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ");
-				//created new ones:
-				fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ"); //ce=era, ct=trigger
-				assert(fdt && !fdt->IsZombie());
-				h = (TH1D*)fdt->Get("pileup");
+      else { //data pu histograms now stored in same file as mc pu histos (here: fpu)
+				//use pu histo file: fpu, but could keep them also separately as alternative?
+				//fdt = new TFile(Form("pileup/%s/pu_%s.root",ce,ct),"READ"); //ce=era, ct=trigger
+				//assert(fdt && !fdt->IsZombie());
+				//h = (TH1D*)fdt->Get("pileup");
+				h = (TH1D*)fpu->Get(Form("pileup_%s_%s",ce,ct)); //era should now be individual era, not 2024, but 2024F etc... //ok no, era should be 2024, since that's what will be used when using _pu later.
 				assert(h);
       }
       assert(h);
@@ -3959,10 +3961,10 @@ void GamHistosFill::LoadPU() {
   fpu->Close();
   cout << endl << flush;
 
-*/
 
 
-
+// OLD PU REWEIGHTING (Load PU)
+/*
   // files/pileup.root updated with tchain.C on Hefaistos
   TFile *fmc = new TFile("files/pileup_mc_2024.root","READ"); //contains pileup histograms for MC. NEED TO CREATE THIS, wrote GamHistosPileup.C for it, did QCD and GJ extra, should do one with ALL eras and mc for 2024.
   assert(fmc && !fmc->IsZombie());
@@ -4010,6 +4012,7 @@ void GamHistosFill::LoadPU() {
   } // for i in eras
   fmc->Close();
   cout << endl << flush;
+*/
 
   return;
 } // LoadPU
