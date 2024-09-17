@@ -74,7 +74,7 @@ void GamHistosRatio(string ver = "w36") {
   //GamHistosRatios(ver,"2023Cv4");
   //GamHistosRatios(ver,"2023D");
 
-/*
+
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
   GamHistosRatios(ver,"2024D");
@@ -114,12 +114,13 @@ void GamHistosRatio(string ver = "w36") {
 	//GamHistosRatios(ver, "2024BC-ECALRATIO");
 
 
+/*
   GamHistosRatios(ver, "2024C-ECALR-HCALDI");
 
   GamHistosRatios(ver, "2024C-ECALCC-HCALDI");
 */
 
-	GamHistosRatios(ver,"2024F");
+	//GamHistosRatios(ver,"2024F");
 
   //GamHistosRatios(ver,"2023Cv4D");
   //GamHistosRatios(ver,"Run3");
@@ -265,8 +266,8 @@ void GamHistosRatios(string ver, string iov) {
 						iov=="2024BC" || iov=="2024BCD" || iov=="2024BCDE" || iov=="2024BCDEF" || iov=="2024BCDEFG" ||
 						iov=="2024BCDEv1" || iov=="2024BC-ECALRATIO" ||
 						iov=="2024B-ECALRATIO" || iov=="2024C-ECALRATIO" || iov=="2024C-ECALR-HCALDI" || iov=="2024C-ECALCC-HCALDI") { //BPix issue, for now use this also for early 2024 data
-        //fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
-				fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%sf-small-etabins.root",ci,cv),"READ");
+        fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
+				//fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%sf-small-etabins.root",ci,cv),"READ");
 
 
 				// MC and output file when QCD in the Mix
