@@ -580,7 +580,9 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
 	//mc2024
-  if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
+  if (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
+			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" ||
+			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
   //data2024
@@ -645,7 +647,8 @@ void GamHistosFill::Loop()
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
   if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd") sera = "2024";
-  if (ds=="winter2024P8" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
+  if (ds=="winter2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
+			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
 
   // Load JSON files
@@ -703,11 +706,15 @@ void GamHistosFill::Loop()
 
   // Load pileup JSON
   //parsePileUpJSON("files/pileup_ASCII_UL16-UL18.txt");
-	/// parsePileUpJSON("files/pu_2024BCDEFG_w36.txt"); //currently on status of w36 COMMENT OUT FOR w36... ADD for W37
+	//parsePileUpJSON("files/pu_2024BCDEFG_w36.txt"); //currently on status of w36 COMMENT OUT FOR w36... ADD for W37
+	parsePileUpJSON("files/pu_2024BCDEFG_w36.txt"); //combined pileup json for all eras. Still using w36, misses newest part G data.
+
 
 
   // Load pileup profiles
-  LoadPU(); //in use for w37
+  //LoadPU(); //in use for w37
+	LoadPU(); //in use for w38 (switched off for w38puoff)
+
 
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
@@ -800,6 +807,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024G") || //should include Ga, Gb, Gc, Gd
         TString(ds.c_str()).Contains("2024Gtest") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
+        TString(ds.c_str()).Contains("winter2024P8-test") || 
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
@@ -942,7 +950,7 @@ void GamHistosFill::Loop()
 		       nht_gam,vht_gam);
     hHT = new TH1D("hHT",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
 
-    // Reference number of events, retrieved manuallay with
+    // Reference number of events, retrieved manually with
     // TChain c("Events"); c.AddFile("<path to files>/*.root"); c.GetEntries();
     // Also re-calculated this code before event loop when needed
     //int vnevt[nht] = {0, 0, 11197186, 23002929, 17512439, 16405924, 14359110,
@@ -1031,7 +1039,7 @@ void GamHistosFill::Loop()
        nMG_qcd += vnevt[i];
        wMG_qcd += vnwgt[i];
      }
-     cout << "Loaded Hefaistos MadGraph event numbers ("
+     cout << "Loaded Hefaistos/Vulcan MadGraph event numbers ("
 	  << nMG_qcd << ")" << endl << flush;
      
      // xsec from jetphys/settings.h_template
@@ -1308,6 +1316,17 @@ void GamHistosFill::Loop()
   TH2D *h2r9vspt = new TH2D("h2r9vspt","",nx,vx,150,0.90,1.05);
   TProfile *pr9vspt = new TProfile("pr9vspt","",nx,vx);
 
+
+	//more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
+	fout->mkdir("pileup");
+	fout->cd("pileup");
+  TH1D *h_mu = new TH1D("h_mu","",120,0,120);
+  TH1D *h_rho = new TH1D("h_rho","",120,0,120);
+	TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
+	TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
+
+	fout->cd("control"); //go back to one directory before
+
 	//new (w27+w28): 2D plots for gain vs pt and eta (nx = #xbins, vx = pt-xbins, ny=#ybins, vy=eta-ybins)
 	//changed to narrower eta-bins called veta, #bins=nveta
   TProfile2D *pgain1vsptvseta = new TProfile2D("pgain1vsptvseta","",nx,vx,nveta,veta);
@@ -1323,6 +1342,9 @@ void GamHistosFill::Loop()
 	//TH2D *h2mpf110_jetetaphi = new TH2D("h2mpf110_jetetaphi", ";#eta;#phi;MPF110", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
  	TProfile2D *p2bal200_jetetaphi = new TProfile2D("p2bal200_jetetaphi", ";#eta_{j1};#phi_{j1};BAL200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
 	//TH2D *h2mpf200_jetetaphi = new TH2D("h2mpf110_jetetaphi", ";#eta;#phi;MPF200", nveta, veta, 72, -TMath::Pi(), TMath::Pi());
+
+
+	
 
 
 /*
@@ -2586,19 +2608,31 @@ void GamHistosFill::Loop()
     assert(itrg>0 || !pass_trig);
 
     // Reweight MC pileup (except for 22-23)
-    //if (isMC && pass_trig && !isRun3) { //previously (before w37)
+    //if (isMC && pass_trig && !isRun3) { //previously (before w37), used for w38puoff
     if (isMC && pass_trig && is24) { //now also for Run3 (only 2024 so far)
-      TH1D *hm = _pu[dataset][1]; assert(hm); //_pu contains pileup histograms; dataset is just the mc name here (?)
-      TH1D *hd = _pu[sera][itrg]; //check format in which "itrg" //sera for example "2024"
-      if (!hd) cout << "Missing _pu[sera="<<sera<<"][itrg="<<itrg<<"]"
+			string mctype;
+			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
+			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
+			TH1D *hm = _pu[mctype][1]; //workaround since working with split input file lists; use one mc histo for all bins
+			//hm->Write(Form("input_pileup_normalised_%s",mctype.c_str())); //just for checking
+
+      //TH1D *hm = _pu[dataset][1]; //assert(hm); //_pu contains pileup histograms; dataset is just the mc name here (?)
+			if (!hm) cout << "\nissue with _pu[dataset="<<dataset<<"][1]" << endl << flush;
+			assert(hm);
+      //TH1D *hd = _pu[sera][itrg]; //check format in which "itrg" //sera for example "2024"
+      TH1D *hd = _pu["2024F"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
+			//hd->Write(Form("input_pileup_normalised_%s","2024F_50"));//just for checking
+
+      //if (!hd) cout << "Missing _pu[sera="<<sera<<"][itrg="<<itrg<<"]"
+			if (!hd) cout << "Missing _pu[sera="<<"2024F"<<"][itrg="<<itrg<<"]"
 		    << endl << flush;
       assert(hd);
-      assert(hm->GetNbinsX()==hd->GetNbinsX());
-      int k = hm->FindBin(Pileup_nTrueInt);
-      assert(hm->GetBinLowEdge(k)==hd->GetBinLowEdge(k));
-      double nm  = hm->GetBinContent(k); // 
+      assert(hm->GetNbinsX()==hd->GetNbinsX()); //checks that mc and data hist have same number of pu bins
+      int k = hm->FindBin(Pileup_nTrueInt); //find bin where pu is same as Pileup_nTrueInt (= simulated no. of pu for THIS event)
+      assert(hm->GetBinLowEdge(k)==hd->GetBinLowEdge(k)); //check that same binning for data and mc
+      double nm  = hm->GetBinContent(k); //get number of events with this pu amount?!
       assert(nm>0); // should never get here if hm made from fullMC
-      double nd  = hd->GetBinContent(k); //
+      double nd  = hd->GetBinContent(k); //get number of data events with this pu number?
       double wt = (nm>0 ? nd / nm : 0); // divide pu from data by pu from mc --> this will be the weight
       w *= wt;
     }
@@ -3504,10 +3538,10 @@ void GamHistosFill::Loop()
 	    for (int i=0; i!=100; ++i) {
 	      double mu = gRandom->Gaus(Pileup_nTrueInt,TruePUrms);
 	      if (ptgam>=105 && ptgam<230)
-		hmus->Fill(mu, 0.01*w);
-	      h2mus->Fill(ptgam, mu, 0.01*w);
+					hmus->Fill(mu, 0.01*w);
+	      	h2mus->Fill(ptgam, mu, 0.01*w);
 	    } // for i in 100
-	  } // is MC
+	  } // is MC (?? looks more like "if not isMC")
 	  //if (ptgam>=130 && ptgam<175) {
 	  //if ((is16 && ptgam>175) ||
 	  //  (is17 && ptgam>230) ||
@@ -3547,10 +3581,19 @@ void GamHistosFill::Loop()
 	    h2r9vspt->Fill(ptgam, Photon_r9[iGam], w);
 	    pr9vspt->Fill(ptgam, Photon_r9[iGam], w);
 	  }
+
 	  pmuvspt->Fill(ptgam, Pileup_nTrueInt, w);
 	  prhovspt->Fill(ptgam, fixedGridRhoFastjetAll, w);
 	  pnpvgoodvspt->Fill(ptgam, PV_npvsGood, w);
 	  pnpvallvspt->Fill(ptgam, PV_npvs, w);
+
+		//more pileup stuff (introduced in w38); number of events over mu,rho,NPVall,NPVgood
+	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
+	  h_rho->Fill(fixedGridRhoFastjetAll, w);
+	  h_npvgood->Fill(PV_npvsGood, w);
+	  h_npvall->Fill(PV_npvs, w);
+
+
 	} // barrel
       } // basic_ext cuts
       
@@ -3828,14 +3871,17 @@ bool GamHistosFill::LoadJSON(string json)
   return true;
 } // LoadJSON
 
-void GamHistosFill::LoadPU() {
+//void GamHistosFill::LoadPU(TFile* fout) { //will use output file only to keep track of input pu dists
+void GamHistosFill::LoadPU(){
 
   cout << endl << "GamHistosFill::LoadPU" << endl << flush;
   TDirectory *curdir = gDirectory;
 
-  string eras[] =
-		{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", //data
-			"winter2024P8", "2024QCD"};//mc
+  string eras[] = {"2024F", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //"winter2024P8-test"};// testing //have no overall "2024" so far.
+
+		//{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", //data
+		//	"winter2024P8", "2024QCD"};//mc
 /*
     {"2016P8","2016APVP8","2016P8APV","2017P8", "2018P8",
      "2016QCD","2016APVQCD","2016QCDAPV","2017QCD", "2018QCD",
@@ -3898,21 +3944,28 @@ void GamHistosFill::LoadPU() {
 
 	//comment out the once for which I haven't produced a pileup histogram yet
   trigs["winter2024P8"].push_back("mc"); //photon mc
+  trigs["winter2024P8a"].push_back("mc"); //photon mc - not needed, only main one
+  trigs["winter2024P8b"].push_back("mc"); //photon mc
+  trigs["winter2024P8c"].push_back("mc"); //photon mc
+  trigs["winter2024P8-v14"].push_back("mc"); //photon mc
+  trigs["winter2024P8-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc
   //trigs["2024"].push_back("HLT_Photon20_HoverELoose");
   //trigs["2024"].push_back("HLT_Photon30_HoverELoose");
-  trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
+
+  ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs["2024"].push_back("HLT_Photon50_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon75_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon90_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon100EBHE10");
-  trigs["2024"].push_back("HLT_Photon110EB_TightID_TightIso");
-  trigs["2024"].push_back("HLT_Photon200");
+  ////trigs["2024"].push_back("HLT_Photon110EB_TightID_TightIso");
+  ////trigs["2024"].push_back("HLT_Photon200");
 
 
 	//update way of doing this, have all pileup histos in one file
-	TFile *fpu = new TFile("files/pileup-histos_2024_w36.root", "READ"); //need to update this manually for now, together with new JSON
+	TFile *fpu = new TFile("pileup_mc_data2024F_w37.root", "READ"); //need to update this manually for now, together with new JSON
   assert(fpu && !fpu->IsZombie());
 
   for (int i = 0; i != neras; ++i) {//here "era" can also just mean year... but technically can be done per era as key in  map
@@ -3941,21 +3994,30 @@ void GamHistosFill::LoadPU() {
 				//assert(fdt && !fdt->IsZombie());
 				//h = (TH1D*)fdt->Get("pileup");
 				h = (TH1D*)fpu->Get(Form("pileup_%s_%s",ce,ct)); //era should now be individual era, not 2024, but 2024F etc... //ok no, era should be 2024, since that's what will be used when using _pu later.
+				if (!h) cout << "Failed to find pileup_"<<ce<<"_"<<ct<<endl<<flush;
 				assert(h);
       }
       assert(h);
 
       curdir->cd();
-      h = (TH1D*)h->Clone(Form("pileup_%s_%s",ce,ct)); //for example: pileup_2024G_HLT_Photon50EB_TightID_TightIso
+      h = (TH1D*)h->Clone(Form("pileup_%s_%s",ce,ct)); //for example: pileup_2024G_HLT_Photon50EB_TightID_TightIso (need ";1" in end, should get rid of this)
+			//is this a problem? might get pileup_winter2024P8_mc ?
+
+			//NORMALISING THE HISTOGRAM (same for data, mc)
       double lumi = h->Integral();
-      h->Scale(1./lumi);
-      _pu[se][itrg] = h;
+      h->Scale(1./lumi); //wasn't data scaled already?
+      _pu[se][itrg] = h; //how would this ever lead to se=2024 (or se=2024F) and itrg=1
       _lumi[se][itrg] = lumi;
+
+			//for some cross-checks, write normalised histo to file
+			//fout->cd("control/pileup");
+			//h->Write(Form("input_pileup_normalised_%s",ce));
+			//fout->cd();
 
       cout << Form("%s/%s (%d): %1.3g %s\n",ce,ct,itrg,
 		   lumi,st=="mc" ? "events" : "fb-1");
 
-      if (fdt) fdt->Close();
+      //if (fdt) fdt->Close();
     } // for j in trigs
   } // for i in eras
   fpu->Close();
