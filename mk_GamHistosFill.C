@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string version = "w36") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string version = "w38") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -94,7 +94,9 @@ void mk_GamHistosFill(string dataset = "X", string version = "w36") { //using w-
                 dataset=="2023P8X" || dataset=="2023P8-BPixX"|| //for my test wX23
 		dataset=="2023P8" || //);// || dataset=="2023QCD");
   		dataset=="2023P8-BPix" || //added the BPix MC files
-  		dataset=="winter2024P8" || dataset=="winter2024P8-v14"); //winter 2024 madgraph p8 (added on 07.08.2024)
+  		dataset=="winter2024P8" || dataset=="winter2024P8-test" || 
+			dataset=="winter2024P8-v14" || //winter 2024 madgraph p8 (added on 07.08.2024)
+			dataset=="winter2024P8a" || dataset=="winter2024P8b" || dataset=="winter2024P8c"); //winter 2024 madgraph p8 (added on 07.08.2024)
 
 
   bool addQCD = (dataset=="2016QCD" || dataset=="2016APVQCD" || 
@@ -102,7 +104,9 @@ void mk_GamHistosFill(string dataset = "X", string version = "w36") { //using w-
 		 dataset=="2022QCD" || dataset=="2022EEQCD" ||
                  dataset=="2023QCDX" || dataset=="2023QCD-BPixX" || //for my test wX23
 		 dataset=="2023QCD" || dataset=="2023QCD-BPix" ||  //added BPix QCD MC
-		 dataset=="2024QCD" || dataset=="2024QCD-v14"); //added BPix QCD MC
+		 dataset=="2024QCD" || dataset=="2024QCD-v14" || //); //added BPix QCD MC
+		dataset=="2024QCDa" || dataset=="2024QCDb" || dataset=="2024QCDc" || dataset=="2024QCDd" || 
+		dataset=="2024QCDe" || dataset=="2024QCDf"); //these do use v14 puppi despite not in name here
 
 
   //cout << "Clean old shared objects and link files" << endl << flush;
