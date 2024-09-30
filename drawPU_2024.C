@@ -36,8 +36,8 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
   //string iovs[] = {"2024E", "2024F", "winter2024P8"};  // soon!! 
 	//string iovs[] = {"2024F", "winter2024P8"}; 
 	//string iovs[] = {"2024E", "winter2024P8"}; 
-	string iovs[] = {"2024D", "winter2024P8"}; 
-	string dataera = "2024D";
+	string iovs[] = {"2024F", "winter2024P8"}; 
+	string dataera = "2024F";
 	string mcera = "winter2024P8";
 
 	//string reweighted_mc = "w37";
@@ -67,10 +67,10 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
 
 	//different ymax used for plotting different variables, depending on name (but fixed to easily compare eras)
 	map<string,double> mymax;
-	mymax["Rho"] = 0.06;
-	mymax["NPVgood"] = 0.06;
-	mymax["NPVall"] = 0.06;
-	mymax["Mu"] = 0.07;
+	mymax["Rho"] = 0.062;
+	mymax["NPVgood"] = 0.063;
+	mymax["NPVall"] = 0.063;
+	mymax["Mu"] = 0.087; //for F needed to fix this at higher y...
 
  
   
