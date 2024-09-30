@@ -1,4 +1,5 @@
-//My script created for pileup investigations during autumn 2024.
+// My script created for pileup investigations during autumn 2024.
+// Created by Bettina Lehtelä, September 2024.
 #include "TFile.h"
 #include "TH1D.h"
 #include "TProfile.h"
