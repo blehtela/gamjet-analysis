@@ -607,7 +607,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
 	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024G" || ds=="2024Gtest" || 
-			ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+			ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
@@ -646,7 +646,7 @@ void GamHistosFill::Loop()
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
-  if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd") sera = "2024";
+  if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") sera = "2024";
   if (ds=="winter2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
@@ -696,7 +696,9 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to383448_DCSRuns_378981to378985_383449to384128_.json"); //hybrid json --> w32 (07.08.2024) and w33 (11.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to383724_DCSRuns_383740to378981_383725to384491_.json"); //hybrid json --> w34 (16.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to384052_DCSRuns_378981to378985_384053to384614_.json"); //hybrid json --> w35 (19.08.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024) and onwards
+		LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
+
 
 //TO DO: update JSON
 
@@ -2620,11 +2622,14 @@ void GamHistosFill::Loop()
 			if (!hm) cout << "\nissue with _pu[dataset="<<dataset<<"][1]" << endl << flush;
 			assert(hm);
       //TH1D *hd = _pu[sera][itrg]; //check format in which "itrg" //sera for example "2024"
-      TH1D *hd = _pu["2024F"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
+      ////TH1D *hd = _pu["2024F"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
+      //TH1D *hd = _pu["2024E"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
+      TH1D *hd = _pu["2024D"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
+
 			//hd->Write(Form("input_pileup_normalised_%s","2024F_50"));//just for checking
 
       //if (!hd) cout << "Missing _pu[sera="<<sera<<"][itrg="<<itrg<<"]"
-			if (!hd) cout << "Missing _pu[sera="<<"2024F"<<"][itrg="<<itrg<<"]"
+			if (!hd) cout << "Missing _pu[sera="<<"2024D"<<"][itrg="<<itrg<<"]"
 		    << endl << flush;
       assert(hd);
       assert(hm->GetNbinsX()==hd->GetNbinsX()); //checks that mc and data hist have same number of pu bins
@@ -3877,7 +3882,9 @@ void GamHistosFill::LoadPU(){
   cout << endl << "GamHistosFill::LoadPU" << endl << flush;
   TDirectory *curdir = gDirectory;
 
-  string eras[] = {"2024F", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024F", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024E", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  string eras[] = {"2024D", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
   //"winter2024P8-test"};// testing //have no overall "2024" so far.
 
 		//{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", //data
@@ -3955,7 +3962,9 @@ void GamHistosFill::LoadPU(){
 
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024D"].push_back("HLT_Photon50EB_TightID_TightIso");
+  //trigs["2024E"].push_back("HLT_Photon50EB_TightID_TightIso");
+  //trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs["2024"].push_back("HLT_Photon50_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon75_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon90_R9Id90_HE10_IsoM");
@@ -3964,8 +3973,12 @@ void GamHistosFill::LoadPU(){
   ////trigs["2024"].push_back("HLT_Photon200");
 
 
-	//update way of doing this, have all pileup histos in one file
-	TFile *fpu = new TFile("pileup_mc_data2024F_w37.root", "READ"); //need to update this manually for now, together with new JSON
+	//update way of doing this, have all pileup histos in one file (TO DO)
+	///TFile *fpu = new TFile("pileup_mc_data2024F_w37.root", "READ"); //need to update this manually for now, together with new JSON
+	//TFile *fpu = new TFile("pileup_mc_data2024E_w38.root", "READ"); //need to update this manually for now, together with new JSON
+	TFile *fpu = new TFile("pileup_mc_data2024D_w38.root", "READ"); //need to update this manually for now, together with new JSON
+
+
   assert(fpu && !fpu->IsZombie());
 
   for (int i = 0; i != neras; ++i) {//here "era" can also just mean year... but technically can be done per era as key in  map
