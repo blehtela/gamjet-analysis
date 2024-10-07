@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string version = "w38") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string version = "w38golden-g") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -83,7 +83,7 @@ void mk_GamHistosFill(string dataset = "X", string version = "w38") { //using w-
 		  dataset=="2023Cv4" || dataset=="2023D" ||
       dataset=="2024B" || dataset=="2024C" || dataset=="2024D" || dataset=="2024Ev1" || dataset=="2024Ev2" || 
 			dataset=="2024F" || dataset=="2024Fa" || dataset=="2024Fb" || dataset=="2024Fc" || dataset=="2024Fd" || 
-			dataset=="2024G" || dataset=="2024Ga" || dataset=="2024Gb" || dataset=="2024Gc" || dataset=="2024Gd" || dataset=="2024Gtest" ||
+			dataset=="2024G" || dataset=="2024Ga" || dataset=="2024Gb" || dataset=="2024Gc" || dataset=="2024Gd" || dataset=="2024Ge" || dataset=="2024Gtest" ||
 									dataset=="2024B-ECALRATIO" || dataset=="2024C-ECALRATIO" || dataset=="2024C-ECALR-HCALDI" || dataset=="2024C-ECALCC-HCALDI" ||
                   dataset=="2024B-PromptReco-v1");
 
