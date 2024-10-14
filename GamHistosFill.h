@@ -386,9 +386,9 @@ public :
    TBranch        *b_RawPuppiMET_sumEt;   //!
 
    TBranch        *b_fixedGridRhoFastjetAll;   //!
-  //TBranch        *b_fixedGridRhoFastjetCentral;   //!
+   TBranch        *b_fixedGridRhoFastjetCentral;   //!
   //TBranch        *b_fixedGridRhoFastjetCentralCalo;   //!
-  //TBranch        *b_fixedGridRhoFastjetCentralChargedPileUp;   //!
+   TBranch        *b_fixedGridRhoFastjetCentralChargedPileUp;   //!
   //TBranch        *b_fixedGridRhoFastjetCentralNeutral;   //!
 
    TBranch        *b_nTrigObj;   //!
