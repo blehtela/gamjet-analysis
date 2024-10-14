@@ -334,6 +334,8 @@ void GamHistosFill::Loop()
       fChain->SetBranchStatus("fixedGridRhoFastjetAll",1);
     if (isRun3)
       fChain->SetBranchStatus("Rho_fixedGridRhoFastjetAll",1);
+      fChain->SetBranchStatus("fixedGridRhoFastjetCentral",1); //new w39
+      fChain->SetBranchStatus("fixedGridRhoFastjetCentralChargedPileUp",1); //new w39
       //fChain->SetBranchStatus("Rho_fixedGridRhoAll",1);
     fChain->SetBranchStatus("PV_npvs",1);
     fChain->SetBranchStatus("PV_npvsGood",1);
@@ -1332,6 +1334,8 @@ void GamHistosFill::Loop()
 	fout->cd("pileup");
   TH1D *h_mu = new TH1D("h_mu","",120,0,120);
   TH1D *h_rho = new TH1D("h_rho","",120,0,120);
+  TH1D *h_rho_central = new TH1D("h_rho_central","",120,0,120);
+  TH1D *h_rho_central_charged_pu = new TH1D("h_rho_central-charged-pu","",120,0,120);
 	TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
 	TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
 
@@ -3064,6 +3068,15 @@ void GamHistosFill::Loop()
 		///h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
+
+		//for pileup investigations (could add this also for other triggers):
+	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
+	  h_rho->Fill(fixedGridRhoFastjetAll, w);
+		h_rho_central->Fill(fixedGridRhoFastjetCentral, w); //w39
+		h_rho_central_charged_pu->Fill(fixedGridRhoFastjetCentralChargedPileUp, w); //w39
+	  h_npvgood->Fill(PV_npvsGood, w);
+	  h_npvall->Fill(PV_npvs, w);
+
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
 	  pr110n->Fill(run, w);
@@ -3601,10 +3614,15 @@ void GamHistosFill::Loop()
 	  pnpvallvspt->Fill(ptgam, PV_npvs, w);
 
 		//more pileup stuff (introduced in w38); number of events over mu,rho,NPVall,NPVgood
+		//template below, should be per trigger!! (remember pT cuts)
+/*
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
 	  h_rho->Fill(fixedGridRhoFastjetAll, w);
+		h_rho_central->Fill(fixedGridRhoFastjetCentral, w); //w39
+		h_rho_central_charged_pu->Fill(fixedGridRhoFastjetCentralChargedPileUp, w); //w39
 	  h_npvgood->Fill(PV_npvsGood, w);
 	  h_npvall->Fill(PV_npvs, w);
+*/
 
 
 	} // barrel
