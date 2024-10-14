@@ -704,7 +704,8 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to383724_DCSRuns_383740to378981_383725to384491_.json"); //hybrid json --> w34 (16.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to384052_DCSRuns_378981to378985_384053to384614_.json"); //hybrid json --> w35 (19.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024) and onwards
-		LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
+		//LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
 
 
 //TO DO: update JSON
