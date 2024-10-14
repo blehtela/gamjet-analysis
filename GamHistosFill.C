@@ -1332,7 +1332,7 @@ void GamHistosFill::Loop()
 	//more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
 	fout->mkdir("pileup");
 	fout->cd("pileup");
-  TH1D *h_mu = new TH1D("h_mu","",120,0,120);
+  TH1D *h_mu = new TH1D("h_mu","",120,0,120); //use LoadPUJSON
   TH1D *h_rho = new TH1D("h_rho","",120,0,120);
   TH1D *h_rho_central = new TH1D("h_rho_central","",120,0,120);
   TH1D *h_rho_central_charged_pu = new TH1D("h_rho_central-charged-pu","",120,0,120);
