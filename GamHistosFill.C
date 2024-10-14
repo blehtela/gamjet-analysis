@@ -589,7 +589,8 @@ void GamHistosFill::Loop()
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
   //if (ds.Contains("2024B-PromptReco-v1") || ds.Contains("2024B") || ds.Contains("2024C") || ds.Contains("2024D")) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
 
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 onwards (16.08.2024), V5M
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 onwards (14.10.2024), V6M
+			//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 onwards (16.08.2024), V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
@@ -599,19 +600,23 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
   if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
 	}
 	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //|| ds=="2024C-ECALR-HCALDI" ) { //for first 2024 re-reco data, 1st rereco
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
-	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024G" || ds=="2024Gtest" || 
-			ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
+	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
 	}
+	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
+  } 
 	if (ds=="2024C-ECALR-HCALDI" || ds=="2024C-ECALCC-HCALDI") { //for second and third 2024 re-reco data, adjusted in w35
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
 	}
@@ -721,11 +726,12 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
 	//w32 also used for w33
+	//update lumi last on 07.10.2024
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w36.csv"); //w34
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w36.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w36.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w36.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w39.csv");
+	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w39.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w39.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w39.csv");
 
 
 
