@@ -810,7 +810,8 @@ void GamHistosFill::Loop()
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
       //fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
-				fjv = new TFile("files/jetveto2024BCDE.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
+			//fjv = new TFile("files/jetveto2024BCDE.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
+				fjv = new TFile("files/jetveto2024BCDE_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
     if (TString(ds.c_str()).Contains("2024F") || //should include Fa, Fb, Fc, Fd
         TString(ds.c_str()).Contains("2024G") || //should include Ga, Gb, Gc, Gd
         TString(ds.c_str()).Contains("2024Gtest") ||
@@ -819,7 +820,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
-        fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
+        //fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
+				fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
