@@ -616,7 +616,9 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
 	}
-	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
+		ds=="2024H" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He" ||
+		ds=="2024I" || ds=="2024Itest" || ds=="2024Ia" || ds=="2024Ib" || ds=="2024Ic" || ds=="2024Id" || ds=="2024Ie") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
   } 
 	if (ds=="2024C-ECALR-HCALDI" || ds=="2024C-ECALCC-HCALDI") { //for second and third 2024 re-reco data, adjusted in w35
@@ -651,9 +653,10 @@ void GamHistosFill::Loop()
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" ||
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" || ds=="2024H" || ds=="2024I" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
-  if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") sera = "2024";
+  if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
+	ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024Ia" || ds=="2024Ib" || ds=="2024Ic" || ds=="2024Id" || ds=="2024Ie") sera = "2024";
   if (ds=="winter2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
@@ -818,6 +821,8 @@ void GamHistosFill::Loop()
     if (TString(ds.c_str()).Contains("2024F") || //should include Fa, Fb, Fc, Fd
         TString(ds.c_str()).Contains("2024G") || //should include Ga, Gb, Gc, Gd
         TString(ds.c_str()).Contains("2024Gtest") ||
+        TString(ds.c_str()).Contains("2024H") || //should include Ha, Hb, Hc, Hd
+        TString(ds.c_str()).Contains("2024I") || //should include Ia, Ib, Ic, Id
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         TString(ds.c_str()).Contains("winter2024P8-test") || 
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
@@ -3914,7 +3919,7 @@ void GamHistosFill::LoadPU(){
   string eras[] = {"2024D", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
   //"winter2024P8-test"};// testing //have no overall "2024" so far.
 
-		//{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", //data
+		//{"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", //data
 		//	"winter2024P8", "2024QCD"};//mc
 /*
     {"2016P8","2016APVP8","2016P8APV","2017P8", "2018P8",
