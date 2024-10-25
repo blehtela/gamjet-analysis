@@ -708,7 +708,9 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to384052_DCSRuns_378981to378985_384053to384614_.json"); //hybrid json --> w35 (19.08.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024) and onwards
 		//LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
+		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
+
 
 
 //TO DO: update JSON
@@ -732,12 +734,12 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
 	//w32 also used for w33
-	//update lumi last on 07.10.2024
+	//update lumi last on 25.10.2024 (w40)
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w39.csv");
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w39.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w39.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w39.csv");
+	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w40.csv");
+	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w40.csv");
+	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w40.csv");
+	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w40.csv");
 
 
 
