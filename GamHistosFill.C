@@ -2577,7 +2577,7 @@ void GamHistosFill::Loop()
 	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
 	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
-	 || (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
+	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 ))
        );
   
