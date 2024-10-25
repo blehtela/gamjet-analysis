@@ -151,6 +151,9 @@ public :
    Float_t         Photon_energyErr[nPhotonMax];
   
    Float_t         fixedGridRhoFastjetAll; // Run2,Run3
+   Float_t         Rho_fixedGridRhoFastjetAll; // Run2,Run3
+   Float_t         Rho_fixedGridRhoFastjetCentral; // Run2,Run3
+   Float_t         Rho_fixedGridRhoFastjetCentralChargedPileUp; // Run2,Run3
 
    //UInt_t          nTrigObj; // NanoV11,10
    //Int_t          nTrigObj; // NanoV12
@@ -783,11 +786,11 @@ void GamHistosFill::Init(TTree *tree)
    if (!isRun3)
      fChain->SetBranchAddress("fixedGridRhoFastjetAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
    if (isRun3)
-     fChain->SetBranchAddress("Rho_fixedGridRhoFastjetAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
+     fChain->SetBranchAddress("Rho_fixedGridRhoFastjetAll", &Rho_fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
      //fChain->SetBranchAddress("Rho_fixedGridRhoAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
-   		fChain->SetBranchAddress("fixedGridRhoFastjetCentral", &fixedGridRhoFastjetCentral, &b_fixedGridRhoFastjetCentral);
+   		fChain->SetBranchAddress("Rho_fixedGridRhoFastjetCentral", &Rho_fixedGridRhoFastjetCentral, &b_fixedGridRhoFastjetCentral);
    //fChain->SetBranchAddress("fixedGridRhoFastjetCentralCalo", &fixedGridRhoFastjetCentralCalo, &b_fixedGridRhoFastjetCentralCalo);
-   		fChain->SetBranchAddress("fixedGridRhoFastjetCentralChargedPileUp", &fixedGridRhoFastjetCentralChargedPileUp, &b_fixedGridRhoFastjetCentralChargedPileUp);
+   		fChain->SetBranchAddress("Rho_fixedGridRhoFastjetCentralChargedPileUp", &Rho_fixedGridRhoFastjetCentralChargedPileUp, &b_fixedGridRhoFastjetCentralChargedPileUp);
    //fChain->SetBranchAddress("fixedGridRhoFastjetCentralNeutral", &fixedGridRhoFastjetCentralNeutral, &b_fixedGridRhoFastjetCentralNeutral);
 
    //fChain->SetBranchAddress("nTrigObj", &nTrigObj, &b_nTrigObj);
