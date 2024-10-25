@@ -334,8 +334,8 @@ void GamHistosFill::Loop()
       fChain->SetBranchStatus("fixedGridRhoFastjetAll",1);
     if (isRun3)
       fChain->SetBranchStatus("Rho_fixedGridRhoFastjetAll",1);
-      fChain->SetBranchStatus("fixedGridRhoFastjetCentral",1); //new w39
-      fChain->SetBranchStatus("fixedGridRhoFastjetCentralChargedPileUp",1); //new w39
+      fChain->SetBranchStatus("Rho_fixedGridRhoFastjetCentral",1); //new w39
+      fChain->SetBranchStatus("Rho_fixedGridRhoFastjetCentralChargedPileUp",1); //new w39
       //fChain->SetBranchStatus("Rho_fixedGridRhoAll",1);
     fChain->SetBranchStatus("PV_npvs",1);
     fChain->SetBranchStatus("PV_npvsGood",1);
@@ -723,7 +723,7 @@ void GamHistosFill::Loop()
 
   // Load pileup profiles
   //LoadPU(); //in use for w37
-	LoadPU(); //in use for w38 (switched off for w38puoff)
+	//LoadPU(); //in use for w38 (switched off for w38puoff)
 
 
 
@@ -2623,8 +2623,8 @@ void GamHistosFill::Loop()
     assert(itrg>0 || !pass_trig);
 
     // Reweight MC pileup (except for 22-23)
-    //if (isMC && pass_trig && !isRun3) { //previously (before w37), used for w38puoff
-    if (isMC && pass_trig && is24) { //now also for Run3 (only 2024 so far)
+    if (isMC && pass_trig && !isRun3) { //previously (before w37), used for w38puoff
+    //if (isMC && pass_trig && is24) { //now also for Run3 (only 2024 so far)
 			string mctype;
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
@@ -3072,9 +3072,9 @@ void GamHistosFill::Loop()
 
 		//for pileup investigations (could add this also for other triggers):
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
-	  h_rho->Fill(fixedGridRhoFastjetAll, w);
-		h_rho_central->Fill(fixedGridRhoFastjetCentral, w); //w39
-		h_rho_central_charged_pu->Fill(fixedGridRhoFastjetCentralChargedPileUp, w); //w39
+	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w);
+		h_rho_central->Fill(Rho_fixedGridRhoFastjetCentral, w); //w39
+		h_rho_central_charged_pu->Fill(Rho_fixedGridRhoFastjetCentralChargedPileUp, w); //w39
 	  h_npvgood->Fill(PV_npvsGood, w);
 	  h_npvall->Fill(PV_npvs, w);
 
