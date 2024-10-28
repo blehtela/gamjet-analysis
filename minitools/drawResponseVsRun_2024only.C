@@ -4,6 +4,8 @@
 #include "TProfile.h"
 #include "TLatex.h"
 
+#include "TArrow.h" //for some reason started to throw error with forward declaration
+
 #include "../tdrstyle_mod22.C"
 
 // Clean
@@ -66,7 +68,7 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom);
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
+void drawResponseVsRun_2024only(string version = "w39w40", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
     //bool rereco = 1;
 
     //const char *cyear = year.c_str();
@@ -83,7 +85,8 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     
     if(rereco==0){
 	cout << "Looking at 2024 prompt data." << endl;
-    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    	//f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+			f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
     } //currently same as: GamHistosFill_data_2024BCDEF_w33.root
     else if(rereco==1){
 	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
@@ -149,11 +152,11 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     // Setup canvas
     //TH1D *h = tdrHist("h","Response",0.92,1.08,"Run",366000,381300); //should start later when dropping 2022 data (here some before 2023C)
     ///TH1D *h = tdrHist("h","Response",0.92,1.06,"Run",378900,382000); //2024 only (standard was to display from 0.92 to 1.08, now zooming in for 2024
-    TH1D *h = tdrHist("h","Response",0.92,1.06,"Run",378900,384360); //2024 only (standard was to display from 0.92 to 1.08, now zooming in for 2024
+    TH1D *h = tdrHist("h","Response",0.92,1.06,"Run",378900,387100); //2024 only (standard was to display from 0.92 to 1.08, now zooming in for 2024
 
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     //lumi_136TeV = Form("Photon+jet, Run 3 2024, %s",cv); //for 2024-only version
-    extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
+    //extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
 
     if(rereco==1){
 			lumi_136TeV = Form("Photon+jet, 2024 ECALRATIO, %s",cv);
@@ -165,8 +168,10 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     	lumi_136TeV = Form("Photon+jet, 2024only, %s",cv);
     }
 
-    extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
-		h->GetXaxis()->SetLabelSize(0.30);
+    ////extraText = "Private"; //would print it below CMS logo, but i want it to the right (save space)
+		//h->GetXaxis()->SetLabelSize(0.26);//
+		h->GetXaxis()->SetLabelSize(0.06);
+		h->GetYaxis()->SetLabelSize(0.036); //doesn't do it??
 
 
     //in case we look at high etas, write it into plot
@@ -185,13 +190,15 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     TCanvas *c1 = tdrCanvas("c1",h,8,11);
     TLine *l = new TLine();
     TLatex *t = new TLatex();
-    t->SetTextSize(0.045);// t->SetNDC();
+    //t->SetTextSize(0.045);// t->SetNDC();
+    t->SetTextSize(0.036);
+
 
     //custom place for "Private" extraText (usually handled via tdrCanvas)
     TLatex *extratext = new TLatex();
     extratext->SetTextSize(0.039);
     extratext->SetTextFont(52);
-    extratext->DrawLatex(379430, 1.0465, "Preliminary");
+    extratext->DrawLatex(380200, 1.0465, "Preliminary");
 
     // Start drawing
     c1->cd();
@@ -230,8 +237,8 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
 
     double run24ev2_start(381384), run24ev2_end(382943); //(first run#), ends?
     l->DrawLine(run24ev2_start,y1+0.045,run24ev2_start,y2-0.035);
-    //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
-    t->DrawLatex(run24ev2_start,0.960,"24Ev2");
+    l->DrawLine(run24ev2_end,y1+0.035,run24ev2_end,y2-0.050);
+    t->DrawLatex(run24ev2_start,0.948,"24Ev2"); //a bit lower than for the other eras, to make it look prettier
     //l->DrawLine(381594,y1+0.045,381594,y2-0.035); //"preliminary" end of Ev2, until we have real one
 
     double run24f_start(381944), run24f_end(383779); //(first run#), ends?
@@ -239,13 +246,23 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     l->DrawLine(run24f_end,y1+0.035,run24f_end,y2-0.050);
     t->DrawLatex(run24f_start,0.960,"24F");
 
-    double run24g_start(383780); //, run24g_end(); //(first run#), ends?
+    double run24g_start(383780), run24g_end(385813); //(first run#), ends?
     l->DrawLine(run24g_start,y1+0.045,run24g_start,y2-0.035);
-    //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
+    l->DrawLine(run24g_end,y1+0.035,run24g_end,y2-0.050);
     t->DrawLatex(run24g_start,0.960,"24G");
-    l->DrawLine(384332,y1+0.045,384332,y2-0.035); //"preliminary" end of Ev2, until we have real one
+		//l->DrawLine(385619,y1+0.045,385619,y2-0.035); //"preliminary" end of G, until we have real one
 
+    double run24h_start(385814), run24h_end(386402); //(first run#), ends?
+    l->DrawLine(run24h_start,y1+0.045,run24h_start,y2-0.035);
+    l->DrawLine(run24h_end,y1+0.035,run24h_end,y2-0.050);
+    t->DrawLatex(run24h_start,0.960,"24H");
 
+    double run24i_start(386403); //, run24i_end(); //(first run#), ends?
+    l->DrawLine(run24i_start,y1+0.045,run24i_start,y2-0.035);
+    //l->DrawLine(run24d_end,y1+0.035,run24d_end,y2-0.050);
+    t->DrawLatex(run24i_start,0.960,"24I");
+    //l->DrawLine(384491,y1+0.045,384491,y2-0.035); //"preliminary" end of I, until we have real one
+		l->DrawLine(386951,y1+0.045,386951,y2-0.035); //"preliminary" end of I, until we have real one
 
 
 
@@ -259,15 +276,18 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     runstart->DrawLatex(run24c_start, 0.955, Form("%.f",run24c_start));
     runstart->DrawLatex(run24d_start, 0.955, Form("%.f",run24d_start));
     runstart->DrawLatex(run24ev1_start, 0.955, Form("%.f",run24ev1_start));
-    runstart->DrawLatex(run24ev2_start, 0.955, Form("%.f",run24ev2_start));
+    runstart->DrawLatex(run24ev2_start, 0.943, Form("%.f",run24ev2_start));
     runstart->DrawLatex(run24f_start, 0.955, Form("%.f",run24f_start));
     runstart->DrawLatex(run24g_start, 0.955, Form("%.f",run24g_start));
+    runstart->DrawLatex(run24h_start, 0.955, Form("%.f",run24h_start));
+    runstart->DrawLatex(run24i_start, 0.955, Form("%.f",run24i_start));
 
 
 
     //runstart->DrawLatex(380649, 0.960, "380649"); //preliminary end of 24D
     //runstart->DrawLatex(381594, 1.020, "381594"); //preliminary end of 24Ev2
-		runstart->DrawLatex(384332, 1.020, "384332"); //preliminary end of 24G
+		//runstart->DrawLatex(384491, 1.020, "384332"); //preliminary end of 24G
+		//runstart->DrawLatex(385619, 1.020, "385619"); //preliminary end of 24G
 
 
 
@@ -281,36 +301,53 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     TLine *runinfoline = new TLine();
     runinfoline->SetLineStyle(kSolid);
     runinfoline->SetLineColor(kOrange+2);
-    runinfoline->DrawLine(379349,y1+0.030,379349,y2-0.030);     //hcal scan
-    runinfoline->DrawLine(379350,y1+0.030,379350,y2-0.030);     //hcal scan
+    runinfoline->DrawLine(379349,y1+0.018,379349,y2-0.030);     //hcal scan
+    runinfoline->DrawLine(379350,y1+0.016,379350,y2-0.030);     //hcal scan
+
+		//Pedestal/LUT updates occurred twice in the last couple weeks: (got this info from Mikko, HCAL meeting)
+		runinfoline->DrawLine(385221,y1+0.022,385221,y2-0.030);  //2 September [elog], run 385221
+		runinfoline->DrawLine(385550,y1+0.022,385550,y2-0.030);	 //11 September [elog], run 385550
+
+
     TLatex *runinfo = new TLatex();
-    runinfo->SetTextSize(0.026);
+    runinfo->SetTextSize(0.020); //0.026
     runinfo->SetTextColor(kOrange+2);
     runinfo->SetTextFont(52);
-    runinfo->DrawLatex(379349, 0.945, "379349: HCAL scan");
-    runinfo->DrawLatex(379350, 0.940, "379350: HCAL scan");
+    runinfo->DrawLatex(379349, 0.932, "379349: HCAL scan");
+    runinfo->DrawLatex(379350, 0.928, "379350: HCAL scan");
+
+    runinfo->SetTextSize(0.020);
+    runinfo->DrawLatex(385221, 0.940, "385221 & 385550:");
+		runinfo->DrawLatex(385221, 0.935, "Pedestal/LUT updates");
+
 
     //strange things, where we try to find (and draw) the run-number to check back with hcal etc
     //i identified these visually and then put a line there and wrote the run number
-    /*
     TLine *strangeline = new TLine();
     strangeline->SetLineStyle(kSolid);
     strangeline->SetLineColor(kRed-2);
-    double strangerun(379965); //379980
+    //double strangerun(379965); //379980
+		double strangerun(383200);
     strangeline->DrawLine(strangerun,y1+0.030,strangerun,y2-0.030);     //strange jump
+   	strangeline->DrawLine(384910,y1+0.040,384910,y2-0.030);     //drop in response
     TLatex *strangeinfo = new TLatex();
-    strangeinfo->SetTextSize(0.026);
+    strangeinfo->SetTextSize(0.020); //0.026
     strangeinfo->SetTextColor(kRed-2);
     strangeinfo->SetTextFont(52);
+		strangeinfo->DrawLatex(strangerun, 0.945, Form("%.f: change?",strangerun));
+
+    strangeinfo->SetTextSize(0.020);
+		strangeinfo->DrawLatex(384730, 0.953, "change?"); //drop in response (G)
+		strangeinfo->DrawLatex(384730, 0.956, "384910"); //drop in response (G)
+
     //strangeinfo->DrawLatex(strangerun, 0.945, Form("%.f: What happens?",strangerun));
-    */
 
     //------------ ECAL --------------------//
     //(ECAL?) Updates: https://twiki.cern.ch/twiki/bin/viewauth/CMS/AlCaTSGConditionsUpdate
     TLine *ecalline = new TLine();
     ecalline->SetLineStyle(kSolid);
     ecalline->SetLineColor(kCyan+2);
-    ecalline->DrawLine(379956,y1+0.030,379956,y2-0.030);     //
+    ecalline->DrawLine(379956,y1+0.022,379956,y2-0.030);     //
 
     //start end end of this ECalTimeCalibConstants update
     //Prompt | EcalIntercalibConstants | EcalIntercalibConstants_V1_prompt | 379956 | Update of EcalIntercalibConstants conditions from runs 378981-379616 ALCaDB cmsTalk.
@@ -319,10 +356,10 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     //ecalline->DrawLine(379616,y1+0.030,379616,y2-0.030); 
 
     TLatex *ecalinfo = new TLatex();
-    ecalinfo->SetTextSize(0.026);
+    ecalinfo->SetTextSize(0.020); //0.026
     ecalinfo->SetTextColor(kCyan+2);
     ecalinfo->SetTextFont(52);
-    ecalinfo->DrawLatex(379956, 0.945, "379956: EcalIntercalibConstants");
+    ecalinfo->DrawLatex(379956, 0.938, "379956: EcalIntercalibConstants");
  
 
 
@@ -331,9 +368,11 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     //TArrow *hcalArrow = new TArrow(0.5, 0.3, 0.2, 0.1, 0.05, ">"); //1-4: position, 5:arrowsize, 6:option
     //hcalArrow->SetNDC(kTRUE); //set already here to put arrow more easily
     //runinfo->DrawLatex(0.4, 0.6, "hcal arrow");
-    TArrow *hcalArrow = new TArrow(379360, 1.035, 379000, 1.035, 0.02, ">"); //1-4: position, 5:arrowsize, 6:option
+
+    TArrow *hcalArrow = new TArrow(379360, 1.033, 379000, 1.033, 0.02, ">"); //1-4: position, 5:arrowsize, 6:option
     hcalArrow->SetLineColor(kOrange+2);
     hcalArrow->Draw();
+
     runinfo->DrawLatex(379060, 1.036, "377804: phaseTuning");
 
 
@@ -348,7 +387,8 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     //info on the dotted lines
     TLatex *infotext = new TLatex();
     infotext->SetNDC(kTRUE);
-    infotext->SetTextSize(0.030); //0.036
+    //infotext->SetTextSize(0.030); //0.036
+		infotext->SetTextSize(0.020); //0.036
     infotext->SetTextColor(12);
     infotext->SetTextFont(52);
     infotext->DrawLatex(0.61,0.16, Form("Error cleaning applied (%.2f).",maxerr));
@@ -371,13 +411,18 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     linktext->DrawLatex(0.13,0.02, "https://twiki.cern.ch/twiki/bin/viewauth/CMS/HcalPhaseScan");
 
 
+
     //information on JSON used
     linktext->SetTextColor(kRed+2);
     linktext->SetTextFont(82);
     //linktext->DrawLatex(0.13,0.09, "Created on 21.05.2024 using daily JSON: Collisions24_13p6TeV_378981_380883_DCSOnly_TkPx.json");
     //linktext->DrawLatex(0.13,0.09, "Created on 31.05.2024 using golden JSON: Cert_Collisions2024_378981_380649_Golden.json");
 		//linktext->DrawLatex(0.13,0.09, "Created on 10.06.2024 using hybrid JSON = newest golden (5.6.) + additional daily (9.6.)");
-		linktext->DrawLatex(0.13,0.09, "Created on 13.08.2024"); // using hybrid JSON = newest golden (5.6.) + additional daily (9.6.)");
+		//linktext->DrawLatex(0.13,0.09, "Created on 09.10.2024 using hybrid JSON = newest golden (12.9.) + additional daily (12.9.)");
+		//linktext->DrawLatex(0.13,0.09, "Created on 09.10.2024 using golden JSON (29.9.) and entire 24G data.");
+		linktext->DrawLatex(0.13,0.09, "Created on 28.10.2024 with w39 for BCDEFG and w40 for H and I.");
+
+
 
 
 
@@ -467,7 +512,9 @@ void drawResponseVsRun_2024only(string version = "w33", int rereco = 0) { //swit
     //c1->cd(1);
     //TLegend *leg = tdrLeg(0.54,0.68,0.64,0.88);
     //TLegend *leg = tdrLeg(0.64,0.78,0.84,0.88);
-    TLegend *leg = tdrLeg(0.64,0.76,0.84,0.88);
+    //TLegend *leg = tdrLeg(0.64,0.76,0.84,0.88);
+    TLegend *leg = tdrLeg(0.62,0.78,0.82,0.90);
+
 
     leg->SetTextFont(42);
     leg->AddEntry(pr110m,"MPF 110EB","PLE");
@@ -521,7 +568,9 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
 
     if(rereco==0){
 	cout << "Looking at 2024 prompt data." << endl;
-    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+    	//f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+			f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
+
     }
     else if(rereco==1){
 	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
@@ -628,15 +677,20 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
 		TH1D *h;
     //TH1D *h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,380800);
 		if(zoom){
-    	h = tdrHist("h2","PF composition offset",-0.025,+0.025,"Run",378900,382000);
+    	h = tdrHist("h2","PF composition offset",-0.025,+0.025,"Run",378900,387100);
 		}
 		else{
-			h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,382000);
+			h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,387100);
 		}
 
     //TH1D *h = tdrHist("h2","PF composition offset",-0.80,+0.80,"Run",378900,380600);
-		h->GetXaxis()->SetLabelSize(0.15); //smaller labels
+		//h->GetXaxis()->SetLabelSize(0.15); //smaller labels
+		h->GetXaxis()->SetLabelSize(0.26);
+		h->GetYaxis()->SetLabelSize(0.036);
+		h->GetXaxis()->SetTitleSize(0.05);
+		h->GetYaxis()->SetTitleSize(0.05);
 		gPad->Update();
+
 		
 
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
@@ -653,13 +707,15 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     TCanvas *c1 = tdrCanvas("c2",h,8,11);
     TLine *l = new TLine();
     TLatex *t = new TLatex();
-    t->SetTextSize(0.045);
+    //t->SetTextSize(0.045);
+		t->SetTextSize(0.036);
+
 
     //added this to composition plot.
     TLatex *extratext = new TLatex();
     extratext->SetTextSize(0.039);
     extratext->SetTextFont(52);
-    extratext->DrawLatex(379430, 1.0465, "Preliminary");
+    extratext->DrawLatex(379460, 1.0465, "Preliminary");
 
 		h->GetXaxis()->SetLabelSize(0.15); //smaller labels
 		gPad->Update();
@@ -680,8 +736,9 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     double run24ev1_start(380948), run24ev1_end(381383);
     double run24ev2_start(381384), run24ev2_end(381943); //(first run#), ends?
     double run24f_start(381944), run24f_end(383779);
-    double run24g_start(383780); //, run24ev2_end(); //(first run#), ends?
- 
+    double run24g_start(383780), run24g_end(385813); //(first run#), ends?
+    double run24h_start(385814), run24h_end(386402); //(first run#), ends?
+		double run24i_start(386403);
 
 
     //l->SetLineStyle(kDashed);
@@ -697,6 +754,9 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     l->DrawLine(run24ev2_start,y1,run24ev2_start,y2);
     l->DrawLine(run24f_start,y1,run24f_start,y2);
     l->DrawLine(run24g_start,y1,run24g_start,y2);
+    l->DrawLine(run24h_start,y1,run24h_start,y2);
+    l->DrawLine(run24i_start,y1,run24i_start,y2);
+
 
 
 
@@ -718,10 +778,14 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     t->DrawLatex(run24b_start+10,textposy,"24B");
     t->DrawLatex(run24c_start+10,textposy,"24C");
     t->DrawLatex(run24d_start+10,textposy,"24D");
-    t->DrawLatex(run24ev1_start+10,textposy,"24Ev1");
-    t->DrawLatex(run24ev2_start+10,textposy,"24Ev2");
+    //t->DrawLatex(run24ev1_start+10,textposy,"24Ev1,v2");
+		t->DrawLatex(run24ev1_start+10,textposy,"24Ev1,");
+		t->DrawLatex(run24ev1_start+450,textposy-0.008,"v2");
+    //t->DrawLatex(run24ev2_start+10,textposy-0.01,"24Ev2");
     t->DrawLatex(run24f_start+10,textposy,"24F");
     t->DrawLatex(run24g_start+10,textposy,"24G");
+    t->DrawLatex(run24h_start+10,textposy,"24H");
+    t->DrawLatex(run24i_start+10,textposy,"24I");
 
 
 
