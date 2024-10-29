@@ -105,10 +105,11 @@ void GamHistosRatio(string ver = "w40") {  //currently changing between w39 (BCD
   //GamHistosRatios(ver,"2024EF");
   //GamHistosRatios(ver,"2024EFG");
   GamHistosRatios(ver,"2024FG");
-*/
+
   GamHistosRatios(ver,"2024H");
   GamHistosRatios(ver,"2024I");
-
+*/
+	GamHistosRatios(ver, "2024F-ECALCC-HCALDI-skim");
  
   //GamHistosRatios(ver, "2024B-ECALRATIO");
   //GamHistosRatios(ver, "2024C-ECALRATIO");
@@ -265,7 +266,7 @@ void GamHistosRatios(string ver, string iov) {
       }
       //if (iov=="2023D") { //BPix issue (GamHistosMix_mc_2023-BPixP8QCD_w4.root) //should adjust the naming in the other programs!
       if (iov=="2023D" || iov=="2024B" || iov=="2024C" || iov=="2024D" || iov=="2024Ev1" || iov=="2024Ev2" || iov=="2024E" || iov=="2024F" || iov=="2024G" || iov=="2024H" || iov=="2024I" ||
-						iov=="2024CD" || iov=="2024EF" || iov=="2024EFG" || iov=="2024FG" ||
+						iov=="2024CD" || iov=="2024EF" || iov=="2024EFG" || iov=="2024FG" || iov=="2024F-ECALCC-HCALDI-skim" ||
 						iov=="2024CDE" || iov=="2024CDEF" || iov=="2024CDEFG" ||
 						iov=="2024BC" || iov=="2024BCD" || iov=="2024BCDE" || iov=="2024BCDEF" || iov=="2024BCDEFG" ||
 						iov=="2024BCDEv1" || iov=="2024BC-ECALRATIO" ||
@@ -316,7 +317,7 @@ void GamHistosRatios(string ver, string iov) {
 					fm = new TFile(Form("rootfiles/winter2024p8_reweighting-with-2024E/GamHistosFill_mc_winter2024P8_2024E-pu_w38.root"),"READ"); //NO QCD, reweighted with E
 					fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_pu-E_%s.root",ci,cv),"RECREATE"); 
 				}
-				if(iov=="2024F" || iov=="2024G" || iov=="2024FG" || iov=="2024H" || iov=="2024I"){
+				if(iov=="2024F" || iov=="2024F-ECALCC-HCALDI-skim" || iov=="2024G" || iov=="2024FG" || iov=="2024H" || iov=="2024I"){
 					fm = new TFile(Form("rootfiles/winter2024p8_reweighting-with-2024F/GamHistosFill_mc_winter2024P8_2024F-pu_w38.root"),"READ"); //NO QCD, reweighted with E
 					fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_pu-F_%s.root",ci,cv),"RECREATE"); 
 				}
