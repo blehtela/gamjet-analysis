@@ -264,7 +264,7 @@ void GamHistosRatios(string ver, string iov) {
         fr = new TFile(Form("rootfiles/GamHistosRatio_%s_P8-noQCD_%s.root",ci,cv),"RECREATE"); //when no QCD in the mix (can remove it later)
       }
       //if (iov=="2023D") { //BPix issue (GamHistosMix_mc_2023-BPixP8QCD_w4.root) //should adjust the naming in the other programs!
-      if (iov=="2023D" || iov=="2024B" || iov=="2024C" || iov=="2024D" || iov=="2024Ev1" || iov=="2024Ev2" || iov=="2024E" || iov=="2024F" || iov=="2024G" ||
+      if (iov=="2023D" || iov=="2024B" || iov=="2024C" || iov=="2024D" || iov=="2024Ev1" || iov=="2024Ev2" || iov=="2024E" || iov=="2024F" || iov=="2024G" || iov=="2024H" || iov=="2024I" ||
 						iov=="2024CD" || iov=="2024EF" || iov=="2024EFG" || iov=="2024FG" ||
 						iov=="2024CDE" || iov=="2024CDEF" || iov=="2024CDEFG" ||
 						iov=="2024BC" || iov=="2024BCD" || iov=="2024BCDE" || iov=="2024BCDEF" || iov=="2024BCDEFG" ||
