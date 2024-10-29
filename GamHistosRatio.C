@@ -47,7 +47,7 @@ void replacePt(TGraphErrors *g, TH1 *h) {
 void GamHistosRatios(string ver, string iov);
 
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
-void GamHistosRatio(string ver = "w39") { 
+void GamHistosRatio(string ver = "w40") {  //currently changing between w39 (BCDEFG) and w40 (HI)
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
   //GamHistosRatios(ver,"2017BCDEF");
@@ -74,6 +74,7 @@ void GamHistosRatio(string ver = "w39") {
   //GamHistosRatios(ver,"2023Cv4");
   //GamHistosRatios(ver,"2023D");
 
+/*
   GamHistosRatios(ver,"2024B");
   GamHistosRatios(ver,"2024C");
   GamHistosRatios(ver,"2024D");
@@ -100,14 +101,13 @@ void GamHistosRatio(string ver = "w39") {
   //GamHistosRatios(ver,"2024CDEFG");
 
 
-
-
   //GamHistosRatios(ver,"2024CD");
   //GamHistosRatios(ver,"2024EF");
   //GamHistosRatios(ver,"2024EFG");
   GamHistosRatios(ver,"2024FG");
-
-
+*/
+  GamHistosRatios(ver,"2024H");
+  GamHistosRatios(ver,"2024I");
 
  
   //GamHistosRatios(ver, "2024B-ECALRATIO");
@@ -316,7 +316,7 @@ void GamHistosRatios(string ver, string iov) {
 					fm = new TFile(Form("rootfiles/winter2024p8_reweighting-with-2024E/GamHistosFill_mc_winter2024P8_2024E-pu_w38.root"),"READ"); //NO QCD, reweighted with E
 					fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_pu-E_%s.root",ci,cv),"RECREATE"); 
 				}
-				if(iov=="2024F" || iov=="2024G" || iov=="2024FG"){
+				if(iov=="2024F" || iov=="2024G" || iov=="2024FG" || iov=="2024H" || iov=="2024I"){
 					fm = new TFile(Form("rootfiles/winter2024p8_reweighting-with-2024F/GamHistosFill_mc_winter2024P8_2024F-pu_w38.root"),"READ"); //NO QCD, reweighted with E
 					fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8v14-noQCD_pu-F_%s.root",ci,cv),"RECREATE"); 
 				}
