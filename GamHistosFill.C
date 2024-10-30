@@ -602,7 +602,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
   if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
 	}
