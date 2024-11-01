@@ -1339,17 +1339,17 @@ void GamHistosFill::Loop()
   TProfile *pr9vspt = new TProfile("pr9vspt","",nx,vx);
 
 
-	//more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
-	fout->mkdir("pileup");
-	fout->cd("pileup");
+  //more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
+  fout->mkdir("pileup");
+  fout->cd("pileup");
   TH1D *h_mu = new TH1D("h_mu","",120,0,120); //use LoadPUJSON
   TH1D *h_rho = new TH1D("h_rho","",120,0,120);
   TH1D *h_rho_central = new TH1D("h_rho_central","",120,0,120);
   TH1D *h_rho_central_charged_pu = new TH1D("h_rho_central-charged-pu","",120,0,120);
-	TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
-	TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
+  TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
+  TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
 
-	fout->cd("control"); //go back to one directory before
+  fout->cd("control"); //go back to one directory before
 
 	//new (w27+w28): 2D plots for gain vs pt and eta (nx = #xbins, vx = pt-xbins, ny=#ybins, vy=eta-ybins)
 	//changed to narrower eta-bins called veta, #bins=nveta
@@ -3078,7 +3078,7 @@ void GamHistosFill::Loop()
 		///h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
-
+	
 		//for pileup investigations (could add this also for other triggers):
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
 	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w);
