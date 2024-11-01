@@ -709,7 +709,9 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024) and onwards
 		//LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
+		LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json"); //golden json (all eras 2024)--> w41 (01.11.2024)
+
 
 
 
@@ -736,10 +738,10 @@ void GamHistosFill::Loop()
 	//w32 also used for w33
 	//update lumi last on 25.10.2024 (w40)
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w40.csv");
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w40.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w40.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w40.csv");
+	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv");
+	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w41.csv");
+	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w41.csv");
+	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w41.csv");
 
 
 
