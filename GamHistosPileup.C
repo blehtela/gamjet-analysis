@@ -8,7 +8,7 @@
 
 
 
-void GamHistosPileup(string dataset = "winter2024P8", string version = "w37") {
+void GamHistosPileup(string dataset = "winter2024P8", string version = "w41") {
     TChain chain("Events");
 
 
@@ -22,17 +22,17 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w37") {
 	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-600_Winter24_madgraph-p8-MC_V14/*.root");
 		}
 		else if(dataset=="2024QCD"){
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-2000_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1500to2000_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1200to1500_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1000to1200_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-800to1000_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-600to800_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-400to600_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-200to400_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-100to200_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-70to100_Winter24_madgraph-p8-MC_V14/*.root");
 				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-40to70_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-70to100_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-100to200_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-200to400_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-400to600_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-600to800_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-800to1000_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1000to1200_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1200to1500_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1500to2000_Winter24_madgraph-p8-MC_V14/*.root");
+				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-2000_Winter24_madgraph-p8-MC_V14/*.root");
 		}
 
 
@@ -45,29 +45,37 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w37") {
 
     //New histogram for the MC pileup distribution
     //TH1D *MCpileup = new TH1D("pileup", "PUProfile", 130, 0, 130); //should switch to this, but my data histos were with 120bins
-		TH1D *MCpileup = new TH1D(Form("pileup_%s", dataset.c_str()), "PUProfile", 120, 0, 120);
+		TH1D *MCpileup = new TH1D(Form("pileup_%s", dataset.c_str()), "pileup", 120, 0, 120);
 
 
+/*
 		//For SUMMARY file (will contain: MC pre-reweighting, MC post-reweighting, data pu
 		TFile *summaryFile = new TFile(Form("pu_summary_%s_2024F",dataset.c_str()), "RECREATE"); //change the hardcoded era to flexible one
 
 
-		// DATA PU DISTRIBUTION, 
+		// DATA PU DISTRIBUTION (currently only 50EB trigger)  --> do this in extra script!
 		//read it, save it to summary file, normalise it (save again) and use it for reweighting
 		//for the data distribution (just read the histo and save it into the new file)
 		//TFile *df = new TFile(Form("pileup/pileup-histos_2024_%s.root",version);
 		TFile *df = new TFile(Form("pileup-histos_2024_w36.root"),"READ"); //test it with w36
 
-		string era_hlt_name = "2024F_Photon50EB_TightID_TightIso";
-		//TH1D *data_pu = (TH1D*)df->Get("pileup_2024F_Photon50EB_TightID_TightIso");
-		TH1D *data_pu = (TH1D*)df->Get(Form("pileup_%s", era_hlt_name.c_str()));
-		summaryFile->cd();
-		data_pu->Write();	//write existing pu histo for data to summary file
+		//list of data eras to be saved to summary file:
+		string data_eras[] = {"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"};
+		int neras = data_eras.size();
 
-		//get the integral to know how many events we talk about
-		Float_t data_nevt = data_pu->Integral(); //it will be an integer, but use floating point number to not mess up division later
-		data_pu->Scale(1./data_nevt); //normalise histogram to one --> is already normalised??? why does it have only 120 entries?
-		data_pu->Write(Form("pileup_%s_scaled", era_hlt_name.c_str()));
+		for(int i=0; i<neras; ++i){
+			string era_hlt_name = Form("%s_Photon50EB_TightID_TightIso", data_eras[i].c_str());
+			//TH1D *data_pu = (TH1D*)df->Get("pileup_2024F_Photon50EB_TightID_TightIso");
+			TH1D *data_pu = (TH1D*)df->Get(Form("pileup_%s", era_hlt_name.c_str()));
+			summaryFile->cd();
+			data_pu->Write();	//write existing pu histo for data to summary file
+
+			//get the integral to know how many events we talk about
+			Float_t data_nevt = data_pu->Integral(); //it will be an integer, but use floating point number to not mess up division later
+			data_pu->Scale(1./data_nevt); //normalise histogram to one --> is already normalised??? why does it have only 120 entries?
+			data_pu->Write(Form("pileup_%s_scaled", era_hlt_name.c_str()));
+		} 
+*/
 
 
 
@@ -122,16 +130,17 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w37") {
     MCpileup->Write(); //write pu distribution (not normalised)
 
 
+/*
 		summaryFile->cd();
 		MCpileup->Write();
 		//MCpileup->Scale(data_nevt/mc_nevt);
 		MCpileup->Scale(1./data_nevt); 
 		MCpileup->Write(Form("pileup_%s_scaled",dataset.c_str())); //write normalised pu dist for MC (BEFORE reweighting)
+*/
 
 
 
-
-
+/*
 		//PU reweighting to get reweighted pu profile
 		//Float_t 
 		TH1D *puweight = (TH1D*)data_pu->Clone();
@@ -145,6 +154,7 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w37") {
 
 			//the pu weight for the current (pu)bin:
 			puweight->GetBinContent(i); //shouldn't this give exactly the original data histo again?
+*/
 
 
 		}
@@ -154,7 +164,7 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w37") {
     outFile.Close();
     delete MCpileup;
 	
-		summaryFile->Close();
+		//summaryFile->Close();
 
     //std::cout << "Pileup histogram created and saved to pileup/GJ-4Jets_Winter24_madgraph-p8-MC_V14_PUProfile.root" << std::endl;
     std::cout << Form("Pileup histogram created and saved to pileup/pileup_%s_%s.root", dataset.c_str(), version.c_str()) << std::endl;
