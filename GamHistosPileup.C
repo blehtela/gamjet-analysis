@@ -154,10 +154,8 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w41") {
 
 			//the pu weight for the current (pu)bin:
 			puweight->GetBinContent(i); //shouldn't this give exactly the original data histo again?
-*/
-
-
 		}
+*/
 
 
     // Clean up
