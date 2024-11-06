@@ -709,7 +709,9 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378981to385194_DCSRuns_385260to378981_385195to385619_.json"); //hybrid json --> w36 (13.09.2024) and onwards
 		//LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
-		LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
+		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
+		LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json"); //golden json (all eras 2024)--> w41 (01.11.2024)
+
 
 
 
@@ -736,10 +738,10 @@ void GamHistosFill::Loop()
 	//w32 also used for w33
 	//update lumi last on 25.10.2024 (w40)
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_hybrid_photon30eb_pb_w40.csv");
-	lumi50 = LoadLumi("files/lumi2024_hybrid_photon50eb_pb_w40.csv");
-	lumi110 = LoadLumi("files/lumi2024_hybrid_photon110eb_pb_w40.csv");
-	lumi200 = LoadLumi("files/lumi2024_hybrid_photon200_pb_w40.csv");
+	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv");
+	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w41.csv");
+	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w41.csv");
+	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w41.csv");
 
 
 
@@ -1337,17 +1339,17 @@ void GamHistosFill::Loop()
   TProfile *pr9vspt = new TProfile("pr9vspt","",nx,vx);
 
 
-	//more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
-	fout->mkdir("pileup");
-	fout->cd("pileup");
+  //more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
+  fout->mkdir("pileup");
+  fout->cd("pileup");
   TH1D *h_mu = new TH1D("h_mu","",120,0,120); //use LoadPUJSON
   TH1D *h_rho = new TH1D("h_rho","",120,0,120);
   TH1D *h_rho_central = new TH1D("h_rho_central","",120,0,120);
   TH1D *h_rho_central_charged_pu = new TH1D("h_rho_central-charged-pu","",120,0,120);
-	TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
-	TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
+  TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
+  TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
 
-	fout->cd("control"); //go back to one directory before
+  fout->cd("control"); //go back to one directory before
 
 	//new (w27+w28): 2D plots for gain vs pt and eta (nx = #xbins, vx = pt-xbins, ny=#ybins, vy=eta-ybins)
 	//changed to narrower eta-bins called veta, #bins=nveta
@@ -3076,7 +3078,7 @@ void GamHistosFill::Loop()
 		///h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n50_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
-
+	
 		//for pileup investigations (could add this also for other triggers):
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
 	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w);
