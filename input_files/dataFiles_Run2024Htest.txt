@@ -1,0 +1,1 @@
+/afs/cern.ch/work/r/rverma/public/JME/JERC/CMSSW_13_3_0/src/cms-jerc-run3/Skim/output/check_gamjet/NewSkim_Data_2024H_GamJet_EGamma0.root
