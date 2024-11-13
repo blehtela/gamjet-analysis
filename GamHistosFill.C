@@ -590,9 +590,9 @@ void GamHistosFill::Loop()
   //data2024
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
   //if (ds.Contains("2024B-PromptReco-v1") || ds.Contains("2024B") || ds.Contains("2024C") || ds.Contains("2024D")) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
-
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 onwards (14.10.2024), V6M
-			//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 onwards (16.08.2024), V5M
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 onwards (13.11.2024), V7M
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 onwards (14.10.2024), V6M
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 onwards (16.08.2024), V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 onwards (14.06.2024), V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BC_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w17 and w18 (starting 10.05.24) and onwards
@@ -602,24 +602,31 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
   if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi.txt"); //w41 (was wrong BCD in w39...)
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
 	}
 	if (ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO") { //|| ds=="2024C-ECALR-HCALDI" ) { //for first 2024 re-reco data, 1st rereco
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
+      jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
 	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024F-ECALCC-HCALDI-skim" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
+      jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
+		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
 	}
-	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
-		ds=="2024H" || ds=="2024Hskim" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He" ||
-		ds=="2024I" || ds=="2024Iskim" || ds=="2024Itest" || ds=="2024Iv1" || ds=="2024Iv2") { //for 2024 
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
+	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") { //for 2024 
+      jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
+      //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
+  } 
+	if (ds=="2024H" || ds=="2024Hskim" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He") { //for 2024 
+      jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
+  }
+	if (ds=="2024I" || ds=="2024Iskim" || ds=="2024Itest" || ds=="2024Iv1" || ds=="2024Iv2") { //for 2024 
+      jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
   } 
 	if (ds=="2024C-ECALR-HCALDI" || ds=="2024C-ECALCC-HCALDI") { //for second and third 2024 re-reco data, adjusted in w35
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
@@ -821,7 +828,8 @@ void GamHistosFill::Loop()
       //fjv = new TFile("files/jetveto2024BC_V2M.root","READ"); //updated this last on 10.05. (for w17, w18 and onwards)
       //fjv = new TFile("files/jetveto2024BCD_V3M.root","READ"); //updated this last on 03.06. (for w27, w28 and onwards)
 			//fjv = new TFile("files/jetveto2024BCDE.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
-				fjv = new TFile("files/jetveto2024BCDE_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
+			//fjv = new TFile("files/jetveto2024BCDE_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
+				fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); //V7M: updated this last on 13.11. (for w41 and onwards), could remove extra if-conditions
     if (TString(ds.c_str()).Contains("2024F") || //should include Fa, Fb, Fc, Fd
         TString(ds.c_str()).Contains("2024G") || //should include Ga, Gb, Gc, Gd
         TString(ds.c_str()).Contains("2024Gtest") ||
@@ -833,7 +841,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         //fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
-				fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
+				//fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
+				fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); //V7M: updated this last on 13.11. (for w41 and onwards), could remove extra if-conditions
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
