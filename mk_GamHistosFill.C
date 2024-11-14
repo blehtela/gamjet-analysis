@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string version = "w41") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w41") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -203,5 +203,12 @@ void mk_GamHistosFill(string dataset = "X", string version = "w41") { //using w-
   
     GamHistosFill filler(c,1,dataset,version);
     filler.Loop();
+  }
+
+  if (puera==""){
+    cout << "No pileup reweighting applied." << endl << flush;
+  }
+  else {
+    cout << "Using pileup for era " << puera << " for PU reweighting." << endl << flush;
   }
 }
