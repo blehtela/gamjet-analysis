@@ -51,6 +51,7 @@ public :
    bool            isQCD;
    bool            isMG;
    string          dataset;
+   string	   puera;  //data era used for pu reweighting
    string          version;
    string          _filename; // file name for debugging purposes
    static const bool debugFiles = true;
@@ -529,7 +530,7 @@ public :
    TBranch        *b_HLT_Photon50_HoverELoose;
    TBranch        *b_HLT_Photon60_HoverELoose;
 
-  GamHistosFill(TTree *tree=0, int itype=1, string datasetname="X",
+  GamHistosFill(TTree *tree=0, int itype=1, string datasetname="X", string pueraname="",
 		string versionname="vX");
    virtual ~GamHistosFill();
    virtual Int_t    Cut(Long64_t entry);
@@ -553,8 +554,8 @@ public :
 #endif
 
 #ifdef GamHistosFill_cxx
-GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string versionname)
-  : fChain(0), isMC(itype), dataset(datasetname), version(versionname)
+GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string pueraname, string versionname)
+  : fChain(0), isMC(itype), dataset(datasetname), puera(pueraname), version(versionname)
 {
 
   // Use data set to decide on active branches
