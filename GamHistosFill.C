@@ -4042,7 +4042,7 @@ void GamHistosFill::LoadPU(){
 	///TFile *fpu = new TFile("pileup_mc_data2024F_w37.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024E_w38.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024D_w38.root", "READ"); //need to update this manually for now, together with new JSON
-  TFile *fpu = new TFile("pu_summary_w41.root", "READ"); //have them here for mc and all eras
+  TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras
 
 
   assert(fpu && !fpu->IsZombie());
