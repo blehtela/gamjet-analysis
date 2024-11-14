@@ -16,7 +16,7 @@ void SummaryPileupHistos(string ver = "w41") {
 
 
 		//list of triggers to be considered (for now only 50EB, but have others too)
-		string trigs[] = {"Photon50EB_TightID_TightIso"};
+		string trigs[] = {"HLT_Photon50EB_TightID_TightIso"};
 		const int ntrigs = sizeof(trigs)/sizeof(trigs[0]); //.size();
 		string trg[] = {"photon50eb"}; //short names
 
