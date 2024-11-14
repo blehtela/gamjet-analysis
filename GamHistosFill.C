@@ -2646,7 +2646,9 @@ void GamHistosFill::Loop()
 
     // Reweight MC pileup (except for 22-23)
     //if (isMC && pass_trig && !isRun3) { //previously (before w37), used for w38puoff
-    if (isMC && pass_trig && is24 && (puera.c_str() != "")) { //now also for Run3 (only 2024 so far)
+    //if (isMC && pass_trig && is24 && (puera.c_str() != "")) { //now also for Run3 (only 2024 so far)
+    if (isMC && pass_trig && is24 && (strcmp(puera.c_str(), "") != 0)) { //now also for Run3 (only 2024 so far) //what is best way to compare strings?
+
       cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
