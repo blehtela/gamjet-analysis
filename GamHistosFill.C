@@ -602,7 +602,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
   if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
-			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi.txt"); //w41 (was wrong BCD in w39...)
+			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30
@@ -738,7 +738,9 @@ void GamHistosFill::Loop()
   // Load pileup profiles
   //LoadPU(); //in use for w37
 	//LoadPU(); //in use for w38 (switched off for w38puoff)
-  if(puera!=""){
+  //if(puera!=""){
+  cout << "PUERA IS: " << puera.c_str() << endl << flush;
+  if(strcmp(puera.c_str(), "") != 0){ //if data era for pu is given
     LoadPU(); //only if data era to use for pileup reweightin is specified
   }
 
@@ -914,9 +916,9 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_%s.root",
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s.root",
 			       isMC ? "mc" : "data",
-			       dataset.c_str(), version.c_str()),
+			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
   assert(fout && !fout->IsZombie());
   
@@ -1176,6 +1178,11 @@ void GamHistosFill::Loop()
   TProfile *pr110m = new TProfile("pr110m",";Run;MPF;",histnx,xmin,xmax);
   TProfile *pr230m = new TProfile("pr230m",";Run;MPF;",histnx,xmin,xmax);
   TProfile *prg1m = new TProfile("prg1m",";Run;MPF;",histnx,xmin,xmax);
+
+  //time stability of MPF in different eta regions
+  TProfile *pr50m_eta08hi = new TProfile("pr50m_eta08hi",";Run;MPF (#eta_{#gamma}>0.8);",histnx,xmin,xmax);
+  TProfile *pr50m_eta08lo = new TProfile("pr50m_eta08lo",";Run;MPF(#eta_{#gamma}<0.8);",histnx,xmin,xmax);
+
 
   // Time stability of PF composition
   TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",histnx,xmin,xmax);
@@ -1451,6 +1458,54 @@ void GamHistosFill::Loop()
 	TH1D *h200n_j1eta_j1pt40 = new TH1D("h200n_j1eta_j1pt40",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 40GeV
 	TH1D *h200n_j1eta_j1pt50 = new TH1D("h200n_j1eta_j1pt50",";#eta_{j1};N_{events};",netabins,etabins); //j1pt > 50GeV
 
+
+  //TProfile for MPF over even smaller etabins
+  //which directory is this in??
+	//5x smaller, but based on narrow eta-binning (from dijet), also to negative values
+  /*
+  The tinyetabins are based on these bins, where each bin was divided into five:
+                      {-5.191, -4.889, -4.716, -4.538, -4.363, -4.191, -4.013, -3.839, -3.664, -3.489, -3.314, -3.139, -2.964, 
+											-2.853, -2.65, -2.5, -2.322, -2.172, -2.043, -1.93, -1.83, -1.74, -1.653, -1.566, -1.479, -1.392, -1.305, 
+											-1.218, -1.131, -1.044, -0.957, -0.879, -0.783, -0.696, -0.609, -0.522, -0.435, -0.348, -0.261, -0.174, -0.087, 
+											0, 0.087, 0.174, 0.261, 0.348, 0.435, 0.522, 0.609, 0.696, 0.783, 0.879, 0.957, 1.044, 1.131, 1.218, 1.305,
+       								1.392, 1.479, 1.566, 1.653, 1.74, 1.83, 1.93, 2.043, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.314, 
+       								3.489, 3.664, 3.839, 4.013, 4.191, 4.363, 4.538, 4.716, 4.889, 5.191};
+  */
+
+  double tinyetabins[] = {-5.191, -5.1306, -5.0702, -5.0098, -4.9494, -4.889, -4.8544, -4.8198, -4.7852, -4.7506, -4.716, -4.6804, 
+                      -4.6448, -4.6092, -4.5736, -4.538, -4.503, -4.468, -4.4330, -4.3980, -4.363, -4.3286, -4.2942, -4.2598, -4.2254, 
+                      -4.191, -4.1554, -4.1198, -4.0842, -4.0486, -4.013, -3.9782, -3.9434, -3.9086, -3.8738, -3.839, -3.804, -3.769, 
+                      -3.734, -3.6990, -3.664, -3.629, -3.594, -3.559, -3.524, -3.489, -3.4540, -3.419, -3.384, -3.349, -3.314, -3.279, 
+                      -3.2440, -3.209, -3.174, -3.139, -3.1040, -3.069, -3.034, -2.999, -2.964, -2.9418, -2.9196, -2.8974, -2.8752, -2.853, 
+                      -2.8124, -2.7718, -2.7312, -2.6906, -2.65, -2.62, -2.59, -2.56, -2.53, -2.5, -2.4644, -2.4288, -2.3932, -2.3576, 
+                      -2.322, -2.2920, -2.262, -2.232, -2.202, -2.172, -2.1462, -2.1204, -2.0946, -2.0688, -2.043, -2.0204, -1.9978, 
+                      -1.9752, -1.9526, -1.93, -1.91, -1.89, -1.87, -1.85, -1.83, -1.812, -1.794, -1.776, -1.758, -1.74, -1.7226, -1.7052, 
+                      -1.6878, -1.6704, -1.653, -1.6356, -1.6182, -1.6008, -1.5834, -1.566, -1.5486, -1.5312, -1.5138, -1.4964, -1.479, 
+                      -1.4616, -1.4442, -1.4268, -1.4094, -1.392, -1.3746, -1.3572, -1.3398, -1.3224, -1.305, -1.2876, -1.2702, -1.2528, 
+                      -1.2354, -1.218, -1.2006, -1.1832, -1.1658, -1.1484, -1.131, -1.1136, -1.0962, -1.0788, -1.0614, -1.044, -1.0266, 
+                      -1.0092, -0.9918, -0.9744, -0.957, -0.9414, -0.9258, -0.9102, -0.8946, -0.879, -0.8598, -0.8406, -0.8214, -0.8022, 
+                      -0.783, -0.7656, -0.7482, -0.7308, -0.7134, -0.696, -0.6786, -0.6612, -0.6438, -0.6264, -0.609, -0.5916, -0.5742, 
+                      -0.5568, -0.5394, -0.522, -0.5046, -0.4872, -0.4698, -0.4524, -0.435, -0.4176, -0.4002, -0.3828, -0.3654, -0.348, 
+                      -0.3306, -0.3132, -0.2958, -0.2784, -0.261, -0.2436, -0.2262, -0.20889, -0.1914, -0.174, -0.1566, -0.1392, -0.1218, 
+                      -0.1044, -0.087, -0.0696, -0.0522, -0.0348, -0.0174, 0.0, 0.0174, 0.0348, 0.0522, 0.0696, 0.087, 0.1044, 0.1218, 
+                      0.1392, 0.1566, 0.174, 0.1914, 0.2088, 0.2262, 0.2436, 0.261, 0.2784, 0.2958, 0.3132, 0.3306, 0.348, 0.3654, 0.3828, 
+                      0.4002, 0.4176, 0.435, 0.4524, 0.4698, 0.4872, 0.5046, 0.522, 0.5394, 0.5568, 0.5742, 0.5916, 0.609, 0.6264, 0.6438, 
+                      0.6612, 0.6786, 0.696, 0.7134, 0.7308, 0.7482, 0.7656, 0.783, 0.8022, 0.8214, 0.8406, 0.8598, 0.879, 0.8946, 0.9102, 
+                      0.9258, 0.9414, 0.957, 0.9744, 0.9918, 1.0092, 1.0266, 1.044, 1.0614, 1.0788, 1.0962, 1.1136, 1.131, 1.1484, 1.1658, 
+                      1.1832, 1.2006, 1.218, 1.2354, 1.2528, 1.2702, 1.2876, 1.305, 1.3224, 1.3398, 1.3572, 1.3746, 1.392, 1.4094, 1.4268, 
+                      1.4442, 1.4616, 1.479, 1.4964, 1.5138, 1.5312, 1.5486, 1.566, 1.5834, 1.6008, 1.6182, 1.6356, 1.653, 1.6704, 1.6878, 
+                      1.7052, 1.7226, 1.74, 1.758, 1.776, 1.794, 1.812, 1.83, 1.85, 1.87, 1.89, 1.91, 1.93, 1.9526, 1.9752, 1.9978, 2.0204, 
+                      2.043, 2.0688, 2.0946, 2.1204, 2.1462, 2.172, 2.202, 2.232, 2.262, 2.2920, 2.322, 2.3576, 2.3932, 2.4288, 2.4644, 2.5, 
+                      2.53, 2.56, 2.59, 2.62, 2.65, 2.6906, 2.7312, 2.7718, 2.8124, 2.853, 2.8752, 2.8974, 2.9196, 2.9418, 2.964, 2.999, 
+                      3.034, 3.069, 3.1040, 3.139, 3.174, 3.209, 3.2440, 3.279, 3.314, 3.349, 3.384, 3.419, 3.4540, 3.489, 3.524, 3.559, 
+                      3.594, 3.629, 3.664, 3.6990, 3.734, 3.769, 3.804, 3.839, 3.8738, 3.9086, 3.9434, 3.9782, 4.013, 4.04860, 4.0842, 4.1198, 
+                      4.1554, 4.191, 4.2254, 4.2598, 4.2942, 4.3286, 4.363, 4.3980, 4.4330, 4.468, 4.503, 4.538, 4.5736, 4.6092, 4.6448, 
+                      4.6804, 4.716, 4.7506, 4.7852, 4.8198, 4.8544, 4.889, 4.9494, 5.0098, 5.0702, 5.1306, 5.191};
+  const int ntinyetabins = sizeof(tinyetabins)/sizeof(tinyetabins[0])-1;
+  TProfile *pr50mpfvseta = new TProfile("pr50mpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
+  TProfile *pr110mpfvseta = new TProfile("pr110mpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
+  TProfile *pr200mpfvseta = new TProfile("pr200mpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
+  TProfile *prmpfvseta = new TProfile("prmpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
 
 
 
@@ -2649,7 +2704,7 @@ void GamHistosFill::Loop()
     //if (isMC && pass_trig && is24 && (puera.c_str() != "")) { //now also for Run3 (only 2024 so far)
     if (isMC && pass_trig && is24 && (strcmp(puera.c_str(), "") != 0)) { //now also for Run3 (only 2024 so far) //what is best way to compare strings?
 
-      cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
+      //cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
@@ -2663,12 +2718,34 @@ void GamHistosFill::Loop()
       ////TH1D *hd = _pu["2024F"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
       //TH1D *hd = _pu["2024E"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
       //TH1D *hd = _pu["2024D"][50]; // THIS IS HARDCODED FOR TEST, should use the above, but issue is with sera being the year, itrg should not become 1 for data....
+      //TH1D *hd = _pu["2024B"][50];
+      //TH1D *hd = _pu["2024C"][50];
+      //TH1D *hd = _pu["2024D"][50];
+      //TH1D *hd = _pu["2024Ev1"][50];
+      //TH1D *hd = _pu["2024Ev2"][50];
+      //TH1D *hd = _pu["2024F"][50];
+      //TH1D *hd = _pu["2024G"][50];
+      //TH1D *hd = _pu["2024H"][50];
+      //TH1D *hd = _pu["2024I"][50];
+      //TH1D *hd = _pu["2024GH"][50];
+      //TH1D *hd = _pu["2024Iv1"][50];
+      //TH1D *hd = _pu["2024Iv2"][50];
+
+
+      /*
+      TH1D *hd(0);
+      if(strcmp(puera.c_str(),"2024D")==0){
+	hd = _pu["2024D"][50];
+      }
+      */
       TH1D *hd = _pu[puera.c_str()][50]; //trying first in w41
+      //TH1D *hd = _pu[puera][50]; //trying first in w41
+
 
 			//hd->Write(Form("input_pileup_normalised_%s","2024F_50"));//just for checking
 
       //if (!hd) cout << "Missing _pu[sera="<<sera<<"][itrg="<<itrg<<"]"
-			if (!hd) cout << "Missing _pu[sera="<<puera.c_str()<<"][itrg="<<itrg<<"]"
+			if (!hd) cout << "Missing _pu[sera="<<puera<<"][itrg="<<itrg<<"]"
 		    << endl << flush;
       assert(hd);
       assert(hm->GetNbinsX()==hd->GetNbinsX()); //checks that mc and data hist have same number of pu bins
@@ -2716,8 +2793,8 @@ void GamHistosFill::Loop()
 	  jec->setRho(fixedGridRhoFastjetAll);
 	}
 	//double corr = jec->getCorrection();
-	vector<float> v = jec->getSubCorrections();
-	double corr = v.back();
+	vector<float> v = jec->getSubCorrections(); //vector contains l1, l1*l2 etc
+	double corr = v.back(); //last correction (i.e. all corr applied)
 	double res = (v.size()>1 ? v[v.size()-1]/v[v.size()-2] : 1.);
 	//Jet_RES[i] = 1./res;
 	Jet_deltaJES[i] = (1./corr) / (1.0 - Jet_rawFactor[i]);
@@ -3068,6 +3145,28 @@ void GamHistosFill::Loop()
 	hdr->Fill(gam.DeltaR(jet), w);
       }
 
+
+  //all pass_basic cuts except for eta cut... check above, dropped pass_gameta
+  if(pass_trig && pass_filt && pass_ngam && pass_njet && pass_dphi && pass_jetid && 
+      pass_jetveto && pass_gamveto && pass_leak){
+      prmpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+
+     if (itrg==50 && ptgam>53) {
+        //extra mpf plots
+        pr50mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+     }
+    if (itrg==110 && ptgam>120) {
+        //extra mpf plots
+        pr110mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+     }
+    if (itrg==200 && ptgam>230) {
+        //extra mpf plots
+        pr200mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+     }
+    }
+
+
+
       // 1) Time controls for JES and PF composition; 2) etaphi maps (for jet veto) with response over eta and phi; 3) etaphi maps for rate (n jets)
       if (pass_all) {
 	if (itrg==30 && ptgam>32) { //check turn-on curves, changed offline cut to ptgam>32 (used to be at 30gev)
@@ -3088,6 +3187,16 @@ void GamHistosFill::Loop()
 	  pr50chf->Fill(run, Jet_chHEF[iJet], w);
 	  pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  pr50nef->Fill(run, Jet_neEmEF[iJet], w);
+
+    if(abs(gam.Eta())>0.8){
+      pr50m_eta08hi->Fill(run, gam.Eta(), w) //should this have the eta cut at 1.3 or not?
+    }
+    else{ //abs(gameta) <=0.8
+      pr50m_eta08lo->Fill(run, gam.Eta(), w)
+    }
+
+    //extra mpf plots
+    //pr50mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
 
 		//etaphi maps:
 		p2bal50_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
@@ -3552,6 +3661,9 @@ void GamHistosFill::Loop()
 	  pr2mpf->Fill(ptgam, gam.Eta(), mpf, w);
 	  prbal0->Fill(ptgam, bal, w);
 	  prmpf0->Fill(ptgam, mpf, w);
+
+    	//with tiny eta bins
+    	//pr50mpf_vs
 	  
 	  // PF composition plots
 	  h2pteta->Fill(ptgam, Jet_eta[iJet], w);
@@ -3936,10 +4048,21 @@ void GamHistosFill::LoadPU(){
   cout << endl << "GamHistosFill::LoadPU" << endl << flush;
   TDirectory *curdir = gDirectory;
 
+  //string eras[] = {"2024Iv2", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024Iv1", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024I", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024GH", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024H", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024G", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
   //string eras[] = {"2024F", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
-  //string eras[] = {"2024E", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024Ev2", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024Ev1", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
   //string eras[] = {"2024D", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
-  string eras[] = {puera.c_str(), "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024C", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+  //string eras[] = {"2024B", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
+
+
+  string eras[] = {puera.c_str(), "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far. DOES NOT WORK YET.. ?
 
   //"winter2024P8-test"};// testing //have no overall "2024" so far.
 
@@ -4018,20 +4141,20 @@ void GamHistosFill::LoadPU(){
 
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
-/*
-  trigs["2024B"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024C"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024D"].push_back("HLT_Photon50EB_TightID_TightIso");
+  //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
+  trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
+  trigs["2024B"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024C"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024D"].push_back("Photon50EB_TightID_TightIso");
   //trigs["2024E"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024Ev1"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024Ev2"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024G"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024H"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024Iv1"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024Iv2"].push_back("HLT_Photon50EB_TightID_TightIso");
-*/
+  trigs["2024Ev1"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024Ev2"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024F"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024G"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024H"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024GH"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024Iv1"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024Iv2"].push_back("Photon50EB_TightID_TightIso");
   //trigs["2024"].push_back("HLT_Photon50_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon75_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon90_R9Id90_HE10_IsoM");
@@ -4044,10 +4167,13 @@ void GamHistosFill::LoadPU(){
 	///TFile *fpu = new TFile("pileup_mc_data2024F_w37.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024E_w38.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024D_w38.root", "READ"); //need to update this manually for now, together with new JSON
-  TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras
+  //TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras, ... does not work from subfolder?
+  TFile *fpu = new TFile("pu_summary_w41.root", "READ"); //have them here for mc and all eras
+
 
 
   assert(fpu && !fpu->IsZombie());
+  //cout << "PU FILE: " << fpu->ls() << endl << flush;
 
   for (int i = 0; i != neras; ++i) {//here "era" can also just mean year... but technically can be done per era as key in  map
     string se = eras[i]; const char *ce = se.c_str();
@@ -4057,10 +4183,12 @@ void GamHistosFill::LoadPU(){
       // Read trigger threshold from trigger name
       int itrg(0);
       if (st=="mc") itrg = 1;	//for mc samples
-      else sscanf(ct,"HLT_Photon%d*",&itrg); //for data 
+      ////else sscanf(ct,"HLT_Photon%d*",&itrg); //for data 
+			cout << "itrg is: " << itrg << endl << flush;
 			// sscanf reads e.g. "50EB_TightID_TightIso" into itrg -- not sure why we do it this way instead of using full trigger name....
 			// doesn't this read more than just the treshold? doesn't look like it's getting trunkated anywhere, 
 			//but maybe reading stops when number is over as we use %d
+      if (st!="mc") itrg = 50; //WARNING: HARDCODED
       
       //TFile *fdt(0); //not needed, have all pu histos in one file now
       TH1D *h(0); 		//store pu histo into this variable
@@ -4087,8 +4215,12 @@ void GamHistosFill::LoadPU(){
 			//NORMALISING THE HISTOGRAM (same for data, mc)
       double lumi = h->Integral();
       h->Scale(1./lumi); //wasn't data scaled already? (no, i loaded the one without scaling, have scaled ones with _scaled appended)
-      _pu[se][itrg] = h; //how would this ever lead to se=2024 (or se=2024F) and itrg=1
+      //_pu[se][itrg] = h; //how would this ever lead to se=2024 (or se=2024F) and itrg=1
+      _pu[se.c_str()][itrg] = h; //try to fix it... somehow line above did not work
       _lumi[se][itrg] = lumi;
+      //int entr = _pu["2024D"][50]->GetEntries();
+      //cout << "TESTING: " << Form("%d", entr) << endl << flush;
+
 
 			//for some cross-checks, write normalised histo to file
 			//fout->cd("control/pileup");

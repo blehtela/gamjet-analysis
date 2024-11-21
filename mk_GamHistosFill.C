@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w41") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w42") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -155,6 +155,14 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 
   if (runGPU) cout << "Running on Hefaistos or Vulcan (runGPU)" << endl;
   if (runLocal) cout << "Running on locally (runLocal)" << endl;
+
+  if (puera==""){
+    cout << "No pileup reweighting applied." << endl << flush;
+  }
+  else {
+    cout << "Using pileup for era " << puera << " for PU reweighting." << endl << flush;
+  }
+
   
   if (addData) {
     ifstream fin(runLocal ? Form("input_files/dataFiles_local_Run%s.txt",dataset.c_str()) : 
@@ -169,7 +177,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     }
     cout << "Chained " << nFiles <<  " files" << endl << flush;
     
-    GamHistosFill filler(c,0,dataset,version);
+    GamHistosFill filler(c,0,dataset,puera,version);
     filler.Loop();
   }
   
@@ -185,7 +193,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     }
     cout << "Chained " << nFiles <<  " files" << endl << flush;
   
-    GamHistosFill filler(c,1,dataset,version);
+    GamHistosFill filler(c,1,dataset,puera,version);
     filler.Loop();
   }
 
@@ -201,14 +209,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     }
     cout << "Chained " << nFiles <<  " files" << endl << flush;
   
-    GamHistosFill filler(c,1,dataset,version);
+    GamHistosFill filler(c,1,dataset,puera,version);
     filler.Loop();
   }
 
-  if (puera==""){
-    cout << "No pileup reweighting applied." << endl << flush;
-  }
-  else {
-    cout << "Using pileup for era " << puera << " for PU reweighting." << endl << flush;
-  }
 }
