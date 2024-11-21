@@ -1821,6 +1821,10 @@ void GamHistosFill::Loop()
 			  "N_{events}",nxd,vxd, nptd, vptd);
     h->p2res = new TProfile2D("p2res",";#eta;p_{T,avp} (GeV);JES",
 			      nxd,vxd, nptd, vptd);
+    //TO ADD: p2jes, p2mcjes (later), p2corr
+    h->p2corr = new TProfile2D("p2corr",";#eta;p_{T,avp} (GeV);fullJEC",
+			      nxd,vxd, nptd, vptd);
+
     h->p2jsf = new TProfile2D("p2jsf",";#eta;p_{T,avp} (GeV);JERSF",
 			      nxd,vxd, nptd, vptd);
        
@@ -2795,13 +2799,15 @@ void GamHistosFill::Loop()
 	//double corr = jec->getCorrection();
 	vector<float> v = jec->getSubCorrections(); //vector contains l1, l1*l2 etc
 	double corr = v.back(); //last correction (i.e. all corr applied)
-	double res = (v.size()>1 ? v[v.size()-1]/v[v.size()-2] : 1.);
+	double l2l3rescorr = (v.size()>1 ? v[v.size()-1]/v[v.size()-2] : 1.);
+  //double jes = corr;
+
 	//Jet_RES[i] = 1./res;
 	Jet_deltaJES[i] = (1./corr) / (1.0 - Jet_rawFactor[i]);
 	Jet_pt[i] = corr * rawJetPt;
 	Jet_mass[i] = corr * rawJetMass;
 	Jet_rawFactor[i] = (1.0 - 1.0/corr);
-	Jet_resFactor[i] = (1.0 - 1.0/res);
+	Jet_resFactor[i] = (1.0 - 1.0/l2l3rescorr);
       }
 
       // Smear jets
@@ -3167,29 +3173,29 @@ void GamHistosFill::Loop()
 
 
 
-      // 1) Time controls for JES and PF composition; 2) etaphi maps (for jet veto) with response over eta and phi; 3) etaphi maps for rate (n jets)
-      if (pass_all) {
-	if (itrg==30 && ptgam>32) { //check turn-on curves, changed offline cut to ptgam>32 (used to be at 30gev)
-	  pr30n->Fill(run, w); 
-	  // TO DO: make this pr30xs plot (below) without jet requirements (photon passes trigger + has required pT)
-          pr30xs->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
-	  pr30b->Fill(run, bal, w); 
-	  pr30m->Fill(run, mpf, w);
-	  pr30chf->Fill(run, Jet_chHEF[iJet], w);
-	  pr30nhf->Fill(run, Jet_neHEF[iJet], w);
-	  pr30nef->Fill(run, Jet_neEmEF[iJet], w);
-	}
-        if (itrg==50 && ptgam>53) { //ptgam>53 (to avoid trouble with hlt scale) (used to be ptgam>50)
-	  pr50n->Fill(run, w); 
-          pr50xs->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.); //new (can remove this when pr50n one above shows xs)
-	  pr50b->Fill(run, bal, w); 
-	  pr50m->Fill(run, mpf, w);
-	  pr50chf->Fill(run, Jet_chHEF[iJet], w);
-	  pr50nhf->Fill(run, Jet_neHEF[iJet], w);
-	  pr50nef->Fill(run, Jet_neEmEF[iJet], w);
+  // 1) Time controls for JES and PF composition; 2) etaphi maps (for jet veto) with response over eta and phi; 3) etaphi maps for rate (n jets)
+  if (pass_all) {
+	  if (itrg==30 && ptgam>32) { //check turn-on curves, changed offline cut to ptgam>32 (used to be at 30gev)
+	    pr30n->Fill(run, w); 
+	    // TO DO: make this pr30xs plot (below) without jet requirements (photon passes trigger + has required pT)
+           pr30xs->Fill(run, lumi30[run] ? 1./lumi30[run] : 1.); //new, if lumi calculated for that run number, normalise, if not then just use weight=1.0
+	    pr30b->Fill(run, bal, w); 
+	    pr30m->Fill(run, mpf, w);
+	    pr30chf->Fill(run, Jet_chHEF[iJet], w);
+	    pr30nhf->Fill(run, Jet_neHEF[iJet], w);
+	    pr30nef->Fill(run, Jet_neEmEF[iJet], w);
+	  }
+    if (itrg==50 && ptgam>53) { //ptgam>53 (to avoid trouble with hlt scale) (used to be ptgam>50)
+      pr50n->Fill(run, w); 
+      pr50xs->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.); //new (can remove this when pr50n one above shows xs)
+      pr50b->Fill(run, bal, w); 
+      pr50m->Fill(run, mpf, w);
+      pr50chf->Fill(run, Jet_chHEF[iJet], w);
+      pr50nhf->Fill(run, Jet_neHEF[iJet], w);
+      pr50nef->Fill(run, Jet_neEmEF[iJet], w);
 
     if(abs(gam.Eta())>0.8){
-      pr50m_eta08hi->Fill(run, gam.Eta(), w) //should this have the eta cut at 1.3 or not?
+      pr50m_eta08hi->Fill(run, gam.Eta(), w) //should this have the eta cut at 1.3 or not? YES, with cut
     }
     else{ //abs(gameta) <=0.8
       pr50m_eta08lo->Fill(run, gam.Eta(), w)
@@ -3889,6 +3895,7 @@ void GamHistosFill::Loop()
 	  h->h2pteta->Fill(abseta, ptgam, w);
 	  
 	  h->p2res->Fill(abseta, ptgam, res, w);
+    if(jes!=0){h->p2corr->Fill(abseta, ptgam, 1./jes, w);}
 	  h->p2jsf->Fill(abseta, ptgam, jsf, w);
 	  h->p2m0->Fill(abseta, ptgam, mpf, w);
 	  h->p2m2->Fill(abseta, ptgam, mpf1, w);
