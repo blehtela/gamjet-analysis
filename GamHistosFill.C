@@ -87,7 +87,7 @@ public:
   //double ptmin, ptmax, absetamin, absetamax;
 
   TH2D *h2pteta;
-  TProfile2D *p2res, *p2m0, *p2m2, *p2mn, *p2mu;
+  TProfile2D *p2res, *p2corr, *p2m0, *p2m2, *p2mn, *p2mu;
   TProfile2D *p2m0x, *p2m2x;
 
   // Extra for FSR studies
@@ -588,7 +588,8 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
   //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024Bnib1" || ds=="2024C" || ds=="2024Cnib1" ||
+          ds=="2024D"|| ds=="2024Dnib1" ) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
   //if (ds.Contains("2024B-PromptReco-v1") || ds.Contains("2024B") || ds.Contains("2024C") || ds.Contains("2024D")) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 onwards (13.11.2024), V7M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 onwards (14.10.2024), V6M
@@ -601,7 +602,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
-  if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
+  if (ds=="2024Ev1" || ds=="2024Ev1nib1" || ds=="2024Ev2" || ds=="2024Ev2nib1"){ //separated 24E corrections starting from V4M jecs
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
@@ -611,21 +612,22 @@ void GamHistosFill::Loop()
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
-	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024F-ECALCC-HCALDI-skim" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+	if (ds=="2024F" || ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || 
+          ds=="2024F-ECALCC-HCALDI-skim" || ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2"|| ds=="2024F-ECALCC-HCALDI-nib3") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
 	}
-	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") { //for 2024 
+	if (ds=="2024G" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") { //for 2024 
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
       //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
   } 
-	if (ds=="2024H" || ds=="2024Hskim" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He") { //for 2024 
+	if (ds=="2024H" || ds=="2024Hnib1" || ds=="2024Hskim" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He") { //for 2024 
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
   }
-	if (ds=="2024I" || ds=="2024Iskim" || ds=="2024Itest" || ds=="2024Iv1" || ds=="2024Iv2") { //for 2024 
+	if (ds=="2024I" || ds=="2024Inib1" || ds=="2024Iskim" || ds=="2024Itest" || ds=="2024Iv1" || ds=="2024Iv2") { //for 2024 
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
   } 
 	if (ds=="2024C-ECALR-HCALDI" || ds=="2024C-ECALCC-HCALDI") { //for second and third 2024 re-reco data, adjusted in w35
@@ -664,6 +666,9 @@ void GamHistosFill::Loop()
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
   if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
 	ds=="2024Hskim" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024Iskim" || ds=="2024Iv1" || ds=="2024Iv2" || ds=="2024F-ECALCC-HCALDI-skim") sera = "2024";
+  if (ds=="2024Bnib1" || ds=="2024Cnib1" || ds=="2024Dnib1" || ds=="2024Ev1nib1" || ds=="2024Ev2nib1" || 
+      ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" || 
+      ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
   if (ds=="winter2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
@@ -826,7 +831,12 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
-				TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI"))
+				TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI") ||
+        TString(ds.c_str()).Contains("2024Bnib1") ||
+        TString(ds.c_str()).Contains("2024Cnib1") ||
+        TString(ds.c_str()).Contains("2024Dnib1") ||
+        TString(ds.c_str()).Contains("2024Ev1nib1") ||
+        TString(ds.c_str()).Contains("2024Ev2nib1"))
         //TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         //TString(ds.c_str()).Contains("2024QCD")) //also for MC now 2024.
       //fjv = new TFile("files/jetveto2024BC_V1M.root","READ"); //updated this last on 06.05.
@@ -840,6 +850,13 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Gtest") ||
         TString(ds.c_str()).Contains("2024H") || //should include Ha, Hb, Hc, Hd, Hskim
         TString(ds.c_str()).Contains("2024I") || //should include Iv1, Iv2, Iskim
+        TString(ds.c_str()).Contains("2024Fnib1") ||
+        TString(ds.c_str()).Contains("2024Fnib2") ||
+        TString(ds.c_str()).Contains("2024Fnib3") ||
+        TString(ds.c_str()).Contains("2024Gnib1") ||
+        TString(ds.c_str()).Contains("2024Gnib2") ||
+        TString(ds.c_str()).Contains("2024Hnib1") || //should include Ha, Hb, Hc, Hd, Hskim
+        TString(ds.c_str()).Contains("2024Inib1") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
         TString(ds.c_str()).Contains("winter2024P8-test") || 
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
@@ -1506,6 +1523,21 @@ void GamHistosFill::Loop()
   TProfile *pr110mpfvseta = new TProfile("pr110mpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
   TProfile *pr200mpfvseta = new TProfile("pr200mpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
   TProfile *prmpfvseta = new TProfile("prmpfvseta",";#eta_{#gamma};MPF;",ntinyetabins,tinyetabins);
+
+  //with tiny etabins (ECAL crystal-binning), photon eta-spectrum for different triggers and gains
+  TH1D *h50n_gain1 = new TH1D("h50n_gain1", "#events with Gain1 (Photon50EB);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon50EB_TightID_TightIso
+  TH1D *h110n_gain1 = new TH1D("h110n_gain1", "#events with Gain1 (Photon110EB);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon110EB_TightID_TightIso
+  TH1D *h200n_gain1 = new TH1D("h200n_gain1", "#events with Gain1 (Photon200);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon200
+  TH1D *h50n_gain6 = new TH1D("h50n_gain6", "#events with Gain6 (Photon50EB);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon50EB_TightID_TightIso
+  TH1D *h110n_gain6 = new TH1D("h110n_gain6", "#events with Gain6 (Photon110EB);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon110EB_TightID_TightIso
+  TH1D *h200n_gain6 = new TH1D("h200n_gain6", "#events with Gain6 (Photon200);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon200
+  TH1D *h50n_gain12 = new TH1D("h50n_gain12", "#events with Gain12 (Photon50EB);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon50EB_TightID_TightIso
+  TH1D *h110n_gain12 = new TH1D("h110n_gain12", "#events with Gain12 (Photon110EB);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon110EB_TightID_TightIso
+  TH1D *h200n_gain12 = new TH1D("h200n_gain12", "#events with Gain12 (Photon200);#eta_{#gamma};N_{events};",ntinyetabins,tinyetabins); //HLT_Photon200
+
+
+
+
 
 
 
@@ -2402,7 +2434,7 @@ void GamHistosFill::Loop()
       
       // Photon matching gen photon
       if (gengam.Pt()>0 && gengam.DeltaR(gami)<0.2 && iGamGen==-1) {
-	iGamGen = i;
+        iGamGen = i;
       } 
       
       // Leading tight photon(s)
@@ -3160,14 +3192,29 @@ void GamHistosFill::Loop()
      if (itrg==50 && ptgam>53) {
         //extra mpf plots
         pr50mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+
+        //eta-spectrum of photon, gain plots
+        if(iGam!=-1 && Photon_seedGain[iGam]==1){ h50n_gain1->Fill(gam.Eta(),w); } //w=1 for data..
+        if(iGam!=-1 && Photon_seedGain[iGam]==6){ h50n_gain6->Fill(gam.Eta(),w); }
+        if(iGam!=-1 && Photon_seedGain[iGam]==12){ h50n_gain12->Fill(gam.Eta(),w); }
      }
     if (itrg==110 && ptgam>120) {
         //extra mpf plots
         pr110mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+
+        //eta-spectrum of photon, gain plots
+        if(iGam!=-1 && Photon_seedGain[iGam]==1){ h110n_gain1->Fill(gam.Eta(),w); } //w=1 for data..
+        if(iGam!=-1 && Photon_seedGain[iGam]==6){ h110n_gain6->Fill(gam.Eta(),w); }
+        if(iGam!=-1 && Photon_seedGain[iGam]==12){ h110n_gain12->Fill(gam.Eta(),w); }
      }
     if (itrg==200 && ptgam>230) {
         //extra mpf plots
         pr200mpfvseta->Fill(gam.Eta(), mpf, w); //need to be outside eta cut
+
+        //eta-spectrum of photon, gain plots
+        if(iGam!=-1 && Photon_seedGain[iGam]==1){ h200n_gain1->Fill(gam.Eta(),w); } //w=1 for data..
+        if(iGam!=-1 && Photon_seedGain[iGam]==6){ h200n_gain6->Fill(gam.Eta(),w); }
+        if(iGam!=-1 && Photon_seedGain[iGam]==12){ h200n_gain12->Fill(gam.Eta(),w); }
      }
     }
 
@@ -3195,10 +3242,10 @@ void GamHistosFill::Loop()
       pr50nef->Fill(run, Jet_neEmEF[iJet], w);
 
     if(abs(gam.Eta())>0.8){
-      pr50m_eta08hi->Fill(run, gam.Eta(), w) //should this have the eta cut at 1.3 or not? YES, with cut
+      pr50m_eta08hi->Fill(run, mpf, w); //should this have the eta cut at 1.3 or not? YES, with cut
     }
     else{ //abs(gameta) <=0.8
-      pr50m_eta08lo->Fill(run, gam.Eta(), w)
+      pr50m_eta08lo->Fill(run, mpf, w);
     }
 
     //extra mpf plots
@@ -3267,7 +3314,7 @@ void GamHistosFill::Loop()
 				//jet veto map
 				h2n50_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 
-				//jet1 eta distribution for different jet-pt
+				//jet1 eta distribution for different jet-pt --> NOTE: missing weight here? (for data it's 1)
 				if(jet.Pt() > 30){ h50n_j1eta_j1pt30->Fill(jet.Eta()); };
 				if(jet.Pt() > 40){ h50n_j1eta_j1pt40->Fill(jet.Eta()); };
 				if(jet.Pt() > 50){ h50n_j1eta_j1pt50->Fill(jet.Eta()); };

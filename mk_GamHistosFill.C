@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w42") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w43") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -87,7 +87,11 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 			dataset=="2024H" || dataset=="2024Hskim" || dataset=="2024Ha" || dataset=="2024Hb" || dataset=="2024Hc" || dataset=="2024Hd" || dataset=="2024He" || dataset=="2024Htest" ||
 			dataset=="2024I" || dataset=="2024Iskim" || dataset=="2024Iv1" || dataset=="2024Iv2" || dataset=="2024Itest" ||
 									dataset=="2024B-ECALRATIO" || dataset=="2024C-ECALRATIO" || dataset=="2024C-ECALR-HCALDI" || dataset=="2024C-ECALCC-HCALDI" ||
-                  dataset=="2024B-PromptReco-v1");
+                  dataset=="2024B-PromptReco-v1" ||
+      dataset=="2024Bnib1" || dataset=="2024Cnib1" || dataset=="2024Dnib1" || dataset=="2024Ev1nib1" || dataset=="2024Ev2nib1" || 
+			dataset=="2024Fnib1" || dataset=="2024Fnib2" || dataset=="2024Fnib3" || 
+      dataset=="2024F-ECALCC-HCALDI-nib1" || dataset=="2024F-ECALCC-HCALDI-nib2" || dataset=="2024F-ECALCC-HCALDI-nib3" ||
+			dataset=="2024Gnib1" || dataset=="2024Gnib2" || dataset=="2024Hnib1" || dataset=="2024Inib1");
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
 		dataset=="2016APVP8" ||
