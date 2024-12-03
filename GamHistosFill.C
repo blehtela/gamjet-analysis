@@ -549,7 +549,7 @@ void GamHistosFill::Loop()
 		    //"Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi",""); //old
   }
   //data2023
-  if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv123X") {//2023C --> no bpix issue
+  if (ds=="2023B" || ds=="2023Bnib1" || ds=="2023Cv123" || ds=="2023Cv123nib1" || ds=="2023Cv123X") {//2023C --> no bpix issue
 	//got Winter23 corrections from here: https://github.com/cms-jet/JECDatabase/tree/master/textFiles/Winter23Prompt23_V2_MC
     //jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", "Summer22Prompt23_Run2023Cv123_V3_DATA_L2L3Residual_AK4PFPUPPI"); //23rd of Feb2024 - investigating how plots look with 2022 corrections
     jec = getFJC("", "Summer23Run3_V1_MC_L2Relative_AK4PUPPI", 
@@ -560,7 +560,7 @@ void GamHistosFill::Loop()
 		 //"Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi", ""); //old
 		 //"Summer22Prompt23_Run2023Cv123_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
-  if (ds=="2023Cv4" || ds=="2023Cv4X") {//2023C --> no bpix issue
+  if (ds=="2023Cv4" || ds=="2023Cv4nib1" || ds=="2023Cv4nib2" || ds=="2023Cv4X") {//2023C --> no bpix issue
     //jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", "Summer22Prompt23_Run2023Cv4_V3_DATA_L2L3Residual_AK4PFPUPPI"); //23rd of Feb2024 - investigating how plots look with 2022 corrections
     jec = getFJC("","Summer23Run3_V1_MC_L2Relative_AK4PUPPI",  
 			"Summer23Prompt23_Run2023Cv4_V2_DATA_L2L3Residual_AK4PFPuppi"); //29th of Feb2024, w7 and onwards
@@ -570,7 +570,7 @@ void GamHistosFill::Loop()
 		 //"Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi", ""); //old
 		 //"Summer22Prompt23_Run2023Cv4_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
-  if (ds=="2023D" || ds=="2023DX") { //2023D needs BPix stuff!
+  if (ds=="2023D" || ds=="2023Dnib1" || ds=="2023DX") { //2023D needs BPix stuff!
     //jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI", "Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //23rd of Feb2024 - investigating how plots look with 2022 corrections
     jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI",  
                         "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
@@ -661,6 +661,7 @@ void GamHistosFill::Loop()
   if (ds=="2022C" || ds=="2022D") sera ="2022";
   if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
+  if (ds=="2023Bnib1" || ds=="2023Cv123nib1" || ds=="2023Cv4nib1" || ds=="2023Cv4nib2" || ds=="2023Dnib1") sera = "2023"; //for nibs and fibs
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" || ds=="2024H" || ds=="2024I" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
@@ -809,7 +810,7 @@ void GamHistosFill::Loop()
       fjv = new TFile("files/jetveto2022EFG.root","READ");
   }
   if (TString(ds.c_str()).Contains("2023")) {
-    if (TString(ds.c_str()).Contains("2023B") || 
+    if (TString(ds.c_str()).Contains("2023B") ||  //should handle also nib/fib version (string contains 2023B etc)
 	TString(ds.c_str()).Contains("2023C") ||
 	(TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix")==false) ||  //need to make sure that it does not use this for BPix stuff
 	(TString(ds.c_str()).Contains("2023QCD") && TString(ds.c_str()).Contains("BPix")==false) )

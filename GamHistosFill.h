@@ -578,6 +578,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
   //is22v10 = (ds=="2022F" || ds=="2022G" ||
   is22v10 = false;//(ds=="2022G");
   is23 = (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D" ||
+	  ds=="2023Bnib1" || ds=="2023Cv123nib1" || ds=="2023Cv4nib1" || ds=="2023Cv4nib2" || ds=="2023Dnib1" || //nibs and fibs
           ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX" || //for testing wX23 and wX22
 	  ds=="2023P8X" || ds=="2023QCDX" || ds=="2023P8-BPixX"|| ds=="2023QCDX" || ds=="2023QCD-BPixX" || //for testing wX23 and wX22
 	  ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix"|| ds=="2023QCD" || ds=="2023QCD-BPix"); //added 2023P8_BPix
