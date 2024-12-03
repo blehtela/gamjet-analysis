@@ -78,6 +78,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
                   //dataset=="2018ABCD");
 		  dataset=="2022C"  || dataset=="2022D" || dataset=="2022E" ||
 		  dataset=="2022F"  || dataset=="2022G" ||
+		  dataset=="2022Cnib1"  || dataset=="2022Dnib1" || dataset=="2022Enib1" || dataset=="2022Fnib1"  || dataset=="2022Gnib1" || //nibs and fibs 2022
 		  dataset=="2023Cv123X" || dataset=="2023Cv4X" || dataset=="2023DX" || //for my test wX23
 		  dataset=="2023B" || dataset=="2023Cv123" ||
 		  dataset=="2023Cv4" || dataset=="2023D" ||

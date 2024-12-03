@@ -572,8 +572,9 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	  ds=="2018A1" || ds=="2018A2" ||
 	  ds=="2018D1" || ds=="2018D2" || ds=="2018D3" || ds=="2018D4" ||
 	  ds=="2018ABCD" || ds=="2018P8" || ds=="2018QCD");
-  is22 = (ds=="2022C" || ds=="2022D" || ds=="2022E" || ds=="2022F" ||
-	  ds=="2022G" || ds=="2022P8" || ds=="2022QCD" || ds=="2022EEP8" ||
+  is22 = (ds=="2022C" || ds=="2022D" || ds=="2022E" || ds=="2022F" || ds=="2022G" || 
+	  ds=="2022Cnib1" || ds=="2022Dnib1" || ds=="2022Enib1" || ds=="2022Fnib1" || ds=="2022Gnib1" || //nibs and fibs
+	  ds=="2022P8" || ds=="2022QCD" || ds=="2022EEP8" ||
 	  ds=="2022EEQCD");
   //is22v10 = (ds=="2022F" || ds=="2022G" ||
   is22v10 = false;//(ds=="2022G");

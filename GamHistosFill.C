@@ -495,27 +495,27 @@ void GamHistosFill::Loop()
 
   // FactorizedJetCorrector for redoing JEC on the fly.
   //2022
-  if (ds=="2022C") {
+  if (ds=="2022C" || ds=="2022Cnib1") {
     jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI",
 		 //"Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi");
 		 "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi");
   }
-  if (ds=="2022D") {
+  if (ds=="2022D" || ds=="2022Dnib1") {
     jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI",
 		 //"Run22CD-22Sep2023_DATA_L2L3Residual_AK4PFPuppi");
 		 "Summer22-22Sep2023_Run2022CD_V3_DATA_L2L3Residual_AK4PFPuppi");
   }
-  if (ds=="2022E") {
+  if (ds=="2022E" || ds=="2022Enib1") {
     jec = getFJC("", "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI",
 		 //"Run22E-22Sep2023_DATA_L2L3Residual_AK4PFPuppi");
 		 "Summer22EE-22Sep2023_Run2022E_V3_DATA_L2L3Residual_AK4PFPuppi");		 
   }
-  if (ds=="2022F") {
+  if (ds=="2022F" || ds=="2022Fnib1") {
     jec = getFJC("", "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI",
 		 //"Run22F-Prompt_DATA_L2L3Residual_AK4PFPuppi");
 		 "Summer22EEPrompt22_Run2022F_V3_DATA_L2L3Residual_AK4PFPuppi");
   }
-  if (ds=="2022G") {
+  if (ds=="2022G" || ds=="2022Gnib1") {
     jec = getFJC("", "Summer22EEVetoRun3_V1_MC_L2Relative_AK4PUPPI",
 		 //"Run22G-Prompt_DATA_L2L3Residual_AK4PFPuppi");
 		 "Summer22EEPrompt22_Run2022G_V3_DATA_L2L3Residual_AK4PFPuppi");
@@ -658,8 +658,8 @@ void GamHistosFill::Loop()
   if (ds=="2022EEP8" || ds=="2022EEQCD") sera = "2022EE";
   if (ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix") sera = "2023"; //added 2023P8-BPix
   if (ds=="2023P8X" || ds=="2023QCDX" || ds=="2023P8-BPixX" || ds=="2023QCD-BPixX") sera = "2023"; //added for w23X and w22X
-  if (ds=="2022C" || ds=="2022D") sera ="2022";
-  if (ds=="2022E" || ds=="2022F" || ds=="2022G") sera = "2022EE";
+  if (ds=="2022C" || ds=="2022D" || ds=="2022Cnib1" || ds=="2022Dnib1") sera ="2022";
+  if (ds=="2022E" || ds=="2022F" || ds=="2022G" || ds=="2022Enib1" || ds=="2022Fnib1" || ds=="2022Gnib1") sera = "2022EE";
   if (ds=="2023B" || ds=="2023Cv123" || ds=="2023Cv4" || ds=="2023D") sera = "2023";
   if (ds=="2023Bnib1" || ds=="2023Cv123nib1" || ds=="2023Cv4nib1" || ds=="2023Cv4nib2" || ds=="2023Dnib1") sera = "2023"; //for nibs and fibs
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
@@ -797,7 +797,7 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2018"))
     fjv = new TFile("files/hotjets-UL18.root","READ");
   if (TString(ds.c_str()).Contains("2022")) {
-    if (TString(ds.c_str()).Contains("2022C") || 
+    if (TString(ds.c_str()).Contains("2022C") || //also covers nib/fib version
 	TString(ds.c_str()).Contains("2022D") ||
 	TString(ds.c_str()).Contains("2022P8") ||
       	TString(ds.c_str()).Contains("2022QCD"))
