@@ -8,7 +8,7 @@
 
 
 
-void GamHistosPileup(string dataset = "winter2024P8", string version = "w41") {
+void GamHistosPileup(string dataset = "winter2024P8", string version = "w43") {
     TChain chain("Events");
 
 
