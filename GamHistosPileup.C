@@ -8,32 +8,47 @@
 
 
 
-void GamHistosPileup(string dataset = "winter2024P8", string version = "w43") {
+void GamHistosPileup(string dataset = "winter2024P8", string version = "w44") {
     TChain chain("Events");
 
 
     // 2024 MC (v14) files for Gamma+Jet
 		if(dataset=="winter2024P8"){
-	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-40to70_Winter24_madgraph-p8-MC_V14/*.root");
-	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-70to100_Winter24_madgraph-p8-MC_V14/*.root");
-	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-100to200_Winter24_madgraph-p8-MC_V14/*.root");
-	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-200to400_Winter24_madgraph-p8-MC_V14/*.root");
-	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-400to600_Winter24_madgraph-p8-MC_V14/*.root");
-	    	chain.Add("/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-600_Winter24_madgraph-p8-MC_V14/*.root");
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2024/GamJet/MC_2024_GamJet_G4Jets*V14*.root");
 		}
 		else if(dataset=="2024QCD"){
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-40to70_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-70to100_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-100to200_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-200to400_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-400to600_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-600to800_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-800to1000_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1000to1200_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1200to1500_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-1500to2000_Winter24_madgraph-p8-MC_V14/*.root");
-				chain.Add("/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-2000_Winter24_madgraph-p8-MC_V14/*.root");
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2024/GamJet/MC_2024_GamJet_QCD*V14*.root");
 		}
+		else if(dataset=="2023P8"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2023/GamJet/MC_2023PreBPix_GamJet_G4JetsHT*.root");
+		}
+		else if(dataset=="2023P8-BPix"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2023/GamJet/MC_2023PostBPix_GamJet_G4JetsHT*.root");
+		}
+		else if(dataset=="2023QCD"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2023/GamJet/MC_2023PreBPix_GamJet_QCD4JetsHT*.root");
+		}
+		else if(dataset=="2023QCD-BPix"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2023/GamJet/MC_2023PostBPix_GamJet_QCD4JetsHT*.root");
+		}
+		else if(dataset=="2022P8"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2022/GamJet/MC_2022PreEE_GamJet_G4JetsHT*.root");
+		}
+		else if(dataset=="2022EEP8"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2022/GamJet/MC_2022PostEE_GamJet_G4JetsHT*.root");
+		}
+		else if(dataset=="2022QCD"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2022/GamJet/MC_2022PreEE_GamJet_QCD4JetsHT*.root");
+		}
+		else if(dataset=="2022EEQCD"){
+			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2022/GamJet/MC_2022PostEE_GamJet_QCD4JetsHT*.root");
+		}
+
+
+
+   //on Vulcan, use:
+   // FOR WINTER2024P8, files at "/media/Duo2/JME_NANO_MC/2024/GJ-4Jets_HT-*" (folder with several files).
+   // FOR QCD, files at "/media/Duo2/JME_NANO_MC/2024/QCD-4Jets_HT-*" (folder with several files).
 
 
     // Disable all branches by default
@@ -126,7 +141,7 @@ void GamHistosPileup(string dataset = "winter2024P8", string version = "w43") {
     // Specify where to save the output ROOT file
     //TFile outFile("luminosityscripts/PUWeights/Winter24MGV14_PUProfile_v2.root", "RECREATE");
 		//TFile outFile("pileup/GJ-4Jets_Winter24_madgraph-p8-MC_V14_PUProfile.root", "RECREATE");
-		TFile outFile(Form("pileup/pileup_%s.root", dataset.c_str()), "RECREATE"); //file that only contains ONE histogram --> original MC pileup distr.
+		TFile outFile(Form("pileup/pileup_%s_%s.root", dataset.c_str(), version.c_str()), "RECREATE"); //file that only contains ONE histogram --> original MC pileup distr.
     MCpileup->Write(); //write pu distribution (not normalised)
 
 
