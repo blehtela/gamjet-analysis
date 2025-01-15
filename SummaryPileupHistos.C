@@ -7,11 +7,12 @@
 
 
 
-void SummaryPileupHistos(string ver = "w41") {
+void SummaryPileupHistos(string ver = "w43") {
     TChain chain("Events");
 
 		//list of data eras to be saved to summary file:
-		string data_eras[] = {"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"};
+		//string data_eras[] = {"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"}; //for eras in 2024
+		string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nibs in 2024
 		const int neras = sizeof(data_eras)/sizeof(data_eras[0]); //.size();
 
 
@@ -27,8 +28,14 @@ void SummaryPileupHistos(string ver = "w41") {
 
 
 		// MONTE CARLO PU DISTRIBUTIONS  --> read from files and save to summary file.
-		TFile *mfp8 = new TFile(Form("pileup/2024/pileup_winter2024P8.root")); //winter2024P8
-		TFile *mfqcd = new TFile(Form("pileup/2024/pileup_2024QCD.root")); //2024QCD
+		//TFile *mfp8 = new TFile(Form("pileup/2024/pileup_winter2024P8.root")); //winter2024P8
+		//TFile *mfqcd = new TFile(Form("pileup/2024/pileup_2024QCD.root")); //2024QCD
+
+		//needed a workaround on lxplus...have those on vulcan...so here read from previous summary (w41, no changes to mc): TODO: FIX THIS
+		TFile *mfp8 = new TFile(Form("pileup/2024/pu_summary_w41.root")); //winter2024P8
+		TFile *mfqcd = new TFile(Form("pileup/2024/pu_summary_w41.root")); //2024QCD
+
+
 
 		//MC PU pre-reweighting
 		TH1D *mcp8_pu = (TH1D*)mfp8->Get(Form("pileup_winter2024P8"));
@@ -60,8 +67,13 @@ void SummaryPileupHistos(string ver = "w41") {
 
 		for(int i=0; i<neras; ++i){
 				for(int j=0; j<ntrigs; ++j){
-						TFile *df = new TFile(Form("/media/Duo2/bschilli/pileup2024_%s/MyDataPileupHistogram_%s_%s_%s.root", 
-																	ver.c_str(), data_eras[i].c_str(), trg[j].c_str(), ver.c_str()),"READ"); //test it with w41
+						//TFile *df = new TFile(Form("/media/Duo2/bschilli/pileup2024_%s/MyDataPileupHistogram_%s_%s_%s.root", 
+						//				ver.c_str(), data_eras[i].c_str(), trg[j].c_str(), ver.c_str()),"READ"); //test it with w41
+						TFile *df = new TFile(Form("/eos/user/b/blehtela/pileup_%s/MyDataPileupHistogram_%s_%s_%s.root", 
+										ver.c_str(), data_eras[i].c_str(), "photon50eb", ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+
+						assert(df);
+
 
 						string era_hlt_name = Form("%s_%s",data_eras[i].c_str(), trigs[j].c_str()); //e.g. "2024F_Photon50EB_TightID_TightIso"
 						//TH1D *data_pu = (TH1D*)df->Get("pileup_2024F_Photon50EB_TightID_TightIso");
