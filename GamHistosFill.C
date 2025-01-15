@@ -756,7 +756,7 @@ void GamHistosFill::Loop()
 	//w32 also used for w33
 	//update lumi last on 25.10.2024 (w40)
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv");
+	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv"); //using this also for w43... should be updated?
 	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w41.csv");
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w41.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w41.csv");
@@ -4197,7 +4197,8 @@ void GamHistosFill::LoadPU(){
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
-  trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
+  //trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
+  trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); 
   trigs["2024B"].push_back("Photon50EB_TightID_TightIso");
   trigs["2024C"].push_back("Photon50EB_TightID_TightIso");
   trigs["2024D"].push_back("Photon50EB_TightID_TightIso");
@@ -4223,7 +4224,7 @@ void GamHistosFill::LoadPU(){
 	//TFile *fpu = new TFile("pileup_mc_data2024E_w38.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024D_w38.root", "READ"); //need to update this manually for now, together with new JSON
   //TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras, ... does not work from subfolder?
-  TFile *fpu = new TFile("pu_summary_w41.root", "READ"); //have them here for mc and all eras
+  TFile *fpu = new TFile("pileup/2024/pu_summary_w43.root", "READ"); //have them here for mc and all eras
 
 
 
