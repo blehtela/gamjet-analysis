@@ -723,7 +723,7 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/Cert_Collisions2024_378981_385863_Golden.json"); //golden json --> w38golden-g (29.09.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
-		LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json"); //golden json (all eras 2024)--> w41 (01.11.2024)
+		LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json"); //golden json (all eras 2024)--> w41 and onwards (01.11.2024)
 
 
 
@@ -754,9 +754,10 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
 	//w32 also used for w33
-	//update lumi last on 25.10.2024 (w40)
+	//update lumi on 25.10.2024 (w40)
+	//update lumi last on 01.11.2024 (w41), also used for w42, w43, w44
   LumiMap lumi30, lumi50, lumi110, lumi200;
-	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv"); //using this also for w43... should be updated?
+	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv"); //using this also for w43 and w44, since same JSON... should be updated?
 	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w41.csv");
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w41.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w41.csv");
@@ -4224,7 +4225,7 @@ void GamHistosFill::LoadPU(){
 	//TFile *fpu = new TFile("pileup_mc_data2024E_w38.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024D_w38.root", "READ"); //need to update this manually for now, together with new JSON
   //TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras, ... does not work from subfolder?
-  TFile *fpu = new TFile("pileup/2024/pu_summary_w43.root", "READ"); //have them here for mc and all eras
+  TFile *fpu = new TFile("pileup/2024/pu_summary_w44.root", "READ"); //have them here for mc and all eras
 
 
 
