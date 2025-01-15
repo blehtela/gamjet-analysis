@@ -753,14 +753,40 @@ void GamHistosFill::Loop()
 
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
-	//w32 also used for w33
-	//update lumi on 25.10.2024 (w40)
-	//update lumi last on 01.11.2024 (w41), also used for w42, w43, w44
+  //w32 also used for w33
+  //update lumi on 25.10.2024 (w40)
+  //update lumi last on 01.11.2024 (w41), also used for w42, w43, w44
   LumiMap lumi30, lumi50, lumi110, lumi200;
+  if(TString(ds.c_str()).Contains("2022")){
+	lumi30 = LoadLumi("files/lumi2022_golden_photon30eb_pb_w44.csv");
+	lumi50 = LoadLumi("files/lumi2022_golden_photon50_pb_w44.csv");		//not 50EB, but older trigger
+	lumi110 = LoadLumi("files/lumi2022_golden_photon110eb_pb_w44.csv");
+	lumi200 = LoadLumi("files/lumi2022_golden_photon200_pb_w44.csv");
+  }
+  else if(TString(ds.c_str()).Contains("2023")){
+	lumi30 = LoadLumi("files/lumi2023_golden_photon30eb_pb_w44.csv");
+	lumi50 = LoadLumi("files/lumi2023_golden_photon50_pb_w44.csv");		//not 50EB, but older trigger
+	lumi110 = LoadLumi("files/lumi2023_golden_photon110eb_pb_w44.csv");
+	lumi200 = LoadLumi("files/lumi2023_golden_photon200_pb_w44.csv");
+  }
+  else if(TString(ds.c_str()).Contains("2024")){
+	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w44.csv"); 
+	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w44.csv");
+	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w44.csv");
+	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
+  }
+
+
+
+
+
+	//earlier...
+	/*
 	lumi30 = LoadLumi("files/lumi2024_golden_photon30eb_pb_w41.csv"); //using this also for w43 and w44, since same JSON... should be updated?
 	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w41.csv");
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w41.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w41.csv");
+	*/
 
 
 
