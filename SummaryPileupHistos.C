@@ -36,11 +36,20 @@ void SummaryPileupHistos(string ver = "w44") {
 		string mc2024[] = {"winter2024P8", "2024QCD"};					// mc for 2024 (both gamjet and qcd)
 
 		for(int i=0; i<neras; ++i){
-			string mclist[](0);
-			if(TString(data_eras[i].c_str()).Contains("2022")){ mclist = mc2022; } 
-			else if(TString(data_eras[i].c_str()).Contains("2023")){ mclist = mc2023; }
-			else if(TString(data_eras[i].c_str()).Contains("2024")){ mclist = mc2024; }
-			const int nmcsets = sizeof(mclist)/sizeof(mclist[0]);
+			//string mclist[];
+			vector<string> mclist;
+			if(TString(data_eras[i].c_str()).Contains("2022")){ 
+				for(i=0; i<4; ++i){ mclist.push_back(mc2022[i]); }
+			} 
+			else if(TString(data_eras[i].c_str()).Contains("2023")){ 
+				for(i=0; i<4; ++i){ mclist.push_back(mc2023[i]); }
+			}
+			else if(TString(data_eras[i].c_str()).Contains("2024")){ 
+				for(i=0; i<2; ++i){ mclist.push_back(mc2024[i]); }
+			}
+			//const int nmcsets = sizeof(mclist)/sizeof(mclist[0]);
+			//length of vector
+			const int nmcsets = mclist.size();
 
 			for(int j=0; j<nmcsets; ++j){
 				TFile *mcfile = new TFile(Form("pileup/pileup_%s_%s.root", mclist[j].c_str(), ver.c_str())); //open file for this mc set (contains pu distribution)
@@ -102,9 +111,10 @@ void SummaryPileupHistos(string ver = "w44") {
 						//				ver.c_str(), data_eras[i].c_str(), "photon50eb", ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
 				
 						//with year folder now
-						string year = data_eras[i].c_str().substr(0,4);
+						//string year = data_eras[i].c_str().substr(0,4);
+						string year = data_eras[i].substr(0,4);
 						TFile *df = new TFile(Form("/eos/user/b/blehtela/pileup_%s/%s/MyDataPileupHistogram_%s_%s_%s.root", 
-										ver.c_str(), data_eras[i].c_str(), year.c_str(), "photon50eb", ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+										ver.c_str(), year.c_str(), data_eras[i].c_str(), ((year=="2024") ? "photon50eb":"photon50"), ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
 
 						assert(df);
 
