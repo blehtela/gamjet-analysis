@@ -2766,12 +2766,26 @@ void GamHistosFill::Loop()
     // Reweight MC pileup (except for 22-23)
     //if (isMC && pass_trig && !isRun3) { //previously (before w37), used for w38puoff
     //if (isMC && pass_trig && is24 && (puera.c_str() != "")) { //now also for Run3 (only 2024 so far)
-    if (isMC && pass_trig && is24 && (strcmp(puera.c_str(), "") != 0)) { //now also for Run3 (only 2024 so far) //what is best way to compare strings?
+    //if (isMC && pass_trig && is24 && (strcmp(puera.c_str(), "") != 0)) { //now also for Run3 (only 2024 so far) //what is best way to compare strings?
+    if (isMC && pass_trig && (strcmp(puera.c_str(), "") != 0)) { //now also for Run3 (only 2024 so far) //what is best way to compare strings?
+
 
       //cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
+
+			if(TString(dataset.c_str()).Contains("2023P8")){ mctype="2023P8";} //new, for y2023
+			if(TString(dataset.c_str()).Contains("2023QCD")){ mctype="2023QCD";}
+			if(TString(dataset.c_str()).Contains("2023P8-BPix")){ mctype="2023P8-BPix";} //new, for y2023
+			if(TString(dataset.c_str()).Contains("2023QCD-BPix")){ mctype="2023QCD-BPix";}
+	
+			if(TString(dataset.c_str()).Contains("2022P8")){ mctype="2022P8";} //new, for y2022
+			if(TString(dataset.c_str()).Contains("2022QCD")){ mctype="2022QCD";}
+			if(TString(dataset.c_str()).Contains("2022EEP8")){ mctype="2022EEP8";} //new, for y2022
+			if(TString(dataset.c_str()).Contains("2022EEQCD")){ mctype="2022EEQCD";}
+	
+	
 			TH1D *hm = _pu[mctype][1]; //workaround since working with split input file lists; use one mc histo for all bins
 			//hm->Write(Form("input_pileup_normalised_%s",mctype.c_str())); //just for checking
 
@@ -4144,7 +4158,9 @@ void GamHistosFill::LoadPU(){
   //string eras[] = {"2024B", "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far.
 
 
-  string eras[] = {puera.c_str(), "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far. DOES NOT WORK YET.. ?
+  ////string eras[] = {puera.c_str(), "winter2024P8", "2024QCD"};// testing //have no overall "2024" so far. DOES NOT WORK YET.. ? //add 2022/2023?
+  string eras[] = {puera.c_str(), dataset.c_str()};// testing //have no overall "2024" so far. DOES NOT WORK YET.. ? //add 2022/2023?
+
 
   //"winter2024P8-test"};// testing //have no overall "2024" so far.
 
@@ -4220,24 +4236,50 @@ void GamHistosFill::LoadPU(){
   trigs["2024QCD"].push_back("mc"); //qcd mc
   //trigs["2024"].push_back("HLT_Photon20_HoverELoose");
   //trigs["2024"].push_back("HLT_Photon30_HoverELoose");
+  //
+  trigs["2023P8"].push_back("mc"); //photon mc
+  trigs["2023QCD"].push_back("mc"); //qcd mc
+  trigs["2023P8-BPix"].push_back("mc"); //photon mc
+  trigs["2023QCD-BPix"].push_back("mc"); //qcd mc
+
+  trigs["2022P8"].push_back("mc"); //photon mc
+  trigs["2022QCD"].push_back("mc"); //qcd mc
+  trigs["2022EEP8"].push_back("mc"); //photon mc
+  trigs["2022EEQCD"].push_back("mc"); //qcd mc
+
+
 
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
   //trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
   trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); 
-  trigs["2024B"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024C"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024D"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024B"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024C"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024D"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs["2024E"].push_back("HLT_Photon50EB_TightID_TightIso");
-  trigs["2024Ev1"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024Ev2"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024F"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024G"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024H"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024GH"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024Iv1"].push_back("Photon50EB_TightID_TightIso");
-  trigs["2024Iv2"].push_back("Photon50EB_TightID_TightIso");
+  trigs["2024Ev1"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024Ev2"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024F"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024G"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024H"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024GH"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024Iv1"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2024Iv2"].push_back("HLT_Photon50EB_TightID_TightIso");
+
+  //CAUTION: THIS NAMING IS ACTUALLY NOT WHAT IS STORED IN THE HISTOS: for 2022/23 used HLT_Photon50_v* ...but naming still from '24...
+  trigs["2023B"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2023Cv123"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2023Cv4"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2023D"].push_back("HLT_Photon50EB_TightID_TightIso");
+
+  trigs["2022C"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2022D"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2022E"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2022F"].push_back("HLT_Photon50EB_TightID_TightIso");
+  trigs["2022G"].push_back("HLT_Photon50EB_TightID_TightIso");
+ 
+
   //trigs["2024"].push_back("HLT_Photon50_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon75_R9Id90_HE10_IsoM");
   //trigs["2024"].push_back("HLT_Photon90_R9Id90_HE10_IsoM");
