@@ -251,9 +251,9 @@ void GamHistosFill::Loop()
       //fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon75EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon90EB_TightID_TightIso",1);
-			if(!isMC){ //did not work for winter2024P8, so do it only for data
-	      fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1);
-			}
+	if(!isMC){ //did not work for winter2024P8, so do it only for data
+		//fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1); //commented out since w44
+	}
     }
 
     // Triggers to recover 60-105 GeV range. However, inefficient up to high pT
@@ -306,7 +306,7 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Flag_goodVertices",1);
     fChain->SetBranchStatus("Flag_globalSuperTightHalo2016Filter",1);
     fChain->SetBranchStatus("Flag_HBHENoiseFilter",1);
-    fChain->SetBranchStatus("Flag_HBHENoiseIsoFilter",1);
+    //fChain->SetBranchStatus("Flag_HBHENoiseIsoFilter",1); //commented out since w44 (applied in skim?)
     fChain->SetBranchStatus("Flag_EcalDeadCellTriggerPrimitiveFilter",1);
     fChain->SetBranchStatus("Flag_BadPFMuonFilter",1);
     //fChain->SetBranchStatus("Flag_BadPFMuonDzFilter",1); // not in nAOD?
@@ -2195,7 +2195,8 @@ void GamHistosFill::Loop()
     ++nlap;
 
     //Safety resets for triggers only in 2024
-    HLT_Photon50EB_TightID_TightIso = HLT_Photon55EB_TightID_TightIso =
+    HLT_Photon50EB_TightID_TightIso = 
+	//HLT_Photon55EB_TightID_TightIso = //commented out since w44
       HLT_Photon75EB_TightID_TightIso = HLT_Photon90EB_TightID_TightIso =
       kFALSE;
     // Safety resets for triggers only in 2022-2023
@@ -2257,8 +2258,8 @@ void GamHistosFill::Loop()
       // Only 24
       if (b_HLT_Photon50EB_TightID_TightIso && is24)
 	b_HLT_Photon50EB_TightID_TightIso->GetEntry(ientry);
-      if (b_HLT_Photon55EB_TightID_TightIso && is24)
-	b_HLT_Photon55EB_TightID_TightIso->GetEntry(ientry);
+      //if (b_HLT_Photon55EB_TightID_TightIso && is24) //commented out 55EB trigger since w44
+	//b_HLT_Photon55EB_TightID_TightIso->GetEntry(ientry);
       if (b_HLT_Photon75EB_TightID_TightIso && is24)
 	b_HLT_Photon75EB_TightID_TightIso->GetEntry(ientry);
       if (b_HLT_Photon90EB_TightID_TightIso && is24)
@@ -2322,7 +2323,7 @@ void GamHistosFill::Loop()
 	     HLT_Photon100EBHE10 ||
              HLT_Photon90EB_TightID_TightIso ||
 	     HLT_Photon75EB_TightID_TightIso ||
-	     HLT_Photon55EB_TightID_TightIso ||
+	     //HLT_Photon55EB_TightID_TightIso ||	//commented out since w44
 	     HLT_Photon50EB_TightID_TightIso ||
 	     HLT_Photon30EB_TightID_TightIso ||
 	     HLT_Photon90_R9Id90_HE10_IsoM ||
@@ -3033,7 +3034,7 @@ void GamHistosFill::Loop()
 	Flag_goodVertices &&
 	Flag_globalSuperTightHalo2016Filter &&
 	Flag_HBHENoiseFilter &&
-	Flag_HBHENoiseIsoFilter &&
+	//Flag_HBHENoiseIsoFilter &&	//commented out since w44 (applied in skim?)
 	Flag_EcalDeadCellTriggerPrimitiveFilter &&
 	Flag_BadPFMuonFilter &&
 	//Flag_BadPFMuonDzFilter && // new in UL, but not in nAOD?
@@ -3549,7 +3550,7 @@ void GamHistosFill::Loop()
 		     Flag_goodVertices,
 		     Flag_globalSuperTightHalo2016Filter,
 		     Flag_HBHENoiseFilter,
-		     Flag_HBHENoiseIsoFilter,
+		     //Flag_HBHENoiseIsoFilter,	//commented out since w44 (applied in skim?)
 		     Flag_EcalDeadCellTriggerPrimitiveFilter,
 		     Flag_BadPFMuonFilter,
 		     Flag_ecalBadCalibFilter,
