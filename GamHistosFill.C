@@ -305,7 +305,7 @@ void GamHistosFill::Loop()
     // #2018_2017_data_and_MC_UL
     fChain->SetBranchStatus("Flag_goodVertices",1);
     fChain->SetBranchStatus("Flag_globalSuperTightHalo2016Filter",1);
-    fChain->SetBranchStatus("Flag_HBHENoiseFilter",1);
+    //fChain->SetBranchStatus("Flag_HBHENoiseFilter",1); //commented out since w44 (applied in skim?)
     //fChain->SetBranchStatus("Flag_HBHENoiseIsoFilter",1); //commented out since w44 (applied in skim?)
     fChain->SetBranchStatus("Flag_EcalDeadCellTriggerPrimitiveFilter",1);
     fChain->SetBranchStatus("Flag_BadPFMuonFilter",1);
@@ -3033,7 +3033,7 @@ void GamHistosFill::Loop()
        (!isRun3 &&
 	Flag_goodVertices &&
 	Flag_globalSuperTightHalo2016Filter &&
-	Flag_HBHENoiseFilter &&
+	//Flag_HBHENoiseFilter &&	//commented out since w44 (applied in skim?)
 	//Flag_HBHENoiseIsoFilter &&	//commented out since w44 (applied in skim?)
 	Flag_EcalDeadCellTriggerPrimitiveFilter &&
 	Flag_BadPFMuonFilter &&
@@ -3541,7 +3541,7 @@ void GamHistosFill::Loop()
 		     pass_gen, pass_trig, pass_filt) << endl << flush;
 	cout << Form("Flags/Filters: goodVertices = %d, "
 		     "globalSuperTightHalo2016 = %d,\n"
-		     "HBHENoise = %d, "
+		     //"HBHENoise = %d, "
 		     //"HBHENoiseIso = %d, "
 		     "EcalDeadCellTriggerPrimitive = %d,\n"
 		     "BadPFMuon = %d, "
@@ -3549,7 +3549,7 @@ void GamHistosFill::Loop()
 		     "eeBadSc = %d.\n",  
 		     Flag_goodVertices,
 		     Flag_globalSuperTightHalo2016Filter,
-		     Flag_HBHENoiseFilter,
+		     //Flag_HBHENoiseFilter,	//commented out since w44 (applied in skim?)
 		     //Flag_HBHENoiseIsoFilter,	//commented out since w44 (applied in skim?)
 		     Flag_EcalDeadCellTriggerPrimitiveFilter,
 		     Flag_BadPFMuonFilter,

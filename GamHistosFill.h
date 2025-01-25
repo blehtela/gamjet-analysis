@@ -182,7 +182,7 @@ public :
    //Int_t           PV_npvsGood; // NanoV11,10
    UChar_t           PV_npvsGood; // NanoV12
  
-   Bool_t          Flag_HBHENoiseFilter;
+   //Bool_t          Flag_HBHENoiseFilter;	//this and some others commented out since w44 (see git 25.01.2025)
    //Bool_t          Flag_HBHENoiseIsoFilter;	//this and some others commented out since w44 (see git 25.01.2025)
    //Bool_t          Flag_CSCTightHaloFilter;
    //Bool_t          Flag_CSCTightHaloTrkMuUnvetoFilter;
@@ -417,7 +417,7 @@ public :
    TBranch        *b_PV_npvs;   //!
    TBranch        *b_PV_npvsGood;   //!
 
-   TBranch        *b_Flag_HBHENoiseFilter;   //!
+   //TBranch        *b_Flag_HBHENoiseFilter;   //!
    //TBranch        *b_Flag_HBHENoiseIsoFilter;   //!
    //TBranch        *b_Flag_CSCTightHaloFilter;   //!
    //TBranch        *b_Flag_CSCTightHaloTrkMuUnvetoFilter;   //!
@@ -823,7 +823,7 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("PV_npvs", &PV_npvs, &b_PV_npvs);
    fChain->SetBranchAddress("PV_npvsGood", &PV_npvsGood, &b_PV_npvsGood);
 
-   fChain->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter, &b_Flag_HBHENoiseFilter);
+   //fChain->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter, &b_Flag_HBHENoiseFilter);
    //fChain->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter, &b_Flag_HBHENoiseIsoFilter);
    //fChain->SetBranchAddress("Flag_CSCTightHaloFilter", &Flag_CSCTightHaloFilter, &b_Flag_CSCTightHaloFilter);
    //fChain->SetBranchAddress("Flag_CSCTightHaloTrkMuUnvetoFilter", &Flag_CSCTightHaloTrkMuUnvetoFilter, &b_Flag_CSCTightHaloTrkMuUnvetoFilter);
