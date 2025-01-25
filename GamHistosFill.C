@@ -3542,7 +3542,7 @@ void GamHistosFill::Loop()
 	cout << Form("Flags/Filters: goodVertices = %d, "
 		     "globalSuperTightHalo2016 = %d,\n"
 		     "HBHENoise = %d, "
-		     "HBHENoiseIso = %d, "
+		     //"HBHENoiseIso = %d, "
 		     "EcalDeadCellTriggerPrimitive = %d,\n"
 		     "BadPFMuon = %d, "
 		     "ecalBadCalib = %d, "
