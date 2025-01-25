@@ -1,4 +1,4 @@
-/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/2024/GamJet/Data_2024Bv1_GamJet_EGamma0_Skim_1of2.root
-/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/2024/GamJet/Data_2024Bv1_GamJet_EGamma0_Skim_2of2.root
-/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/2024/GamJet/Data_2024Bv1_GamJet_EGamma1_Skim_1of2.root
-/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/2024/GamJet/Data_2024Bv1_GamJet_EGamma1_Skim_2of2.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/12Dec2024/2024/GamJet/Data_2024B_GamJet_EGamma0_Skim_1of2.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/12Dec2024/2024/GamJet/Data_2024B_GamJet_EGamma0_Skim_2of2.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/12Dec2024/2024/GamJet/Data_2024B_GamJet_EGamma1_Skim_1of2.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/12Dec2024/2024/GamJet/Data_2024B_GamJet_EGamma1_Skim_2of2.root
