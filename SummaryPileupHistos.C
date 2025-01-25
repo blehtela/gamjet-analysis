@@ -13,7 +13,7 @@ void SummaryPileupHistos(string ver = "w44") {
 		//list of data eras to be saved to summary file:
 		//string data_eras[] = {"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"}; //for eras in 2024
 		//string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nibs in 2024
-		string data_eras[] = {"2022C", "2022D", "2022E", "2022F", "2022G", "2023B", "2023Cv123", "2023Cv4", "2023D", "2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"}; //for eras in 2024, 2023, 2022
+		string data_eras[] = {"2022C", "2022D", "2022E", "2022F", "2022G", "2023B", "2023Cv123", "2023Cv4", "2023D", "2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I"}; //for eras in 2024, 2023, 2022; did not use 24GH now
 		const int neras = sizeof(data_eras)/sizeof(data_eras[0]); //.size();
 
 
@@ -39,13 +39,13 @@ void SummaryPileupHistos(string ver = "w44") {
 			//string mclist[];
 			vector<string> mclist;
 			if(TString(data_eras[i].c_str()).Contains("2022")){ 
-				for(i=0; i<4; ++i){ mclist.push_back(mc2022[i]); }
+				for(int j=0; j<4; ++j){ mclist.push_back(mc2022[j]); }
 			} 
 			else if(TString(data_eras[i].c_str()).Contains("2023")){ 
-				for(i=0; i<4; ++i){ mclist.push_back(mc2023[i]); }
+				for(int j=0; j<4; ++j){ mclist.push_back(mc2023[j]); }
 			}
 			else if(TString(data_eras[i].c_str()).Contains("2024")){ 
-				for(i=0; i<2; ++i){ mclist.push_back(mc2024[i]); }
+				for(int j=0; j<2; ++j){ mclist.push_back(mc2024[j]); }
 			}
 			//const int nmcsets = sizeof(mclist)/sizeof(mclist[0]);
 			//length of vector
@@ -65,7 +65,9 @@ void SummaryPileupHistos(string ver = "w44") {
 
 				mc_pu->Scale(1./mc_nevt); //normalise to 1
 				mc_pu->Write(Form("pileup_%s_scaled", mclist[j].c_str())); //write normalised pu dist for MC (BEFORE reweighting)
+				mcfile->Close();
 			}
+			cout << Form("Finished MC part for era %s.", data_eras[i].c_str()) << endl << flush;
 		}
 
 
@@ -148,6 +150,7 @@ void SummaryPileupHistos(string ver = "w44") {
 						}
 						*/
 				}//end of loop through trigs
+				cout << Form("Finished data part for era %s.", data_eras[i].c_str()) << endl << flush;
 		}//end of loop through eras
 
 
