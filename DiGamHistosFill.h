@@ -169,34 +169,34 @@ public :
    //Int_t           PV_npvsGood; // NanoV11,10
    UChar_t           PV_npvsGood; // NanoV12
  
-   Bool_t          Flag_HBHENoiseFilter;
-   Bool_t          Flag_HBHENoiseIsoFilter;
-   Bool_t          Flag_CSCTightHaloFilter;
-   Bool_t          Flag_CSCTightHaloTrkMuUnvetoFilter;
-   Bool_t          Flag_CSCTightHalo2015Filter;
-   Bool_t          Flag_globalTightHalo2016Filter;
+   //Bool_t          Flag_HBHENoiseFilter;
+   //Bool_t          Flag_HBHENoiseIsoFilter;
+   //Bool_t          Flag_CSCTightHaloFilter;
+   //Bool_t          Flag_CSCTightHaloTrkMuUnvetoFilter;
+   //Bool_t          Flag_CSCTightHalo2015Filter;
+   //Bool_t          Flag_globalTightHalo2016Filter;
    Bool_t          Flag_globalSuperTightHalo2016Filter;
-   Bool_t          Flag_HcalStripHaloFilter;
-   Bool_t          Flag_hcalLaserEventFilter;
+   //Bool_t          Flag_HcalStripHaloFilter;
+   //Bool_t          Flag_hcalLaserEventFilter;
    Bool_t          Flag_EcalDeadCellTriggerPrimitiveFilter;
-   Bool_t          Flag_EcalDeadCellBoundaryEnergyFilter;
+   //Bool_t          Flag_EcalDeadCellBoundaryEnergyFilter;
    Bool_t          Flag_ecalBadCalibFilter;
    Bool_t          Flag_goodVertices;
    Bool_t          Flag_eeBadScFilter;
-   Bool_t          Flag_ecalLaserCorrFilter;
-   Bool_t          Flag_trkPOGFilters;
-   Bool_t          Flag_chargedHadronTrackResolutionFilter;
-   Bool_t          Flag_muonBadTrackFilter;
-   Bool_t          Flag_BadChargedCandidateFilter;
+   //Bool_t          Flag_ecalLaserCorrFilter;
+   //Bool_t          Flag_trkPOGFilters;
+   //Bool_t          Flag_chargedHadronTrackResolutionFilter;
+   //Bool_t          Flag_muonBadTrackFilter;
+   //Bool_t          Flag_BadChargedCandidateFilter;
    Bool_t          Flag_BadPFMuonFilter;
    Bool_t          Flag_BadPFMuonDzFilter;
    Bool_t          Flag_hfNoisyHitsFilter;
-   Bool_t          Flag_BadChargedCandidateSummer16Filter;
-   Bool_t          Flag_BadPFMuonSummer16Filter;
-   Bool_t          Flag_trkPOG_manystripclus53X;
-   Bool_t          Flag_trkPOG_toomanystripclus53X;
-   Bool_t          Flag_trkPOG_logErrorTooManyClusters;
-   Bool_t          Flag_METFilters;
+   //Bool_t          Flag_BadChargedCandidateSummer16Filter;
+   //Bool_t          Flag_BadPFMuonSummer16Filter;
+   //Bool_t          Flag_trkPOG_manystripclus53X;
+   //Bool_t          Flag_trkPOG_toomanystripclus53X;
+   //Bool_t          Flag_trkPOG_logErrorTooManyClusters;
+   //Bool_t          Flag_METFilters;
 
    // Triggers from 2016
    Bool_t          HLT_Photon250_NoHE;
@@ -235,7 +235,7 @@ public :
    // Triggers and branches from 24
    //Bool_t          HLT_Photon50EB_TightID_TightIso_PFJet30;
    Bool_t          HLT_Photon50EB_TightID_TightIso;
-   Bool_t          HLT_Photon55EB_TightID_TightIso;
+   //Bool_t          HLT_Photon55EB_TightID_TightIso;
    Bool_t          HLT_Photon75EB_TightID_TightIso;
    Bool_t          HLT_Photon90EB_TightID_TightIso;
    //Bool_t          HLT_Photon110EB_TightID_TightIso;
@@ -401,34 +401,34 @@ public :
    TBranch        *b_PV_npvs;   //!
    TBranch        *b_PV_npvsGood;   //!
 
-   TBranch        *b_Flag_HBHENoiseFilter;   //!
-   TBranch        *b_Flag_HBHENoiseIsoFilter;   //!
-   TBranch        *b_Flag_CSCTightHaloFilter;   //!
-   TBranch        *b_Flag_CSCTightHaloTrkMuUnvetoFilter;   //!
-   TBranch        *b_Flag_CSCTightHalo2015Filter;   //!
-   TBranch        *b_Flag_globalTightHalo2016Filter;   //!
+   //TBranch        *b_Flag_HBHENoiseFilter;   //!
+   //TBranch        *b_Flag_HBHENoiseIsoFilter;   //!
+   //TBranch        *b_Flag_CSCTightHaloFilter;   //!
+   //TBranch        *b_Flag_CSCTightHaloTrkMuUnvetoFilter;   //!
+   //TBranch        *b_Flag_CSCTightHalo2015Filter;   //!
+   //TBranch        *b_Flag_globalTightHalo2016Filter;   //!
    TBranch        *b_Flag_globalSuperTightHalo2016Filter;   //!
-   TBranch        *b_Flag_HcalStripHaloFilter;   //!
-   TBranch        *b_Flag_hcalLaserEventFilter;   //!
+   //TBranch        *b_Flag_HcalStripHaloFilter;   //!
+   //TBranch        *b_Flag_hcalLaserEventFilter;   //!
    TBranch        *b_Flag_EcalDeadCellTriggerPrimitiveFilter;   //!
-   TBranch        *b_Flag_EcalDeadCellBoundaryEnergyFilter;   //!
+   //TBranch        *b_Flag_EcalDeadCellBoundaryEnergyFilter;   //!
    TBranch        *b_Flag_ecalBadCalibFilter;   //!
    TBranch        *b_Flag_goodVertices;   //!
    TBranch        *b_Flag_eeBadScFilter;   //!
-   TBranch        *b_Flag_ecalLaserCorrFilter;   //!
-   TBranch        *b_Flag_trkPOGFilters;   //!
-   TBranch        *b_Flag_chargedHadronTrackResolutionFilter;   //!
-   TBranch        *b_Flag_muonBadTrackFilter;   //!
-   TBranch        *b_Flag_BadChargedCandidateFilter;   //!
+   //TBranch        *b_Flag_ecalLaserCorrFilter;   //!
+   //TBranch        *b_Flag_trkPOGFilters;   //!
+   //TBranch        *b_Flag_chargedHadronTrackResolutionFilter;   //!
+   //TBranch        *b_Flag_muonBadTrackFilter;   //!
+   //TBranch        *b_Flag_BadChargedCandidateFilter;   //!
    TBranch        *b_Flag_BadPFMuonFilter;   //!
    TBranch        *b_Flag_BadPFMuonDzFilter;   //!
    TBranch        *b_Flag_hfNoisyHitsFilter;   //!
-   TBranch        *b_Flag_BadChargedCandidateSummer16Filter;   //!
-   TBranch        *b_Flag_BadPFMuonSummer16Filter;   //!
-   TBranch        *b_Flag_trkPOG_manystripclus53X;   //!
-   TBranch        *b_Flag_trkPOG_toomanystripclus53X;   //!
-   TBranch        *b_Flag_trkPOG_logErrorTooManyClusters;   //!
-   TBranch        *b_Flag_METFilters;   //!
+   //TBranch        *b_Flag_BadChargedCandidateSummer16Filter;   //!
+   //TBranch        *b_Flag_BadPFMuonSummer16Filter;   //!
+   //TBranch        *b_Flag_trkPOG_manystripclus53X;   //!
+   //TBranch        *b_Flag_trkPOG_toomanystripclus53X;   //!
+   //TBranch        *b_Flag_trkPOG_logErrorTooManyClusters;   //!
+   //TBranch        *b_Flag_METFilters;   //!
 
    // Extras for MC
    TBranch        *b_genWeight;
@@ -485,11 +485,11 @@ public :
    // Triggers (and branches) from 24
    TBranch        *b_HLT_Photon50EB_TightID_TightIso_PFJet30;   //!
    TBranch        *b_HLT_Photon50EB_TightID_TightIso;   //!
-   TBranch        *b_HLT_Photon55EB_TightID_TightIso;   //!
+   //TBranch        *b_HLT_Photon55EB_TightID_TightIso;   //!
    TBranch        *b_HLT_Photon75EB_TightID_TightIso;   //!
    TBranch        *b_HLT_Photon90EB_TightID_TightIso;   //!
-  //TBranch        *b_HLT_Photon110EB_TightID_TightIso;   //!
-  //TBranch        *b_HLT_Photon110EB_TightID_TightIso_PFJet30;   //!
+   //TBranch        *b_HLT_Photon110EB_TightID_TightIso;   //!
+   //TBranch        *b_HLT_Photon110EB_TightID_TightIso_PFJet30;   //!
   
    // Triggers (and branches) from 22-23
    TBranch        *b_HLT_Photon100EBHE10;
@@ -654,7 +654,7 @@ void DiGamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("Jet_area", Jet_area, &b_Jet_area);
    if (!(is22 || is23 || is24)) fChain->SetBranchAddress("Jet_btagDeepB", Jet_btagDeepB, &b_Jet_btagDeepB);
-   if (!(is22 || is23 | is24)) fChain->SetBranchAddress("Jet_btagDeepC", Jet_btagDeepC, &b_Jet_btagDeepC);
+   if (!(is22 || is23 || is24)) fChain->SetBranchAddress("Jet_btagDeepC", Jet_btagDeepC, &b_Jet_btagDeepC);
    //fChain->SetBranchAddress("Jet_btagDeepCvB", Jet_btagDeepCvB, &b_Jet_btagDeepCvB);
    //fChain->SetBranchAddress("Jet_btagDeepCvL", Jet_btagDeepCvL, &b_Jet_btagDeepCvL);
    if (is22 || is23 || is24) {
@@ -731,7 +731,7 @@ void DiGamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Photon_isScEtaEE", Photon_isScEtaEE, &b_Photon_isScEtaEE);
    //fChain->SetBranchAddress("Photon_mvaID_WP80", Photon_mvaID_WP80, &b_Photon_mvaID_WP80);
    //fChain->SetBranchAddress("Photon_mvaID_WP90", Photon_mvaID_WP90, &b_Photon_mvaID_WP90);
-   fChain->SetBranchAddress("Photon_pixelSeed", Photon_pixelSeed, &b_Photon_pixelSeed);
+   fChain->SetBranchAddress("Photon_pixelSeed", Photon_pixelSeed, &b_Photon_pixelSeed); //important!
    fChain->SetBranchAddress("Photon_seedGain", Photon_seedGain, &b_Photon_seedGain);
 
    //fChain->SetBranchAddress("RawMET_phi", &RawMET_phi, &b_RawMET_phi);
@@ -747,7 +747,7 @@ void DiGamHistosFill::Init(TTree *tree)
    if (!isRun3)
      fChain->SetBranchAddress("fixedGridRhoFastjetAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
    if (isRun3)
-     fChain->SetBranchAddress("Rho_fixedGridRhoFastjetAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
+     fChain->SetBranchAddress("Rho_fixedGridRhoFastjetAll", &Rho_fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
      //fChain->SetBranchAddress("Rho_fixedGridRhoAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
    //fChain->SetBranchAddress("fixedGridRhoFastjetCentral", &fixedGridRhoFastjetCentral, &b_fixedGridRhoFastjetCentral);
    //fChain->SetBranchAddress("fixedGridRhoFastjetCentralCalo", &fixedGridRhoFastjetCentralCalo, &b_fixedGridRhoFastjetCentralCalo);
@@ -776,34 +776,34 @@ void DiGamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("PV_npvs", &PV_npvs, &b_PV_npvs);
    fChain->SetBranchAddress("PV_npvsGood", &PV_npvsGood, &b_PV_npvsGood);
 
-   fChain->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter, &b_Flag_HBHENoiseFilter);
-   fChain->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter, &b_Flag_HBHENoiseIsoFilter);
-   fChain->SetBranchAddress("Flag_CSCTightHaloFilter", &Flag_CSCTightHaloFilter, &b_Flag_CSCTightHaloFilter);
-   fChain->SetBranchAddress("Flag_CSCTightHaloTrkMuUnvetoFilter", &Flag_CSCTightHaloTrkMuUnvetoFilter, &b_Flag_CSCTightHaloTrkMuUnvetoFilter);
-   fChain->SetBranchAddress("Flag_CSCTightHalo2015Filter", &Flag_CSCTightHalo2015Filter, &b_Flag_CSCTightHalo2015Filter);
-   fChain->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter, &b_Flag_globalTightHalo2016Filter);
+   //fChain->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter, &b_Flag_HBHENoiseFilter);
+   //fChain->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter, &b_Flag_HBHENoiseIsoFilter);
+   //fChain->SetBranchAddress("Flag_CSCTightHaloFilter", &Flag_CSCTightHaloFilter, &b_Flag_CSCTightHaloFilter);
+   //fChain->SetBranchAddress("Flag_CSCTightHaloTrkMuUnvetoFilter", &Flag_CSCTightHaloTrkMuUnvetoFilter, &b_Flag_CSCTightHaloTrkMuUnvetoFilter);
+   //fChain->SetBranchAddress("Flag_CSCTightHalo2015Filter", &Flag_CSCTightHalo2015Filter, &b_Flag_CSCTightHalo2015Filter);
+   //fChain->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter, &b_Flag_globalTightHalo2016Filter);
    fChain->SetBranchAddress("Flag_globalSuperTightHalo2016Filter", &Flag_globalSuperTightHalo2016Filter, &b_Flag_globalSuperTightHalo2016Filter);
-   fChain->SetBranchAddress("Flag_HcalStripHaloFilter", &Flag_HcalStripHaloFilter, &b_Flag_HcalStripHaloFilter);
-   fChain->SetBranchAddress("Flag_hcalLaserEventFilter", &Flag_hcalLaserEventFilter, &b_Flag_hcalLaserEventFilter);
+   //fChain->SetBranchAddress("Flag_HcalStripHaloFilter", &Flag_HcalStripHaloFilter, &b_Flag_HcalStripHaloFilter);
+   //fChain->SetBranchAddress("Flag_hcalLaserEventFilter", &Flag_hcalLaserEventFilter, &b_Flag_hcalLaserEventFilter);
    fChain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter, &b_Flag_EcalDeadCellTriggerPrimitiveFilter);
-   fChain->SetBranchAddress("Flag_EcalDeadCellBoundaryEnergyFilter", &Flag_EcalDeadCellBoundaryEnergyFilter, &b_Flag_EcalDeadCellBoundaryEnergyFilter);
+   //fChain->SetBranchAddress("Flag_EcalDeadCellBoundaryEnergyFilter", &Flag_EcalDeadCellBoundaryEnergyFilter, &b_Flag_EcalDeadCellBoundaryEnergyFilter);
    fChain->SetBranchAddress("Flag_ecalBadCalibFilter", &Flag_ecalBadCalibFilter, &b_Flag_ecalBadCalibFilter);
    fChain->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices, &b_Flag_goodVertices);
    fChain->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter, &b_Flag_eeBadScFilter);
-   fChain->SetBranchAddress("Flag_ecalLaserCorrFilter", &Flag_ecalLaserCorrFilter, &b_Flag_ecalLaserCorrFilter);
-   fChain->SetBranchAddress("Flag_trkPOGFilters", &Flag_trkPOGFilters, &b_Flag_trkPOGFilters);
-   fChain->SetBranchAddress("Flag_chargedHadronTrackResolutionFilter", &Flag_chargedHadronTrackResolutionFilter, &b_Flag_chargedHadronTrackResolutionFilter);
-   fChain->SetBranchAddress("Flag_muonBadTrackFilter", &Flag_muonBadTrackFilter, &b_Flag_muonBadTrackFilter);
-   fChain->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter, &b_Flag_BadChargedCandidateFilter);
+   //fChain->SetBranchAddress("Flag_ecalLaserCorrFilter", &Flag_ecalLaserCorrFilter, &b_Flag_ecalLaserCorrFilter);
+   //fChain->SetBranchAddress("Flag_trkPOGFilters", &Flag_trkPOGFilters, &b_Flag_trkPOGFilters);
+   //fChain->SetBranchAddress("Flag_chargedHadronTrackResolutionFilter", &Flag_chargedHadronTrackResolutionFilter, &b_Flag_chargedHadronTrackResolutionFilter);
+   //fChain->SetBranchAddress("Flag_muonBadTrackFilter", &Flag_muonBadTrackFilter, &b_Flag_muonBadTrackFilter);
+   //fChain->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter, &b_Flag_BadChargedCandidateFilter);
    fChain->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter, &b_Flag_BadPFMuonFilter);
    if (isRun3) fChain->SetBranchAddress("Flag_BadPFMuonDzFilter", &Flag_BadPFMuonDzFilter, &b_Flag_BadPFMuonDzFilter);
    if (isRun3) fChain->SetBranchAddress("Flag_hfNoisyHitsFilter", &Flag_hfNoisyHitsFilter, &b_Flag_hfNoisyHitsFilter);
-   fChain->SetBranchAddress("Flag_BadChargedCandidateSummer16Filter", &Flag_BadChargedCandidateSummer16Filter, &b_Flag_BadChargedCandidateSummer16Filter);
-   fChain->SetBranchAddress("Flag_BadPFMuonSummer16Filter", &Flag_BadPFMuonSummer16Filter, &b_Flag_BadPFMuonSummer16Filter);
-   fChain->SetBranchAddress("Flag_trkPOG_manystripclus53X", &Flag_trkPOG_manystripclus53X, &b_Flag_trkPOG_manystripclus53X);
-   fChain->SetBranchAddress("Flag_trkPOG_toomanystripclus53X", &Flag_trkPOG_toomanystripclus53X, &b_Flag_trkPOG_toomanystripclus53X);
-   fChain->SetBranchAddress("Flag_trkPOG_logErrorTooManyClusters", &Flag_trkPOG_logErrorTooManyClusters, &b_Flag_trkPOG_logErrorTooManyClusters);
-   fChain->SetBranchAddress("Flag_METFilters", &Flag_METFilters, &b_Flag_METFilters);
+   //fChain->SetBranchAddress("Flag_BadChargedCandidateSummer16Filter", &Flag_BadChargedCandidateSummer16Filter, &b_Flag_BadChargedCandidateSummer16Filter);
+   //fChain->SetBranchAddress("Flag_BadPFMuonSummer16Filter", &Flag_BadPFMuonSummer16Filter, &b_Flag_BadPFMuonSummer16Filter);
+   //fChain->SetBranchAddress("Flag_trkPOG_manystripclus53X", &Flag_trkPOG_manystripclus53X, &b_Flag_trkPOG_manystripclus53X);
+   //fChain->SetBranchAddress("Flag_trkPOG_toomanystripclus53X", &Flag_trkPOG_toomanystripclus53X, &b_Flag_trkPOG_toomanystripclus53X);
+   //fChain->SetBranchAddress("Flag_trkPOG_logErrorTooManyClusters", &Flag_trkPOG_logErrorTooManyClusters, &b_Flag_trkPOG_logErrorTooManyClusters);
+   //fChain->SetBranchAddress("Flag_METFilters", &Flag_METFilters, &b_Flag_METFilters);
 
    if (isMC) {
      fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
@@ -866,10 +866,10 @@ void DiGamHistosFill::Init(TTree *tree)
    b_HLT_Photon165_HE10 = 0;
 
    b_HLT_Photon50EB_TightID_TightIso = 0;
-   b_HLT_Photon55EB_TightID_TightIso = 0;
+   //b_HLT_Photon55EB_TightID_TightIso = 0;
    b_HLT_Photon75EB_TightID_TightIso = 0;
    b_HLT_Photon90EB_TightID_TightIso = 0;
-      
+
    b_HLT_Photon100EB_TightID_TightIso = 0;
    b_HLT_Photon110EB_TightID_TightIso = 0;
    b_HLT_Photon120EB_TightID_TightIso = 0;
