@@ -2989,7 +2989,7 @@ bool DiGamHistosFill::LoadJSON(string json)
   ifstream file(json, ios::in);
   if (!file.is_open()) { assert(false); return false; }
   char c;
-  string s, s2, s3;
+  string s, s2, s3, s4, s5; //added s4 and s5 as in GamHistosFill, to work with newest 2024golden json
   char s1[256];
   int rn(0), ls1(0), ls2(0), nrun(0), nls(0);
   file.get(c);
@@ -3002,7 +3002,8 @@ bool DiGamHistosFill::LoadJSON(string json)
     ++nrun;
 
     bool endrun = false;
-    while (!endrun and file >> s >> s2 and (sscanf((s+s2).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3 or (file >> s3 and sscanf((s+s2+s3).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3))) {
+    while (!endrun and file >> s >> s2 and (sscanf((s+s2).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3 or (file >> s3 and sscanf((s+s2+s3).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3) or 
+            (file >> s4 and sscanf((s+s2+s3+s4).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3) or (file >> s5 and sscanf((s+s2+s3+s4+s5).c_str(),"[%d,%d]%s",&ls1,&ls2,s1)==3))) {
 
       s2 = s1;
       if (s2=="]") { file >> s3; s2 += s3; }
