@@ -611,7 +611,12 @@ void DiGamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2024")) {
     //if (TString(ds.c_str()).Contains("2024B"))
     //fjv = new TFile("files/jetveto2023D.root","READ"); // placeholder
-    fjv = new TFile("files/jetveto2024F.root","READ"); // placeholder
+    //fjv = new TFile("files/jetveto2024F.root","READ"); // placeholder
+    if (TString(ds.c_str()).Contains("2024F") || //should include Fa, Fb, Fc, Fd
+        TString(ds.c_str()).Contains("2024G")) 
+	fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); //V7M: updated this last on 13.11. (for w41 and onwards), could remove extra if-conditions
+
+ 
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
