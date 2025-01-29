@@ -133,7 +133,8 @@ void mk_DiGamHistosFill(string dataset = "X", string version = "w1") { //again:m
   if (runLxPlus) cout << "Running on lxplus+eos (runLxPlus)" << endl;
   
   if (addData) {
-    ifstream fin(runLocal ? Form("input_files/dataFiles_local_%s.txt",dataset.c_str()) : (runLxPlus ? Form("input_files/dataFiles_eos_Run%s.txt",dataset.c_str()) : Form("input_files/dataFiles_Run%s.txt",dataset.c_str())), ios::in);
+    //ifstream fin(runLocal ? Form("input_files/dataFiles_local_%s.txt",dataset.c_str()) : (runLxPlus ? Form("input_files/dataFiles_eos_Run%s.txt",dataset.c_str()) : Form("input_files/dataFiles_Run%s.txt",dataset.c_str())), ios::in);
+    ifstream fin(runLocal ? Form("input_files/dataFiles_local_%s.txt",dataset.c_str()) : (runLxPlus ? Form("input_files/dataFiles_Run%s.txt",dataset.c_str()) : Form("input_files/dataFiles_Run%s.txt",dataset.c_str())), ios::in); //changed back to this format
     string filename;
     cout << "Chaining data files:" << endl << flush;
     int nFiles(0), nFilesMax(4000);//827);//9999);
