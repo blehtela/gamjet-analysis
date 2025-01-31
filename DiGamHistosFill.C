@@ -279,8 +279,8 @@ void DiGamHistosFill::Loop()
     // #2018_2017_data_and_MC_UL
     fChain->SetBranchStatus("Flag_goodVertices",1);
     fChain->SetBranchStatus("Flag_globalSuperTightHalo2016Filter",1);
-    fChain->SetBranchStatus("Flag_HBHENoiseFilter",1);
-    fChain->SetBranchStatus("Flag_HBHENoiseIsoFilter",1);
+    //fChain->SetBranchStatus("Flag_HBHENoiseFilter",1);
+    //fChain->SetBranchStatus("Flag_HBHENoiseIsoFilter",1);
     fChain->SetBranchStatus("Flag_EcalDeadCellTriggerPrimitiveFilter",1);
     fChain->SetBranchStatus("Flag_BadPFMuonFilter",1);
     //fChain->SetBranchStatus("Flag_BadPFMuonDzFilter",1); // not in nAOD?
@@ -1501,8 +1501,9 @@ void DiGamHistosFill::Loop()
     if (jentry%10000==0) cout << "." << flush;
     ++nlap;
 
-    // Safety resets for triggers only in 2024
-    HLT_Photon50EB_TightID_TightIso = HLT_Photon55EB_TightID_TightIso =
+    //Safety resets for triggers only in 2024
+    HLT_Photon50EB_TightID_TightIso = 
+	//HLT_Photon55EB_TightID_TightIso =
       HLT_Photon75EB_TightID_TightIso = HLT_Photon90EB_TightID_TightIso =
       kFALSE;
     // Safety resets for triggers only in 2022-2023
@@ -1564,8 +1565,8 @@ void DiGamHistosFill::Loop()
       // Only 24
       if (b_HLT_Photon50EB_TightID_TightIso && is24)
 	b_HLT_Photon50EB_TightID_TightIso->GetEntry(ientry);
-      if (b_HLT_Photon55EB_TightID_TightIso && is24)
-	b_HLT_Photon55EB_TightID_TightIso->GetEntry(ientry);
+      //if (b_HLT_Photon55EB_TightID_TightIso && is24)
+	//b_HLT_Photon55EB_TightID_TightIso->GetEntry(ientry);
       if (b_HLT_Photon75EB_TightID_TightIso && is24)
 	b_HLT_Photon75EB_TightID_TightIso->GetEntry(ientry);
       if (b_HLT_Photon90EB_TightID_TightIso && is24)
@@ -1629,7 +1630,7 @@ void DiGamHistosFill::Loop()
 	     HLT_Photon100EBHE10 ||
 	     HLT_Photon90EB_TightID_TightIso ||
 	     HLT_Photon75EB_TightID_TightIso ||
-	     HLT_Photon55EB_TightID_TightIso ||
+	     //HLT_Photon55EB_TightID_TightIso ||
 	     HLT_Photon50EB_TightID_TightIso ||
 	     HLT_Photon30EB_TightID_TightIso ||
 	     HLT_Photon90_R9Id90_HE10_IsoM ||
@@ -2291,8 +2292,8 @@ void DiGamHistosFill::Loop()
        (!isRun3 &&
 	Flag_goodVertices &&
 	Flag_globalSuperTightHalo2016Filter &&
-	Flag_HBHENoiseFilter &&
-	Flag_HBHENoiseIsoFilter &&
+	//Flag_HBHENoiseFilter &&
+	//Flag_HBHENoiseIsoFilter &&
 	Flag_EcalDeadCellTriggerPrimitiveFilter &&
 	Flag_BadPFMuonFilter &&
 	//Flag_BadPFMuonDzFilter && // new in UL, but not in nAOD?
@@ -2510,16 +2511,16 @@ void DiGamHistosFill::Loop()
 		     pass_gen, pass_trig, pass_filt) << endl << flush;
 	cout << Form("Flags/Filters: goodVertices = %d, "
 		     "globalSuperTightHalo2016 = %d,\n"
-		     "HBHENoise = %d, "
-		     "HBHENoiseIso = %d, "
+		     //"HBHENoise = %d, "
+		     //"HBHENoiseIso = %d, "
 		     "EcalDeadCellTriggerPrimitive = %d,\n"
 		     "BadPFMuon = %d, "
 		     "ecalBadCalib = %d, "
 		     "eeBadSc = %d.\n",  
 		     Flag_goodVertices,
 		     Flag_globalSuperTightHalo2016Filter,
-		     Flag_HBHENoiseFilter,
-		     Flag_HBHENoiseIsoFilter,
+		     //Flag_HBHENoiseFilter,
+		     //Flag_HBHENoiseIsoFilter,
 		     Flag_EcalDeadCellTriggerPrimitiveFilter,
 		     Flag_BadPFMuonFilter,
 		     Flag_ecalBadCalibFilter,
