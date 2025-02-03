@@ -13,7 +13,19 @@ void drawDiGamV2() {
   setTDRStyle();
   TDirectory *curdir = gDirectory;
 
-  TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024F_v0.root","READ");
+  //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024F_v0.root","READ");
+  //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024F_w1.root","READ");
+  //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024G_w1.root","READ");
+  ///TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024FG_w1.root","READ");
+
+  //without pixelseed-veto
+  TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024F_no-pixelseedveto_w1.root","READ");
+  //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024G_no-pixelseedveto_w1.root","READ");
+  //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024FG_no-pixelseedveto_w1.root","READ");
+
+
+
+
   
   //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024FG.root","READ");
   //TFile *f = new TFile("rootfiles/DiGamHistosFill_data_2024F_vX.root","READ");
@@ -24,18 +36,18 @@ void drawDiGamV2() {
   //2024G:  40.399886502      | 37.772631997 
   //double lumi = (27.757+37.773)*1000; // 2024F+G, 1/fb->1/pb
   //double lumi = 37.773*1000; // 2024G, 1/fb->1/pb
-  double lumi = 27.757*1000; // 2024F, 1/fb->1/pba
-  //double lumi = (27.757+37.773)*1000; // 2024F+G, 1/fb->1/pb
+  //double lumi = 27.757*1000; // 2024F, 1/fb->1/pba
+  double lumi = (27.757+37.773)*1000; // 2024F+G, 1/fb->1/pb
 
-  //TH1D *hmgg = (TH1D*)f->Get("DiGam/hmgg1_13"); assert(hmgg); // DEFAULT
+  TH1D *hmgg = (TH1D*)f->Get("DiGam/hmgg1_13"); assert(hmgg); // DEFAULT
   //TH1D *hmgg = (TH1D*)f->Get("DiGam/hmgg1_Eta13_deltaR20"); assert(hmgg);
-  TH1D *hmgg = (TH1D*)f->Get("DiGam/hmgg1_Eta13_deltaEta13"); assert(hmgg);
+  ////TH1D *hmgg = (TH1D*)f->Get("DiGam/hmgg1_Eta13_deltaEta13"); assert(hmgg);
   //TH1D *hmgg = (TH1D*)f->Get("DiGam/hmgg1"); assert(hmgg);
   TH1D *hmggn = (TH1D*)hmgg->Clone("hmggn");
   hmggn->Rebin(2.);
   hmggn->Scale(1./lumi,"width");
 
-  double xmin = 200;//85;//70;//91.2;//100.;//140;//110;//120;
+  double xmin = 100;//200;//85;//70;//91.2;//100.;//140;//110;//120;
   double xmax = 2000;//1100;//2000;
   //TF1 *f1 = new TF1("f1","[0]*pow(x,[1]+[2]*log(x))",120,2000);
   //TF1 *f1 = new TF1("f1","[0]*pow(x,[1]+[2]*log(0.01*x))",120,2000);
@@ -233,7 +245,8 @@ void drawDiGamV2() {
 
   TH1D *hmgg13 = (TH1D*)f->Get("DiGam/hmgg_13"); assert(hmgg13);
   TH1D *hmggn13 = (TH1D*)hmgg13->Clone("hmggn13");
-  hmggn13->Rebin(10.);
+  hmggn13->Rebin(10.); //should maybe try different rebinning (smaller bins?), bettina 3.2.25
+  //hmggn13->Rebin(5.); //could try this
   hmggn13->Scale(1./lumi,"width");
   double dpt = hmggn13->GetBinWidth(1);
   for (int i = 1; i != hmggn13->GetNbinsX()+1; ++i) {
@@ -246,6 +259,11 @@ void drawDiGamV2() {
 			 //sqrt(pow(hmggn13->GetBinError(i),2)+nfit/5.));
   } // for i
 
+  //fit not working anymore, maybe use different xmin xmax... (or finer binning, right now 10GeV), bettina 3.2.25
+  // NOTE: or is the issue actually in the previous fit (f2) since we take some param from there...
+  //xmin=310; //new test
+  //xmax=400; //new test
+
   TF1 *f3 = new TF1("f2","fabs([0])*TMath::Gaus(x,[1]-[3],[2],1)",xmin,xmax);
   f3->SetParameters(f2->GetParameter(3)*lumi*dpt,m_eta_t,width_eta_t,E_b);
   f3->FixParameter(0,f2->GetParameter(3)*lumi*dpt);
@@ -254,8 +272,10 @@ void drawDiGamV2() {
   f3->FixParameter(3,E_b);
   
   // Just focusing on the 300-400 GeV range
+  //TH1D *h_4 = tdrHist("h_4",Form("Bkg-substracted events / %1.0f GeV",dpt),-40,60,"m_{#gamma#gamma} (GeV)",300-1e-3,400+1e-3);
   TH1D *h_4 = tdrHist("h_4",Form("Bkg-substracted events / %1.0f GeV",dpt),
-		      -40,60,"m_{#gamma#gamma} (GeV)",300-1e-3,400+1e-3);
+		      -40,120,"m_{#gamma#gamma} (GeV)",300-1e-3,400+1e-3); //adjusted y-range  (3.2.)
+
   TCanvas *c4 = tdrCanvas("c4",h_4,8,11,kSquare);
 
   TLine *l = new TLine();
