@@ -68,7 +68,8 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom);
 
 //void drawResponseVsRun_custom(string version = "w10") { //w10 for 2023 data, w11 for the new 2024 data
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
-void drawResponseVsRun_2024only(string version = "w39w40", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
+//void drawResponseVsRun_2024only(string version = "w39w40", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
+void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     //bool rereco = 1;
 
     //const char *cyear = year.c_str();
@@ -85,8 +86,8 @@ void drawResponseVsRun_2024only(string version = "w39w40", int rereco = 0) { //s
     
     if(rereco==0){
 	cout << "Looking at 2024 prompt data." << endl;
-    	//f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
-			f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
+    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+	//f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
     } //currently same as: GamHistosFill_data_2024BCDEF_w33.root
     else if(rereco==1){
 	cout << "Looking at 2024 rereco (ECALRATIO) data." << endl;
@@ -568,8 +569,8 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
 
     if(rereco==0){
 	cout << "Looking at 2024 prompt data." << endl;
-    	//f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
-			f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
+    	f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
+	//f = new TFile(Form("rootfiles/GamHistosFill_data_2024only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
 
     }
     else if(rereco==1){
@@ -674,32 +675,32 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
  
 
     // Setup canvas
-		TH1D *h;
+    TH1D *h;
     //TH1D *h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,380800);
-		if(zoom){
+    if(zoom){
     	h = tdrHist("h2","PF composition offset",-0.025,+0.025,"Run",378900,387100);
-		}
-		else{
-			h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,387100);
-		}
+    }
+    else{
+	h = tdrHist("h2","PF composition offset",-0.10,+0.10,"Run",378900,387100);
+    }
 
     //TH1D *h = tdrHist("h2","PF composition offset",-0.80,+0.80,"Run",378900,380600);
-		//h->GetXaxis()->SetLabelSize(0.15); //smaller labels
-		h->GetXaxis()->SetLabelSize(0.26);
-		h->GetYaxis()->SetLabelSize(0.036);
-		h->GetXaxis()->SetTitleSize(0.05);
-		h->GetYaxis()->SetTitleSize(0.05);
-		gPad->Update();
+    //h->GetXaxis()->SetLabelSize(0.15); //smaller labels
+    h->GetXaxis()->SetLabelSize(0.26);
+    h->GetYaxis()->SetLabelSize(0.036);
+    h->GetXaxis()->SetTitleSize(0.05);
+    h->GetYaxis()->SetTitleSize(0.05);
+    gPad->Update();
 
 		
 
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     if(rereco==1){
-			lumi_136TeV = Form("Photon+jet, 2024 ECALRATIO, %s",cv);
+	lumi_136TeV = Form("Photon+jet, 2024 ECALRATIO, %s",cv);
     }
-		else if(rereco==2){
-			lumi_136TeV = Form("Photon+jet, 2024 ECALR-HCALDI, %s",cv);
-		}
+    else if(rereco==2){
+	lumi_136TeV = Form("Photon+jet, 2024 ECALR-HCALDI, %s",cv);
+    }
     else{
     	lumi_136TeV = Form("Photon+jet, 2024only, %s",cv);
     }
@@ -717,8 +718,8 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     extratext->SetTextFont(52);
     extratext->DrawLatex(379460, 1.0465, "Preliminary");
 
-		h->GetXaxis()->SetLabelSize(0.15); //smaller labels
-		gPad->Update();
+    h->GetXaxis()->SetLabelSize(0.15); //smaller labels
+    gPad->Update();
 	
 
     // Start drawing
@@ -768,19 +769,19 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     t->DrawLatex(run24d_start+10,-0.090,"24D");
     */
 
-		double textposy;
-		if(zoom){
-			textposy=-0.020;
-		}
-		else{
-			textposy=-0.090;
-		}
+    double textposy;
+    if(zoom){
+	    textposy=-0.020;
+    }
+    else{
+	    textposy=-0.090;
+    }
     t->DrawLatex(run24b_start+10,textposy,"24B");
     t->DrawLatex(run24c_start+10,textposy,"24C");
     t->DrawLatex(run24d_start+10,textposy,"24D");
     //t->DrawLatex(run24ev1_start+10,textposy,"24Ev1,v2");
-		t->DrawLatex(run24ev1_start+10,textposy,"24Ev1,");
-		t->DrawLatex(run24ev1_start+450,textposy-0.008,"v2");
+    t->DrawLatex(run24ev1_start+10,textposy,"24Ev1,");
+    t->DrawLatex(run24ev1_start+450,textposy-0.008,"v2");
     //t->DrawLatex(run24ev2_start+10,textposy-0.01,"24Ev2");
     t->DrawLatex(run24f_start+10,textposy,"24F");
     t->DrawLatex(run24g_start+10,textposy,"24G");
@@ -854,7 +855,7 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     
     tdrDraw(hr50m,"Pz",kOpenDiamond,kBlack,kSolid); hr50m->SetMarkerSize(0.7);
 
-		hr50m->GetXaxis()->SetLabelSize(0.15);
+    hr50m->GetXaxis()->SetLabelSize(0.15);
 
     // Add legend
     c1->cd(1);
@@ -878,13 +879,13 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     leg->AddEntry(hr50nef, Form("NEF 50EB %.3f",hr50nefoff), "PLE");
     leg->AddEntry(hr50nhf, Form("NHF 50EB %.3f",hr50nhfoff), "PLE");
  
-		string ending;
-		if(zoom){
-			ending="_zoomed";
-		}
-		else{
-			ending="";
-		}
+    string ending;
+    if(zoom){
+	    ending="_zoomed";
+    }
+    else{
+	    ending="";
+    }
 
     if(rereco==1){
     //c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s.pdf",cv));
@@ -894,7 +895,7 @@ void drawPFcompVsRun_2024only(string version, int rereco, bool zoom) {
     }
     if(rereco==2){
     	//c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024C-ECALR-HCALDI_%s_zoomed.pdf",cv));
-			c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024C-ECALR-HCALDI_%s%s.pdf",cv,ending.c_str()));
+	c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024C-ECALR-HCALDI_%s%s.pdf",cv,ending.c_str()));
     }
     else{
      //c1->SaveAs(Form("pdf/drawResponseVsRun_PFcomp_2024only_%s.pdf",cv));
