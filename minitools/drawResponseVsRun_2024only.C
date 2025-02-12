@@ -236,7 +236,7 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     l->DrawLine(run24ev1_end,y1+0.035,run24ev1_end,y2-0.050);
     t->DrawLatex(run24ev1_start,0.960,"24Ev1");
 
-    double run24ev2_start(381384), run24ev2_end(382943); //(first run#), ends?
+    double run24ev2_start(381384), run24ev2_end(381943); //(first run#), ends?
     l->DrawLine(run24ev2_start,y1+0.045,run24ev2_start,y2-0.035);
     l->DrawLine(run24ev2_end,y1+0.035,run24ev2_end,y2-0.050);
     t->DrawLatex(run24ev2_start,0.948,"24Ev2"); //a bit lower than for the other eras, to make it look prettier
@@ -328,9 +328,9 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     strangeline->SetLineStyle(kSolid);
     strangeline->SetLineColor(kRed-2);
     //double strangerun(379965); //379980
-		double strangerun(383200);
+    double strangerun(383200);
     strangeline->DrawLine(strangerun,y1+0.030,strangerun,y2-0.030);     //strange jump
-   	strangeline->DrawLine(384910,y1+0.040,384910,y2-0.030);     //drop in response
+    strangeline->DrawLine(384910,y1+0.040,384910,y2-0.030);     //drop in response
     TLatex *strangeinfo = new TLatex();
     strangeinfo->SetTextSize(0.020); //0.026
     strangeinfo->SetTextColor(kRed-2);
@@ -421,7 +421,9 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
 		//linktext->DrawLatex(0.13,0.09, "Created on 10.06.2024 using hybrid JSON = newest golden (5.6.) + additional daily (9.6.)");
 		//linktext->DrawLatex(0.13,0.09, "Created on 09.10.2024 using hybrid JSON = newest golden (12.9.) + additional daily (12.9.)");
 		//linktext->DrawLatex(0.13,0.09, "Created on 09.10.2024 using golden JSON (29.9.) and entire 24G data.");
-		linktext->DrawLatex(0.13,0.09, "Created on 28.10.2024 with w39 for BCDEFG and w40 for H and I.");
+		//linktext->DrawLatex(0.13,0.09, "Created on 28.10.2024 with w39 for BCDEFG and w40 for H and I.");
+		linktext->DrawLatex(0.13,0.09, "Created on 12.02.2024 with w44 for 2024BCDEFGHI data.");
+
 
 
 
