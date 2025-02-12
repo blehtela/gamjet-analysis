@@ -110,6 +110,7 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
 
     // Load input profiles + clean the errors (what should i set the maxerr to? tried to be generous now)
     double maxerr = 0.01; //apply same maxerr cleaning to all paths, so it is less confusing
+    //double maxerr = 0.1; //TEST (12.02.2025)
     //TProfile *pr30b = (TProfile*)d->Get("pr30b"); clean(pr30b,maxerr); //b = balance
     //TProfile *pr30m = (TProfile*)d->Get("pr30m"); clean(pr30m,maxerr); //m = mpf
     TProfile *pr50b = (TProfile*)d->Get("pr50b"); clean(pr50b,maxerr); 
@@ -237,8 +238,8 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     t->DrawLatex(run24ev1_start,0.960,"24Ev1");
 
     double run24ev2_start(381384), run24ev2_end(381943); //(first run#), ends?
-    l->DrawLine(run24ev2_start,y1+0.045,run24ev2_start,y2-0.035);
-    l->DrawLine(run24ev2_end,y1+0.035,run24ev2_end,y2-0.050);
+    l->DrawLine(run24ev2_start,y1+0.025,run24ev2_start,y2-0.035);
+    l->DrawLine(run24ev2_end,y1+0.035,run24ev2_end,y2-0.060);
     t->DrawLatex(run24ev2_start,0.948,"24Ev2"); //a bit lower than for the other eras, to make it look prettier
     //l->DrawLine(381594,y1+0.045,381594,y2-0.035); //"preliminary" end of Ev2, until we have real one
 
@@ -292,22 +293,52 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
 
 
 
+    // ------------- STRANGE JUMPS ---------------------------//
+    //strange things, where we try to find (and draw) the run-number to check back with hcal etc
+    //i identified these visually and then put a line there and wrote the run number
+    TLine *strangeline = new TLine();
+    strangeline->SetLineStyle(kSolid);
+    strangeline->SetLineColor(kRed-2);
+    //double strangerun(379965); //379980
+    //double strangerun(383200);
+    double strangerun(384635);
+    /////strangeline->DrawLine(strangerun,y1+0.030,strangerun,y2-0.030);     //strange jump
+    //strangeline->DrawLine(384910,y1+0.040,384910,y2-0.030);     	//drop in response in G
+    TLatex *strangeinfo = new TLatex();
+    strangeinfo->SetTextSize(0.020); //0.026
+    strangeinfo->SetTextColor(kRed-2);
+    strangeinfo->SetTextFont(52);
+    /////strangeinfo->DrawLatex(strangerun, 0.95, Form("%.f: change?",strangerun));
+
+    strangeinfo->SetTextSize(0.020);
+    //strangeinfo->DrawLatex(384730, 0.956, "384910"); //drop in response (G)
+    //strangeinfo->DrawLatex(384730, 0.953, "change?"); //drop in response (G)
+
+
+    //locating jump in F
+    //strangeline->DrawLine(383219,y1+0.030,383219,y2-0.030); 	//HCALRespCorrs (run 383219) 
+    //strangeline->DrawLine(383277,y1+0.030,383277,y2-0.030); //ECAL pedestals corrections (run 383186, w29) 
+
+
+    //strangeinfo->DrawLatex(strangerun, 0.945, Form("%.f: What happens?",strangerun));
+
 
 
     //add important run numbers
     //HCAL Updates:     https://twiki.cern.ch/twiki/bin/view/CMS/HcalDPGRun3Updates
     //HCAL scans:       https://twiki.cern.ch/twiki/bin/viewauth/CMS/HcalPhaseScan
+    //-------------------- HCAL -----------------------//
     // so far scans were reported for: Run 379349: 46.48/pb, and Run 379350: 38.75/pb 
     //could do this in a loop in case there will be more of these
     TLine *runinfoline = new TLine();
     runinfoline->SetLineStyle(kSolid);
     runinfoline->SetLineColor(kOrange+2);
-    runinfoline->DrawLine(379349,y1+0.018,379349,y2-0.030);     //hcal scan
-    runinfoline->DrawLine(379350,y1+0.016,379350,y2-0.030);     //hcal scan
+    runinfoline->DrawLine(379349,y1+0.018,379349,y2-0.035);     //hcal scan
+    runinfoline->DrawLine(379350,y1+0.016,379350,y2-0.035);     //hcal scan
 
-		//Pedestal/LUT updates occurred twice in the last couple weeks: (got this info from Mikko, HCAL meeting)
-		runinfoline->DrawLine(385221,y1+0.022,385221,y2-0.030);  //2 September [elog], run 385221
-		runinfoline->DrawLine(385550,y1+0.022,385550,y2-0.030);	 //11 September [elog], run 385550
+    //Pedestal/LUT updates occurred twice in the last couple weeks: (got this info from Mikko, HCAL meeting)
+    runinfoline->DrawLine(385221,y1+0.022,385221,y2-0.035);  	//2 September [elog], run 385221
+    runinfoline->DrawLine(385550,y1+0.022,385550,y2-0.035);	//11 September [elog], run 385550
 
 
     TLatex *runinfo = new TLatex();
@@ -318,41 +349,37 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     runinfo->DrawLatex(379350, 0.928, "379350: HCAL scan");
 
     runinfo->SetTextSize(0.020);
-    runinfo->DrawLatex(385221, 0.940, "385221 & 385550:");
-		runinfo->DrawLatex(385221, 0.935, "Pedestal/LUT updates");
+    runinfo->DrawLatex(385221, 0.939, "385221 & 385550:");
+    runinfo->DrawLatex(385221, 0.9353, "Pedestal/LUT updates");
 
 
-    //strange things, where we try to find (and draw) the run-number to check back with hcal etc
-    //i identified these visually and then put a line there and wrote the run number
-    TLine *strangeline = new TLine();
-    strangeline->SetLineStyle(kSolid);
-    strangeline->SetLineColor(kRed-2);
-    //double strangerun(379965); //379980
-    double strangerun(383200);
-    strangeline->DrawLine(strangerun,y1+0.030,strangerun,y2-0.030);     //strange jump
-    strangeline->DrawLine(384910,y1+0.040,384910,y2-0.030);     //drop in response
-    TLatex *strangeinfo = new TLatex();
-    strangeinfo->SetTextSize(0.020); //0.026
-    strangeinfo->SetTextColor(kRed-2);
-    strangeinfo->SetTextFont(52);
-		strangeinfo->DrawLatex(strangerun, 0.945, Form("%.f: change?",strangerun));
+    //HCALRespCorrs
+    runinfoline->DrawLine(383219,y1+0.030,383219,y2-0.035); 	//HCALRespCorrs (run 383219) 
+    runinfo->DrawLatex(383219, 0.946, "383219: HCALRespCorrs");
 
-    strangeinfo->SetTextSize(0.020);
-		strangeinfo->DrawLatex(384730, 0.953, "change?"); //drop in response (G)
-		strangeinfo->DrawLatex(384730, 0.956, "384910"); //drop in response (G)
 
-    //strangeinfo->DrawLatex(strangerun, 0.945, Form("%.f: What happens?",strangerun));
+    //changes in middle of era G (various between 384635 and 384910, also in ECAL)
+    runinfoline->DrawLine(384858,y1+0.035,384858,y2-0.016); 	//(three HCAL updates in same runnumber)
+    //runinfo->SetTextSize(0.016); //temporarily go to smaller textsize, to fit a lot in small gap...
+    //runinfo->DrawLatex(384858, 0.96, "384858:");
+    runinfo->DrawLatex(384858, 1.0435, "384858:");
+    runinfo->DrawLatex(384858, 1.040, "HcalL1TriggerObjects");	//(New Hcal L1 Trigger Objects AlCaDB cmsTalk) 
+    runinfo->DrawLatex(384858, 1.0365, "HcalPedestalWidths");	//(New Hcal pedestals width conditions AlCaDB cmsTalk) 
+    runinfo->DrawLatex(384858, 1.033, "HcalPedestals");		//(New Hcal pedestals conditions AlCaDB cmsTalk)
+
+
+
 
     //------------ ECAL --------------------//
     //(ECAL?) Updates: https://twiki.cern.ch/twiki/bin/viewauth/CMS/AlCaTSGConditionsUpdate
     TLine *ecalline = new TLine();
     ecalline->SetLineStyle(kSolid);
     ecalline->SetLineColor(kCyan+2);
-    ecalline->DrawLine(379956,y1+0.022,379956,y2-0.030);     //
+    ecalline->DrawLine(379956,y1+0.022,379956,y2-0.035);     //
 
     //start end end of this ECalTimeCalibConstants update
     //Prompt | EcalIntercalibConstants | EcalIntercalibConstants_V1_prompt | 379956 | Update of EcalIntercalibConstants conditions from runs 378981-379616 ALCaDB cmsTalk.
-    ecalline->SetLineStyle(kDotted);
+    //ecalline->SetLineStyle(kDotted);
     //ecalline->DrawLine(378981,y1+0.030,378981,y2-0.030); 
     //ecalline->DrawLine(379616,y1+0.030,379616,y2-0.030); 
 
@@ -362,9 +389,32 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     ecalinfo->SetTextFont(52);
     ecalinfo->DrawLatex(379956, 0.938, "379956: EcalIntercalibConstants");
  
+    ecalline->DrawLine(383227,y1+0.0265,383227,y2-0.035); //(ECAL Intercalib constants: new payload with ICs up to run 382913 ALCaDB cmsTalk)
+    ecalinfo->DrawLatex(383227, 0.9426, "383227: EcalIntercalibConstants");
+	
+    //at 383277: ECAL pedestals corrections (run 383186, w29), did not result in a major jump...
 
 
-    //------------ HCAL --------------------//
+    //changes in middle of era G (various between 384635 and 384910, also in HCAL)
+    /*
+    ecalinfo->SetTextSize(0.016); //temporarily go to smaller textsize, to fit a lot in small gap...
+    ecalline->DrawLine(384719, y1+0.0265, 384719, y2-0.030); //(Ecal Pedestals update (run 384719, w34) AlCaDB cmsTalk)
+    ecalinfo->DrawLatex(384719, 0.9653, "384719: EcalPedestals");
+    ecalline->DrawLine(384756, y1+0.0265, 384756, y2-0.030); //(EcalTimeCalibConstants update after front end delay change AlCaDB cmsTalk)
+    ecalinfo->DrawLatex(384756, 0.963, "384756: EcalTimeCalibConstants");
+    */ 
+    //move this info to top of plot for space reasons...
+    ecalline->DrawLine(384719, y1+0.035, 384719, y2-0.0065); //(Ecal Pedestals update (run 384719, w34) AlCaDB cmsTalk)
+    ecalinfo->DrawLatex(384719, 1.053, "384719: EcalPedestals");
+    ecalline->DrawLine(384756, y1+0.035, 384756, y2-0.010); //(EcalTimeCalibConstants update after front end delay change AlCaDB cmsTalk)
+    ecalinfo->DrawLatex(384756, 1.050, "384756: EcalTimeCalibConstants");
+ 
+	
+
+
+
+
+    //------------ HCAL as arrow --------------------//
     //HCAL stuff taken care of before 2024B (mark with arrow to the left, remove later)
     //TArrow *hcalArrow = new TArrow(0.5, 0.3, 0.2, 0.1, 0.05, ">"); //1-4: position, 5:arrowsize, 6:option
     //hcalArrow->SetNDC(kTRUE); //set already here to put arrow more easily
@@ -392,9 +442,9 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
 		infotext->SetTextSize(0.020); //0.036
     infotext->SetTextColor(12);
     infotext->SetTextFont(52);
-    infotext->DrawLatex(0.61,0.16, Form("Error cleaning applied (%.2f).",maxerr));
+    infotext->DrawLatex(0.61,0.153, Form("Error cleaning applied (%.2f as maxerr).",maxerr));
     //infotext->DrawLatex(0.53,0.13, Form("The dotted line is: start-15 and end+15."));
-    infotext->DrawLatex(0.61,0.13, Form("The dotted line is: era start and end."));
+    infotext->DrawLatex(0.61,0.13, Form("The dotted lines are: era start and end."));
 
 
     //hyperlinks for monitoring changes
@@ -422,7 +472,7 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
 		//linktext->DrawLatex(0.13,0.09, "Created on 09.10.2024 using hybrid JSON = newest golden (12.9.) + additional daily (12.9.)");
 		//linktext->DrawLatex(0.13,0.09, "Created on 09.10.2024 using golden JSON (29.9.) and entire 24G data.");
 		//linktext->DrawLatex(0.13,0.09, "Created on 28.10.2024 with w39 for BCDEFG and w40 for H and I.");
-		linktext->DrawLatex(0.13,0.09, "Created on 12.02.2024 with w44 for 2024BCDEFGHI data.");
+		linktext->DrawLatex(0.13,0.09, "Created on 12.02.2024 with w44 for 2024BCDEFGHI Prompt data.");
 
 
 
@@ -516,7 +566,11 @@ void drawResponseVsRun_2024only(string version = "w44", int rereco = 0) {
     //TLegend *leg = tdrLeg(0.54,0.68,0.64,0.88);
     //TLegend *leg = tdrLeg(0.64,0.78,0.84,0.88);
     //TLegend *leg = tdrLeg(0.64,0.76,0.84,0.88);
-    TLegend *leg = tdrLeg(0.62,0.78,0.82,0.90);
+    //
+    //TLegend *leg = tdrLeg(0.62,0.78,0.82,0.90);
+    TLegend *leg = tdrLeg(0.42,0.80,0.62,0.88); //put it more to middle to make space for jumptexts
+    leg->SetTextSize(0.030); //smaller size for squeezing more into the plot
+
 
 
     leg->SetTextFont(42);
