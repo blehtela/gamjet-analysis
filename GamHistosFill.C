@@ -1015,6 +1015,7 @@ void GamHistosFill::Loop()
   alphas.push_back(0.10);
   alphas.push_back(0.50); 
 
+  // ############ HT BIN WEIGHTING ###################//
   // Setup HT bin weighting and monitoring
   TH1D *hxsec(0), *hnevt(0), *hsumw(0), *hLHE_HT(0), *hHT(0);
   //double vht_gam[] = {0, 25, 50, 100, 200, 300, 500, 700, 1000, 1500, 2000, 6500};
@@ -1079,6 +1080,134 @@ void GamHistosFill::Loop()
     cout << "}; // 2022EEP8 hand-adjusted" << endl << flush;
   }
 
+
+  // COMMENTING THIS OUT FOR NOW --> will do the development on the dev branch... need this code to work..
+  /*
+  // ######### PTGamma binned: HT & PTG BIN WEIGHTING #############//
+  // Setup HT bin weighting and monitoring for PTG HT samples (added on 5th Feb 2025)
+  // should treat them as if they were one (flat) binning, i.e. not 2d, but 1d??
+  // maybe in terms of TH2D more straightforward...
+  // or maybe use TH2D, but instead of actual pt values put just numbers, like bin1 bin2...
+  // issue is that we have bigger HT-bins for the higher PTG bins... create one TH1D for each PTG bin?
+  double vpt_gam[] = {0, 10, 100, 200, 3000}; //PTG binning (3000 = Inf) //dont really need this, just make if-conditions accordingly
+  //double vht_gam[] = {0, 40, 70, 100, 200, 400, 600, 6500}; // G-4Jets
+  double vht_gam1[] = {0, 40, 100, 200, 400, 600, 1000, 6500}; // G-4Jets
+  double vht_gam2[] = {0, 40, 200, 400, 600, 1000, 6500}; // G-4Jets
+  double vht_gam3[] = {0, 40, 400, 600, 1000, 6500}; // G-4Jets
+
+
+	// 	put the three histos into vec, select based on which pt bin we're in
+	// 	or use struct (with ptmin, htmin, ptmax, htmax, xsec) --> make fct or small class with GetXSec fct
+	//
+	//
+	//TRY TO DO IT WITH STRUCT
+  struct pthtbin{
+	double ptmin;
+	double ptmax;
+	double htmin;
+	double htmax;
+	double xsec;
+  };
+
+
+  const int npt_gam = sizeof(vpt_gam)/sizeof(vpt_gam[0])-1;
+  const int nht_gam1 = sizeof(vht_gam1)/sizeof(vht_gam1[0])-1;
+  const int nht_gam2 = sizeof(vht_gam2)/sizeof(vht_gam2[0])-1;
+  const int nht_gam3 = sizeof(vht_gam3)/sizeof(vht_gam3[0])-1;
+
+  //select correct HT histogram based on pT bin (three different pT bins)
+  vector<TH1D*> ht_hists = {vht_gam1, vht_gam2, vht_gam3};
+  
+
+  int nMG_gam(0);
+  double wMG_gam(0);
+  if (isMG && !isQCD && isPTG) {
+
+    //when running over events: select correct HTbins for this particular ptgam bin
+    //here it is done before the event loop, so need to fill the three histos (all)
+
+    hxsec1 = new TH1D("hxsec1",";H_{T} (GeV);pb",nht_gam1,vht_gam1);
+    hxsec2 = new TH1D("hxsec2",";H_{T} (GeV);pb",nht_gam2,vht_gam2);
+    hxsec3 = new TH1D("hxsec3",";H_{T} (GeV);pb",nht_gam3,vht_gam3);
+
+
+    hnevt1 = new TH1D("hnevt1",";H_{T} (GeV);N_{evt}",nht_gam1,vht_gam1);
+    hnevt2 = new TH1D("hnevt2",";H_{T} (GeV);N_{evt}",nht_gam2,vht_gam2);
+    hnevt3 = new TH1D("hnevt3",";H_{T} (GeV);N_{evt}",nht_gam3,vht_gam3);
+
+
+    hsumw1 = new TH1D("hsumw1",";H_{T} (GeV);Sum(weights)",nht_gam1,vht_gam1);
+    hsumw2 = new TH1D("hsumw2",";H_{T} (GeV);Sum(weights)",nht_gam2,vht_gam2);
+    hsumw3 = new TH1D("hsumw3",";H_{T} (GeV);Sum(weights)",nht_gam3,vht_gam3);
+
+
+    hLHE_HT = new TH1D("hLHE_HT",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam,vht_gam); //not here?
+    hHT = new TH1D("hHT",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); //not sure if this needed now?
+
+
+    // NUMBER OF EVENTS AND SUM OF WEIGHTS PER BIN
+    // Reference number of events, retrieved manually with
+    // TChain c("Events"); c.AddFile("<path to files>/*.root"); c.GetEntries();
+    // Also re-calculated this code before event loop when needed
+    //int vnevt[nht] = {0, 0, 11197186, 23002929, 17512439, 16405924, 14359110,
+    //		      13473185, 4365993, 2944561, 1836165};
+    int vnevt[7] = {1, 6862, 7213, 5825, 6575, 3185, 2815}; // 2022EEP8 (local) // NEED TO UPDATE THIS for Summer24
+    double vsumw[7] = {0, 5.277e+08, 3.126e+08, 2.698e+08, 7.937e+07, 4.976e+06, 1.596e+06}; // 2022EEP8 (local) // NEED TO UPDATE THIS for Summer24
+
+    int vnevt1[6] = {}; //number of events retrieved with extra script for Summer24
+    int vnevt2[5] = {}; //number of events retrieved with extra script for Summer24
+    int vnevt3[4] = {}; //number of events retrieved with extra script for Summer24
+
+    double vsumw1[6] = {}; //sum of weights for ptgam bin 1
+    double vsumw2[5] = {}; //sum of weights for ptgam bin 1
+    double vsumw3[4] = {}; //sum of weights for ptgam bin 1
+
+
+    for (int i = 0; i != nht_gam; ++i) {
+      hnevt->SetBinContent(i+1, vnevt[i]);
+      nMG_gam += vnevt[i];
+      hsumw->SetBinContent(i+1, vsumw[i]);
+      wMG_gam += vsumw[i];
+    }
+    cout << "Loaded (local) MadGraph event numbers (" << nMG_gam << ", sumw=" << wMG_gam << ")" << endl << flush;
+    
+
+    // CROSS SECTION PER BIN
+    // Values from Fikri, 28th January 2025 (mattermost)
+    double vxsec1[nht_gam1] = {123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
+    double vxsec2[nht_gam2] = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
+    double vxsec3[nht_gam3] = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
+
+    //xsec for pTgam bin 1
+    cout << Form("double vxsec1[%d] = {",nht_gam1);
+    for (int i = 0; i != nht_gam1; ++i) {
+      hxsec1->SetBinContent(i+1, vxsec1[i]);
+      cout << Form("%s%1.4g",i==0 ? "" : ", ", vxsec1[i]);
+    }
+    cout << "}; // 2022P8-PTG hand-adjusted for HTbins in pTgam bin: 10 <= pTgam < 100" << endl << flush;
+
+    //xsec for pTgam bin 2
+    cout << Form("double vxsec2[%d] = {",nht_gam2);
+    for (int i = 0; i != nht_gam2; ++i) {
+      hxsec2->SetBinContent(i+1, vxsec2[i]);
+      cout << Form("%s%1.4g",i==0 ? "" : ", ", vxsec2[i]);
+    }
+    cout << "}; // 2022P8-PTG hand-adjusted for HTbins in pTgam bin: 100 <= pTgam < 200" << endl << flush;
+
+    //xsec for pTgam bin 3
+    cout << Form("double vxsec3[%d] = {",nht_gam3);
+    for (int i = 0; i != nht_gam3; ++i) {
+      hxsec3->SetBinContent(i+1, vxsec3[i]);
+      cout << Form("%s%1.4g",i==0 ? "" : ", ", vxsec3[i]);
+    }
+    cout << "}; // 2022P8-PTG hand-adjusted for HTbins in pTgam bin: 200 <= pTgam < inf..." << endl << flush;
+
+
+  }//isMG && !isQCD && isPTG
+
+*/ //ending commented-out part... (to be added for w46, currently: w45)
+
+  // #########  QCD: HT BIN WEIGHTING #############//
   // Setup HT bin weighting and monitoring for QCD
   double vht_qcd2[] =
     {0, 25, 50, 100, 200, 300, 500, 700, 1000, 1500, 2000, 6500};
@@ -1138,7 +1267,7 @@ void GamHistosFill::Loop()
      for (int i = 0; i != nht_qcd; ++i) {
        hxsec->SetBinContent(i+1, vxsec[i]);
      }
-   } // isMG && isQCD
+  } // isMG && isQCD
 
   const double *vht = (isMG ? (isQCD ? &vht_qcd[0] : &vht_gam[0]) : 0);
   const int nht = (isMG ? (isQCD ? nht_qcd : nht_gam) : 0);
