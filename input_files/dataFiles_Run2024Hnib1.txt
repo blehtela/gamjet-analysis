@@ -1,0 +1,10 @@
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma0_2024H-nib1-fib1-385836-385842.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma0_2024H-nib1-fib2-385863-385889.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma0_2024H-nib1-fib3-385908-385934.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma0_2024H-nib1-fib4-385986-386010.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma0_2024H-nib1-fib5-386025-386319.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma1_2024H-nib1-fib1-385836-385842.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma1_2024H-nib1-fib2-385863-385889.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma1_2024H-nib1-fib3-385908-385934.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma1_2024H-nib1-fib4-385986-386010.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024H_GamJet_EGamma1_2024H-nib1-fib5-386025-386319.root

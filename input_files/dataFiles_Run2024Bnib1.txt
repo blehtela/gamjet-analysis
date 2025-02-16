@@ -1,0 +1,2 @@
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024B_GamJet_EGamma0_2024B-nib1-fib1-378985-379355.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024B_GamJet_EGamma1_2024B-nib1-fib1-378985-379355.root

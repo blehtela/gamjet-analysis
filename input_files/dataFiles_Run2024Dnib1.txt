@@ -1,0 +1,16 @@
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib1-380306-380349.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib2-380360-380384.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib3-380385-380444.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib4-380446-380470.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib5-380481-380513.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib6-380517-380564.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib7-380567-380624.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma0_2024D-nib1-fib8-380625-380947.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib1-380306-380349.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib2-380360-380384.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib3-380385-380444.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib4-380446-380470.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib5-380481-380513.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib6-380517-380564.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib7-380567-380624.root
+/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Fib/15Nov2024/2024/GamJet/Data_2024D_GamJet_EGamma1_2024D-nib1-fib8-380625-380947.root
