@@ -581,15 +581,14 @@ void GamHistosFill::Loop()
 		 //"Winter23Prompt23_V2_MC_L2Relative_AK4PFPuppi", ""); //old 
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
-	//mc2024
+  //mc2024
   if (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
 			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" ||
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
-  //data2024
-  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024Bnib1" || ds=="2024C" || ds=="2024Cnib1" ||
-          ds=="2024D"|| ds=="2024Dnib1" ) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
+  //data2024 (per era)
+  if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D") { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
   //if (ds.Contains("2024B-PromptReco-v1") || ds.Contains("2024B") || ds.Contains("2024C") || ds.Contains("2024D")) { //2023D needs BPix stuff, use this also for 2024B prompt data (12.4.24)
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 onwards (13.11.2024), V7M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024BCD_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 onwards (14.10.2024), V6M
@@ -602,7 +601,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
-  if (ds=="2024Ev1" || ds=="2024Ev1nib1" || ds=="2024Ev2" || ds=="2024Ev2nib1"){ //separated 24E corrections starting from V4M jecs
+  if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
@@ -612,27 +611,64 @@ void GamHistosFill::Loop()
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w30 (starting 14.06.24) and onwards, V4M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
-	if (ds=="2024F" || ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || 
-          ds=="2024F-ECALCC-HCALDI-skim" || ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2"|| ds=="2024F-ECALCC-HCALDI-nib3") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || 
+          ds=="2024F-ECALCC-HCALDI-skim") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //2nd rereco, w30 (starting 14.06.24) and onwards, V4M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //1st rereco
 	}
-	if (ds=="2024G" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") { //for 2024 
+	if (ds=="2024G" || ds=="2024Gtest" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge") { //for 2024 
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
       //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
   } 
-	if (ds=="2024H" || ds=="2024Hnib1" || ds=="2024Hskim" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He") { //for 2024 
+	if (ds=="2024H" || ds=="2024Hskim" || ds=="2024Htest" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He") { //for 2024 
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
   }
-	if (ds=="2024I" || ds=="2024Inib1" || ds=="2024Iskim" || ds=="2024Itest" || ds=="2024Iv1" || ds=="2024Iv2") { //for 2024 
+	if (ds=="2024I" || ds=="2024Iskim" || ds=="2024Itest" || ds=="2024Iv1" || ds=="2024Iv2") { //for 2024 
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
   } 
 	if (ds=="2024C-ECALR-HCALDI" || ds=="2024C-ECALCC-HCALDI") { //for second and third 2024 re-reco data, adjusted in w35
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CS_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
 	}
+  //data 2024 (per nib! added on 16.02.2024 for V8M, w45)
+  if (ds=="2024Bnib1") { 
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024B_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Cnib1" ) { 
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Dnib1" ) { 
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Ev1nib1"){ //separated 24E corrections starting from V4M jecs
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev1_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Ev2nib1"){ //separated 24E corrections starting from V4M jecs
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev2_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Fnib1" || ds=="2024F-ECALCC-HCALDI-nib1") {
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Fnib2" || ds=="2024F-ECALCC-HCALDI-nib2") {
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3") {
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Gnib1") { 
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  } 
+  if (ds=="2024Gnib2") { 
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Hnib1") {
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  }
+  if (ds=="2024Inib1") { 
+	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
+  } 
   assert(jec);
 
   
