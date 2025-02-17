@@ -355,18 +355,26 @@ void GamHistosRatios(string ver, string iov) {
 
 		//MC and output file when NO QCD
 		//for pileup reweighting (based on FULL ERAS)
-		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename.c_str()),"READ"); //NO QCD, reweighted with F
-		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename.c_str(),cv),"RECREATE"); 
+		///fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename.c_str()),"READ"); //NO QCD, reweighted with F
+		///fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename.c_str(),cv),"RECREATE"); 
 
 		//when no pu reweighting, no QCD
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-_w44.root"),"READ"); //NO QCD, reweighted with F
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE"); 
+
+
 	}
 	if(iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib2" || iov=="2024F-ECALCC-HCALDI-nib3"){
 	      	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
 
 		//MC and output file when NO QCD
 		//for pileup reweighting (based on FULL ERAS)
-		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-2024F_w44.root"),"READ"); //NO QCD, reweighted with F
-		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-2024F_%s.root",ci,cv),"RECREATE"); 
+		///fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-2024F_w44.root"),"READ"); //NO QCD, reweighted with F
+		///fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-2024F_%s.root",ci,cv),"RECREATE"); 
+
+		//when no pu reweighting, no QCD
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-_w44.root"),"READ"); //NO QCD, reweighted with F
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE"); 
 	}
 
 
