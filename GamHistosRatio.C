@@ -47,7 +47,7 @@ void replacePt(TGraphErrors *g, TH1 *h) {
 void GamHistosRatios(string ver, string iov);
 
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
-void GamHistosRatio(string ver = "w40") {  //currently changing between w39 (BCDEFG) and w40 (HI)
+void GamHistosRatio(string ver = "w45") {  //w45 (17.02.2025), using w44 MC (full era based reweighting) and w45 data (nib-based)
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
   //GamHistosRatios(ver,"2017BCDEF");
@@ -109,7 +109,7 @@ void GamHistosRatio(string ver = "w40") {  //currently changing between w39 (BCD
   GamHistosRatios(ver,"2024H");
   GamHistosRatios(ver,"2024I");
 */
-	GamHistosRatios(ver, "2024F-ECALCC-HCALDI-skim");
+  //GamHistosRatios(ver, "2024F-ECALCC-HCALDI-skim");
  
   //GamHistosRatios(ver, "2024B-ECALRATIO");
   //GamHistosRatios(ver, "2024C-ECALRATIO");
@@ -117,18 +117,31 @@ void GamHistosRatio(string ver = "w40") {  //currently changing between w39 (BCD
 
 	//GamHistosRatios(ver,"2024G");
 
-
-
 /*
   GamHistosRatios(ver, "2024C-ECALR-HCALDI");
-
   GamHistosRatios(ver, "2024C-ECALCC-HCALDI");
 */
 
-	//GamHistosRatios(ver,"2024F");
-
+  //GamHistosRatios(ver,"2024F");
   //GamHistosRatios(ver,"2023Cv4D");
   //GamHistosRatios(ver,"Run3");
+  
+  //nib-based
+  GamHistosRatios(ver, "2024Bnib1");
+  GamHistosRatios(ver, "2024Cnib1");
+  GamHistosRatios(ver, "2024Dnib1");
+  GamHistosRatios(ver, "2024Ev1nib1");
+  GamHistosRatios(ver, "2024Ev2nib1");
+  GamHistosRatios(ver, "2024Fnib1");
+  GamHistosRatios(ver, "2024Fnib2");
+  GamHistosRatios(ver, "2024Fnib3");
+  GamHistosRatios(ver, "2024Gnib1");
+  GamHistosRatios(ver, "2024Gnib2");
+  GamHistosRatios(ver, "2024Hnib1");
+  GamHistosRatios(ver, "2024Inib1");
+  GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib1");
+  GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib2");
+  GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib3");
   
 }
 
