@@ -361,6 +361,7 @@ void GamHistosRatios(string ver, string iov) {
 		//when no pu reweighting, no QCD
 	}
 	if(iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib2" || iov=="2024F-ECALCC-HCALDI-nib3"){
+	      	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
 
 		//MC and output file when NO QCD
 		//for pileup reweighting (based on FULL ERAS)
