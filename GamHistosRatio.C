@@ -355,8 +355,8 @@ void GamHistosRatios(string ver, string iov) {
 
 		//MC and output file when NO QCD
 		//for pileup reweighting (based on FULL ERAS)
-		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename),"READ"); //NO QCD, reweighted with F
-		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename,cv),"RECREATE"); 
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename.c_str()),"READ"); //NO QCD, reweighted with F
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename.c_str(),cv),"RECREATE"); 
 
 		//when no pu reweighting, no QCD
 	}
@@ -365,8 +365,8 @@ void GamHistosRatios(string ver, string iov) {
 
 		//MC and output file when NO QCD
 		//for pileup reweighting (based on FULL ERAS)
-		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename),"READ"); //NO QCD, reweighted with F
-		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename,cv),"RECREATE"); 
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename.c_str()),"READ"); //NO QCD, reweighted with F
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename.c_str(),cv),"RECREATE"); 
 	}
 
 
