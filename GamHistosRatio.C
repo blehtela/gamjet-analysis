@@ -349,7 +349,7 @@ void GamHistosRatios(string ver, string iov) {
 
 
 		// MC and output file when QCD in the Mix
-		fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_no-pu_%s.root",cv),"READ"); //NO QCD, reweighted with F
+		fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_no-pu_w44.root"),"READ"); //NO QCD, reweighted with F
 		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-2024QCD_no-pu_%s.root",ci,cv),"RECREATE"); 
 
 
@@ -369,7 +369,7 @@ void GamHistosRatios(string ver, string iov) {
 	      	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
 
 		// MC and output file when QCD in the Mix (BUT NO REWEIGHTING)
-		fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_no-pu_%s.root",cv),"READ"); //NO QCD, reweighted with F
+		fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_no-pu_w44.root"),"READ"); //NO QCD, reweighted with F
 		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-2024QCD_no-pu_%s.root",ci,cv),"RECREATE"); 
 
 
