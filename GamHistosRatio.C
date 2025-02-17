@@ -338,6 +338,38 @@ void GamHistosRatios(string ver, string iov) {
 
 
       }
+
+	if (iov=="2024Bnib1" || iov=="2024Cnib1" || iov=="2024Dnib1" || iov=="2024Ev1nib1" || iov=="2024Ev2nib1" || iov=="2024Fnib1" ||
+		iov=="2024Fnib2" || iov=="2024Fnib3" || iov=="2024Gnib1" || iov=="2024Gnib2" || iov=="2024Hnib1" || iov=="2024Inib1") {
+
+		string erabasename = iov.substr(0, iov.size()-4);
+		//cout << "erabasename = " << erabasename << endl;
+	
+        	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
+
+
+		// MC and output file when QCD in the Mix
+		////fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_2024QCD_V14_pu-%s_%s.root",ci,cv),"READ"); //new PUPPI version V14 for both MCs
+		////fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter24P8QCD_V14_%sf.root",ci,cv),"RECREATE"); //mc: 2024QCD and winter24 madgraph (PUPPI version V14)
+
+
+		//MC and output file when NO QCD
+		//for pileup reweighting (based on FULL ERAS)
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename),"READ"); //NO QCD, reweighted with F
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename,cv),"RECREATE"); 
+
+		//when no pu reweighting, no QCD
+	}
+	if(iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib2" || iov=="2024F-ECALCC-HCALDI-nib3"){
+		string erabasename = iov.substr(0, iov.size()-5);
+
+		//MC and output file when NO QCD
+		//for pileup reweighting (based on FULL ERAS)
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-%s_w44.root", erabasename),"READ"); //NO QCD, reweighted with F
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-%s_%s.root",ci,erabasename,cv),"RECREATE"); 
+	}
+
+
   if (iov=="Run3") {
 
     // Merge files, if not already done (delete combination file to redo)
