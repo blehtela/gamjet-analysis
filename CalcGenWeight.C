@@ -2,7 +2,7 @@
 // author: blehtela
 // created: 17th of February, 2025
 
-
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -12,22 +12,39 @@ void CalcGenWeight(string pthtbin);
 
 
 //calling the fct several times
-void CalcGenWeight(string pthtbin = "X"){
+//void CalcGenWeight(string pthtbin = "X"){
+void CalcGenWeight(){
 	CalcGenWeight("summer2024P8_PTG10to100-HT40to100");
+	CalcGenWeight("summer2024P8_PTG10to100-HT100to200");
+	CalcGenWeight("summer2024P8_PTG10to100-HT200to400");
+	CalcGenWeight("summer2024P8_PTG10to100-HT400to600");
+	CalcGenWeight("summer2024P8_PTG10to100-HT600to1000");
+	CalcGenWeight("summer2024P8_PTG10to100-HT1000toInf");
 
+	CalcGenWeight("summer2024P8_PTG100to200-HT40to200");
+	CalcGenWeight("summer2024P8_PTG100to200-HT200to400");
+	CalcGenWeight("summer2024P8_PTG100to200-HT400to600");
+	CalcGenWeight("summer2024P8_PTG100to200-HT600to1000");
+	CalcGenWeight("summer2024P8_PTG100to200-HT1000toInf");
 
+	CalcGenWeight("summer2024P8_PTG200toInf-HT40to400");
+	CalcGenWeight("summer2024P8_PTG200toInf-HT400to600");
+	CalcGenWeight("summer2024P8_PTG200toInf-HT600to1000");
+	CalcGenWeight("summer2024P8_PTG200toInf-HT1000toInf");
 }
 
 //implementation
 //void CalcGenWeight(string pthtbin="X"){
-void CalcGenWeight(string pthtbin="X"){
+void CalcGenWeight::Loop() {
 	//get files for current sample, e.g. MCSummer24_2024_GamJet_GJetsHT40to100PTG10to100
 	//i call them input_files/mcFiles_summer2024P8_PTG10to100-HT40to100.txt
 	//there are overall lists for the entire sample (processed with GamHistosFill, called: mcFiles_summer2024P8.txt
 
+	// The following is now handled in mk_CalcGenWeight.C
+	/*
 	// TChain based on Runs Tree including all files for ONE pt-ht-bin
 	TChain *chainrun = new TChain("Runs");
-	ifstream fin(Form("input_files/mcFiles_%s.txt", pthtbin.c_str()))
+	ifstream fin(Form("input_files/mcFiles_%s.txt", pthtbin.c_str()));
 	string filename;
 	cout << "Chaining MC files for " << pthtbin << endl << flush;
 	int nfile(0), nFilesMax(1000);
@@ -38,6 +55,9 @@ void CalcGenWeight(string pthtbin="X"){
 
 	//show file count to user
 	cout << "Chained " << nFiles << " files\n" << endl << flush;
+	*/
+
+	if(fChain == 0) return;
 
 	//switch on the genEventSumw branch
 	fChain->SetBranchStatus("*",0); //switch off all branches
@@ -65,4 +85,11 @@ void CalcGenWeight(string pthtbin="X"){
 	cout << "Total sum of gen evetn weight in sample " << pthtbin << " is: " << summedGenWeight << endl << flush;
 	cout << "----------------------------------------\n" << endl << flush;
 
+	ofstream outputfile;
+	const char* filename = "testgenweightcalc.txt";
+	outputfile.open(filename, app) //operations at end of file only (app = append)
+
+	outputfile << pthtbin << " " << summedGenWeight << "\n";
+
+	outputfile.close();
 }
