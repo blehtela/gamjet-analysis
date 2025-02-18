@@ -1,0 +1,3 @@
+root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG200toInf_Skim_1of3.root
+root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG200toInf_Skim_2of3.root
+root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG200toInf_Skim_3of3.root
