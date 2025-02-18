@@ -1,0 +1,68 @@
+// Calculating the overall GenWeight for a given sample
+// author: blehtela
+// created: 17th of February, 2025
+
+
+#include <fstream>
+#include <string>
+
+
+//def
+void CalcGenWeight(string pthtbin);
+
+
+//calling the fct several times
+void CalcGenWeight(string pthtbin = "X"){
+	CalcGenWeight("summer2024P8_PTG10to100-HT40to100");
+
+
+}
+
+//implementation
+//void CalcGenWeight(string pthtbin="X"){
+void CalcGenWeight(string pthtbin="X"){
+	//get files for current sample, e.g. MCSummer24_2024_GamJet_GJetsHT40to100PTG10to100
+	//i call them input_files/mcFiles_summer2024P8_PTG10to100-HT40to100.txt
+	//there are overall lists for the entire sample (processed with GamHistosFill, called: mcFiles_summer2024P8.txt
+
+	// TChain based on Runs Tree including all files for ONE pt-ht-bin
+	TChain *chainrun = new TChain("Runs");
+	ifstream fin(Form("input_files/mcFiles_%s.txt", pthtbin.c_str()))
+	string filename;
+	cout << "Chaining MC files for " << pthtbin << endl << flush;
+	int nfile(0), nFilesMax(1000);
+	while(fin >> filename && nfile<nFilesMax){
+		++nfile;
+		chainrun->AddFile(filename.c_str()); //add current file to the chain
+	}
+
+	//show file count to user
+	cout << "Chained " << nFiles << " files\n" << endl << flush;
+
+	//switch on the genEventSumw branch
+	fChain->SetBranchStatus("*",0); //switch off all branches
+	fChain->SetBranchStatus("genEventSumw",1); //switch on branch with genEventSumw, the gen event weight
+
+	//Loop through events to add the get genEventSumw for each event
+	Long64_t nentries = fChain->GetEntries();
+	cout << "\nStarting loop over " << pthtbin << " with "<< nentries << " entries" << endl;
+
+	double summedGenWeight(0.0);
+	for(Long64_t jentry=0; jentry<nentries; jentry++){
+		Long64_t ientry = LoadTree(jentry);
+		if(ientry<0) break;
+		summedGenWeight += genEventSumw;
+    	
+		if (jentry%1000000==0) cout << "." << flush;
+      		if (jentry%50000000==0 && jentry!=0) cout << "\nn="<<jentry<<endl<<flush;
+	}
+
+	cout << "\nProcessed " << nentries << " entries." << endl << flush;
+
+
+
+	//write to file: sample name, summedGenWeight (or write it to console for now)
+	cout << "Total sum of gen evetn weight in sample " << pthtbin << " is: " << summedGenWeight << endl << flush;
+	cout << "----------------------------------------\n" << endl << flush;
+
+}
