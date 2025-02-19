@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 
+using namespace std; 
 
 //def
 void CalcGenWeight(string pthtbin);
@@ -93,9 +94,11 @@ void CalcGenWeight::Loop() {
 
 	ofstream outputfile;
 	const char* filename = Form("genweight_%s.txt", pthtbin.c_str());
-	outputfile.open(filename, app) //operations at end of file only (app = append)
+	//outputfile.open(filename, app); //operations at end of file only (app = append)
+	outputfile.open(filename, fstream::app); //operations at end of file only (app = append)
+
 
 	outputfile << pthtbin << " " << summedGenWeight << "\n";
 
 	outputfile.close();
-}
+} //end of CalcGenWeight::Loop()
