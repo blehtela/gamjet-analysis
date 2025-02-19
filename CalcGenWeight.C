@@ -11,7 +11,7 @@
 using namespace std; 
 
 //def
-void CalcGenWeight(string pthtbin);
+//void CalcGenWeight(string pthtbin);
 
 
 //calling the fct several times
@@ -74,11 +74,15 @@ void CalcGenWeight::Loop() {
 	Long64_t nentries = fChain->GetEntries();
 	cout << "\nStarting loop over " << pthtbin << " with "<< nentries << " entries" << endl;
 
-	double summedGenWeight(0.0);
+	//double summedGenWeight(0.0);
+	Double_t summedGenWeight(0);
 	for(Long64_t jentry=0; jentry<nentries; jentry++){
 		Long64_t ientry = LoadTree(jentry);
 		if(ientry<0) break;
+		b_genEventSumw->GetEntry(ientry); //read from branch
 		summedGenWeight += genEventSumw;
+		//cout << "genEventSumw now: " << genEventSumw << endl << flush; 
+		//cout << "current total sum: " << summedGenWeight << endl << flush;
     	
 		if (jentry%1000000==0) cout << "." << flush;
       		if (jentry%50000000==0 && jentry!=0) cout << "\nn="<<jentry<<endl<<flush;
@@ -89,7 +93,7 @@ void CalcGenWeight::Loop() {
 
 
 	//write to file: sample name, summedGenWeight (or write it to console for now)
-	cout << "Total sum of gen evetn weight in sample " << pthtbin << " is: " << summedGenWeight << endl << flush;
+	cout << "Total sum of gen event weights in sample " << pthtbin << " is: " << summedGenWeight << endl << flush;
 	cout << "----------------------------------------\n" << endl << flush;
 
 	ofstream outputfile;
