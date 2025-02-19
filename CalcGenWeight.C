@@ -1,6 +1,8 @@
 // Calculating the overall GenWeight for a given sample
 // author: blehtela
 // created: 17th of February, 2025
+#define CalcGenWeight_cxx
+#include "CalcGenWeight.h"
 
 #include <iostream>
 #include <fstream>
