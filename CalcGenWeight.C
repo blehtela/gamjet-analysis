@@ -13,6 +13,9 @@ void CalcGenWeight(string pthtbin);
 
 //calling the fct several times
 //void CalcGenWeight(string pthtbin = "X"){
+//
+//instead of the following, use calcAllGenWeights.py
+/*
 void CalcGenWeight(){
 	CalcGenWeight("summer2024P8_PTG10to100-HT40to100");
 	CalcGenWeight("summer2024P8_PTG10to100-HT100to200");
@@ -32,6 +35,7 @@ void CalcGenWeight(){
 	CalcGenWeight("summer2024P8_PTG200toInf-HT600to1000");
 	CalcGenWeight("summer2024P8_PTG200toInf-HT1000toInf");
 }
+*/
 
 //implementation
 //void CalcGenWeight(string pthtbin="X"){
@@ -86,7 +90,7 @@ void CalcGenWeight::Loop() {
 	cout << "----------------------------------------\n" << endl << flush;
 
 	ofstream outputfile;
-	const char* filename = "testgenweightcalc.txt";
+	const char* filename = Form("genweight_%s.txt", pthtbin.c_str());
 	outputfile.open(filename, app) //operations at end of file only (app = append)
 
 	outputfile << pthtbin << " " << summedGenWeight << "\n";
