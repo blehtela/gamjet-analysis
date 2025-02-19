@@ -81,7 +81,7 @@ CalcGenWeight::CalcGenWeight(TTree *tree, string pthtbinname) : fChain(0), pthtb
 // used to generate this class and read the Tree.
 
 
-// That's how it was coming out of MakeClass, but i adapted it to GamHistosFill version
+// That's how it was coming out of MakeClass, but i adapted it to match with  GamHistosFill version
 /*
    if (tree == 0) {
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT40to100PTG10to100_Skim_5of75.root");
@@ -174,7 +174,7 @@ void CalcGenWeight::Init(TTree *tree)
    //in GamHistosFill.h made some safety reset of all branches, not here...
 }
 
-Bool_t GamHistosFill::Notify()
+Bool_t CalcGenWeight::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -192,14 +192,14 @@ Bool_t GamHistosFill::Notify()
    return kTRUE;
 }
 
-void GamHistosFill::Show(Long64_t entry)
+void CalcGenWeight::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t GamHistosFill::Cut(Long64_t entry)
+Int_t CalcGenWeight::Cut(Long64_t entry)
 {
   if (entry) {}; // suppress compiler error //not sure what this was about, kept it...
 // This function may be called from Loop.
@@ -207,4 +207,4 @@ Int_t GamHistosFill::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef GamHistosFill_cxx
+#endif // #ifdef CalcGenWeight_cxx
