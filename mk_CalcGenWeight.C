@@ -12,6 +12,23 @@
 #define GPU
 //#define LOCAL
 
+
+gROOT->ProcessLine(".L CalcGenWeight.C+g"); //used to be in mk_CondFormats.C (which i did not otherwise need here)
+
+#ifdef LOCAL
+// Compile these libraries into *.so first with root -l -b -q mk_CondFormats.C
+// (works for 6.18.04?)
+//R__LOAD_LIBRARY(CalcGenWeight.C+g)
+// As in jetphys/mk2_histosFill.C:
+
+R__LOAD_LIBRARY(CalcGenWeight_C)
+#else
+// (works for 6.26/10)
+R__LOAD_LIBRARY(CalcGenWeight_C.so)
+#endif
+
+
+
 void mk_CalcGenWeight(string pthtbin = "X") {
 
   // Settings
@@ -22,7 +39,7 @@ void mk_CalcGenWeight(string pthtbin = "X") {
 		pthtbin=="summer2024_PTG100to200-HT400to600" || pthtbin=="summer2024_PTG100to200-HT600to1000" || 
 		pthtbin=="summer2024_PTG100to200-HT1000toInf" || pthtbin=="summer2024_PTG200toInf-HT40to400" || 
 		pthtbin=="summer2024_PTG200toInf-HT400to600" || pthtbin=="summer2024_PTG200toInf-HT600to1000" || 
-		pthtbin=="summer2024_PTG200toInf-HT1000toInf")
+		pthtbin=="summer2024_PTG200toInf-HT1000toInf");
 
  //cout << "Clean old shared objects and link files" << endl << flush;
   //gSystem->Exec("rm *.d");
@@ -61,7 +78,7 @@ void mk_CalcGenWeight(string pthtbin = "X") {
   //had this originally in CalcGenWeight.C, but moved here
   if (addBin) {
     //ifstream fin(runLocal ? Form("input_files/dataFiles_local_Run%s.txt",dataset.c_str()) : Form("input_files/dataFiles_Run%s.txt",dataset.c_str()), ios::in);
-    ifstream fin(Form("input_files/mcFiles_%s.txt",pthtbin.c_str()) 
+    ifstream fin(Form("input_files/mcFiles_%s.txt",pthtbin.c_str()));
     string filename;
     cout << "Chaining MC files for:" << pthtbin << endl << flush;
     int nfile(0), nFilesMax(1000);
@@ -69,9 +86,9 @@ void mk_CalcGenWeight(string pthtbin = "X") {
       ++nfile;
       chainruns->AddFile(filename.c_str());
     }
-    cout << "Chained " << nFiles <<  " files\n" << endl << flush;
+    cout << "Chained " << nfile <<  " files\n" << endl << flush;
     
-    CalcGenWeight filler(c,0,pthtbin); //why the 0 in second argument? what is it? first event index?
+    CalcGenWeight filler(chainruns,pthtbin);
     filler.Loop();
   }
   
