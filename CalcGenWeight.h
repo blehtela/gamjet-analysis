@@ -26,6 +26,7 @@ public :
 
    string          pthtbin;
    string          version;
+   string          _filename; // file name for debugging purposes
    static const bool debugFiles = true;
 
   
