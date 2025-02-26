@@ -582,8 +582,9 @@ void GamHistosFill::Loop()
 		 //"Summer22Prompt23_Run2023D_V3_DATA_L2L3Residual_AK4PFPUPPI"); //even older
   }
   //mc2024
-  if (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
-			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" ||
+  if (ds=="winter2024P8" || ds=="summer2024P8" || //also for summer24 (w46)
+      ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
+			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" ||
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
@@ -706,8 +707,8 @@ void GamHistosFill::Loop()
   if (ds=="2024Bnib1" || ds=="2024Cnib1" || ds=="2024Dnib1" || ds=="2024Ev1nib1" || ds=="2024Ev2nib1" || 
       ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" || 
       ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
-  if (ds=="winter2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
-			ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
+  if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
+			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
 
   // Load JSON files
@@ -922,7 +923,9 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Hnib1") || //should include Ha, Hb, Hc, Hd, Hskim
         TString(ds.c_str()).Contains("2024Inib1") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
+        TString(ds.c_str()).Contains("summer2024P8") ||
         TString(ds.c_str()).Contains("winter2024P8-test") || 
+        TString(ds.c_str()).Contains("summer2024P8-test") ||
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
@@ -1059,7 +1062,7 @@ void GamHistosFill::Loop()
   const int nht_gam = sizeof(vht_gam)/sizeof(vht_gam[0])-1;
   int nMG_gam(0);
   double wMG_gam(0);
-  if (isMG && !isQCD) {
+  if (isMG && !isQCD && !isPTG) {
 
     hxsec = new TH1D("hxsec",";H_{T} (GeV);pb",nht_gam,vht_gam);
     hnevt = new TH1D("hnevt",";H_{T} (GeV);N_{evt}",nht_gam,vht_gam);
@@ -1118,7 +1121,6 @@ void GamHistosFill::Loop()
 
 
   // COMMENTING THIS OUT FOR NOW --> will do the development on the dev branch... need this code to work..
-  /*
   // ######### PTGamma binned: HT & PTG BIN WEIGHTING #############//
   // Setup HT bin weighting and monitoring for PTG HT samples (added on 5th Feb 2025)
   // should treat them as if they were one (flat) binning, i.e. not 2d, but 1d??
@@ -1127,15 +1129,15 @@ void GamHistosFill::Loop()
   // issue is that we have bigger HT-bins for the higher PTG bins... create one TH1D for each PTG bin?
   double vpt_gam[] = {0, 10, 100, 200, 3000}; //PTG binning (3000 = Inf) //dont really need this, just make if-conditions accordingly
   //double vht_gam[] = {0, 40, 70, 100, 200, 400, 600, 6500}; // G-4Jets
-  double vht_gam1[] = {0, 40, 100, 200, 400, 600, 1000, 6500}; // G-4Jets
-  double vht_gam2[] = {0, 40, 200, 400, 600, 1000, 6500}; // G-4Jets
-  double vht_gam3[] = {0, 40, 400, 600, 1000, 6500}; // G-4Jets
+  double vht_gam1[] = {40, 100, 200, 400, 600, 1000, 6500}; // G-4Jets
+  double vht_gam2[] = {40, 200, 400, 600, 1000, 6500}; // G-4Jets
+  double vht_gam3[] = {40, 400, 600, 1000, 6500}; // G-4Jets
 
 
 	// 	put the three histos into vec, select based on which pt bin we're in
 	// 	or use struct (with ptmin, htmin, ptmax, htmax, xsec) --> make fct or small class with GetXSec fct
 	//
-	//
+	/*
 	//TRY TO DO IT WITH STRUCT
   struct pthtbin{
 	double ptmin;
@@ -1143,7 +1145,9 @@ void GamHistosFill::Loop()
 	double htmin;
 	double htmax;
 	double xsec;
+  double genweightsum;
   };
+  */
 
 
   const int npt_gam = sizeof(vpt_gam)/sizeof(vpt_gam[0])-1;
@@ -1152,12 +1156,19 @@ void GamHistosFill::Loop()
   const int nht_gam3 = sizeof(vht_gam3)/sizeof(vht_gam3[0])-1;
 
   //select correct HT histogram based on pT bin (three different pT bins)
-  vector<TH1D*> ht_hists = {vht_gam1, vht_gam2, vht_gam3};
+  //vector<TH1D*> ht_hists = {vht_gam1, vht_gam2, vht_gam3};
   
 
-  int nMG_gam(0);
-  double wMG_gam(0);
+  int nMG_gam1(0);
+  double wMG_gam1(0);
+  int nMG_gam2(0);
+  double wMG_gam2(0);
+  int nMG_gam3(0);
+  double wMG_gam3(0);
+  TH1D *hxsec1(0), *hxsec2(0), *hxsec3(0), *hnevt1(0), *hnevt2(0), *hnevt3(0), *hsumw1(0), *hsumw2(0), *hsumw3(0);
+  TH1D *hLHE_HT1(0), *hLHE_HT2(0), *hLHE_HT3(0), *hHT1(0), *hHT2(0), *hHT3(0);
   if (isMG && !isQCD && isPTG) {
+    cout << "This is a PTG sample." << endl << flush;
 
     //when running over events: select correct HTbins for this particular ptgam bin
     //here it is done before the event loop, so need to fill the three histos (all)
@@ -1166,46 +1177,65 @@ void GamHistosFill::Loop()
     hxsec2 = new TH1D("hxsec2",";H_{T} (GeV);pb",nht_gam2,vht_gam2);
     hxsec3 = new TH1D("hxsec3",";H_{T} (GeV);pb",nht_gam3,vht_gam3);
 
-
     hnevt1 = new TH1D("hnevt1",";H_{T} (GeV);N_{evt}",nht_gam1,vht_gam1);
     hnevt2 = new TH1D("hnevt2",";H_{T} (GeV);N_{evt}",nht_gam2,vht_gam2);
     hnevt3 = new TH1D("hnevt3",";H_{T} (GeV);N_{evt}",nht_gam3,vht_gam3);
-
 
     hsumw1 = new TH1D("hsumw1",";H_{T} (GeV);Sum(weights)",nht_gam1,vht_gam1);
     hsumw2 = new TH1D("hsumw2",";H_{T} (GeV);Sum(weights)",nht_gam2,vht_gam2);
     hsumw3 = new TH1D("hsumw3",";H_{T} (GeV);Sum(weights)",nht_gam3,vht_gam3);
 
-
-    hLHE_HT = new TH1D("hLHE_HT",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam,vht_gam); //not here?
-    hHT = new TH1D("hHT",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); //not sure if this needed now?
+    hLHE_HT1 = new TH1D("hLHE_HT1",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam1,vht_gam1); //not here, ok will do it.
+    hLHE_HT2 = new TH1D("hLHE_HT2",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam2,vht_gam2);
+    hLHE_HT3 = new TH1D("hLHE_HT3",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam3,vht_gam3);
+    hHT1 = new TH1D("hHT1",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); //not sure if this needed now? (keep it for now)
+    hHT2 = new TH1D("hHT2",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
+    hHT3 = new TH1D("hHT3",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
 
 
     // NUMBER OF EVENTS AND SUM OF WEIGHTS PER BIN
     // Reference number of events, retrieved manually with
     // TChain c("Events"); c.AddFile("<path to files>/*.root"); c.GetEntries();
     // Also re-calculated this code before event loop when needed
-    //int vnevt[nht] = {0, 0, 11197186, 23002929, 17512439, 16405924, 14359110,
-    //		      13473185, 4365993, 2944561, 1836165};
-    int vnevt[7] = {1, 6862, 7213, 5825, 6575, 3185, 2815}; // 2022EEP8 (local) // NEED TO UPDATE THIS for Summer24
-    double vsumw[7] = {0, 5.277e+08, 3.126e+08, 2.698e+08, 7.937e+07, 4.976e+06, 1.596e+06}; // 2022EEP8 (local) // NEED TO UPDATE THIS for Summer24
+    int vnevt1[6] = {772, 830, 782, 1905, 1384, 452}; //number of events retrieved with extra script for Summer24
+    int vnevt2[5] = {850, 900, 414, 220, 111}; //number of events retrieved with extra script for Summer24
+    int vnevt3[4] = {1050, 333, 192, 128}; //number of events retrieved with extra script for Summer24
 
-    int vnevt1[6] = {}; //number of events retrieved with extra script for Summer24
-    int vnevt2[5] = {}; //number of events retrieved with extra script for Summer24
-    int vnevt3[4] = {}; //number of events retrieved with extra script for Summer24
-
-    double vsumw1[6] = {}; //sum of weights for ptgam bin 1
-    double vsumw2[5] = {}; //sum of weights for ptgam bin 1
-    double vsumw3[4] = {}; //sum of weights for ptgam bin 1
+    //got these numbers with my extra code CalcGenWeight
+    //for now hardcoded (test and aligned with how it was done earlier), but prepare to read this from file later.
+    double vsumw1[6] = {1.01231e+14, 2.96245e+13, 5.83055e+12, 1.53769e+12, 2.43164e+11, 9.96816e+09}; //sum of weights for ptgam bin 1
+    double vsumw2[5] = {5.29489e+11, 2.3682e+11, 1.5406e+10, 2.27861e+09, 1.24712e+08}; //sum of weights for ptgam bin 1
+    double vsumw3[4] = {7.15389e+10, 4.24602e+09, 8.18488e+08, 6.67776e+07}; //sum of weights for ptgam bin 1
 
 
-    for (int i = 0; i != nht_gam; ++i) {
-      hnevt->SetBinContent(i+1, vnevt[i]);
-      nMG_gam += vnevt[i];
-      hsumw->SetBinContent(i+1, vsumw[i]);
-      wMG_gam += vsumw[i];
+    //setting the correct bin contents in the histograms (btw: this could be handled very differently, without histos, will change it at some point)
+    cout << "nht_gam1 = " << nht_gam1 << endl;
+    for (int i = 0; i < nht_gam1; ++i) { //why did changing != to < fix it but wasnt needed for the others?
+      cout << "test: " << i << endl;
+      hnevt1->SetBinContent(i+1, vnevt1[i]);
+      nMG_gam1 += vnevt1[i];
+      hsumw1->SetBinContent(i+1, vsumw1[i]);
+      wMG_gam1 += vsumw1[i];
+      //could handle also the other bins in same for loop via these if's, but kept in separate for-loops now
     }
-    cout << "Loaded (local) MadGraph event numbers (" << nMG_gam << ", sumw=" << wMG_gam << ")" << endl << flush;
+    cout << "Loaded (local) MadGraph event numbers for 1st PTG bin (" << nMG_gam1 << ", sumw=" << wMG_gam1 << ")" << endl << flush;
+
+    for (int i = 0; i != nht_gam2; ++i) {
+      hnevt2->SetBinContent(i+1, vnevt2[i]);
+      nMG_gam2 += vnevt2[i];
+      hsumw2->SetBinContent(i+1, vsumw2[i]);
+      wMG_gam2 += vsumw2[i];
+    }
+    cout << "Loaded (local) MadGraph event numbers for 2nd PTG bin (" << nMG_gam2 << ", sumw=" << wMG_gam2 << ")" << endl << flush;
+
+    for (int i = 0; i != nht_gam3; ++i) {
+      hnevt3->SetBinContent(i+1, vnevt3[i]);
+      nMG_gam3 += vnevt3[i];
+      hsumw3->SetBinContent(i+1, vsumw3[i]);
+      wMG_gam3 += vsumw3[i];
+    }
+    cout << "Loaded (local) MadGraph event numbers for 3rd PTG bin (" << nMG_gam3 << ", sumw=" << wMG_gam3 << ")" << endl << flush;
+ 
     
 
     // CROSS SECTION PER BIN
@@ -1241,7 +1271,7 @@ void GamHistosFill::Loop()
 
   }//isMG && !isQCD && isPTG
 
-*/ //ending commented-out part... (to be added for w46, currently: w45)
+//ending commented-out part... (to be added for w46, currently: w45)
 
   // #########  QCD: HT BIN WEIGHTING #############//
   // Setup HT bin weighting and monitoring for QCD
@@ -1255,7 +1285,7 @@ void GamHistosFill::Loop()
   const int nht_qcd = (isRun3 ? nht_qcd3 : nht_qcd2);
   int nMG_qcd(0);
   double wMG_qcd(0);
-  if (isMG && isQCD) {
+  if (isMG && isQCD && !isPTG) {
      
      hxsec = new TH1D("hxsec",";H_{T} (GeV);pb",nht_qcd,vht_qcd);
      hnevt = new TH1D("hnevt",";H_{T} (GeV);N_{evt}",nht_qcd,vht_qcd);
@@ -1305,8 +1335,9 @@ void GamHistosFill::Loop()
      }
   } // isMG && isQCD
 
-  const double *vht = (isMG ? (isQCD ? &vht_qcd[0] : &vht_gam[0]) : 0);
-  const int nht = (isMG ? (isQCD ? nht_qcd : nht_gam) : 0);
+  //note: here need to also account for the ptht binned samples
+  const double *vht = (isMG ? (isQCD ? &vht_qcd[0] : &vht_gam[0]) : 0); //--> seems this is not used anywhere later?! (bettina, 26.2.25)
+  const int nht = (isMG ? (isQCD ? nht_qcd : nht_gam) : 0);             //this isnt either
   int nMG = (isMG ? (isQCD ? nMG_qcd : nMG_gam) : 0);
   const int wMG = (isMG ? (isQCD ? wMG_qcd : wMG_gam) : 0);
   
@@ -2285,7 +2316,8 @@ void GamHistosFill::Loop()
   cout << "\nStarting loop over " << dataset << " with "
        << nentries << " entries" << endl;
 
-  if (isMG && nentries!=nMG) {
+  //cannot do the following for the PTG samples
+  if (isMG && nentries!=nMG && !isPTG) {
     cout << "Nentries = "<<nentries<<", expected nMG = "<<nMG<<endl << flush;
      //assert(false);
     cout << "Recalculate HT bin counts prior to starting."
@@ -2316,7 +2348,15 @@ void GamHistosFill::Loop()
     }
     cout << "}; // " << dataset << endl << flush;
   } // isMC && nentries!=nMG
-  
+
+  if (isPTG) {
+    cout << "Processing a PTG- and HT-binned sample. Check that " << nMG_gam1+nMG_gam2+nMG_gam3 << " equals " << nentries << endl;
+    Long64_t sumMG = nMG_gam1+nMG_gam2+nMG_gam3;
+    if(TString(dataset.c_str()).Contains("test")==false){ //assertion only if there is no test
+      assert(sumMG==nentries); //needed to comment this out for test
+    }
+  } //isPTG
+
   //int skip = 21700000; // 2018A first events without 110EB
   //int skip = 55342793; // 2018A first events with 92 photon
   //int skip = 265126992; // 2018A first events with 191 photons, 23 jets
@@ -2784,8 +2824,8 @@ void GamHistosFill::Loop()
     // Event weights (1 for MadGraph)
     //bool isMC = (run==1);
     assert((isMC && run==1) || (!isMC && run!=1));
-    double w = (isMC ? genWeight : 1);
-    if (isMG) {
+    double w = (isMC ? genWeight : 1);    //in case of MC set w to genWeight, otherwise (data) leave it 1
+    if (isMG && !isPTG) {
       int iht = hxsec->FindBin(LHE_HT);
       double xsec = hxsec->GetBinContent(iht);
       //double nevt = hnevt->GetBinContent(iht);
@@ -2796,6 +2836,43 @@ void GamHistosFill::Loop()
       hLHE_HT->Fill(LHE_HT); // cross-check hnevt afterwards
       hHT->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
     }
+
+    if (isMG && isPTG) {
+      //find current ptht bin
+      //int ipt = LHEPart_pt[22]; // LHEPart_pdgid == 22 (photon)
+      //if(ipt>=10 && ipt<100){
+      if(TString(_filename.c_str()).Contains("PTG10to100")){
+        int iht = hxsec1->FindBin(LHE_HT);
+        double xsec = hxsec1->GetBinContent(iht);
+        double sumw = hsumw1->GetBinContent(iht);
+        double wht = (sumw ? xsec / sumw : 1);
+        w *= wht;
+        hLHE_HT1->Fill(LHE_HT); // cross-check hnevt afterwards
+        hHT1->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+      }
+      //if(ipt>=100 && ipt<200){
+      if(TString(_filename.c_str()).Contains("PTG100to200")){
+        int iht = hxsec2->FindBin(LHE_HT);
+        double xsec = hxsec2->GetBinContent(iht);
+        double sumw = hsumw2->GetBinContent(iht);
+        double wht = (sumw ? xsec / sumw : 1);
+        w *= wht;
+        hLHE_HT2->Fill(LHE_HT); // cross-check hnevt afterwards
+        hHT2->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+      }
+      //if(ipt>=200){
+      if(TString(_filename.c_str()).Contains("PTG200toInf")){
+        int iht = hxsec3->FindBin(LHE_HT);
+        double xsec = hxsec3->GetBinContent(iht);
+        double sumw = hsumw3->GetBinContent(iht);
+        double wht = (sumw ? xsec / sumw : 1);
+        w *= wht;
+        hLHE_HT3->Fill(LHE_HT); // cross-check hnevt afterwards
+        hHT3->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+      }
+    }
+
+
 
     //bool doPtHatFilter = true;
     //if (doPtHatFilter && isMC) {
@@ -2939,6 +3016,7 @@ void GamHistosFill::Loop()
       //cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
+			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
 
 			if(TString(dataset.c_str()).Contains("2023P8")){ mctype="2023P8";} //new, for y2023
@@ -4393,12 +4471,14 @@ void GamHistosFill::LoadPU(){
   trigs["2022"].push_back("HLT_Photon200");
 
 	//comment out the once for which I haven't produced a pileup histogram yet
+  trigs["summer2024P8"].push_back("mc"); //photon mc
   trigs["winter2024P8"].push_back("mc"); //photon mc
   trigs["winter2024P8a"].push_back("mc"); //photon mc - not needed, only main one
   trigs["winter2024P8b"].push_back("mc"); //photon mc
   trigs["winter2024P8c"].push_back("mc"); //photon mc
   trigs["winter2024P8-v14"].push_back("mc"); //photon mc
   trigs["winter2024P8-test"].push_back("mc"); //photon mc
+  trigs["summer2024P8-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc
   //trigs["2024"].push_back("HLT_Photon20_HoverELoose");
   //trigs["2024"].push_back("HLT_Photon30_HoverELoose");

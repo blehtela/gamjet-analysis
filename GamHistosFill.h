@@ -50,6 +50,7 @@ public :
    bool            isRun2, isRun3;
    bool            isQCD;
    bool            isMG;
+   bool            isPTG; //flag for ptht-binned samples
    string          dataset;
    string	   puera;  //data era used for pu reweighting
    string          version;
@@ -598,7 +599,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 					ds=="winter2024P8c" ||
 					ds=="winter2024P8-test" ||
 					ds=="winter2024P8-v14" ||  //in use since 21.08.2024
-          ds=="2024P8" || ds=="2024QCD" || 
+          ds=="2024P8" || ds=="2024QCD" || ds=="summer2024P8" || ds=="summer2024P8-test" ||
 					ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" || 
 					ds=="2024QCD-v14"); //added these already, even though no summer MC for 2024 yet, use winter2024P8 right now.
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
@@ -612,7 +613,8 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
 					 ds=="winter2024P8" || ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || 
 					 ds=="2024QCD-v14" || ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||
-           ds=="2024P8");  //added already here
+           ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test");  //added already here
+  isPTG = (ds=="summer2024P8" || ds=="summer2024P8-test"); //pthtbinned samples (they are also isMG and is24)
   isRun3 = (is22 || is23 || is24);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24);
