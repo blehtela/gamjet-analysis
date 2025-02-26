@@ -102,7 +102,7 @@ void CalcGenWeight::Loop() {
 	outputfile.open(filename, fstream::app); //operations at end of file only (app = append)
 
 
-	outputfile << pthtbin << " " << summedGenWeight << "\n";
+	outputfile << pthtbin  << " " << nentries << " " << summedGenWeight << "\n"; //write bin, nevts, sumw to file
 
 	outputfile.close();
 } //end of CalcGenWeight::Loop()

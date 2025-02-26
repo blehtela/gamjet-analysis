@@ -9,22 +9,27 @@
 #include <fstream>
 #include <string>
 
-#define GPU
+//gROOT->ProcessLine(".L CalcGenWeight.C+g"); //used to be in mk_CondFormats.C (which i did not otherwise need here)
+
+//#define GPU
 //#define LOCAL
+#define LXPLUS
 
 
-gROOT->ProcessLine(".L CalcGenWeight.C+g"); //used to be in mk_CondFormats.C (which i did not otherwise need here)
+//gROOT->ProcessLine(".L CalcGenWeight.C+g"); //used to be in mk_CondFormats.C (which i did not otherwise need here)
 
 #ifdef LOCAL
+//#ifdef LXPLUS
+
 // Compile these libraries into *.so first with root -l -b -q mk_CondFormats.C
 // (works for 6.18.04?)
 //R__LOAD_LIBRARY(CalcGenWeight.C+g)
 // As in jetphys/mk2_histosFill.C:
 
 R__LOAD_LIBRARY(CalcGenWeight_C)
-#else
+#else //so also in case of lxplus
 // (works for 6.26/10)
-R__LOAD_LIBRARY(CalcGenWeight_C.so)
+R__LOAD_LIBRARY(CalcGenWeight_C.so) //what happens when commenting this out
 #endif
 
 
@@ -32,14 +37,14 @@ R__LOAD_LIBRARY(CalcGenWeight_C.so)
 void mk_CalcGenWeight(string pthtbin = "X") {
 
   // Settings
-  bool addBin = (pthtbin=="summer2024_PTG10to100-HT40to100" || pthtbin=="summer2024_PTG10to100-HT100to200" ||
-		pthtbin=="summer2024_PTG10to100-HT200to400" || pthtbin=="summer2024_PTG10to100-HT400to600" ||
-		pthtbin=="summer2024_PTG10to100-HT600to1000" || pthtbin=="summer2024_PTG10to100-HT1000toInf" ||
-		pthtbin=="summer2024_PTG100to200-HT40to200" || pthtbin=="summer2024_PTG100to200-HT200to400" || 
-		pthtbin=="summer2024_PTG100to200-HT400to600" || pthtbin=="summer2024_PTG100to200-HT600to1000" || 
-		pthtbin=="summer2024_PTG100to200-HT1000toInf" || pthtbin=="summer2024_PTG200toInf-HT40to400" || 
-		pthtbin=="summer2024_PTG200toInf-HT400to600" || pthtbin=="summer2024_PTG200toInf-HT600to1000" || 
-		pthtbin=="summer2024_PTG200toInf-HT1000toInf");
+  bool addBin = (pthtbin=="summer2024P8_PTG10to100-HT40to100" || pthtbin=="summer2024P8_PTG10to100-HT100to200" ||
+		pthtbin=="summer2024P8_PTG10to100-HT200to400" || pthtbin=="summer2024P8_PTG10to100-HT400to600" ||
+		pthtbin=="summer2024P8_PTG10to100-HT600to1000" || pthtbin=="summer2024P8_PTG10to100-HT1000toInf" ||
+		pthtbin=="summer2024P8_PTG100to200-HT40to200" || pthtbin=="summer2024P8_PTG100to200-HT200to400" || 
+		pthtbin=="summer2024P8_PTG100to200-HT400to600" || pthtbin=="summer2024P8_PTG100to200-HT600to1000" || 
+		pthtbin=="summer2024P8_PTG100to200-HT1000toInf" || pthtbin=="summer2024P8_PTG200toInf-HT40to400" || 
+		pthtbin=="summer2024P8_PTG200toInf-HT400to600" || pthtbin=="summer2024P8_PTG200toInf-HT600to1000" || 
+		pthtbin=="summer2024P8_PTG200toInf-HT1000toInf");
 
  //cout << "Clean old shared objects and link files" << endl << flush;
   //gSystem->Exec("rm *.d");
@@ -52,8 +57,9 @@ void mk_CalcGenWeight(string pthtbin = "X") {
   gSystem->AddIncludePath(Form("-I%s",path.c_str()));
   gSystem->AddIncludePath(Form("-I%s/CondFormats/JetMETObjects/interface",path.c_str()));
   */
-#ifdef GPU
-  // Compile these libraries into *.so first with root -l -b -q mk_CondFormats.C
+//#ifdef GPU
+#ifdef LXPLUS
+  // Compile these libraries into *.so first with root -l -b -q mk_GenWeightLibrary.C
   gROOT->ProcessLine(".L CalcGenWeight.C+g");
 #endif
 

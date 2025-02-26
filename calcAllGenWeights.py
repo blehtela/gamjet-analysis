@@ -20,9 +20,10 @@ os.system("root -l -b -q mk_GenWeightLibrary.C")
 
 for pthtbin in pthtbin_list:
     print("Process CalcGenWeight.C+g for bin: "+pthtbin)
-    os.system("ls -ltrh files/genweight_"+pthtbin+".txt")
-    os.system("ls -ltrh log_CalcGenWeight_"+pthtbin+"_"+ver+".txt")
-    os.system("root -l -b -q 'mk_CalcGenWeight.C(\""+pthtbin+"\")' > log_CalcGenWeight_"+pthtbin+"_"+ver+".txt &")
+    #os.system("ls -ltrh files/genweight_"+pthtbin+".txt")
+    #os.system("ls -ltrh log_CalcGenWeight_"+pthtbin+"_"+ver+".txt")
+    os.system("root -l -b -q 'mk_CalcGenWeight.C(\""+pthtbin+"\")' > log/log_CalcGenWeight_"+pthtbin+"_"+ver+".txt &")
+    #os.system("root -l -b -q 'mk_CalcGenWeight.C(\""+pthtbin+"\")' &")
 #    os.system("fs flush")
 #    wait()
 #    time.sleep(sleep_time)
