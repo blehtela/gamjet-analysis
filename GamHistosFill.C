@@ -612,7 +612,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024CR_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w27 and w28 (starting 03.06.24) and onwards
 	}
 	if (ds=="2024F" || ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || 
-          ds=="2024F-ECALCC-HCALDI-skim") { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33)
+          ds=="2024F-ECALCC-HCALDI-skim" || ds=="2024F-ECALCC-HCALDI-2ndrereco" ) { //for 2024 re-reco data, but also for 2024F and onwards (fixed in w33), added 2nd rereco (26.02.25)
       jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (starting 13.11.24) and onwards, V7M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w39 (starting 14.10.24) and onwards, V6M
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34 (starting 16.08.24) and onwards, V5M
@@ -702,7 +702,8 @@ void GamHistosFill::Loop()
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" || ds=="2024H" || ds=="2024I" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
   if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
-	ds=="2024Hskim" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024Iskim" || ds=="2024Iv1" || ds=="2024Iv2" || ds=="2024F-ECALCC-HCALDI-skim") sera = "2024";
+	ds=="2024Hskim" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024Iskim" || ds=="2024Iv1" || ds=="2024Iv2" || 
+	ds=="2024F-ECALCC-HCALDI-skim" || ds=="2024F-ECALCC-HCALDI-2ndrereco") sera = "2024";
   if (ds=="2024Bnib1" || ds=="2024Cnib1" || ds=="2024Dnib1" || ds=="2024Ev1nib1" || ds=="2024Ev2nib1" || 
       ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" || 
       ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
