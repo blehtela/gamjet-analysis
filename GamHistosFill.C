@@ -1316,8 +1316,8 @@ void GamHistosFill::Loop()
   fout->cd("jec4prompt");
   TH1D *hgampt = new TH1D("hgam_pt","Photon pT",nx,vx);
   TH1D *hrawjetpt = new TH1D("hrawjet_pt","rawjet pT",nx,vx);
-  TH1D *hgameta = new TH1D("hgam_pt","Photon pT",ny,vy);	//is this the desired eta-binning? or smaller?
-  TH1D *hrawjeteta = new TH1D("hrawjet_pt","rawjet pT",ny,vy);	//is this the desired eta-binning? or smaller?
+  TH1D *hgameta = new TH1D("hgam_eta","Photon eta",ny,vy);	//is this the desired eta-binning? or smaller?
+  TH1D *hrawjeteta = new TH1D("hrawjet_eta","rawjet eta",ny,vy);	//is this the desired eta-binning? or smaller?
   TProfile *pbalrawjetptgam = new TProfile("pbalrawjet_ptgam","BAL (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
   TProfile *pmpfrawjetptgam = new TProfile("pmpfrawjet_ptgam","MPF (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
 
