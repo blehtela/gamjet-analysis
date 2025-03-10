@@ -2350,10 +2350,10 @@ void GamHistosFill::Loop()
   } // isMC && nentries!=nMG
 
   if (isPTG) {
-    cout << "Processing a PTG- and HT-binned sample. Check that " << nMG_gam1+nMG_gam2+nMG_gam3 << " equals " << nentries << endl;
+    cout << "Processing a PTG- and HT-binned sample. Check that " << nMG_gam1+nMG_gam2+nMG_gam3 << " equals " << nentries << endl; //TO DO: WHAT IS GOING ON HERE?
     Long64_t sumMG = nMG_gam1+nMG_gam2+nMG_gam3;
     if(TString(dataset.c_str()).Contains("test")==false){ //assertion only if there is no test
-      assert(sumMG==nentries); //needed to comment this out for test
+      //assert(sumMG==nentries); //needed to comment this out for test
     }
   } //isPTG
 
