@@ -1310,6 +1310,18 @@ void GamHistosFill::Loop()
   const int nht = (isMG ? (isQCD ? nht_qcd : nht_gam) : 0);
   int nMG = (isMG ? (isQCD ? nMG_qcd : nMG_gam) : 0);
   const int wMG = (isMG ? (isQCD ? wMG_qcd : wMG_gam) : 0);
+
+  //jec4prompt checks
+  fout->mkdir("jec4prompt");
+  fout->cd("jec4prompt");
+  TH1D *hgampt = new TH1D("hgam_pt","Photon pT",nx,vx);
+  TH1D *hrawjetpt = new TH1D("hrawjet_pt","rawjet pT",nx,vx);
+  TH1D *hgameta = new TH1D("hgam_pt","Photon pT",ny,vy);	//is this the desired eta-binning? or smaller?
+  TH1D *hrawjeteta = new TH1D("hrawjet_pt","rawjet pT",ny,vy);	//is this the desired eta-binning? or smaller?
+  TProfile *pbalrawjetptgam = new TProfile("pbalrawjet_ptgam","BAL (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
+  TProfile *pmpfrawjetptgam = new TProfile("pmpfrawjet_ptgam","MPF (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
+
+
   
   // PF composition plots stored in a separate directory
   fout->mkdir("pf");
@@ -2871,7 +2883,7 @@ void GamHistosFill::Loop()
 	 (HLT_Photon20_HoverELoose      && pt>=20  && pt<30   && (itrg=20))
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 )) ||
-       // Updated menu in 2024 with high rate isolated triggers
+       // Updated menu in 2024 with high rate isolated triggers //NOTE: should we change thresholds here already? (account for turnon)
        (isRun3 && (is24) &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
@@ -3427,6 +3439,29 @@ void GamHistosFill::Loop()
      }
     }
 
+
+  //jec4prompt checks (JEC4Prompt)
+  if(pass_all){
+	//pT distribution for tag (i.e. photon)
+	hgampt->Fill(gam.Pt(), w); //could also use ptgam
+	
+	//raw pT distribution for probe (i.e. raw jet)
+	hrawjetpt->Fill(rawjet.Pt(), w);
+
+	//eta distribution for tag (photon)
+	hgameta->Fill(gam.Eta(), w);
+	
+	//raw eta distribution for probe (raw jet)
+	hrawjeteta->Fill(rawjet.Eta(), w);
+
+	//balance with raw jet pt
+	double rawbal = rawjet.Pt() / gam.Pt(); //could also use ptgam (identical)
+	pbalrawjetptgam->Fill(ptgam, rawbal, w);
+
+	//mpf with raw jet pt (use rawmet, check definition further above)
+	double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
+	pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
+  }//end jec4prompt (pass_all)
 
 
   // 1) Time controls for JES and PF composition; 2) etaphi maps (for jet veto) with response over eta and phi; 3) etaphi maps for rate (n jets)
