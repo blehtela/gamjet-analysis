@@ -584,7 +584,7 @@ void GamHistosFill::Loop()
   //mc2024
   if (ds=="winter2024P8" || ds=="summer2024P8" || //also for summer24 (w46)
       ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
-			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" ||
+			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" ||
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
@@ -709,7 +709,7 @@ void GamHistosFill::Loop()
       ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" || 
       ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
-			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
+			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
 
   // Load JSON files
@@ -928,7 +928,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("winter2024P8-test") || 
         TString(ds.c_str()).Contains("summer2024P8-test") ||
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
-        TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024.
+        TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024. //should cover also summer2024QCD, but will write explicity
+	TString(ds.c_str()).Contains("summer2024QCD") ||
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         //fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
 				//fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
@@ -3031,6 +3032,7 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
+			if(TString(dataset.c_str()).Contains("summer2024QCD")){ mctype="summer2024QCD";}
 
 			if(TString(dataset.c_str()).Contains("2023P8")){ mctype="2023P8";} //new, for y2023
 			if(TString(dataset.c_str()).Contains("2023QCD")){ mctype="2023QCD";}
@@ -4515,7 +4517,8 @@ void GamHistosFill::LoadPU(){
   trigs["winter2024P8-v14"].push_back("mc"); //photon mc
   trigs["winter2024P8-test"].push_back("mc"); //photon mc
   trigs["summer2024P8-test"].push_back("mc"); //photon mc
-  trigs["2024QCD"].push_back("mc"); //qcd mc
+  trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
+  trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
   //trigs["2024"].push_back("HLT_Photon20_HoverELoose");
   //trigs["2024"].push_back("HLT_Photon30_HoverELoose");
   //
