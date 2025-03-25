@@ -599,19 +599,19 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 					ds=="winter2024P8c" ||
 					ds=="winter2024P8-test" ||
 					ds=="winter2024P8-v14" ||  //in use since 21.08.2024
-          ds=="2024P8" || ds=="2024QCD" || ds=="summer2024P8" || ds=="summer2024P8-test" ||
+          ds=="2024P8" || ds=="2024QCD" || ds=="summer2024P8" || ds=="summer2024QCD" || ds=="summer2024P8-test" ||
 					ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" || 
 					ds=="2024QCD-v14"); //added these already, even though no summer MC for 2024 yet, use winter2024P8 right now.
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	   ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
            ds=="2023QCD" || ds=="2023QCD-BPix" || 
-           ds=="2024QCD" || ds=="2024QCD-v14" ||
-					 ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf"); //added 2024QCD already here
+           ds=="2024QCD" || ds=="2024QCD-v14" || ds=="summer2024QCD" ||
+	   ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf"); //added 2024QCD already here
   isMG = (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" || 
 					 ds=="2022P8" || ds=="2022EEP8" || 
 					 ds=="2022QCD" || ds=="2022EEQCD" || //added winter24 here, too.. checking
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
-					 ds=="winter2024P8" || ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || 
+					 ds=="winter2024P8" || ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" ||
 					 ds=="2024QCD-v14" || ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||
            ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test");  //added already here
   isPTG = (ds=="summer2024P8" || ds=="summer2024P8-test"); //pthtbinned samples (they are also isMG and is24)
