@@ -103,7 +103,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
                 dataset=="2023P8X" || dataset=="2023P8-BPixX"|| //for my test wX23
 		dataset=="2023P8" || //);// || dataset=="2023QCD");
   		dataset=="2023P8-BPix" || //added the BPix MC files
-  		dataset=="winter2024P8" || dataset=="winter2024P8-test" || 
+  		dataset=="winter2024P8" || dataset=="summer2024P8" || dataset=="winter2024P8-test" || dataset=="summer2024P8-test" || 
 			dataset=="winter2024P8-v14" || //winter 2024 madgraph p8 (added on 07.08.2024)
 			dataset=="winter2024P8a" || dataset=="winter2024P8b" || dataset=="winter2024P8c"); //winter 2024 madgraph p8 (added on 07.08.2024)
 

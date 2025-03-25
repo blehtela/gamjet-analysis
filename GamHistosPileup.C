@@ -8,12 +8,18 @@
 
 
 
-void GamHistosPileup(string dataset = "winter2024P8", string version = "w44") {
+void GamHistosPileup(string dataset = "summer2024P8", string version = "w48") { //moved default from winter2024P8 to summer2024P8
     TChain chain("Events");
 
 
     // 2024 MC (v14) files for Gamma+Jet
-		if(dataset=="winter2024P8"){
+    		if(dataset=="summer2024P8"){	//updated on 17.03.2025 to do summer24 reweighting
+			chain.Add("root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJets*PTG*.root"); //make sure it's the pt-binned one (ptg and ht, actually)
+		}
+		else if(dataset=="summer2024QCD"){
+			chain.Add("root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/QCD/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_QCD4JetsHT*.root");
+		}
+		else if(dataset=="winter2024P8"){
 			chain.Add("/eos/cms/store/group/phys_jetmet/rverma/cms-jerc-run3/Skim/15Nov2024/2024/GamJet/MC_2024_GamJet_G4Jets*V14*.root");
 		}
 		else if(dataset=="2024QCD"){
