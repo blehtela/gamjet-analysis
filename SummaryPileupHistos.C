@@ -7,13 +7,14 @@
 
 
 
-void SummaryPileupHistos(string ver = "w44") {
+void SummaryPileupHistos(string ver = "w48") {
     TChain chain("Events");
 
 		//list of data eras to be saved to summary file:
 		//string data_eras[] = {"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"}; //for eras in 2024
 		//string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nibs in 2024
-		string data_eras[] = {"2022C", "2022D", "2022E", "2022F", "2022G", "2023B", "2023Cv123", "2023Cv4", "2023D", "2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I"}; //for eras in 2024, 2023, 2022; did not use 24GH now
+		//string data_eras[] = {"2022C", "2022D", "2022E", "2022F", "2022G", "2023B", "2023Cv123", "2023Cv4", "2023D", "2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I"}; //for eras in 2024, 2023, 2022; did not use 24GH now
+		string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nib-based eras in 2024 (first time for w48)
 		const int neras = sizeof(data_eras)/sizeof(data_eras[0]); //.size();
 
 
@@ -33,7 +34,8 @@ void SummaryPileupHistos(string ver = "w44") {
 		//TFile *mfqcd = new TFile(Form("pileup/2024/pileup_2024QCD.root")); //2024QCD
 		string mc2022[] = {"2022P8", "2022EEP8", "2022QCD", "2022EEQCD"}; 		// mc for 2022 (both gamjet and qcd)
 		string mc2023[] = {"2023P8", "2023P8-BPix", "2023QCD", "2023QCD-BPix"};		// mc for 2023 (both gamjet and qcd)
-		string mc2024[] = {"winter2024P8", "2024QCD"};					// mc for 2024 (both gamjet and qcd)
+		//string mc2024[] = {"winter2024P8", "2024QCD"};					// mc for 2024 (both gamjet and qcd)
+		string mc2024[] = {"summer2024P8", "summer2024QCD"};
 
 		for(int i=0; i<neras; ++i){
 			//string mclist[];
@@ -104,6 +106,8 @@ void SummaryPileupHistos(string ver = "w44") {
 		//for the data distribution (just read the histo and save it into the new file)
 		//TFile *df = new TFile(Form("pileup/pileup-histos_2024_%s.root",version);
 		//histograms are called like this: MyDataPileupHistogram_2024G_photon50eb_w41.root
+		//
+		//adding one additional loop for handling both xs? - no just do it manually, cause that wont be a permanent thing
 
 		for(int i=0; i<neras; ++i){
 				for(int j=0; j<ntrigs; ++j){
@@ -115,8 +119,16 @@ void SummaryPileupHistos(string ver = "w44") {
 						//with year folder now
 						//string year = data_eras[i].c_str().substr(0,4);
 						string year = data_eras[i].substr(0,4);
+						/*
 						TFile *df = new TFile(Form("/eos/user/b/blehtela/pileup_%s/%s/MyDataPileupHistogram_%s_%s_%s.root", 
 										ver.c_str(), year.c_str(), data_eras[i].c_str(), ((year=="2024") ? "photon50eb":"photon50"), ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+						*/
+						string minbiasxs = "69200";
+						//string minbiasxs = "75300";
+						TFile *df = new TFile(Form("/eos/user/b/blehtela/pileup_%s/minbiasxs_%s/Mydatapileuphistogram_%s_%s_xs%s_%s.root", 
+								ver.c_str(), minbiasxs.c_str(), data_eras[i].c_str(), ((year=="2024") ? "photon50eb":"photon50"), minbiasxs.c_str() , ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+
+						//for example: /eos/user/b/blehtela/pileup_w48/minbiasxs_69200/Mydatapileuphistogram_2024Bnib1_photon50EB_xs69200_w48.root	
 
 						assert(df);
 
