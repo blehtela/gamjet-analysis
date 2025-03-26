@@ -4538,7 +4538,7 @@ void GamHistosFill::LoadPU(){
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
   //trigs[puera.c_str()].push_back("Photon50EB_TightID_TightIso"); // WORKAROUND --> NEED TO RENAME WHEN CREATIONG pu_summary_w41.root in the future (HLT missing from name)
-  trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); 
+  trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso");  // --> should actually work for everything (test before removing the following lines)
   trigs["2024B"].push_back("HLT_Photon50EB_TightID_TightIso");
   trigs["2024C"].push_back("HLT_Photon50EB_TightID_TightIso");
   trigs["2024D"].push_back("HLT_Photon50EB_TightID_TightIso");
@@ -4563,6 +4563,7 @@ void GamHistosFill::LoadPU(){
   trigs["2022E"].push_back("HLT_Photon50EB_TightID_TightIso");
   trigs["2022F"].push_back("HLT_Photon50EB_TightID_TightIso");
   trigs["2022G"].push_back("HLT_Photon50EB_TightID_TightIso");
+
  
 
   //trigs["2024"].push_back("HLT_Photon50_R9Id90_HE10_IsoM");
@@ -4578,7 +4579,11 @@ void GamHistosFill::LoadPU(){
 	//TFile *fpu = new TFile("pileup_mc_data2024E_w38.root", "READ"); //need to update this manually for now, together with new JSON
 	//TFile *fpu = new TFile("pileup_mc_data2024D_w38.root", "READ"); //need to update this manually for now, together with new JSON
   //TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras, ... does not work from subfolder?
-  TFile *fpu = new TFile("pileup/2024/pu_summary_w44.root", "READ"); //have them here for mc and all eras
+  //TFile *fpu = new TFile("pileup/2024/pu_summary_w44.root", "READ"); //have them here for mc and all eras
+  //TFile *fpu = new TFile("pileup/2024/pu_summary_xs69200_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 69200
+  TFile *fpu = new TFile("pileup/2024/pu_summary_xs75300_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 75300
+
+
 
 
 
