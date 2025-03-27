@@ -602,7 +602,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
-  if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
+  if (ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024E-rereco"){ //separated 24E corrections starting from V4M jecs
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
@@ -701,7 +701,8 @@ void GamHistosFill::Loop()
   if (ds=="2023Bnib1" || ds=="2023Cv123nib1" || ds=="2023Cv4nib1" || ds=="2023Cv4nib2" || ds=="2023Dnib1") sera = "2023"; //for nibs and fibs
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" || ds=="2024H" || ds=="2024I" ||
-			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI") sera = "2024";
+			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI" ||
+			ds=="2024E-rereco") sera = "2024";
   if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
 	ds=="2024Hskim" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024Iskim" || ds=="2024Iv1" || ds=="2024Iv2" || 
 	ds=="2024F-ECALCC-HCALDI-skim" || ds=="2024F-ECALCC-HCALDI-2ndrereco") sera = "2024";
@@ -897,7 +898,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
-				TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI") ||
+	TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI") ||
+	TString(ds.c_str()).Contains("2024E-rereco") ||
         TString(ds.c_str()).Contains("2024Bnib1") ||
         TString(ds.c_str()).Contains("2024Cnib1") ||
         TString(ds.c_str()).Contains("2024Dnib1") ||

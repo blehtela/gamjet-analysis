@@ -89,7 +89,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 			dataset=="2024G" || dataset=="2024Ga" || dataset=="2024Gb" || dataset=="2024Gc" || dataset=="2024Gd" || dataset=="2024Ge" || dataset=="2024Gtest" ||
 			dataset=="2024H" || dataset=="2024Hskim" || dataset=="2024Ha" || dataset=="2024Hb" || dataset=="2024Hc" || dataset=="2024Hd" || dataset=="2024He" || dataset=="2024Htest" ||
 			dataset=="2024I" || dataset=="2024Iskim" || dataset=="2024Iv1" || dataset=="2024Iv2" || dataset=="2024Itest" ||
-									dataset=="2024B-ECALRATIO" || dataset=="2024C-ECALRATIO" || dataset=="2024C-ECALR-HCALDI" || dataset=="2024C-ECALCC-HCALDI" ||
+		  dataset="2024E-rereco" ||
+		  dataset=="2024B-ECALRATIO" || dataset=="2024C-ECALRATIO" || dataset=="2024C-ECALR-HCALDI" || dataset=="2024C-ECALCC-HCALDI" ||
                   dataset=="2024B-PromptReco-v1" ||
       dataset=="2024Bnib1" || dataset=="2024Cnib1" || dataset=="2024Dnib1" || dataset=="2024Ev1nib1" || dataset=="2024Ev2nib1" || 
 			dataset=="2024Fnib1" || dataset=="2024Fnib2" || dataset=="2024Fnib3" || 
