@@ -521,7 +521,7 @@ void GamHistosFill::Loop()
 		 "Summer22EEPrompt22_Run2022G_V3_DATA_L2L3Residual_AK4PFPuppi");
   }
   //22/23 MC
-  if (ds=="2022P8" || ds=="2022QCD") {
+  if (ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022QCD") {
     jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI","");
   }
   if (ds=="2022EEP8" || ds=="2022EEQCD") {
@@ -602,7 +602,7 @@ void GamHistosFill::Loop()
     //jec = getFJC("", "Summer23BPixPrompt23_V1_MC_L2Relative_AK4PFPuppi", "Summer23BPixPrompt23_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //took the official ones from: (the one with V2 was an internal one from Mikko) --> should update also for 2023 stuff above (TO DO).
     //jec = getFJC("", "Summer23BPixRun3_V3_MC_L2Relative_AK4PUPPI", "Summer23Prompt23_Run2023D_V2_DATA_L2L3Residual_AK4PFPuppi"); //9th of Mar2024, w8 (fixed this...)
   }
-  if (ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024E-rereco"){ //separated 24E corrections starting from V4M jecs
+  if (ds=="2024Ev1" || ds=="2024Ev2"){ //separated 24E corrections starting from V4M jecs
 			jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V7M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V6M_DATA_L2L3Residual_AK4PFPuppi"); //w41 (was wrong BCD in w39...)
 		//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w34
@@ -661,7 +661,7 @@ void GamHistosFill::Loop()
   if (ds=="2024Gnib1") { 
 	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
-  if (ds=="2024Gnib2") { 
+  if (ds=="2024Gnib2" || ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
 	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Hnib1") {
@@ -678,7 +678,7 @@ void GamHistosFill::Loop()
   if (ds=="2016P8" || ds=="2016QCD") sera = "2016FGH";
   if (ds=="2017P8" || ds=="2017QCD") sera = "2017";
   if (ds=="2018P8" || ds=="2018QCD") sera = "2018";
-  if (ds=="2022P8" || ds=="2022QCD") sera = "2022";
+  if (ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022QCD") sera = "2022";
   if (ds=="2022EEP8" || ds=="2022EEQCD") sera = "2022EE";
   if (ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix") sera = "2023"; //added 2023P8-BPix
   //
@@ -691,7 +691,7 @@ void GamHistosFill::Loop()
       ds=="2018D"||ds=="2018D1"||ds=="2018D2"||ds=="2018D3"||ds=="2018D4")
     sera = "2018";
   //
-  if (ds=="2022P8" || ds=="2022QCD") sera = "2022";
+  if (ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022QCD") sera = "2022";
   if (ds=="2022EEP8" || ds=="2022EEQCD") sera = "2022EE";
   if (ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix") sera = "2023"; //added 2023P8-BPix
   if (ds=="2023P8X" || ds=="2023QCDX" || ds=="2023P8-BPixX" || ds=="2023QCD-BPixX") sera = "2023"; //added for w23X and w22X
@@ -702,7 +702,7 @@ void GamHistosFill::Loop()
   if (ds=="2023Cv123X" || ds=="2023Cv4X" || ds=="2023DX") sera = "2023";
   if (ds=="2024B-PromptReco-v1" || ds=="2024B" || ds=="2024C" || ds=="2024D" || ds=="2024Ev1" || ds=="2024Ev2" || ds=="2024F" || ds=="2024G" || ds=="2024Gtest" || ds=="2024H" || ds=="2024I" ||
 			ds=="2024B-ECALRATIO" || ds=="2024C-ECALRATIO" || ds=="2024C-ECALR-HCALDI" || "2024C-ECALCC-HCALDI" ||
-			ds=="2024E-rereco") sera = "2024";
+			ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") sera = "2024";
   if (ds=="2024Fa" || ds=="2024Fb" || ds=="2024Fc" || ds=="2024Fd" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" ||
 	ds=="2024Hskim" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024Iskim" || ds=="2024Iv1" || ds=="2024Iv2" || 
 	ds=="2024F-ECALCC-HCALDI-skim" || ds=="2024F-ECALCC-HCALDI-2ndrereco") sera = "2024";
@@ -866,6 +866,7 @@ void GamHistosFill::Loop()
     if (TString(ds.c_str()).Contains("2022C") || //also covers nib/fib version
 	TString(ds.c_str()).Contains("2022D") ||
 	TString(ds.c_str()).Contains("2022P8") ||
+	TString(ds.c_str()).Contains("2022P8-PTG") || //added on 01.04.25 (for ptg-binned samples investigations)
       	TString(ds.c_str()).Contains("2022QCD"))
       fjv = new TFile("files/jetveto2022CD.root","READ");
     if (TString(ds.c_str()).Contains("2022E") || // incl. EEP8 
@@ -899,6 +900,8 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
 	TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI") ||
+	TString(ds.c_str()).Contains("2024C-rereco") ||
+	TString(ds.c_str()).Contains("2024D-rereco") ||
 	TString(ds.c_str()).Contains("2024E-rereco") ||
         TString(ds.c_str()).Contains("2024Bnib1") ||
         TString(ds.c_str()).Contains("2024Cnib1") ||
@@ -3041,7 +3044,7 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("2023P8-BPix")){ mctype="2023P8-BPix";} //new, for y2023
 			if(TString(dataset.c_str()).Contains("2023QCD-BPix")){ mctype="2023QCD-BPix";}
 	
-			if(TString(dataset.c_str()).Contains("2022P8")){ mctype="2022P8";} //new, for y2022
+			if(TString(dataset.c_str()).Contains("2022P8")){ mctype="2022P8";} //new, for y2022 (only tested with HT-binned, not PTG-binned yet)
 			if(TString(dataset.c_str()).Contains("2022QCD")){ mctype="2022QCD";}
 			if(TString(dataset.c_str()).Contains("2022EEP8")){ mctype="2022EEP8";} //new, for y2022
 			if(TString(dataset.c_str()).Contains("2022EEQCD")){ mctype="2022EEQCD";}
@@ -4466,7 +4469,7 @@ void GamHistosFill::LoadPU(){
   trigs["2016APVP8"] = trigs["2017P8"] = trigs["2018P8"] = 
     trigs["2016QCD"] =  trigs["2016APVQCD"] = trigs["2017QCD"] =
     trigs["2018QCD"] = trigs["2018P8"] =
-    trigs["2022P8"] = trigs["2022EEP8"] =
+    trigs["2022P8"] = trigs["2022P8-PTG"] = trigs["2022EEP8"] =
     trigs["2022QCD"] = trigs["2022EEQCD"] =
     trigs["2016P8"];
 
@@ -4529,7 +4532,7 @@ void GamHistosFill::LoadPU(){
   trigs["2023P8-BPix"].push_back("mc"); //photon mc
   trigs["2023QCD-BPix"].push_back("mc"); //qcd mc
 
-  trigs["2022P8"].push_back("mc"); //photon mc
+  trigs["2022P8"].push_back("mc"); //photon mc //should be the same for the ptg-binned ones too?
   trigs["2022QCD"].push_back("mc"); //qcd mc
   trigs["2022EEP8"].push_back("mc"); //photon mc
   trigs["2022EEQCD"].push_back("mc"); //qcd mc

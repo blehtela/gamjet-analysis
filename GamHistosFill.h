@@ -575,7 +575,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	  ds=="2018ABCD" || ds=="2018P8" || ds=="2018QCD");
   is22 = (ds=="2022C" || ds=="2022D" || ds=="2022E" || ds=="2022F" || ds=="2022G" || 
 	  ds=="2022Cnib1" || ds=="2022Dnib1" || ds=="2022Enib1" || ds=="2022Fnib1" || ds=="2022Gnib1" || //nibs and fibs
-	  ds=="2022P8" || ds=="2022QCD" || ds=="2022EEP8" ||
+	  ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022QCD" || ds=="2022EEP8" ||
 	  ds=="2022EEQCD");
   //is22v10 = (ds=="2022F" || ds=="2022G" ||
   is22v10 = false;//(ds=="2022G");
@@ -589,7 +589,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 					ds=="2024G" || ds=="2024Ga" || ds=="2024Gb" || ds=="2024Gc" || ds=="2024Gd" || ds=="2024Ge" || ds=="2024Gtest" ||
 					ds=="2024H" || ds=="2024Hskim" || ds=="2024Ha" || ds=="2024Hb" || ds=="2024Hc" || ds=="2024Hd" || ds=="2024He" || ds=="2024Htest" ||
 					ds=="2024I" || ds=="2024Iskim" || ds=="2024Iv1" || ds=="2024Iv2" || ds=="2024Itest" ||
-					ds=="2024E-rereco" ||
+					ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco" ||
   					ds=="2024Bnib1" || ds=="2024Cnib1" || ds=="2024Dnib1" || ds=="2024Ev1nib1" || ds=="2024Ev2nib1" || 
 					ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3" ||
 					ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" ||
@@ -609,13 +609,13 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="2024QCD" || ds=="2024QCD-v14" || ds=="summer2024QCD" ||
 	   ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf"); //added 2024QCD already here
   isMG = (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" || 
-					 ds=="2022P8" || ds=="2022EEP8" || 
+					 ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022EEP8" || 
 					 ds=="2022QCD" || ds=="2022EEQCD" || //added winter24 here, too.. checking
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
 					 ds=="winter2024P8" || ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" ||
 					 ds=="2024QCD-v14" || ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||
            ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test");  //added already here
-  isPTG = (ds=="summer2024P8" || ds=="summer2024P8-test"); //pthtbinned samples (they are also isMG and is24)
+  isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test"); //pthtbinned samples (they are also isMG and is24)
   isRun3 = (is22 || is23 || is24);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24);
