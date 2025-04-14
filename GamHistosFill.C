@@ -585,6 +585,7 @@ void GamHistosFill::Loop()
   if (ds=="winter2024P8" || ds=="summer2024P8" || //also for summer24 (w46)
       ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" ||
+			TString(ds.c_str()).Contains("summer2024QCD") || //should cover summer2024QCD a,b,c,d,e,f,g,h,i (10 parts)
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
     jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
   }
@@ -710,7 +711,8 @@ void GamHistosFill::Loop()
       ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" || 
       ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
-			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
+			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
+			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   assert(sera!="");
 
   // Load JSON files
@@ -934,7 +936,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("summer2024P8-test") ||
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024. //should cover also summer2024QCD, but will write explicity
-	TString(ds.c_str()).Contains("summer2024QCD") ||
+	TString(ds.c_str()).Contains("summer2024QCD") || //covers also the 10 parts a-j
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         //fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
 				//fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
@@ -1007,7 +1009,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s.root",
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_05Apr2025.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -3037,7 +3039,7 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
-			if(TString(dataset.c_str()).Contains("summer2024QCD")){ mctype="summer2024QCD";}
+			if(TString(dataset.c_str()).Contains("summer2024QCD")){ mctype="summer2024QCD";} //covers also 10 parts a-j
 
 			if(TString(dataset.c_str()).Contains("2023P8")){ mctype="2023P8";} //new, for y2023
 			if(TString(dataset.c_str()).Contains("2023QCD")){ mctype="2023QCD";}
@@ -4524,6 +4526,19 @@ void GamHistosFill::LoadPU(){
   trigs["summer2024P8-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
   trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
+
+  //need to fix the following by some simple if condition when setting the eras.... for now like this
+  trigs["summer2024QCDa"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDb"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDc"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDd"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDe"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDf"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDg"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDh"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDi"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDj"].push_back("mc"); //qcd mc (summer)
+
   //trigs["2024"].push_back("HLT_Photon20_HoverELoose");
   //trigs["2024"].push_back("HLT_Photon30_HoverELoose");
   //
@@ -4586,7 +4601,9 @@ void GamHistosFill::LoadPU(){
   //TFile *fpu = new TFile("pileup/2024/pu_summary_w41.root", "READ"); //have them here for mc and all eras, ... does not work from subfolder?
   //TFile *fpu = new TFile("pileup/2024/pu_summary_w44.root", "READ"); //have them here for mc and all eras
   //TFile *fpu = new TFile("pileup/2024/pu_summary_xs69200_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 69200
-  TFile *fpu = new TFile("pileup/2024/pu_summary_xs75300_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 75300
+  //TFile *fpu = new TFile("pileup/2024/pu_summary_xs75300_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 75300
+  TFile *fpu = new TFile("pileup/2024/pu_summary_full2024_xs75300_w48.root", "READ"); //have them here for mc and full 2024CDEFGHI (w48); minbiasXS = 75300
+
 
 
 
@@ -4613,7 +4630,10 @@ void GamHistosFill::LoadPU(){
       //TFile *fdt(0); //not needed, have all pu histos in one file now
       TH1D *h(0); 		//store pu histo into this variable
       if (st=="mc") { //when working with mc set, called trigger "mc"
-				h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc?
+				//do it like:  string erabasename = iov.substr(0, iov.size()-4);
+				string erabasename = se.substr(0,se.size()-1);
+				h = (TH1D*)fpu->Get(Form("pileup_%s",erabasename.c_str()));
+				//h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc?
 				if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
 				assert(h);
       }
