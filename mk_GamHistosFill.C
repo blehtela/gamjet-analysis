@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w48") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w49") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -119,8 +119,9 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 		 dataset=="2024QCD" || dataset=="2024QCD-v14" || //); //added BPix QCD MC
 		dataset=="2024QCDa" || dataset=="2024QCDb" || dataset=="2024QCDc" || dataset=="2024QCDd" || 
 		dataset=="2024QCDe" || dataset=="2024QCDf" || //these do use v14 puppi despite not in name here
-		dataset=="summer2024QCD"); //added 25.03.2025 (w48)
-
+		dataset=="summer2024QCD" || //); //added 25.03.2025 (w48)
+		dataset=="summer2024QCDa" || dataset=="summer2024QCDb" || dataset=="summer2024QCDc" || dataset=="summer2024QCDd" || dataset=="summer2024QCDe" || 
+		dataset=="summer2024QCDf" || dataset=="summer2024QCDg" || dataset=="summer2024QCDh" || dataset=="summer2024QCDi" || dataset=="summer2024QCDj"); //added 02.04.2025 (w48) to run in parts...
 
   //cout << "Clean old shared objects and link files" << endl << flush;
   //gSystem->Exec("rm *.d");
