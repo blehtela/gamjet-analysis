@@ -1489,6 +1489,10 @@ void GamHistosFill::Loop()
   TProfile *pr50efb_nef_nocorr = new TProfile("pr50efb_nef_nocorr","p_{T,rawj} #cdot NEF / p_{T,#gamma} (no corr);Run;EFB NEF (no corr);",histnx,xmin,xmax);
   TProfile *pr50efb_nef_nol2l3res = new TProfile("pr50efb_nef_nol2l3res","p_{T,rawj} #cdot NEF / p_{T,#gamma} (no l2l3res);Run;EFB NEF (no corr);",histnx,xmin,xmax);
   */
+  
+  //time evolution of full JEC and L2L3Res (storing 1./corr and 1./l2l3res per run) for leading jet with Photon50EB trigger
+  TProfile *pr50jes = new TProfile("pr50jes","inverse of full JEC (Photon50EB);Run; 1/corr;",histnx,xmin,xmax);
+  TProfile *pr50res = new TProfile("pr50res","inverse of L2L3Residual (Photon50EB);Run;1/l2l3res;",histnx,xmin,xmax);
 
 
   // - - - - - - - high jet eta investigations - - - - - - - - //
@@ -3194,7 +3198,7 @@ void GamHistosFill::Loop()
             jet = jeti;
             djes = Jet_deltaJES[i];
             jes = (1.-Jet_rawFactor[i]);
-            res = (1.-Jet_resFactor[i]); //note (14.04.2025): i think this variable is not used anywhere, is it?
+            res = (1.-Jet_resFactor[i]); //note (14.04.2025): i think this variable is not used anywhere, is it? - i use it now myself.
         }
 	      else { // Subleading jets 
 	        jetn += jeti;
@@ -3602,10 +3606,15 @@ void GamHistosFill::Loop()
       pr50efb_nhf->Fill(run, rawjet.Pt()*Jet_neHEF[iJet]*(1./gam.Pt()), w); //neutral hadron energy fraction
       pr50efb_nef->Fill(run, rawjet.Pt()*Jet_neEmEF[iJet]*(1./gam.Pt()), w); //neutral electromagnetic energy fraction
 
+      //JEC time evolution
+      pr50jes->Fill(run, jes, w);
+      pr50res->Fill(run, res, w);
+
+      /* ----------- TO DO!! ----------------
       //MPF and composition without corrections (over run number)
-    //mpf with raw jet pt (use rawmet, check definition further above)
-    double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
-    pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
+      //mpf with raw jet pt (use rawmet, check definition further above)
+      double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
+      pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
       mpf = 1 + met.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
  
  
@@ -3613,7 +3622,7 @@ void GamHistosFill::Loop()
       double mpf_nol2l3res = 1;
       pr50m_nocorr->Fill();
       pr50m_nol2l3res->Fill();
-
+      */
 
       //for later!
       /*
