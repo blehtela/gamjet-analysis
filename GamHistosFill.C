@@ -1456,21 +1456,21 @@ void GamHistosFill::Loop()
   TProfile *pr110chf = new TProfile("pr110chf",";Run;CHF;",histnx,xmin,xmax);
   TProfile *pr230chf = new TProfile("pr230chf",";Run;CHF;",histnx,xmin,xmax);
   TProfile *prg1chf = new TProfile("prg1chf",";Run;CHF;",histnx,xmin,xmax);
-  TProfile *pr50efb_chf = new TProfile("pr50efb_chf","p_{T,rawj} #cdot CHF / p_{T,#gamma};Run;EFB CHF;",histnx,xmin,xmax);
+  TProfile *pr50efb_chf = new TProfile("pr50efb_chf","CHF #times p_{T,rawj} / p_{T,#gamma};Run;EFB CHF;",histnx,xmin,xmax);
   //
   TProfile *pr30nhf = new TProfile("pr30nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr50nhf = new TProfile("pr50nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr110nhf = new TProfile("pr110nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr230nhf = new TProfile("pr230nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *prg1nhf = new TProfile("prg1nhf",";Run;NHF;",histnx,xmin,xmax);
-  TProfile *pr50efb_nhf = new TProfile("pr50efb_nhf","p_{T,rawj} #cdot NHF / p_{T,#gamma};Run;EFB NHF;",histnx,xmin,xmax);
+  TProfile *pr50efb_nhf = new TProfile("pr50efb_nhf","NHF #times p_{T,rawj} / p_{T,#gamma};Run;EFB NHF;",histnx,xmin,xmax);
   //
   TProfile *pr30nef = new TProfile("pr30nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr50nef = new TProfile("pr50nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",histnx,xmin,xmax);
-  TProfile *pr50efb_nef = new TProfile("pr50efb_nef","p_{T,rawj} #cdot NEF / p_{T,#gamma};Run;EFB NEF;",histnx,xmin,xmax);
+  TProfile *pr50efb_nef = new TProfile("pr50efb_nef","NEF #times p_{T,rawj} / p_{T,#gamma};Run;EFB NEF;",histnx,xmin,xmax);
 
   //time stability of PF composition before corrections (added: 14.04.2025, implement later!)
   /*
