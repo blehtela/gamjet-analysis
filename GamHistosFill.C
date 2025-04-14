@@ -1445,6 +1445,10 @@ void GamHistosFill::Loop()
   TProfile *pr50m_eta08hi = new TProfile("pr50m_eta08hi",";Run;MPF (#eta_{#gamma}>0.8);",histnx,xmin,xmax);
   TProfile *pr50m_eta08lo = new TProfile("pr50m_eta08lo",";Run;MPF(#eta_{#gamma}<0.8);",histnx,xmin,xmax);
 
+  //time stability of MPF before corrections (added: 14.04.2025)
+  TProfile *pr50m_nocorr = new TProfile("pr50m_nocorr","MPF (corr undone);Run;MPF (no corr);",histnx,xmin,xmax); //no correction applied (i.e. all corr undone)
+  TProfile *pr50m_nol2l3res = new TProfile("pr50m_nol2l3res","MPF (l2l3res undone);Run;MPF (no l2l3res);",histnx,xmin,xmax); //no l2l3ers applied (i.e. l2l3res undone)
+
 
   // Time stability of PF composition
   TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",histnx,xmin,xmax);
@@ -1467,6 +1471,24 @@ void GamHistosFill::Loop()
   TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *prg1nef = new TProfile("prg1nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr50efb_nef = new TProfile("pr50efb_nef","p_{T,rawj} #cdot NEF / p_{T,#gamma};Run;EFB NEF;",histnx,xmin,xmax);
+
+  //time stability of PF composition before corrections (added: 14.04.2025, implement later!)
+  /*
+  TProfile *pr50chf_nocorr = new TProfile("pr50chf_nocorr",";Run;CHF (no corr);",histnx,xmin,xmax);
+  TProfile *pr50chf_nol2l3res = new TProfile("pr50chf_nol2l3res",";Run;CHF (no l2l3res);",histnx,xmin,xmax);
+  TProfile *pr50efb_chf_nocorr = new TProfile("pr50efb_chf_nocorr","p_{T,rawj} #cdot CHF / p_{T,#gamma} (no corr);Run;EFB CHF (no corr);",histnx,xmin,xmax);
+  TProfile *pr50efb_chf_nol2l3res = new TProfile("pr50efb_chf_nol2l3res","p_{T,rawj} #cdot CHF / p_{T,#gamma} (no l2l3res);Run;EFB CHF (no corr);",histnx,xmin,xmax);
+  //
+  TProfile *pr50nhf_nocorr = new TProfile("pr50nhf_nocorr",";Run;NHF (no corr);",histnx,xmin,xmax);
+  TProfile *pr50nhf_nol2l3res = new TProfile("pr50nhf_nol2l3res",";Run;NHF (no l2l3res);",histnx,xmin,xmax);
+  TProfile *pr50efb_nhf_nocorr = new TProfile("pr50efb_nhf_nocorr","p_{T,rawj} #cdot NHF / p_{T,#gamma} (no corr);Run;EFB NHF (no corr);",histnx,xmin,xmax);
+  TProfile *pr50efb_nhf_nol2l3res = new TProfile("pr50efb_nhf_nol2l3res","p_{T,rawj} #cdot NHF / p_{T,#gamma} (no l2l3res);Run;EFB NHF (no corr);",histnx,xmin,xmax);
+  //
+  TProfile *pr50nef_nocorr = new TProfile("pr50nef_nocorr",";Run;NEF (no corr);",histnx,xmin,xmax);
+  TProfile *pr50nef_nol2l3res = new TProfile("pr50nef_nol2l3res",";Run;NEF (no l2l3res);",histnx,xmin,xmax);
+  TProfile *pr50efb_nef_nocorr = new TProfile("pr50efb_nef_nocorr","p_{T,rawj} #cdot NEF / p_{T,#gamma} (no corr);Run;EFB NEF (no corr);",histnx,xmin,xmax);
+  TProfile *pr50efb_nef_nol2l3res = new TProfile("pr50efb_nef_nol2l3res","p_{T,rawj} #cdot NEF / p_{T,#gamma} (no l2l3res);Run;EFB NEF (no corr);",histnx,xmin,xmax);
+  */
 
 
   // - - - - - - - high jet eta investigations - - - - - - - - //
@@ -3131,57 +3153,56 @@ void GamHistosFill::Loop()
       // Redo JEC on the fly (should be no previous use of corrected jets)
       if (jec!=0) {
 	
-	double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i]);
-	double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
-	jec->setJetPt(rawJetPt);
-	jec->setJetEta(Jet_eta[i]);
-	jec->setJetPhi(Jet_phi[i]); //added this line to make BPix work (should be marked as w3)
-	if (isRun2) {
-	  jec->setJetA(Jet_area[i]);
-	  jec->setRho(fixedGridRhoFastjetAll);
-	}
-	//double corr = jec->getCorrection();
-	vector<float> v = jec->getSubCorrections(); //vector contains l1, l1*l2 etc
-	double corr = v.back(); //last correction (i.e. all corr applied)
-	double l2l3rescorr = (v.size()>1 ? v[v.size()-1]/v[v.size()-2] : 1.);
-  //double jes = corr;
+        double rawJetPt = Jet_pt[i] * (1.0 - Jet_rawFactor[i]);
+        double rawJetMass = Jet_mass[i] * (1.0 - Jet_rawFactor[i]);
+        jec->setJetPt(rawJetPt);
+        jec->setJetEta(Jet_eta[i]);
+        jec->setJetPhi(Jet_phi[i]); //added this line to make BPix work (should be marked as w3)
+	      if (isRun2) {
+	        jec->setJetA(Jet_area[i]);
+	        jec->setRho(fixedGridRhoFastjetAll);
+	      }
+        //double corr = jec->getCorrection();
+        vector<float> v = jec->getSubCorrections(); //vector contains l1, l1*l2 etc
+        double corr = v.back(); //last correction (i.e. all corr applied)
+        double l2l3rescorr = (v.size()>1 ? v[v.size()-1]/v[v.size()-2] : 1.);
+        //double jes = corr;
 
-	//Jet_RES[i] = 1./res;
-	Jet_deltaJES[i] = (1./corr) / (1.0 - Jet_rawFactor[i]);
-	Jet_pt[i] = corr * rawJetPt;
-	Jet_mass[i] = corr * rawJetMass;
-	Jet_rawFactor[i] = (1.0 - 1.0/corr);
-	Jet_resFactor[i] = (1.0 - 1.0/l2l3rescorr);
+        //Jet_RES[i] = 1./res;
+        Jet_deltaJES[i] = (1./corr) / (1.0 - Jet_rawFactor[i]);
+        Jet_pt[i] = corr * rawJetPt;
+        Jet_mass[i] = corr * rawJetMass;
+        Jet_rawFactor[i] = (1.0 - 1.0/corr);
+        Jet_resFactor[i] = (1.0 - 1.0/l2l3rescorr);
       }
 
       // Smear jets
       if (smearJets) {
-	assert(false);
+	      assert(false);
       }
       
       // Check that jet is not photon and pTcorr>15 GeV
-      if (Jet_pt[i]>15 && (iGam==-1 || i != Photon_jetIdx[iGam]) &&
-	  (!isQCD || i != iFox)) {
+      if (Jet_pt[i]>15 && (iGam==-1 || i != Photon_jetIdx[iGam]) && (!isQCD || i != iFox)) {
 	
-	//++nJets;
-	jeti.SetPtEtaPhiM(Jet_pt[i], Jet_eta[i], Jet_phi[i], Jet_mass[i]);
- 	if (gam.DeltaR(jeti)<0.2) continue; // should not happen, but does?
-	++nJets;
+        //++nJets;
+        jeti.SetPtEtaPhiM(Jet_pt[i], Jet_eta[i], Jet_phi[i], Jet_mass[i]);
+        if (gam.DeltaR(jeti)<0.2) continue; // should not happen, but does?
+        ++nJets;
 
-	if (iJet==-1) { // Leading jet for balance
-	  iJet = i;
-	  jet = jeti;
-	  djes = Jet_deltaJES[i];
-	  jes = (1.-Jet_rawFactor[i]);
-	  res = (1.-Jet_resFactor[i]);
-	}
-	else { // Subleading jets 
-	  jetn += jeti;
-	  if (iJet2==-1) { // First subleading jet for alpha
-	    iJet2 = i;
-	    jet2 = jeti;
-	  }
-	}
+        if (iJet==-1) { // Leading jet for balance
+            iJet = i;
+            jet = jeti;
+            djes = Jet_deltaJES[i];
+            jes = (1.-Jet_rawFactor[i]);
+            res = (1.-Jet_resFactor[i]); //note (14.04.2025): i think this variable is not used anywhere, is it?
+        }
+	      else { // Subleading jets 
+	        jetn += jeti;
+	        if (iJet2==-1) { // First subleading jet for alpha
+            iJet2 = i;
+            jet2 = jeti;
+          }
+	      }
 	
 	// Calculate L1RC correction
 	rawjet = (1-Jet_rawFactor[i]) * jeti;
@@ -3527,31 +3548,31 @@ void GamHistosFill::Loop()
         if(iGam!=-1 && Photon_seedGain[iGam]==1){ h200n_gain1->Fill(gam.Eta(),w); } //w=1 for data..
         if(iGam!=-1 && Photon_seedGain[iGam]==6){ h200n_gain6->Fill(gam.Eta(),w); }
         if(iGam!=-1 && Photon_seedGain[iGam]==12){ h200n_gain12->Fill(gam.Eta(),w); }
-     }
     }
+  }
 
 
   //jec4prompt checks (JEC4Prompt)
   if(pass_all){
-	//pT distribution for tag (i.e. photon)
-	hgampt->Fill(gam.Pt(), w); //could also use ptgam
-	
-	//raw pT distribution for probe (i.e. raw jet)
-	hrawjetpt->Fill(rawjet.Pt(), w);
+    //pT distribution for tag (i.e. photon)
+    hgampt->Fill(gam.Pt(), w); //could also use ptgam
+    
+    //raw pT distribution for probe (i.e. raw jet)
+    hrawjetpt->Fill(rawjet.Pt(), w);
 
-	//eta distribution for tag (photon)
-	hgameta->Fill(gam.Eta(), w);
-	
-	//raw eta distribution for probe (raw jet)
-	hrawjeteta->Fill(rawjet.Eta(), w);
+    //eta distribution for tag (photon)
+    hgameta->Fill(gam.Eta(), w);
+    
+    //raw eta distribution for probe (raw jet)
+    hrawjeteta->Fill(rawjet.Eta(), w);
 
-	//balance with raw jet pt
-	double rawbal = rawjet.Pt() / gam.Pt(); //could also use ptgam (identical)
-	pbalrawjetptgam->Fill(ptgam, rawbal, w);
+    //balance with raw jet pt
+    double rawbal = rawjet.Pt() / gam.Pt(); //could also use ptgam (identical)
+    pbalrawjetptgam->Fill(ptgam, rawbal, w);
 
-	//mpf with raw jet pt (use rawmet, check definition further above)
-	double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
-	pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
+    //mpf with raw jet pt (use rawmet, check definition further above)
+    double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
+    pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
   }//end jec4prompt (pass_all)
 
 
@@ -3580,6 +3601,37 @@ void GamHistosFill::Loop()
       pr50efb_chf->Fill(run, rawjet.Pt()*Jet_chHEF[iJet]*(1./gam.Pt()), w); //charged hadron energy fraction
       pr50efb_nhf->Fill(run, rawjet.Pt()*Jet_neHEF[iJet]*(1./gam.Pt()), w); //neutral hadron energy fraction
       pr50efb_nef->Fill(run, rawjet.Pt()*Jet_neEmEF[iJet]*(1./gam.Pt()), w); //neutral electromagnetic energy fraction
+
+      //MPF and composition without corrections (over run number)
+    //mpf with raw jet pt (use rawmet, check definition further above)
+    double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
+    pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
+      mpf = 1 + met.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
+ 
+ 
+      double mpf_nocorr = 1;
+      double mpf_nol2l3res = 1;
+      pr50m_nocorr->Fill();
+      pr50m_nol2l3res->Fill();
+
+
+      //for later!
+      /*
+      pr50chf_nocorr->Fill();
+      pr50nhf_nocorr->Fill();
+      pr50nef_nocorr->Fill();
+
+      //same for EBF without corrections
+      double efb_chf_nocorr = 1;
+      double efb_nhf_nocorr = 1;
+      double efb_nef_nocorr = 1;
+      double efb_chf_nol2l3res = 1;
+      double efb_nhf_nol2l3res = 1;
+      double efb_nef_nol2l3res = 1;
+      */
+
+
+
 
 
     if(abs(gam.Eta())>0.8){
