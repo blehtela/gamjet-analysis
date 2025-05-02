@@ -1009,7 +1009,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_05Apr2025.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_02May2025.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -4673,7 +4673,10 @@ void GamHistosFill::LoadPU(){
   //TFile *fpu = new TFile("pileup/2024/pu_summary_w44.root", "READ"); //have them here for mc and all eras
   //TFile *fpu = new TFile("pileup/2024/pu_summary_xs69200_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 69200
   //TFile *fpu = new TFile("pileup/2024/pu_summary_xs75300_w48.root", "READ"); //have them here for mc and all eras (w48); minbiasXS = 75300
-  TFile *fpu = new TFile("pileup/2024/pu_summary_full2024_xs75300_w48.root", "READ"); //have them here for mc and full 2024CDEFGHI (w48); minbiasXS = 75300
+  //
+  //TFile *fpu = new TFile("pileup/2024/pu_summary_full2024_xs75300_w48.root", "READ"); //have them here for mc and full 2024CDEFGHI (w48); minbiasXS = 75300 (01.04.2025?)
+  TFile *fpu = new TFile("pileup/2024/pu_summary_full2024_xs69200_w48.root", "READ"); //have them here for mc and full 2024CDEFGHI (w48); minbiasXS = 69200 (02.05.2025)
+
 
 
 
