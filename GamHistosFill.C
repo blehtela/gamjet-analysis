@@ -4705,10 +4705,12 @@ void GamHistosFill::LoadPU(){
       TH1D *h(0); 		//store pu histo into this variable
       if (st=="mc") { //when working with mc set, called trigger "mc"
 				//do it like:  string erabasename = iov.substr(0, iov.size()-4);
-				string erabasename = se.substr(0,se.size()-1);
-				h = (TH1D*)fpu->Get(Form("pileup_%s",erabasename.c_str()));
-				//h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc?
+				string erabasename = se.substr(0,se.size()-1); //why -1 here?
+				///h = (TH1D*)fpu->Get(Form("pileup_%s",erabasename.c_str())); //COMMENTED OUT ON 02.05. due to bug of removing last char (see line above)
+				h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc?
 				if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
+				///if (!h) cout << "Failed to find pileup_"<<erabasename.c_str()<<endl<<flush; //remove this again (2.5.)
+
 				assert(h);
       }
       else { //data pu histograms now stored in same file as mc pu histos (here: fpu)
