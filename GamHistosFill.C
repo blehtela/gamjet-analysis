@@ -89,6 +89,9 @@ public:
   TH2D *h2pteta;
   TProfile2D *p2res, *p2corr, *p2m0, *p2m2, *p2mn, *p2mu;
   TProfile2D *p2m0x, *p2m2x;
+  TProfile2D *p2m0sym, *p2m0xsym; //added 14.05.2025 for investigation of response
+
+
 
   // Extra for FSR studies
   TProfile2D *p2mnu, *p2mnx, *p2mux, *p2mnux;
@@ -1013,6 +1016,9 @@ void GamHistosFill::Loop()
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
+
+  //to do (w50): add the string with pu- only for pu reweighted case, do for this %s = (puera.c_str()!="") ? Form("_pu-%s",puera.c_str()) : "", 
+
   assert(fout && !fout->IsZombie());
   
   // Original gamma+jet binning
@@ -1039,7 +1045,7 @@ void GamHistosFill::Loop()
 		 2.650, 2.853, 2.964, 3.139, 3.489, 3.839, 5.191};
 
 
-	//TO DO: etabinning (barrel only) also to neg. values, used for 2Dprofiles checking gain 1/6/12
+  //TO DO: etabinning (barrel only) also to neg. values, used for 2Dprofiles checking gain 1/6/12
   double veta[] = {-1.653, -1.566, -1.479, -1.392, -1.305, -1.218, -1.131, -1.044, -0.957, -0.879, 
 					-0.783, -0.696, -0.609, -0.522, -0.435, -0.348, -0.261, -0.174, -0.087, 
 					0, 0.087, 0.174, 0.261, 0.348, 0.435, 0.522, 0.609, 0.696, 0.783, 0.879, 
@@ -1047,6 +1053,25 @@ void GamHistosFill::Loop()
 
   const int ny = sizeof(vy)/sizeof(vy[0])-1;
   const int nveta = sizeof(veta)/sizeof(veta[0])-1;
+
+  //response binning (added 14.5.2025)
+  double vresp[] = {0.00, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20,
+			0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40,
+			0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.50, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.60,
+			0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.70, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.80,
+			0.81, 0.82, 0.83, 0.84, 0.85, 0.86, 0.87, 0.88, 0.89, 0.90, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1.00}
+			1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19, 1.20,
+			1.21, 1.22, 1.23, 1.24, 1.25, 1.26, 1.27, 1.28, 1.29, 1.30, 1.31, 1.32, 1.33, 1.34, 1.35, 1.36, 1.37, 1.38, 1.39, 1.40,
+			1.41, 1.42, 1.43, 1.44, 1.45, 1.46, 1.47, 1.48, 1.49, 1.50, 1.51, 1.52, 1.53, 1.54, 1.55, 1.56, 1.57, 1.58, 1.59, 1.60,
+			1.61, 1.62, 1.63, 1.64, 1.65, 1.66, 1.67, 1.68, 1.69, 1.70, 1.71, 1.72, 1.73, 1.74, 1.75, 1.76, 1.77, 1.78, 1.79, 1.80,
+			1.81, 1.82, 1.83, 1.84, 1.85, 1.86, 1.87, 1.88, 1.89, 1.90, 1.91, 1.92, 1.93, 1.94, 1.95, 1.96, 1.97, 1.98, 1.99, 2.00,
+ 			2.01, 2.02, 2.03, 2.04, 2.05, 2.06, 2.07, 2.08, 2.09, 2.10, 2.11, 2.12, 2.13, 2.14, 2.15, 2.16, 2.17, 2.18, 2.19, 2.20,
+			2.21, 2.22, 2.23, 2.24, 2.25, 2.26, 2.27, 2.28, 2.29, 2.30, 2.31, 2.32, 2.33, 2.34, 2.35, 2.36, 2.37, 2.38, 2.39, 2.40,
+			2.41, 2.42, 2.43, 2.44, 2.45, 2.46, 2.47, 2.48, 2.49, 2.50, 2.51, 2.52, 2.53, 2.54, 2.55, 2.56, 2.57, 2.58, 2.59, 2.60}
+
+  const int nresp = sizeof(vresp)/sizeof(vresp[0])-1;
+
+
 
 
   string dir = (isMC ? "MC" : "DATA");
@@ -1649,6 +1674,20 @@ void GamHistosFill::Loop()
   TH2D *h2r9vspt = new TH2D("h2r9vspt","",nx,vx,150,0.90,1.05);
   TProfile *pr9vspt = new TProfile("pr9vspt","",nx,vx);
 
+  //for investigating fake photons, some photon variables (added on 14th of May 2025)
+  fout->mkdir("photon");
+  fout->cd("photon");
+  TProfile *p_r9_vspt = new TProfile("p_r9_vspt","",nx,vx); 		//14.05.2025, moved this to own folder for fake photon stuff
+  TProfile *p_sieie_vspt = new TProfile("p_sieie_vspt","",nx,vx);	//added 14.05.2025 sigma ieta ieta
+  TProfile *p_pfchargediso_vspt = new TProfile("p_pfchargediso_vspt","",nx,vx); //added 14.05.2025 photon isolation PF absolute isolation dR=0.3, charged component
+  //ny and vy for eta like L2L3Res etabinning; nx and vx are for pt; 
+  TH3D *h3_mpf_vspteta = new TH3D("h3_mpf_vspteta", ";#eta;p_T (GeV);MPF",neta,bineta,nx,vx,nresp,vresp); 	//response (MPF) distribution so just counts in eta/pt/mpf
+  TH3D *h3_db_vspteta = new TH3D("h3_db_vspteta", ";#eta;p_T (GeV);DB",neta,bineta,nx,vx,nresp,vresp); 		//response (DB) distribution
+  TH3D *h3_mpfx_vspteta = new TH3D("h3_mpfx_vspteta", ";#eta;p_T (GeV);MPFX",neta,bineta,nx,vx,nresp,vresp); 	//response (MPFX) distr., so N (counts) in eta/pt/mpf
+
+
+
+
 
   //more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
   fout->mkdir("pileup");
@@ -2149,6 +2188,14 @@ void GamHistosFill::Loop()
 			      "MPF0X (MPFX)",nxd,vxd, nptd, vptd, "S");
     h->p2m2x = new TProfile2D("p2m2x",";#eta;p_{T,avp} (GeV);"
 			      "MPF2X (DBX)",nxd,vxd, nptd, vptd, "S");
+
+    // Extra investigations of response, symmetric histos (14.05.2025)
+    h->p2m0sym = new TProfile2D("p2m0sym",";#eta;p_{T,avp} (GeV);"
+			      "MPF0SYM (MPFSYM)",nxd,vxd, nptd, vptd, "S");
+    h->p2m0xsym = new TProfile2D("p2m0xsym",";#eta;p_{T,avp} (GeV);"
+			      "MPF0XSYM (MPFXSYM)",nxd,vxd, nptd, vptd, "S");
+ 
+ 
 
     // Extra for FSR studies
     h->p2mnu = new TProfile2D("p2mnu",";#eta;p_{T,avp} (GeV);MPFnu",
@@ -3285,13 +3332,22 @@ void GamHistosFill::Loop()
     if (ptgam>0) {
       bal = ptjet / ptgam;
       mpf = 1 + met.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
+
       mpf1 = 1 + met1.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
       mpfn = metn.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
       mpfu = metu.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
       mpfnu = metnu.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
       //
-      gamx.SetPtEtaPhiM(gam.Pt(),gam.Eta(),gam.Phi()+0.5*TMath::Pi(),0.);
+      gamx.SetPtEtaPhiM(gam.Pt(),gam.Eta(),gam.Phi()+0.5*TMath::Pi(),0.); //rename to gamx
+      gamxinv.SetPtEtaPhiM(gam.Pt(),gam.Eta(),gam.Phi()-0.5*TMath::Pi(),0.);  // flipping to other side
+      gaminv.SetPtEtaPhiM(gam.Pt(),gam.Eta(),gam.Phi()+TMath::Pi(),0.);  // like gam but flipping to other side
+      mpfinv = 1 + met.Vect().Dot(gaminv.Vect()) / (ptgam*ptgam);
+
+
       mpfx = 1 + met.Vect().Dot(gamx.Vect()) / (ptgam*ptgam);
+      mpfxinv = 1 + met.Vect().Dot(gamxinv.Vect()) / (ptgam*ptgam);
+ 
+
       mpf1x = 1 + met1.Vect().Dot(gamx.Vect()) / (ptgam*ptgam);
       mpfnx = metn.Vect().Dot(gamx.Vect()) / (ptgam*ptgam);
       mpfux = metu.Vect().Dot(gamx.Vect()) / (ptgam*ptgam);
@@ -4353,6 +4409,13 @@ void GamHistosFill::Loop()
 	  
 	  h->p2m0x->Fill(abseta, ptgam, mpfx, w);
 	  h->p2m2x->Fill(abseta, ptgam, mpf1x, w);
+
+	  //investigating mpf (May 2025)
+	  h->p2m0sym->Fill(abseta, ptgam, mpf, w);
+	  h->p2m0sym->Fill(abseta, ptgam, mpfinv, w);
+	  h->p2m0xsym->Fill(abseta, ptgam, mpfx, w);
+	  h->p2m0xsym->Fill(abseta, ptgam, mpfxinv, w);
+
 	  
 	  // Extras for FSR studies
 	  h->p2mnu->Fill(abseta, ptgam, mpfnu, w);
@@ -4360,7 +4423,7 @@ void GamHistosFill::Loop()
 	  h->p2mux->Fill(abseta, ptgam, mpfux, w);
 	  h->p2mnux->Fill(abseta, ptgam, mpfnux, w);
 
-		//from Mikko's modifications
+	  //from Mikko's modifications
 	  if (doPFComposition) {
 	    h->p2pt->Fill(abseta, ptgam, Jet_pt[iJet], w);
 	    h->p2rho->Fill(abseta, ptgam, fixedGridRhoFastjetAll, w);
