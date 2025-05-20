@@ -220,7 +220,7 @@ void GamHistosFill::Loop()
       if (!isMC) fChain->SetBranchStatus("HLT_Photon30",1);
       if (!isMC) fChain->SetBranchStatus("HLT_Photon36",1);
     }
-    if (is17 || is18 || is22 || is23 || is24) {
+    if (is17 || is18 || is22 || is23 || is24 || is25) {
       fChain->SetBranchStatus("HLT_Photon33",1);
       fChain->SetBranchStatus("HLT_Photon200",1);
     //fChain->SetBranchStatus("HLT_Photon500",1);
@@ -249,7 +249,7 @@ void GamHistosFill::Loop()
       fChain->SetBranchStatus("HLT_Photon110EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon100EBHE10",1);
     }
-    if (is24) { //new 2024 trigger paths
+    if (is24 || is25) { //new 2024 trigger paths
       fChain->SetBranchStatus("HLT_Photon50EB_TightID_TightIso",1);
       //fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon75EB_TightID_TightIso",1);
@@ -273,7 +273,7 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("HLT_Photon165_R9Id90_HE10_IsoM",1);
     
     // Triggers to recover 30-60 GeV range. Efficient above 30 GeV
-    if (is17 || is18 || is22 || is23 || is24) {
+    if (is17 || is18 || is22 || is23 || is24 || is25) {
       fChain->SetBranchStatus("HLT_Photon20_HoverELoose",1);
       fChain->SetBranchStatus("HLT_Photon30_HoverELoose",1);
     }
@@ -356,7 +356,7 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Photon_pt",1);
     fChain->SetBranchStatus("Photon_eta",1);
     fChain->SetBranchStatus("Photon_phi",1);
-    if (!(is22||is23||is24)) fChain->SetBranchStatus("Photon_mass",1);
+    if (!(is22||is23||is24||is25)) fChain->SetBranchStatus("Photon_mass",1);
     fChain->SetBranchStatus("Photon_hoe",1);
     if (is17 && isMC && isQCD)
       fChain->SetBranchStatus("Photon_cutBasedBitmap",1);
@@ -388,8 +388,8 @@ void GamHistosFill::Loop()
     //if (!isRun3) fChain->SetBranchStatus("Jet_chFPV0EF",1);
 
     //new: HF stuff (branches only available in 2024 onwards)
-    if (is24) fChain->SetBranchStatus("Jet_hfEmEF",1);    //electromagnetic Energy Fraction in HF
-    if (is24) fChain->SetBranchStatus("Jet_hfHEF",1);     //hadronic Energy Fraction in HF
+    if (is24 || is25) fChain->SetBranchStatus("Jet_hfEmEF",1);    //electromagnetic Energy Fraction in HF
+    if (is24 || is25) fChain->SetBranchStatus("Jet_hfHEF",1);     //hadronic Energy Fraction in HF
 
     if (isMC) fChain->SetBranchStatus("Jet_genJetIdx",1);
     
@@ -674,6 +674,13 @@ void GamHistosFill::Loop()
   if (ds=="2024Inib1") { 
 	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
+  //mc 2025
+  // TO BE ADDED. (winter2025)
+  //data 2025
+  if (ds=="2025B" || ds=="2025C"){
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w50 (use JECs we have, 20.05.2025)
+  }
+
   assert(jec);
 
   
@@ -716,6 +723,7 @@ void GamHistosFill::Loop()
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
+  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025C") sera = "2025"; //added on 20.05.2025 (w50)
   assert(sera!="");
 
   // Load JSON files
@@ -768,9 +776,9 @@ void GamHistosFill::Loop()
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386319_DCSRuns_378981to378985_386320to386795_.json"); //hybrid json --> w39 (15.10.2024)
 		//LoadJSON("files/CombinedJSONS_GoldenRuns_378985to386693_DCSRuns_378981to378985_386694to386951_.json"); //hybrid json --> w40 (25.10.2024)
 		LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json"); //golden json (all eras 2024)--> w41 and onwards (01.11.2024)
-
-
-
+  //for prompt data 2025
+  if (TString(ds.c_str()).Contains("2025"))
+    LoadJSON("files/Collisions25_13p6TeV_391658_392301_DCSOnly_TkPx.json"); //get daily json --> w50 (20.05.2025)
 
 //TO DO: update JSON
 
@@ -818,6 +826,12 @@ void GamHistosFill::Loop()
 	lumi50 = LoadLumi("files/lumi2024_golden_photon50eb_pb_w44.csv");
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w44.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
+  }
+  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025)
+  lumi30 = LoadLumi("files/lumi2025_20may2025_photon200_pb_w50.csv");
+  lumi50 = LoadLumi("files/lumi2025_20may2025_photon110eb_pb_w50.csv");
+  lumi110 = LoadLumi("files/lumi2025_20may2025_photon50eb_pb_w50.csv");
+  lumi200 = LoadLumi("files/lumi2025_20may2025_photon30eb_pb_w50.csv");
   }
 
 
@@ -939,11 +953,17 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("summer2024P8-test") ||
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024. //should cover also summer2024QCD, but will write explicity
-	TString(ds.c_str()).Contains("summer2024QCD") || //covers also the 10 parts a-j
+	      TString(ds.c_str()).Contains("summer2024QCD") || //covers also the 10 parts a-j
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         //fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
 				//fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
 				fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); //V7M: updated this last on 13.11. (for w41 and onwards), could remove extra if-conditions
+  }
+  //for 2025, first also use old vetomap from 2024 until we have new one
+  if (TString(ds.c_str()).Contains("2025")) {
+    if (TString(ds.c_str()).Contains("2025B") ||
+        TString(ds.c_str()).Contains("2025C"))
+        fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); // UPDATE THIS WHEN NEW ONE AVAILABLE
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
@@ -968,13 +988,14 @@ void GamHistosFill::Loop()
     h2jv = (TH2D*)fjv->Get("h2hot_ul18_plus_hem1516_and_hbp2m1");
   if (TString(ds.c_str()).Contains("2022") ||
       TString(ds.c_str()).Contains("2023") ||
-      TString(ds.c_str()).Contains("2024"))
+      TString(ds.c_str()).Contains("2024") ||
+      TString(ds.c_str()).Contains("2025"))
     h2jv = (TH2D*)fjv->Get("jetvetomap");
-  if (TString(ds.c_str()).Contains("2024"))
+  if (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025"))
     bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpix vetomap for all '24 stuff
   if (!h2jv) cout << "Jetvetomap histo not found for " << ds << endl << flush;
   assert(h2jv);
-  if (!bpixjv && TString(ds.c_str()).Contains("2024")){ //need extra bpix veto map only for 2024 data (for 2023 handled differntly via 2023D, see above)
+  if (!bpixjv && (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025")) ){ //need extra bpix veto map only for 2024 data (for 2023 handled differntly via 2023D, see above)
 		cout << "Jetvetomap for bpix not found for " << ds << endl << flush; //
   	assert(bpixjv);
 	}
@@ -1012,7 +1033,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_02May2025.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_20May2025.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -2553,19 +2574,19 @@ void GamHistosFill::Loop()
       // Only in (most of) 2018, and now some in 22-23
       if (b_HLT_Photon120EB_TightID_TightIso && is18) // not in 2016-17, 2018A
 	b_HLT_Photon120EB_TightID_TightIso->GetEntry(ientry);
-      if (b_HLT_Photon110EB_TightID_TightIso && (is18 || is22 || is23 || is24)) // not in 2016-17, 2018A
+      if (b_HLT_Photon110EB_TightID_TightIso && (is18 || is22 || is23 || is24 || is25)) // not in 2016-17, 2018A
 	b_HLT_Photon110EB_TightID_TightIso->GetEntry(ientry);
       if (b_HLT_Photon100EB_TightID_TightIso && is18) // not in 2016-17, 2018A
 	b_HLT_Photon100EB_TightID_TightIso->GetEntry(ientry);
 
       // Only 24
-      if (b_HLT_Photon50EB_TightID_TightIso && is24)
+      if (b_HLT_Photon50EB_TightID_TightIso && (is24 || is25))
 	b_HLT_Photon50EB_TightID_TightIso->GetEntry(ientry);
       //if (b_HLT_Photon55EB_TightID_TightIso && is24) //commented out 55EB trigger since w44
 	//b_HLT_Photon55EB_TightID_TightIso->GetEntry(ientry);
-      if (b_HLT_Photon75EB_TightID_TightIso && is24)
+      if (b_HLT_Photon75EB_TightID_TightIso && (is24 || is25))
 	b_HLT_Photon75EB_TightID_TightIso->GetEntry(ientry);
-      if (b_HLT_Photon90EB_TightID_TightIso && is24)
+      if (b_HLT_Photon90EB_TightID_TightIso && (is24 || is25))
 	b_HLT_Photon90EB_TightID_TightIso->GetEntry(ientry);
 
       // Only 22-23-24
@@ -3046,7 +3067,7 @@ void GamHistosFill::Loop()
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 )) ||
        // Updated menu in 2024 with high rate isolated triggers //NOTE: should we change thresholds here already? (account for turnon)
-       (isRun3 && (is24) &&
+       (isRun3 && (is24 || is25) &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
 	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
@@ -3501,13 +3522,13 @@ void GamHistosFill::Loop()
         int i1 = h2jv->GetXaxis()->FindBin(jet.Eta());
         int j1 = h2jv->GetYaxis()->FindBin(jet.Phi());
         //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied (in 2023: handle bpix veto differently)
-			if(is24){
+			if(is24 || is25){
         if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix (2024 onwards)
           //++_nbadevents_veto;
 	  //pass_veto = false;
           pass_jetveto = false;
 				}
-			} else{ //if not 2024
+			} else{ //if not 2024 or 2025
 					if (h2jv->GetBinContent(i1,j1)>0) {
 						pass_jetveto = false;
 					}
@@ -3517,13 +3538,13 @@ void GamHistosFill::Loop()
         int i1 = h2jv->GetXaxis()->FindBin(gam.Eta());
         int j1 = h2jv->GetYaxis()->FindBin(gam.Phi());
         //if (h2jv->GetBinContent(i1,j1)>0) { //use this if no bpix veto applied
-				if(is24){
+				if(is24 || is25){
         	if(h2jv->GetBinContent(i1,j1)>0 or bpixjv->GetBinContent(i1,j1)>0) { //use this when also vetoing bpix
           	//++_nbadevents_veto;
 	  				//pass_veto = false;
           	pass_gamveto = false; //reject also photons that end up in bad regions
 					}
-				}else{//if not 2024
+				}else{//if not 2024 or 2025
 					if (h2jv->GetBinContent(i1,j1)>0) {
 						pass_gamveto = false;
 					}
@@ -3816,7 +3837,7 @@ void GamHistosFill::Loop()
 	  //pr30chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr30nef->Fill(run, Jet_neEmEF[iJet], w);
-					if(is24){ //HF branches only since 2024
+					if(is24 || is25){ //HF branches only since 2024
           		pr30hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
           		pr30hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
 					}
@@ -3829,7 +3850,7 @@ void GamHistosFill::Loop()
 	  //pr50chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr50nef->Fill(run, Jet_neEmEF[iJet], w);
-					if(is24){ //HF branches only since 2024
+					if(is24 || is25){ //HF branches only since 2024
 							pr50hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
 							pr50hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
 					}
@@ -3842,7 +3863,7 @@ void GamHistosFill::Loop()
 	  //pr110chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr110nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr110nef->Fill(run, Jet_neEmEF[iJet], w);
-					if(is24){ //HF branches only since 2024
+					if(is24 || is25){ //HF branches only since 2024
 						pr110hfEmEF_eta3to4->Fill(run, Jet_hfEmEF[iJet], w);
 						pr110hfHEF_eta3to4->Fill(run, Jet_hfHEF[iJet], w);
 				}
@@ -3878,7 +3899,7 @@ void GamHistosFill::Loop()
 	  //pr30chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr30nef->Fill(run, Jet_neEmEF[iJet], w);
-					if(is24){ //HF branches only since 2024
+					if(is24 || is25){ //HF branches only since 2024
           		pr30hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
           		pr30hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
 					}
@@ -3891,7 +3912,7 @@ void GamHistosFill::Loop()
 	  //pr50chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr50nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr50nef->Fill(run, Jet_neEmEF[iJet], w);
-					if(is24){ //HF branches only since 2024
+					if(is24 || is25){ //HF branches only since 2024
           		pr50hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
           		pr50hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
 					}
@@ -3904,7 +3925,7 @@ void GamHistosFill::Loop()
 	  //pr110chf->Fill(run, Jet_chHEF[iJet], w);
 	  //pr110nhf->Fill(run, Jet_neHEF[iJet], w);
 	  //pr110nef->Fill(run, Jet_neEmEF[iJet], w);
-					if(is24){ //HF branches only since 2024
+					if(is24 || is25){ //HF branches only since 2024
           		pr110hfEmEF_eta4to5->Fill(run, Jet_hfEmEF[iJet], w);
           		pr110hfHEF_eta4to5->Fill(run, Jet_hfHEF[iJet], w);
 					}

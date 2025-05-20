@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w49") { //using w-version names for my code (Bettina).
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w50") { //using w-version names for my code (Bettina).
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -95,7 +95,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
       dataset=="2024Bnib1" || dataset=="2024Cnib1" || dataset=="2024Dnib1" || dataset=="2024Ev1nib1" || dataset=="2024Ev2nib1" || 
 			dataset=="2024Fnib1" || dataset=="2024Fnib2" || dataset=="2024Fnib3" || 
       dataset=="2024F-ECALCC-HCALDI-nib1" || dataset=="2024F-ECALCC-HCALDI-nib2" || dataset=="2024F-ECALCC-HCALDI-nib3" ||
-			dataset=="2024Gnib1" || dataset=="2024Gnib2" || dataset=="2024Hnib1" || dataset=="2024Inib1");
+			dataset=="2024Gnib1" || dataset=="2024Gnib2" || dataset=="2024Hnib1" || dataset=="2024Inib1" ||
+      dataset=="2025B" || dataset=="2025C"); //added 2025 data on 20.05.2025, w50
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
 		dataset=="2016APVP8" ||
@@ -108,7 +109,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
   		dataset=="winter2024P8" || dataset=="summer2024P8" ||  dataset=="summer2024P8" ||
 			dataset=="winter2024P8-test" || dataset=="summer2024P8-test" || 
 			dataset=="winter2024P8-v14" || //winter 2024 madgraph p8 (added on 07.08.2024)
-			dataset=="winter2024P8a" || dataset=="winter2024P8b" || dataset=="winter2024P8c"); //winter 2024 madgraph p8 (added on 07.08.2024)
+			dataset=="winter2024P8a" || dataset=="winter2024P8b" || dataset=="winter2024P8c" || //winter 2024 madgraph p8 (added on 07.08.2024)
+      dataset=="winter2025P8"); //MC winter 2025 madgraph P8 (HT and PTG binned) added on 20.05.2025
 
 
   bool addQCD = (dataset=="2016QCD" || dataset=="2016APVQCD" || 
