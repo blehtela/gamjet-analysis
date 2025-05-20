@@ -14,19 +14,26 @@ void SummaryPileupHistos(string ver = "w48") {
 		//string data_eras[] = {"2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I", "2024GH"}; //for eras in 2024
 		//string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nibs in 2024
 		//string data_eras[] = {"2022C", "2022D", "2022E", "2022F", "2022G", "2023B", "2023Cv123", "2023Cv4", "2023D", "2024B", "2024C", "2024D", "2024Ev1", "2024Ev2", "2024F", "2024G", "2024H", "2024I"}; //for eras in 2024, 2023, 2022; did not use 24GH now
-		string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nib-based eras in 2024 (first time for w48)
+		//string data_eras[] = {"2024Bnib1", "2024Cnib1", "2024Dnib1", "2024Ev1nib1", "2024Ev2nib1", "2024Fnib1", "2024Fnib2", "2024Fnib3", "2024Gnib1", "2024Gnib2", "2024Hnib1", "2024Inib1"}; //for nib-based eras in 2024 (first time for w48)
+		string data_eras[] = {"2024CDEFGHI"}; //full 2024 (excluding B)
 		const int neras = sizeof(data_eras)/sizeof(data_eras[0]); //.size();
 
 
 		//list of triggers to be considered (for now only 50EB, but have others too)
 		string trigs[] = {"HLT_Photon50EB_TightID_TightIso"};
 		const int ntrigs = sizeof(trigs)/sizeof(trigs[0]); //.size();
-		string trg[] = {"photon50eb"}; //short names
+		//string trg[] = {"photon50eb"}; //short names
+		string trg[] = {"photon50EB"}; //short names - different in w48, capital EB, could change this back...
+
 
 
 
 		//For SUMMARY file (will contain: MC pre-reweighting, MC post-reweighting, data pu
-		TFile *summaryFile = new TFile(Form("pileup/pu_summary_%s.root", ver.c_str()), "RECREATE");
+		///TFile *summaryFile = new TFile(Form("pileup/pu_summary_%s.root", ver.c_str()), "RECREATE");
+		//TFile *summaryFile = new TFile(Form("pileup/pu_summary_full2024_xs75300_%s.root", ver.c_str()), "RECREATE"); 	//01.04.2025
+		TFile *summaryFile = new TFile(Form("pileup/pu_summary_full2024_xs69200_%s.root", ver.c_str()), "RECREATE");	//02.05.2025
+
+
 
 
 		// MONTE CARLO PU DISTRIBUTIONS  --> read from files and save to summary file.
@@ -126,7 +133,9 @@ void SummaryPileupHistos(string ver = "w48") {
 						string minbiasxs = "69200";
 						//string minbiasxs = "75300";
 						TFile *df = new TFile(Form("/eos/user/b/blehtela/pileup_%s/minbiasxs_%s/Mydatapileuphistogram_%s_%s_xs%s_%s.root", 
-								ver.c_str(), minbiasxs.c_str(), data_eras[i].c_str(), ((year=="2024") ? "photon50eb":"photon50"), minbiasxs.c_str() , ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+								ver.c_str(), minbiasxs.c_str(), data_eras[i].c_str(), ((year=="2024") ? "photon50EB":"photon50"), minbiasxs.c_str() , ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+								//ver.c_str(), minbiasxs.c_str(), data_eras[i].c_str(), ((year=="2024") ? "photon50eb":"photon50"), minbiasxs.c_str() , ver.c_str()),"READ"); //only 50gev trig, and named wrongly...
+
 
 						//for example: /eos/user/b/blehtela/pileup_w48/minbiasxs_69200/Mydatapileuphistogram_2024Bnib1_photon50EB_xs69200_w48.root	
 
