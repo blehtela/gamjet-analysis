@@ -131,12 +131,10 @@ void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and 
  
 
   //rereco
- /*
   GamHistosRatios(ver, "2024C-rereco");
   GamHistosRatios(ver, "2024D-rereco");
   GamHistosRatios(ver, "2024E-rereco"); 
-*/
-  GamHistosRatios(ver, "2024CDE-rereco"); 
+  //GamHistosRatios(ver, "2024CDE-rereco"); 
 
 
   //nib-based
@@ -148,7 +146,6 @@ void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and 
   GamHistosRatios(ver, "2024Ev2nib1");
   */
 
-/*
   GamHistosRatios(ver, "2024Fnib1");
   GamHistosRatios(ver, "2024Fnib2");
   GamHistosRatios(ver, "2024Fnib3");
@@ -156,8 +153,7 @@ void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and 
   GamHistosRatios(ver, "2024Gnib2");
   GamHistosRatios(ver, "2024Hnib1");
   GamHistosRatios(ver, "2024Inib1");
-*/
-  GamHistosRatios(ver, "2024FGHI");
+  //GamHistosRatios(ver, "2024FGHI");
 
   /*
   GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib1");
@@ -367,7 +363,10 @@ void GamHistosRatios(string ver, string iov) {
 
 		string erabasename = iov.substr(0, iov.size()-4);
 		//cout << "erabasename = " << erabasename << endl;
-        	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_pu-_%s.root",ci,cv),"READ"); //TO DO: update the naming here when i updated it in the data files
+        	//fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_pu-_%s.root",ci,cv),"READ"); //TO DO: update the naming here when i updated it in the data files
+ 		fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ"); //TO DO: update the naming here when i updated it in the data files
+
+
 
 
 		////rootfiles/GamHistosFill_data_2024Gnib1_pu-_w48.root
@@ -390,16 +389,21 @@ void GamHistosRatios(string ver, string iov) {
 
 	
 		//for minbiasXS investigations (27.03.2025)
-		//string minbiasxs = "69200";
-		string minbiasxs = "75300";
+		string minbiasxs = "69200"; //back to this also for single-era 12.05.2025
+		//string minbiasxs = "75300";
 	
 		
 		//MC and output file when NO QCD
 		//for pileup reweighting (based on FULL ERAS)
 		//files like: rootfiles/w48_xs69200/GamHistosFill_mc_summer2024P8_pu-2024Ev2nib1-xs69200_w48.root; rootfiles/w48_xs75300/GamHistosFill_mc_summer2024P8_pu-2024Fnib1-xs75300_w48.root
 		//fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w45.root",ci),"READ");
-		fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-%s-xs%s_w48.root",minbiasxs.c_str(),ci,minbiasxs.c_str()),"READ"); //NO QCD, reweighted with nib-based era
-		fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-%s_xs%s_%s.root",minbiasxs.c_str(),ci,ci,minbiasxs.c_str(),cv),"RECREATE"); 
+		//fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-%s-xs%s_w48.root",minbiasxs.c_str(),ci,minbiasxs.c_str()),"READ"); //NO QCD, reweighted with nib-based era
+		//fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-%s_xs%s_%s.root",minbiasxs.c_str(),ci,ci,minbiasxs.c_str(),cv),"RECREATE"); 
+
+		fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-2024CDEFGHI-xs%s_w48.root",minbiasxs.c_str(),minbiasxs.c_str()),"READ"); //NO QCD, reweighted with 2024
+		fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-2024CDEFGHI_xs%s_%s.root",minbiasxs.c_str(),ci,minbiasxs.c_str(),cv),"RECREATE");  //now full era
+
+
 
 		//when no pu reweighting, no QCD
 		//rootfiles/w48_xs75300/GamHistosFill_mc_summer2024P8_no-pu_w48.root
@@ -410,14 +414,22 @@ void GamHistosRatios(string ver, string iov) {
 		//string erabasename = iov.substr(0, iov.size()-4);
         	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
 
-		string minbiasxs = "75300";
+		//string minbiasxs = "75300";
+		string minbiasxs = "69200"; //added on 12.05.2025
+
+
 
 		//MC and output file when NO QCD (but pu reweighting yes)
 		//for pileup reweighting
 		//file: rootfiles/w48_xs69200/GamHistosFill_mc_summer2024P8_pu-2024Ev2nib1-xs69200_w48.root
 		//fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w45.root",ci),"READ");
-		fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-%s-xs%s_w48.root",minbiasxs.c_str(),ci,minbiasxs.c_str()),"READ"); //NO QCD, reweighted with nib-based era
-		fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-%s_xs%s_%s.root",minbiasxs.c_str(),ci,ci,minbiasxs.c_str(),cv),"RECREATE"); 
+		//fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-%s-xs%s_w48.root",minbiasxs.c_str(),ci,minbiasxs.c_str()),"READ"); //NO QCD, reweighted with nib-based era
+		//fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-%s_xs%s_%s.root",minbiasxs.c_str(),ci,ci,minbiasxs.c_str(),cv),"RECREATE"); 
+
+		fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-2024CDEFGHI-xs%s_w48.root",minbiasxs.c_str(),minbiasxs.c_str()),"READ"); //NO QCD, reweighted with 2024
+		fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-2024CDEFGHI_xs%s_%s.root",minbiasxs.c_str(),ci,minbiasxs.c_str(),cv),"RECREATE");  //now full era
+
+
 
 
 		//when no pu reweighting, no QCD
