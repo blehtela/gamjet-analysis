@@ -380,6 +380,12 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_area",1);
     if(!is25){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
 
+    //multiplicity needed for replacing jetID in 2025
+    if(is25){
+      fChain->SetBranchStatus("Jet_chMultiplicity",1);
+      fChain->SetBranchStatus("Jet_neMultiplicity",1);
+    }
+
     // PF composition
     fChain->SetBranchStatus("Jet_chHEF",1);
     fChain->SetBranchStatus("Jet_neHEF",1);
@@ -3522,18 +3528,19 @@ void GamHistosFill::Loop()
 
       //Replacing jetID (which is missing from nanoAOD v15 onwards) by conditions themselves (20.05.2025)
       //based on this: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13p6TeV#Recommendations_for_the_13_6_AN1
-      //took this code directly from the twiki page (linked above), just added brackets
+      //took this code almost directly from the twiki page (linked above), 
+      //just added the indexing (iJet for leading jet) and some brackets for clarity
       bool Jet_passJetIdTight = false;
-      if (abs(Jet_eta) <= 2.6) {
-        Jet_passJetIdTight = (Jet_neHEF < 0.99f) && (Jet_neEmEF < 0.9f) && (Jet_chMultiplicity+Jet_neMultiplicity > 1) && (Jet_chHEF > 0.01f) && (Jet_chMultiplicity > 0);
+      if (fabs(Jet_eta[iJet]) <= 2.6) {
+        Jet_passJetIdTight = (Jet_neHEF[iJet] < 0.99) && (Jet_neEmEF[iJet] < 0.9) && (Jet_chMultiplicity[iJet]+Jet_neMultiplicity[iJet] > 1) && (Jet_chHEF[iJet] > 0.01) && (Jet_chMultiplicity[iJet] > 0);
       }
-      else if (abs(Jet_eta) > 2.6 && abs(Jet_eta) <= 2.7) { Jet_passJetIdTight = (Jet_neHEF < 0.90f) && (Jet_neEmEF < 0.99f); }
-      else if (abs(Jet_eta) > 2.7 && abs(Jet_eta) <= 3.0) { Jet_passJetIdTight = (Jet_neHEF < 0.99f); }
-      else if (abs(Jet_eta) > 3.0) { Jet_passJetIdTight = (Jet_neMultiplicity >= 2) && (Jet_neEmEF < 0.4f); }
+      else if (fabs(Jet_eta[iJet]) > 2.6 && fabs(Jet_eta[iJet]) <= 2.7) { Jet_passJetIdTight = (Jet_neHEF[iJet] < 0.90) && (Jet_neEmEF[iJet] < 0.99); }
+      else if (fabs(Jet_eta[iJet]) > 2.7 && fabs(Jet_eta[iJet]) <= 3.0) { Jet_passJetIdTight = (Jet_neHEF[iJet] < 0.99); }
+      else if (fabs(Jet_eta[iJet]) > 3.0) { Jet_passJetIdTight = (Jet_neMultiplicity[iJet] >= 2) && (Jet_neEmEF[iJet] < 0.4); }
 
       bool Jet_passJetIdTightLepVeto = false;
-      if (abs(Jet_eta) <= 2.7) { Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF < 0.8f) && (Jet_chEmEF < 0.8f); } 
-      else { Jet_passJetIdTightLepVeto = Jet_passJetIdTight };
+      if (fabs(Jet_eta[iJet]) <= 2.7) { Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF[iJet] < 0.8f) && (Jet_chEmEF[iJet] < 0.8f); } 
+      else { Jet_passJetIdTightLepVeto = Jet_passJetIdTight; }
 
       bool pass_jetid = (is25 ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
 

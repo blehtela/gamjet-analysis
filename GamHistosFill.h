@@ -116,6 +116,9 @@ public :
    Float_t         Jet_btagDeepFlavCvL[nJetMax]; // Run3
    Float_t         Jet_btagDeepFlavQG[nJetMax];  // Run3
 
+   UChar_t         Jet_chMultiplicity[nJetMax]; //nanoAOD v15 (need it for jetID)
+   UChar_t         Jet_neMultiplicity[nJetMax]; //nanoAOD v15 (need it for jetID)
+
    Float_t         Jet_chHEF[nJetMax];
    Float_t         Jet_neHEF[nJetMax];
    Float_t         Jet_neEmEF[nJetMax];
@@ -325,6 +328,11 @@ public :
    //TBranch        *b_Jet_chFPV1EF;   //!
    //TBranch        *b_Jet_chFPV2EF;   //!
    //TBranch        *b_Jet_chFPV3EF;   //!
+
+
+   TBranch        *b_Jet_chMultiplicity;   //!
+   TBranch        *b_Jet_neMultiplicity;   //!
+
    TBranch        *b_Jet_chHEF;   //!
    TBranch        *b_Jet_eta;   //!
    TBranch        *b_Jet_mass;   //!
@@ -727,6 +735,12 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Jet_chFPV1EF", Jet_chFPV1EF, &b_Jet_chFPV1EF);
    //fChain->SetBranchAddress("Jet_chFPV2EF", Jet_chFPV2EF, &b_Jet_chFPV2EF);
    //fChain->SetBranchAddress("Jet_chFPV3EF", Jet_chFPV3EF, &b_Jet_chFPV3EF);
+
+  if(is25){ //need these branches to replace jetID
+    fChain->SetBranchAddress("Jet_chMultiplicity", Jet_chMultiplicity, &b_Jet_chMultiplicity);
+    fChain->SetBranchAddress("Jet_neMultiplicity", Jet_neMultiplicity, &b_Jet_neMultiplicity);
+  }
+
    fChain->SetBranchAddress("Jet_chHEF", Jet_chHEF, &b_Jet_chHEF);
    fChain->SetBranchAddress("Jet_eta", Jet_eta, &b_Jet_eta);
    fChain->SetBranchAddress("Jet_mass", Jet_mass, &b_Jet_mass);
