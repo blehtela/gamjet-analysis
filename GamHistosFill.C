@@ -378,7 +378,7 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_mass",1);
     fChain->SetBranchStatus("Jet_rawFactor",1);
     fChain->SetBranchStatus("Jet_area",1);
-    fChain->SetBranchStatus("Jet_jetId",1);
+    if(!is25){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
 
     // PF composition
     fChain->SetBranchStatus("Jet_chHEF",1);
@@ -3518,7 +3518,26 @@ void GamHistosFill::Loop()
       bool pass_njet = (nJets>=1);
       bool pass_gameta = (fabs(gam.Eta()) < 1.3);
       bool pass_dphi = (fabs(gam.DeltaPhi(jet)) > 2.7); // pi-0.44 as in KIT Z+j
-      bool pass_jetid = (iJet!=-1 && Jet_jetId[iJet]>=4); // tightLepVeto
+      //bool pass_jetid = (iJet!=-1 && Jet_jetId[iJet]>=4); // tightLepVeto
+
+      //Replacing jetID (which is missing from nanoAOD v15 onwards) by conditions themselves (20.05.2025)
+      //based on this: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13p6TeV#Recommendations_for_the_13_6_AN1
+      //took this code directly from the twiki page (linked above), just added brackets
+      bool Jet_passJetIdTight = false;
+      if (abs(Jet_eta) <= 2.6) {
+        Jet_passJetIdTight = (Jet_neHEF < 0.99) && (Jet_neEmEF < 0.9) && (Jet_chMultiplicity+Jet_neMultiplicity > 1) && (Jet_chHEF > 0.01) && (Jet_chMultiplicity > 0);
+      }
+      else if (abs(Jet_eta) > 2.6 && abs(Jet_eta) <= 2.7) { Jet_passJetIdTight = (Jet_neHEF < 0.90) && (Jet_neEmEF < 0.99); }
+      else if (abs(Jet_eta) > 2.7 && abs(Jet_eta) <= 3.0) { Jet_passJetIdTight = (Jet_neHEF < 0.99); }
+      else if (abs(Jet_eta) > 3.0) { Jet_passJetIdTight = (Jet_neMultiplicity >= 2) && (Jet_neEmEF < 0.4); }
+
+      bool Jet_passJetIdTightLepVeto = false;
+      if (abs(Jet_eta) <= 2.7) { Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF < 0.8) && (Jet_chEmEF < 0.8); } 
+      else { Jet_passJetIdTightLepVeto = Jet_passJetIdTight };
+
+      bool pass_jetid = (is25 ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+
+
       //bool pass_veto = true; //for now: replaced by pass_jetveto and pass_gamveto, since applying jetvetomap also to photons
       bool pass_jetveto = true;
       bool pass_gamveto = true;
