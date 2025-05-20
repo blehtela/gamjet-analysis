@@ -1702,10 +1702,10 @@ void GamHistosFill::Loop()
   TProfile *p_r9_vspt = new TProfile("p_r9_vspt","",nx,vx); 		//14.05.2025, moved this to own folder for fake photon stuff
   TProfile *p_sieie_vspt = new TProfile("p_sieie_vspt","",nx,vx);	//added 14.05.2025 sigma ieta ieta
   TProfile *p_pfchargediso_vspt = new TProfile("p_pfchargediso_vspt","",nx,vx); //added 14.05.2025 photon isolation PF absolute isolation dR=0.3, charged component
-  //ny and vy for eta like L2L3Res etabinning; nx and vx are for pt; 
-  TH3D *h3_mpf_vspteta = new TH3D("h3_mpf_vspteta", ";#eta;p_T (GeV);MPF",neta,bineta,nx,vx,nresp,vresp); 	//response (MPF) distribution so just counts in eta/pt/mpf
-  TH3D *h3_db_vspteta = new TH3D("h3_db_vspteta", ";#eta;p_T (GeV);DB",neta,bineta,nx,vx,nresp,vresp); 		//response (DB) distribution
-  TH3D *h3_mpfx_vspteta = new TH3D("h3_mpfx_vspteta", ";#eta;p_T (GeV);MPFX",neta,bineta,nx,vx,nresp,vresp); 	//response (MPFX) distr., so N (counts) in eta/pt/mpf
+  //ny and vy for eta like L2L3Res etabinning; nx and vx are for pt; (neta, bineta?)
+  TH3D *h3_mpf_vspteta = new TH3D("h3_mpf_vspteta", ";#eta;p_T (GeV);MPF",ny,vy,nx,vx,nresp,vresp); 	//response (MPF) distribution so just counts in eta/pt/mpf
+  TH3D *h3_db_vspteta = new TH3D("h3_db_vspteta", ";#eta;p_T (GeV);DB",ny,vy,nx,vx,nresp,vresp); 		//response (DB) distribution
+  TH3D *h3_mpfx_vspteta = new TH3D("h3_mpfx_vspteta", ";#eta;p_T (GeV);MPFX",ny,vy,nx,vx,nresp,vresp); 	//response (MPFX) distr., so N (counts) in eta/pt/mpf
 
 
 
@@ -2430,6 +2430,7 @@ void GamHistosFill::Loop()
   TLorentzVector geni, genjet, genjet2;
   TLorentzVector fox; // for isQCD
   TLorentzVector gamx; // for MPFX
+  TLorentzVector gaminv, gamxinv; //for flipping to other side (added 20.05.2025)
   
   //Long64_t nentries = fChain->GetEntriesFast();
   Long64_t nentries = fChain->GetEntries(); // Long startup time
@@ -3351,6 +3352,7 @@ void GamHistosFill::Loop()
     double pt2min = 30;
     double bal(0), mpf(0), mpf1(0), mpfn(0), mpfu(0), mpfnu(0);
     double mpfx(0), mpf1x(0), mpfnx(0), mpfux(0), mpfnux(0);
+    double mpfinv(0), mpfxinv(0) //for response investigations (20.05.2025)
     if (ptgam>0) {
       bal = ptjet / ptgam;
       mpf = 1 + met.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
