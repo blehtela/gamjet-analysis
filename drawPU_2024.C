@@ -8,7 +8,7 @@
 #include "tdrstyle_mod22.C"
 
 bool multiera = true; //draw all eras given in iov list
-string id = "w38"; //version of code used to produce the input files for this
+string id = "w48"; //version of code used to produce the input files for this
 
 
 // Forward declaration of function call
@@ -36,9 +36,10 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
   //string iovs[] = {"2024E", "2024F", "winter2024P8"};  // soon!! 
 	//string iovs[] = {"2024F", "winter2024P8"}; 
 	//string iovs[] = {"2024E", "winter2024P8"}; 
-	string iovs[] = {"2024F", "winter2024P8"}; 
-	string dataera = "2024F";
-	string mcera = "winter2024P8";
+	//string iovs[] = {"2024F", "winter2024P8"}; 
+	string iovs[] = {"2024Ev2nib1", "summer2024P8"}; 
+	string dataera = "2024Ev2nib1";
+	string mcera = "summer2024P8";
 
 	//string reweighted_mc = "w37";
 
@@ -48,29 +49,37 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
   map<string,int> mcolor;
   map<string,int> mmarker;
   //2024
-	mmarker["2024E"] = kFullSquare;
-	mmarker["2024F"] = kFullTriangleUp;
-  mmarker["winter2024P8"] = kOpenCircle;
+  mmarker["2024E"] = kFullSquare;
+  //mmarker["2024Ev2nib1"] = kFullSquare;
+  mmarker["2024Ev2nib1"] = kFullTriangleDown;
 
- 	mcolor["2024E"] = kCyan+2;
+  mmarker["2024F"] = kFullTriangleUp;
+  mmarker["winter2024P8"] = kOpenCircle;
+  mmarker["summer2024P8"] = kOpenCircle;
+
+  mcolor["2024E"] = kCyan+2;
+  //mcolor["2024Ev2nib1"] = kCyan+2;
+  mcolor["2024Ev2nib1"] = kBlack;
   mcolor["2024F"] = kBlue+2;
 
- 	mcolor["2024B-ECALRATIO"] = kBlue+3;
+  mcolor["2024B-ECALRATIO"] = kBlue+3;
   mcolor["2024C-ECALRATIO"] = kGreen+3;
   mcolor["2024C-ECALR-HCALDI"] = kGreen+4;
-	mcolor["2024C-ECALCC-HCALDI"] = kGreen+4;
+  mcolor["2024C-ECALCC-HCALDI"] = kGreen+4;
 
   mcolor["winter2024P8"] = kGreen+2; //reweighted
+  mcolor["summer2024P8"] = kGreen+2; //reweighted
 
-	//for non-reweighted MC, will use kRed+2, but manually as has different code version (w38puoff)
+
+  //for non-reweighted MC, will use kRed+2, but manually as has different code version (w38puoff)
 
 
-	//different ymax used for plotting different variables, depending on name (but fixed to easily compare eras)
-	map<string,double> mymax;
-	mymax["Rho"] = 0.062;
-	mymax["NPVgood"] = 0.063;
-	mymax["NPVall"] = 0.063;
-	mymax["Mu"] = 0.087; //for F needed to fix this at higher y...
+  //different ymax used for plotting different variables, depending on name (but fixed to easily compare eras)
+  map<string,double> mymax;
+  mymax["Rho"] = 0.062;
+  mymax["NPVgood"] = 0.063;
+  mymax["NPVall"] = 0.063;
+  mymax["Mu"] = 0.087; //for F needed to fix this at higher y...
 
  
   
@@ -81,11 +90,11 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
 
 
   //TH1D *h = tdrHist("h",xlabel=cvar, ylabel="N_{events}",x1,x2); //axis range setting does not work here properly...
-	TH1D *h = new TH1D("h", Form(";%s;n_{events}",cvar), x2-x1, x1, x2);  // N_{events}/N_{events-total}
+  TH1D *h = new TH1D("h", Form(";%s;n_{events}",cvar), x2-x1, x1, x2);  // N_{events}/N_{events-total}
 
-	h->GetXaxis()->SetRangeUser(x1,x2);
-	//h->GetYaxis()->SetRangeUser(0.,1.); //set this later by getting the maximum
-	h->GetYaxis()->SetRangeUser(0.,mymax[name]); //set this depending on the type of plot
+  h->GetXaxis()->SetRangeUser(x1,x2);
+  //h->GetYaxis()->SetRangeUser(0.,1.); //set this later by getting the maximum
+  h->GetYaxis()->SetRangeUser(0.,mymax[name]); //set this depending on the type of plot
   //TH1D *h2 = tdrHist("h2","MC (rew.) / data ",z1,z2); //TO DO
 
   lumi_13TeV = "Run3"; // 4=13 TeV
@@ -109,6 +118,10 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
 	avginfo->SetTextColor(kPink+7);
 	//avginfo->DrawLatex(40, 0.053, "Avg still includes the primary vertex!");
 	avginfo->DrawLatex(0.46, 0.87, "(mean #pm mean_err) still includes the primary vertex!");
+	//avginfo->DrawLatex(0.46, 0.82, "minbiasXS = 69.2mb");
+	//avginfo->DrawLatex(0.46, 0.82, "minbiasXS = 75.3mb");
+
+
 
 
 
@@ -118,8 +131,10 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
   //gPad->SetLogx(); //not here
 
   //TLegend *leg = tdrLeg(0.60,0.90-niov*0.08,0.80,0.90); //this is good for fewer graphs
-	//TLegend *leg = tdrLeg(0.50,0.90-niov*0.03,0.60,0.90); //moved a bit to the left and smaller font
-  TLegend *leg = tdrLeg(0.46,0.865-niov*0.06,0.80,0.865); //after adding also average-info (x1,y1,x2,y2)
+  //TLegend *leg = tdrLeg(0.50,0.90-niov*0.03,0.60,0.90); //moved a bit to the left and smaller font
+  //TLegend *leg = tdrLeg(0.46,0.865-niov*0.06,0.80,0.865); //after adding also average-info (x1,y1,x2,y2)
+  TLegend *leg = tdrLeg(0.46,0.850-niov*0.06,0.80,0.850); //after adding also average-info (x1,y1,x2,y2)
+  //TLegend *leg = tdrLeg(0.46,0.80-niov*0.06,0.80,0.800); //after adding also minbiasxs-info (x1,y1,x2,y2)
 
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
@@ -139,23 +154,29 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
     const char *ciov = iov.c_str(); //era
     //const char *cmc = mcs[i].c_str();
     const char *cid = id.c_str(); //code version, e.g. w38
-		const char *cdataera = dataera.c_str();
-		const char *cmcera = mcera.c_str();
+    const char *cdataera = dataera.c_str();
+    const char *cmcera = mcera.c_str();
 
 
     TFile *fd(0), *fmpuoff(0);
+    TFile *fmalt(0);
 
-		//draw this iov's distributions (four histos, for data mu from extra file?)
-		if(iov=="winter2024P8"){// Monte Carlo
-    	//fd = new TFile(Form("rootfiles/GamHistosFill_mc_%s_%s.root",ciov,ciov,cid));
-			//get file like this: GamHistosFill_mc_winter2024P8_2024E-pu_w38.root
-			fd = new TFile(Form("rootfiles/winter2024p8_reweighting-with-%s/GamHistosFill_mc_%s_%s-pu_%s.root",cdataera,ciov,cdataera,cid)); //different directory for each data-era used
-			fmpuoff = new TFile(Form("rootfiles/GamHistosFill_mc_%s_%spuoff.root",ciov,cid)); //same era, but without pu reweighting
-			assert(fd && !fmpuoff->IsZombie());
-		}
-		else{ //data
-    	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ciov,cid));
-		}
+    //draw this iov's distributions (four histos, for data mu from extra file?)
+    if(iov=="summer2024P8"){// Monte Carlo
+    //fd = new TFile(Form("rootfiles/GamHistosFill_mc_%s_%s.root",ciov,ciov,cid));
+	//get file like this: GamHistosFill_mc_winter2024P8_2024E-pu_w38.root
+	//fd = new TFile(Form("rootfiles/winter2024p8_reweighting-with-%s/GamHistosFill_mc_%s_%s-pu_%s.root",cdataera,ciov,cdataera,cid)); //different directory for each data-era used
+	////fd = new TFile(Form("rootfiles/w48_xs69200/GamHistosFill_mc_%s_pu-%s-xs69200_%s.root",ciov,cdataera,cid)); //adjust minbiasXS if needed!!
+	////fmpuoff = new TFile(Form("rootfiles/w48_xs69200/GamHistosFill_mc_%s_no-pu_%s.root",ciov,cid)); //same era, but without pu reweighting
+	fd = new TFile(Form("rootfiles/w48_xs75300/GamHistosFill_mc_%s_pu-%s-xs75300_%s.root",ciov,cdataera,cid)); //adjust minbiasXS if needed!!
+	fmpuoff = new TFile(Form("rootfiles/w48_xs75300/GamHistosFill_mc_%s_no-pu_%s.root",ciov,cid)); //same era, but without pu reweighting
+
+	assert(fd && !fmpuoff->IsZombie());
+    }
+    else{ //data
+    	//fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ciov,cid));
+    	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w45.root",ciov)); //hardcoded for now... but updating data, then can use the automated again
+    }
  
     assert(fd && !fd->IsZombie());
     curdir->cd();
@@ -163,49 +184,78 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
     TObject *ohisto = fd->Get(Form("%s",sobj.c_str())); assert(ohisto); //get histo object
     
     TH1D *hd(0), *hmpuoff(0);
+    TH1D *hmpualt(0);
     hd = (TH1D*)ohisto;
     assert(hd);
-		cout << "\nGot histo from file " << fd << Form("(%s)",sobj.c_str()) << endl << flush;
+    cout << "\nGot histo from file " << fd << Form("(%s)",sobj.c_str()) << endl << flush;
+    
+    //normalise with its integral
+    hd->Scale(1./hd->Integral());
+    
+    double ymax = hd->GetMaximum(); //for setting correct y-range (not an optimal solution, but works for now)
+    //h->GetYaxis()->SetRangeUser(0., ymax+0.2*ymax); //use this when investigating which ymax to set, otherwise: fixed in mymax.
+    //if(ymax>textpos){textpos=ymax+0.1*ymax;}
+    //extratext->DrawLatex((x2-x1)*0.2, ymax, "Preliminary"); //reposition text
+    
+    double xmean = hd->GetMean(1); //get the average along x-axis
+    double xmeanerr = hd->GetMeanError(1); //get mean error
+    //cout << Form("Mean for %s is ",sobj.c_str()) << xmean << endl << flush;
 
-		//normalise with its integral
-		hd->Scale(1./hd->Integral());
-
-		double ymax = hd->GetMaximum(); //for setting correct y-range (not an optimal solution, but works for now)
-		//h->GetYaxis()->SetRangeUser(0., ymax+0.2*ymax); //use this when investigating which ymax to set, otherwise: fixed in mymax.
-		//if(ymax>textpos){textpos=ymax+0.1*ymax;}
-		//extratext->DrawLatex((x2-x1)*0.2, ymax, "Preliminary"); //reposition text
-
-		double xmean = hd->GetMean(1); //get the average along x-axis
-		double xmeanerr = hd->GetMeanError(1); //get mean error
-		//cout << Form("Mean for %s is ",sobj.c_str()) << xmean << endl << flush;
-
+    //new: smaller marker
+    //hd->SetMarkerSize(2);
 
     c1->cd(1);
     tdrDraw(hd,"Pz",(mmarker[iov] ? mmarker[iov] : kFullCircle), (mcolor[iov] ? mcolor[iov] : kBlack));
-		if(name!="Mu"){ //for mu, do not add the data here, as this histo is empty, i.e. not drawn, will come from separate file (see lower)
-			leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
-		}
-		else if(name=="Mu" && iov=="winter2024P8"){ //need to add this manually
-			leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
-		}
+    if(name!="Mu" && iov!="summer2024P8"){ //for mu, do not add the data here, as this histo is empty, i.e. not drawn, will come from separate file (see lower)
+	leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
+    }
+    else if(name=="Mu" && iov=="summer2024P8"){ //need to add this manually
+	//leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
+	leg->AddEntry(hd,Form("%s (75.3mb; %.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
+    }
+    else if(name!="Mu" && iov=="summer2024P8"){ //need to add this manually
+	//leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
+	leg->AddEntry(hd,Form("%s (75.3mb; %.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
+    }
 
 
-		//additionally if mc
-		if(iov=="winter2024P8"){
-    	TObject *ohistopuoff = fmpuoff->Get(Form("%s",sobj.c_str())); assert(ohistopuoff);
-			hmpuoff = (TH1D*)ohistopuoff;
-			assert(hmpuoff);
-			cout << "Got histo from file " << fmpuoff << endl << flush;
+    //additionally if mc
+    if(iov=="summer2024P8"){
+	//add for other minbiasXS manually (remove this part again when case is closed)
+	fmalt = new TFile(Form("rootfiles/w48_xs69200/GamHistosFill_mc_%s_pu-%s-xs69200_%s.root",ciov,cdataera,cid)); //adjust minbiasXS if needed!!
+	TObject *ohistoalt = fmalt->Get(Form("%s",sobj.c_str())); assert(ohistoalt);
+	hmpualt = (TH1D*)ohistoalt;
+	assert(hmpualt);
+	cout << "Got histo from file " << fmalt << endl << flush;
+	
+	hmpualt->Scale(1./hmpualt->Integral()); //normalise with its integral
+	double xmean_pualt = hmpualt->GetMean(1); //get the average along x-axis
+	double xmeanerr_pualt = hmpualt->GetMeanError(1); //get mean error
+	
 
-			hmpuoff->Scale(1./hmpuoff->Integral()); //normalise with its integral
-			double xmean_puoff = hmpuoff->GetMean(1); //get the average along x-axis
-			double xmeanerr_puoff = hmpuoff->GetMeanError(1); //get mean error
+    	c1->cd(1);
+    	//tdrDraw(hmpualt,"Pz", kOpenCircle, kOrange+2);
+    	tdrDraw(hmpualt,"Pz", kOpenCircle, kBlue+2);
+    	leg->AddEntry(hmpualt,Form("%s (69.2mb; %.2f #pm %.2f)",iov.c_str(), xmean_pualt, xmeanerr_pualt),"PLE");
+
+
+	//the not-reweighted MC (keep this always)
+	TObject *ohistopuoff = fmpuoff->Get(Form("%s",sobj.c_str())); assert(ohistopuoff);
+	hmpuoff = (TH1D*)ohistopuoff;
+	assert(hmpuoff);
+	cout << "Got histo from file " << fmpuoff << endl << flush;
+	
+	hmpuoff->Scale(1./hmpuoff->Integral()); //normalise with its integral
+	double xmean_puoff = hmpuoff->GetMean(1); //get the average along x-axis
+	double xmeanerr_puoff = hmpuoff->GetMeanError(1); //get mean error
 	
 
     	c1->cd(1);
     	tdrDraw(hmpuoff,"Pz", kOpenCircle, kRed+2);
     	leg->AddEntry(hmpuoff,Form("%s (not reweighted; %.2f #pm %.2f)",iov.c_str(), xmean_puoff, xmeanerr_puoff),"PLE");
-		}
+
+
+    }
     
  
 
@@ -218,35 +268,40 @@ void drawPU_2024(string sobj, string var, string name, double x1, double x2){
 
 
 
-		//Now still adding the mu distribution for data (different file)
-		//these were created with brilcalc
-		if(name=="Mu"){
-			c1->cd(1);
+    //Now still adding the mu distribution for data (different file)
+    //these were created with brilcalc
+    if(name=="Mu"){
+	c1->cd(1);
     	TFile *fdatapu(0);
-			//open the manually (well, with my own script) created file containing all currently used pu distributions (i.a. MyDataPileupHisto...)
-   		fdatapu = new TFile(Form("pileup/pileup_mc_data%s_%s.root",cdataera,id.c_str()), "READ"); //last without reweighting so far, w36
-			assert(fdatapu && !fdatapu->IsZombie());
-			TH1D *hdatapu = (TH1D*)fdatapu->Get(Form("pileup_%s_HLT_Photon50EB_TightID_TightIso", cdataera));  //only trigger i look at right now
-			//TH1D *hdatapu = (TH1D*)fdatapu->Get(Form("pileup_%s_%s",ce,ct));  //with automatic reading of era (ce) and trigger (ct)
-			//should I do fdatapu->Clone() instead?
-			assert(hdatapu); 
-			hdatapu->Scale(1./hdatapu->Integral()); //normalise to unity
-			double xmean_data = hdatapu->GetMean(1); //get the average along x-axis
-			double xmeanerr_data = hdatapu->GetMeanError(1); //get mean error
-	
+	//open the manually (well, with my own script) created file containing all currently used pu distributions (i.a. MyDataPileupHisto...)
+   	//fdatapu = new TFile(Form("pileup/pileup_mc_data%s_%s.root",cdataera,id.c_str()), "READ"); //last without reweighting so far, w36
+   	////fdatapu = new TFile(Form("pileup/2024/pu_summary_xs69200_%s.root",id.c_str()), "READ"); //REMEMBER TO UPDATE MINBIASXS
+   	fdatapu = new TFile(Form("pileup/2024/pu_summary_xs75300_%s.root",id.c_str()), "READ"); //REMEMBER TO UPDATE MINBIASXS
 
 
-			tdrDraw(hdatapu,"Pz",kFullTriangleDown,kBlue+2,kSolid,-1,kNone);
-			leg->AddEntry(hdatapu,Form("%s (from brilcalc); %.2f #pm %.2f",cdataera, xmean_data, xmeanerr_data),"PLE");
-		}
+	assert(fdatapu && !fdatapu->IsZombie());
+	TH1D *hdatapu = (TH1D*)fdatapu->Get(Form("pileup_%s_HLT_Photon50EB_TightID_TightIso", cdataera));  //only trigger i look at right now
+	//pileup_2024Ev2nib1_HLT_Photon50EB_TightID_TightIso_scaled --> should i use scaled version instead?, currently scaling here (see below)
+	//TH1D *hdatapu = (TH1D*)fdatapu->Get(Form("pileup_%s_%s",ce,ct));  //with automatic reading of era (ce) and trigger (ct)
+	//should I do fdatapu->Clone() instead?
+	assert(hdatapu); 
+	hdatapu->Scale(1./hdatapu->Integral()); //normalise to unity
+	double xmean_data = hdatapu->GetMean(1); //get the average along x-axis
+	double xmeanerr_data = hdatapu->GetMeanError(1); //get mean error
+
+
+	//tdrDraw(hdatapu,"Pz",kFullTriangleDown,kBlue+2,kSolid,-1,kNone);
+	tdrDraw(hdatapu,"Pz",kFullTriangleDown,kBlack,kSolid,-1,kNone);
+	leg->AddEntry(hdatapu,Form("%s (from brilcalc); %.2f #pm %.2f",cdataera, xmean_data, xmeanerr_data),"PLE");
+    }
 
 
 
-  //finish everything.
-  if (id!="")
-		c1->SaveAs(Form("pdf/drawPU_%s_%s_%s.pdf",cdataera,name.c_str(),id.c_str()));
-  else 
-    c1->SaveAs(Form("pdf/drawPU_%s_%s.pdf",cdataera,name.c_str()));
+    //finish everything.
+    if (id!="")
+	c1->SaveAs(Form("pdf/drawPU_%s_%s_%s.pdf",cdataera,name.c_str(),id.c_str()));
+    else 
+	c1->SaveAs(Form("pdf/drawPU_%s_%s.pdf",cdataera,name.c_str()));
 } // void drawPU_2024
 
 
