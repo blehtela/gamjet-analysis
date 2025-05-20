@@ -743,7 +743,7 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Jet_puIdDisc", Jet_puIdDisc, &b_Jet_puIdDisc);
    if (!(is22 || is23 || is24 || is25)) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
-   fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);
+   if(!is25) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025)
    //fChain->SetBranchAddress("Jet_nConstituents", Jet_nConstituents, &b_Jet_nConstituents);
    //fChain->SetBranchAddress("Jet_nElectrons", Jet_nElectrons, &b_Jet_nElectrons);
    //fChain->SetBranchAddress("Jet_nMuons", Jet_nMuons, &b_Jet_nMuons);
