@@ -1,6 +1,7 @@
 #define GamHistosFill_cxx
 #include "GamHistosFill.h"
 #include <TH2.h>
+#include <TH3.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 
