@@ -20,14 +20,20 @@ void clean(TH1 *p, double maxerr = 0.005) {
 //void drawGainsVsPt(string era = "2023D", string version = "w8") {
 //void drawGainsVsPt(string era = "2023Cv4", string version = "w8") {
 //void drawGainsVsPt(string era = "2023D", string version = "w9") {
-void drawGainsVsPt(string era = "2024BCD", string version = "w25") {
+//void drawGainsVsPt(string era = "2024BCD", string version = "w25") {
+///void drawGainsVsPt(string era = "2024G", string version = "w42") {
+///void drawGainsVsPt(string era = "2024F", string version = "w42") {
+void drawGainsVsPt(string era = "2024I", string version = "w42") {
+
+
 //void drawGainsVsPt(string era = "2023Cv4", string version = "w9") {
   //void drawGainsVsPt(string era = "Run2", string version = "v18") {
 
   const char *cera = era.c_str();
   const char *cv = version.c_str();
   //string eram = (era=="Run3"||era=="Run2" ? era : "2022");
-  string eram = "2023"; //hard-coded this for now...
+  //string eram = "2023"; //hard-coded this for now...
+  string eram = "2024"; //hard-coded this for now...
   const char *ceram = eram.c_str();
 
   setTDRStyle();
@@ -41,8 +47,8 @@ void drawGainsVsPt(string era = "2024BCD", string version = "w25") {
 		       cera,cv),"READ");
   assert(f && !f->IsZombie());
   //TFile *fm = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_%s.root", //needed to hardcode for now
-  TFile *fm = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_w13.root",
-			     ceram),"READ");
+  TFile *fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_pu-%s_w41.root",
+			     ceram,cera),"READ");
 
   if (!fm || fm->IsZombie())
     fm = new TFile(Form("files/GamHistosFill_mc_%sP8_%s.root",
@@ -209,6 +215,8 @@ void drawGainsVsPt(string era = "2024BCD", string version = "w25") {
 			       100.*(f1m->GetParameter(0)-1),
 			       100.*f1m->GetParError(0)));
 
-  c1->SaveAs(Form("pdf/drawGainVsPt_%s_%s.pdf",cera,cv));
+  //c1->SaveAs(Form("pdf/drawGainVsPt_%s_%s.pdf",cera,cv));
+  c1->SaveAs(Form("pdf/drawGainVsPt_%s_w41%s.pdf",cera,cv));
+
 
 } // drawGainsVsPt
