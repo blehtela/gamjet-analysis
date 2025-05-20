@@ -3352,7 +3352,7 @@ void GamHistosFill::Loop()
     double pt2min = 30;
     double bal(0), mpf(0), mpf1(0), mpfn(0), mpfu(0), mpfnu(0);
     double mpfx(0), mpf1x(0), mpfnx(0), mpfux(0), mpfnux(0);
-    double mpfinv(0), mpfxinv(0) //for response investigations (20.05.2025)
+    double mpfinv(0), mpfxinv(0); //for response investigations (20.05.2025)
     if (ptgam>0) {
       bal = ptjet / ptgam;
       mpf = 1 + met.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
