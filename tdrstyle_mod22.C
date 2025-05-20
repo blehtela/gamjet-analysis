@@ -77,7 +77,7 @@ TH1D *tdrHist(string name="h", string ylabel="Response",
 		     max(1,int(fabs(x2-x1))), x1, x2);
 //		     min(100,max(1,int(fabs(x2-x1)))), x1, x2);
 
-  h->GetXaxis()->SetMoreLogLabels();
+  //h->GetXaxis()->SetMoreLogLabels();
   h->GetXaxis()->SetNoExponent();
   h->SetMinimum(y1);
   h->SetMaximum(y2);
