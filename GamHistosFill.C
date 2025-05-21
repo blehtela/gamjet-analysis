@@ -686,12 +686,13 @@ void GamHistosFill::Loop()
   //mc 2025
   // TO BE ADDED. (winter2025)
   if (ds=="winter2025P8"){
-    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51
+    jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51
   }
   //data 2025
   if (ds=="2025B" || ds=="2025C"){
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w50 (use JECs we have, 20.05.2025)
-	jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w50 (no L2L3Res, 21.05.2025)
+	  //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w50 (no L2L3Res, 21.05.2025)
+    jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51 (no L2L3Res, updated MC corrections, 21.05.2025)
   }
 
   assert(jec);
