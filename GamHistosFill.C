@@ -792,7 +792,8 @@ void GamHistosFill::Loop()
 		LoadJSON("files/Cert_Collisions2024_378981_386951_Golden.json"); //golden json (all eras 2024)--> w41 and onwards (01.11.2024)
   //for prompt data 2025
   if (TString(ds.c_str()).Contains("2025"))
-    LoadJSON("files/Collisions25_13p6TeV_391658_392301_DCSOnly_TkPx.json"); //get daily json --> w50 (20.05.2025)
+    //LoadJSON("files/Collisions25_13p6TeV_391658_392301_DCSOnly_TkPx.json"); //get daily json --> w50 (20.05.2025)
+    LoadJSON("files/Collisions25_13p6TeV_391658_392382_DCSOnly_TkPx.json"); //get daily json --> w51 (21.05.2025)
 
 //TO DO: update JSON
 
