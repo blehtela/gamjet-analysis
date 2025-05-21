@@ -153,6 +153,9 @@ public :
 
    UChar_t         Photon_seedGain[nPhotonMax];
    Float_t         Photon_r9[nPhotonMax];
+   Float_t         Photon_sieie[nPhotonMax]; //w51
+   Float_t         Photon_pfChargedIso[nPhotonMax]; //w51
+
    Float_t         Photon_eCorr[nPhotonMax];
    Float_t         Photon_energyErr[nPhotonMax];
   
@@ -375,6 +378,7 @@ public :
    TBranch        *b_Photon_pt;   //!
    TBranch        *b_Photon_r9;   //!
    TBranch        *b_Photon_sieie;   //!
+   TBranch        *b_Photon_pfChargedIso;   //!
   //TBranch        *b_Photon_charge;   //!
    TBranch        *b_Photon_cutBased;   //!
    TBranch        *b_Photon_cutBasedBitmap;   // EXTRA
@@ -789,7 +793,9 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("Photon_phi", Photon_phi, &b_Photon_phi);
    fChain->SetBranchAddress("Photon_pt", Photon_pt, &b_Photon_pt);
    fChain->SetBranchAddress("Photon_r9", Photon_r9, &b_Photon_r9);
-   //fChain->SetBranchAddress("Photon_sieie", Photon_sieie, &b_Photon_sieie);
+   fChain->SetBranchAddress("Photon_sieie", Photon_sieie, &b_Photon_sieie); //w51, take this back in
+   fChain->SetBranchAddress("Photon_pfChargedIso", Photon_pfChargedIso, &b_Photon_pfChargedIso); //w51,
+   
    //fChain->SetBranchAddress("Photon_charge", Photon_charge, &b_Photon_charge);
    if (is17 && isMC && isQCD)
      fChain->SetBranchAddress("Photon_cutBasedBitmap", Photon_cutBased, &b_Photon_cutBasedBitmap);

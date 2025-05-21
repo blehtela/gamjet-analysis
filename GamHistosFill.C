@@ -370,6 +370,8 @@ void GamHistosFill::Loop()
       fChain->SetBranchStatus("Photon_eCorr",1); // not in 2016
     fChain->SetBranchStatus("Photon_energyErr",1);
     fChain->SetBranchStatus("Photon_r9",1);
+    fChain->SetBranchStatus("Photon_sieie",1);
+    fChain->SetBranchStatus("Photon_pfChargedIso",1);
     
     fChain->SetBranchStatus("nJet",1);
     fChain->SetBranchStatus("Jet_pt",1);
@@ -683,6 +685,9 @@ void GamHistosFill::Loop()
   } 
   //mc 2025
   // TO BE ADDED. (winter2025)
+  if (ds=="winter2025P8"){
+    jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51
+  }
   //data 2025
   if (ds=="2025B" || ds=="2025C"){
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w50 (use JECs we have, 20.05.2025)
@@ -1707,13 +1712,13 @@ void GamHistosFill::Loop()
   //for investigating fake photons, some photon variables (added on 14th of May 2025)
   fout->mkdir("photon");
   fout->cd("photon");
-  TProfile *p_r9_vspt = new TProfile("p_r9_vspt","",nx,vx); 		//14.05.2025, moved this to own folder for fake photon stuff
-  TProfile *p_sieie_vspt = new TProfile("p_sieie_vspt","",nx,vx);	//added 14.05.2025 sigma ieta ieta
-  TProfile *p_pfchargediso_vspt = new TProfile("p_pfchargediso_vspt","",nx,vx); //added 14.05.2025 photon isolation PF absolute isolation dR=0.3, charged component
+  TProfile *p_r9_vspt = new TProfile("p_r9_vspt",";p_{T,#gamma};Photon_r9",nx,vx); 		//14.05.2025, moved this to own folder for fake photon stuff
+  TProfile *p_sieie_vspt = new TProfile("p_sieie_vspt",";p_{T,#gamma};Photon_sieie",nx,vx);	//added 14.05.2025 sigma ieta ieta
+  TProfile *p_pfchargediso_vspt = new TProfile("p_pfchargediso_vspt",";p_{T,#gamma};Photon_pfChargedIso",nx,vx); //added 14.05.2025 photon isolation PF absolute isolation dR=0.3, charged component
   //ny and vy for eta like L2L3Res etabinning; nx and vx are for pt; (neta, bineta?)
-  TH3D *h3_mpf_vspteta = new TH3D("h3_mpf_vspteta", ";#eta;p_T (GeV);MPF",ny,vy,nx,vx,nresp,vresp); 	//response (MPF) distribution so just counts in eta/pt/mpf
-  TH3D *h3_db_vspteta = new TH3D("h3_db_vspteta", ";#eta;p_T (GeV);DB",ny,vy,nx,vx,nresp,vresp); 		//response (DB) distribution
-  TH3D *h3_mpfx_vspteta = new TH3D("h3_mpfx_vspteta", ";#eta;p_T (GeV);MPFX",ny,vy,nx,vx,nresp,vresp); 	//response (MPFX) distr., so N (counts) in eta/pt/mpf
+  TH3D *h3_mpf_vspteta = new TH3D("h3_mpf_vspteta", ";#eta_{jet};p_{T,#gamma} (GeV);MPF",ny,vy,nx,vx,nresp,vresp); 	//response (MPF) distribution so just counts in eta/pt/mpf
+  TH3D *h3_db_vspteta = new TH3D("h3_db_vspteta", ";#eta_{jet};p_{T,#gamma} (GeV);DB",ny,vy,nx,vx,nresp,vresp); 		//response (DB) distribution
+  TH3D *h3_mpfx_vspteta = new TH3D("h3_mpfx_vspteta", ";#eta_{jet};p_{T,#gamma} (GeV);MPFX",ny,vy,nx,vx,nresp,vresp); 	//response (MPFX) distr., so N (counts) in eta/pt/mpf
 
 
 
@@ -3686,6 +3691,18 @@ void GamHistosFill::Loop()
     double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
     pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
   }//end jec4prompt (pass_all)
+
+  //could unite this with the previous if, just kept it separately for testing photon stuff (w51)
+  if(pass_all){
+    h3_mpf_vspteta->Fill(jet.Eta(), gam.Pt(), mpf, w);
+    h3_db_vspteta->Fill(jet.Eta(), gam.Pt(), bal, w);
+    h3_mpfx_vspteta->Fill(jet.Eta(), gam.Pt(), mpfx, w);
+
+    p_r9_vspt->Fill(ptgam, Photon_r9[iGam], w);
+    p_sieie_vspt->Fill(ptgam, Photon_sieie[iGam], w);
+    p_pfchargediso_vspt->Fill(ptgam, Photon_pfChargedIso[iGam], w);
+  }
+
 
 
   // 1) Time controls for JES and PF composition; 2) etaphi maps (for jet veto) with response over eta and phi; 3) etaphi maps for rate (n jets)
