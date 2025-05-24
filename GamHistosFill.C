@@ -797,7 +797,9 @@ void GamHistosFill::Loop()
   //for prompt data 2025
   if (TString(ds.c_str()).Contains("2025"))
     //LoadJSON("files/Collisions25_13p6TeV_391658_392301_DCSOnly_TkPx.json"); //get daily json --> w50 (20.05.2025)
-    LoadJSON("files/Collisions25_13p6TeV_391658_392382_DCSOnly_TkPx.json"); //get daily json --> w51 (21.05.2025)
+    //LoadJSON("files/Collisions25_13p6TeV_391658_392382_DCSOnly_TkPx.json"); //get daily json --> w51 (21.05.2025)
+    LoadJSON("files/Collisions25_13p6TeV_391658_392441_DCSOnly_TkPx.json"); //get daily json --> w52 (23./24.05.2025)
+
 
 //TO DO: update JSON
 
@@ -847,10 +849,12 @@ void GamHistosFill::Loop()
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
   }
   else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025)
-  lumi30 = LoadLumi("files/lumi2025_21may2025_photon200_pb_w51.csv");
-  lumi50 = LoadLumi("files/lumi2025_21may2025_photon110eb_pb_w51.csv");
-  lumi110 = LoadLumi("files/lumi2025_21may2025_photon50eb_pb_w51.csv");
-  lumi200 = LoadLumi("files/lumi2025_21may2025_photon30eb_pb_w51.csv");
+  lumi30 = LoadLumi("files/lumi2025_24may2025_photon200_pb_w52.csv");
+  lumi50 = LoadLumi("files/lumi2025_24may2025_photon110eb_pb_w52.csv");
+  lumi110 = LoadLumi("files/lumi2025_24may2025_photon50eb_pb_w52.csv");
+  lumi110 = LoadLumi("files/lumi2025_24may2025_photon45eb_pb_w52.csv");
+  lumi200 = LoadLumi("files/lumi2025_24may2025_photon40eb_pb_w52.csv");
+  lumi200 = LoadLumi("files/lumi2025_24may2025_photon30eb_pb_w52.csv");
   }
 
 
