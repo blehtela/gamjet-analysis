@@ -259,6 +259,10 @@ void GamHistosFill::Loop()
 		//fChain->SetBranchStatus("HLT_Photon55EB_TightID_TightIso",1); //commented out since w44
 	}
     }
+    if (is25) { //new 2024 trigger paths
+      fChain->SetBranchStatus("HLT_Photon40EB_TightID_TightIso",1);
+      fChain->SetBranchStatus("HLT_Photon45EB_TightID_TightIso",1);
+    } 
 
     // Triggers to recover 60-105 GeV range. However, inefficient up to high pT
     // Possibly medium HLT cuts not fully consistent with tight ID?
@@ -1474,7 +1478,7 @@ void GamHistosFill::Loop()
 
 	//double xmax = 383000.5; //need to update this regularly
 	//double xmax = 389000.5; //386000.5
-  double xmax = 393000.5; //updated on 20.05.2025 for 2025 data
+  double xmax = 395000.5; //updated on 20.05.2025 for 2025 data
 	double xmin = 355000.5;
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
@@ -1493,11 +1497,15 @@ void GamHistosFill::Loop()
   
   // Time stability of JEC
   TProfile *pr30b = new TProfile("pr30b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr40b = new TProfile("pr40b",";Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr45b = new TProfile("pr45b",";Run;BAL;",histnx,xmin,xmax);
   TProfile *pr50b = new TProfile("pr50b",";Run;BAL;",histnx,xmin,xmax);
   TProfile *pr110b = new TProfile("pr110b",";Run;BAL;",histnx,xmin,xmax);
   TProfile *pr230b = new TProfile("pr230b",";Run;BAL;",histnx,xmin,xmax);
   TProfile *prg1b = new TProfile("prg1b",";Run;BAL;",histnx,xmin,xmax);
   TProfile *pr30m = new TProfile("pr30m",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr40m = new TProfile("pr40m",";Run;MPF;",histnx,xmin,xmax);
+  TProfile *pr45m = new TProfile("pr45m",";Run;MPF;",histnx,xmin,xmax);
   TProfile *pr50m = new TProfile("pr50m",";Run;MPF;",histnx,xmin,xmax);
   TProfile *pr110m = new TProfile("pr110m",";Run;MPF;",histnx,xmin,xmax);
   TProfile *pr230m = new TProfile("pr230m",";Run;MPF;",histnx,xmin,xmax);
@@ -1514,6 +1522,8 @@ void GamHistosFill::Loop()
 
   // Time stability of PF composition
   TProfile *pr30chf = new TProfile("pr30chf",";Run;CHF;",histnx,xmin,xmax);
+  TProfile *pr40chf = new TProfile("pr40chf",";Run;CHF;",histnx,xmin,xmax);
+  TProfile *pr45chf = new TProfile("pr45chf",";Run;CHF;",histnx,xmin,xmax);
   TProfile *pr50chf = new TProfile("pr50chf",";Run;CHF;",histnx,xmin,xmax);
   TProfile *pr110chf = new TProfile("pr110chf",";Run;CHF;",histnx,xmin,xmax);
   TProfile *pr230chf = new TProfile("pr230chf",";Run;CHF;",histnx,xmin,xmax);
@@ -1521,6 +1531,8 @@ void GamHistosFill::Loop()
   TProfile *pr50efb_chf = new TProfile("pr50efb_chf","CHF #times p_{T,rawj} / p_{T,#gamma};Run;EFB CHF;",histnx,xmin,xmax);
   //
   TProfile *pr30nhf = new TProfile("pr30nhf",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr40nhf = new TProfile("pr40nhf",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr45nhf = new TProfile("pr45nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr50nhf = new TProfile("pr50nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr110nhf = new TProfile("pr110nhf",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr230nhf = new TProfile("pr230nhf",";Run;NHF;",histnx,xmin,xmax);
@@ -1528,6 +1540,8 @@ void GamHistosFill::Loop()
   TProfile *pr50efb_nhf = new TProfile("pr50efb_nhf","NHF #times p_{T,rawj} / p_{T,#gamma};Run;EFB NHF;",histnx,xmin,xmax);
   //
   TProfile *pr30nef = new TProfile("pr30nef",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr40nef = new TProfile("pr40nef",";Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr45nef = new TProfile("pr45nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr50nef = new TProfile("pr50nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr110nef = new TProfile("pr110nef",";Run;NHF;",histnx,xmin,xmax);
   TProfile *pr230nef = new TProfile("pr230nef",";Run;NHF;",histnx,xmin,xmax);
@@ -2027,6 +2041,8 @@ void GamHistosFill::Loop()
   TH1D *hgam200 = new TH1D("hgam200","",197,15,1000);
   TH1D *hgam300 = new TH1D("hgam300","",197,15,1000);
   TH1D *hgam30t = new TH1D("hgam30t","",197,15,1000);
+  TH1D *hgam40t = new TH1D("hgam40t","",197,15,1000); //new (24.05.2025)
+  TH1D *hgam45t = new TH1D("hgam45t","",197,15,1000); //new (24.05.2025)
   TH1D *hgam50t = new TH1D("hgam50t","",197,15,1000); //new (27.05.2024)
   TH1D *hgam100t = new TH1D("hgam100t","",197,15,1000);
   TH1D *hgam110t = new TH1D("hgam110t","",197,15,1000);
@@ -2535,6 +2551,8 @@ void GamHistosFill::Loop()
     if (jentry%10000==0) cout << "." << flush;
     ++nlap;
 
+    //Safety resets for triggers only in 2025
+    HLT_Photon40EB_TightID_TightIso = HLT_Photon45EB_TightID_TightIso = kFALSE;
     //Safety resets for triggers only in 2024
     HLT_Photon50EB_TightID_TightIso = 
 	//HLT_Photon55EB_TightID_TightIso = //commented out since w44
@@ -2596,6 +2614,12 @@ void GamHistosFill::Loop()
       if (b_HLT_Photon100EB_TightID_TightIso && is18) // not in 2016-17, 2018A
 	b_HLT_Photon100EB_TightID_TightIso->GetEntry(ientry);
 
+      // Only 25
+      if (b_HLT_Photon40EB_TightID_TightIso && is25)
+	b_HLT_Photon40EB_TightID_TightIso->GetEntry(ientry);
+      if (b_HLT_Photon45EB_TightID_TightIso && is25)
+	b_HLT_Photon45EB_TightID_TightIso->GetEntry(ientry);
+ 
       // Only 24
       if (b_HLT_Photon50EB_TightID_TightIso && (is24 || is25))
 	b_HLT_Photon50EB_TightID_TightIso->GetEntry(ientry);
@@ -2665,6 +2689,8 @@ void GamHistosFill::Loop()
              HLT_Photon90EB_TightID_TightIso ||
 	     HLT_Photon75EB_TightID_TightIso ||
 	     //HLT_Photon55EB_TightID_TightIso ||	//commented out since w44
+	     HLT_Photon40EB_TightID_TightIso ||
+	     HLT_Photon45EB_TightID_TightIso ||
 	     HLT_Photon50EB_TightID_TightIso ||
 	     HLT_Photon30EB_TightID_TightIso ||
 	     HLT_Photon90_R9Id90_HE10_IsoM ||
@@ -3084,10 +3110,22 @@ void GamHistosFill::Loop()
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 )) ||
        // Updated menu in 2024 with high rate isolated triggers //NOTE: should we change thresholds here already? (account for turnon)
-       (isRun3 && (is24 || is25) &&
+       //(isRun3 && (is24 || is25) &&
+       (isRun3 && is24 &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
 	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
+	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
+	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
+	 )) ||
+	// updated with 2025 stuff (same as 24 plus 40 and 45 trg)
+	(isRun3 && is25 &&
+	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
+	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
+	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 (HLT_Photon45EB_TightID_TightIso && pt>=45 && pt<50 && (itrg=45)) ||
+	 (HLT_Photon40EB_TightID_TightIso && pt>=40 && pt<45 && (itrg=40)) ||
 	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
@@ -3494,6 +3532,8 @@ void GamHistosFill::Loop()
       if (HLT_Photon110EB_TightID_TightIso) hgam110t->Fill(ptgam, w);
       if (HLT_Photon100EB_TightID_TightIso) hgam100t->Fill(ptgam, w);
       if (HLT_Photon30EB_TightID_TightIso) hgam30t->Fill(ptgam, w);
+      if (HLT_Photon40EB_TightID_TightIso) hgam40t->Fill(ptgam, w); //new, added hgam40t (24.05.2025)
+      if (HLT_Photon45EB_TightID_TightIso) hgam45t->Fill(ptgam, w); //new, added hgam45t (24.05.2025)
       if (HLT_Photon50EB_TightID_TightIso) hgam50t->Fill(ptgam, w); //new, added hgam50t (27.05.2024)
       // 60-105 GeV with medium triggers. NB: conflicting ID?
       if (HLT_Photon165_R9Id90_HE10_IsoM) hgam165m->Fill(ptgam, w);
@@ -3719,6 +3759,20 @@ void GamHistosFill::Loop()
 	    pr30nhf->Fill(run, Jet_neHEF[iJet], w);
 	    pr30nef->Fill(run, Jet_neEmEF[iJet], w);
 	  }
+    if (itrg==40 && ptgam>43) {
+      pr40b->Fill(run, bal, w); 
+      pr40m->Fill(run, mpf, w);
+      pr40chf->Fill(run, Jet_chHEF[iJet], w);
+      pr40nhf->Fill(run, Jet_neHEF[iJet], w);
+      pr40nef->Fill(run, Jet_neEmEF[iJet], w);
+    }
+    if (itrg==45 && ptgam>48) {
+      pr45b->Fill(run, bal, w); 
+      pr45m->Fill(run, mpf, w);
+      pr45chf->Fill(run, Jet_chHEF[iJet], w);
+      pr45nhf->Fill(run, Jet_neHEF[iJet], w);
+      pr45nef->Fill(run, Jet_neEmEF[iJet], w);
+    }
     if (itrg==50 && ptgam>53) { //ptgam>53 (to avoid trouble with hlt scale) (used to be ptgam>50)
       pr50n->Fill(run, w); 
       pr50xs->Fill(run, lumi50[run] ? 1./lumi50[run] : 1.); //new (can remove this when pr50n one above shows xs)
@@ -4182,12 +4236,14 @@ void GamHistosFill::Loop()
 	  double w1 = 0.01*w;
 	  if (HLT_Photon20_HoverELoose         && pt>=20)  hmus20->Fill(mu,w1);
 	  if (HLT_Photon30_HoverELoose         && pt>=30)  hmus30->Fill(mu,w1);
+   	  //if (HLT_Photon40EB_TightID_TightIso  && pt>=55)  hmus40->Fill(mu,w1); //not yet
+   	  //if (HLT_Photon45EB_TightID_TightIso  && pt>=55)  hmus45->Fill(mu,w1); //not yet
 	  if (HLT_Photon50_R9Id90_HE10_IsoM    && pt>=55)  hmus50->Fill(mu,w1);
-          if (HLT_Photon50EB_TightID_TightIso  && pt>=55)  hmus50->Fill(mu,w1);
+          if (HLT_Photon50EB_TightID_TightIso  && pt>=55)  hmus50->Fill(mu,w1);  // is this a bug?! (noted on 24.5.2025), since same as above trg...
 	  if (HLT_Photon75_R9Id90_HE10_IsoM    && pt>=80)  hmus75->Fill(mu,w1);
           if (HLT_Photon75EB_TightID_TightIso  && pt>=55)  hmus75->Fill(mu,w1);
 	  if (HLT_Photon90_R9Id90_HE10_IsoM    && pt>=95)  hmus90->Fill(mu,w1);
-          if (HLT_Photon90EB_TightID_TightIso  && pt>=55)  hmus90->Fill(mu,w1);
+          if (HLT_Photon90EB_TightID_TightIso  && pt>=55)  hmus90->Fill(mu,w1); // is this a bug?! (noted on 24.5.2025) 
 	  if (HLT_Photon100EB_TightID_TightIso && pt>=105) hmus100->Fill(mu,w1);
 	  if (HLT_Photon110EB_TightID_TightIso && pt>=115) hmus110->Fill(mu,w1);
 	  if (HLT_Photon200                    && pt>=210) hmus200->Fill(mu,w1);
@@ -4529,6 +4585,7 @@ void GamHistosFill::Loop()
 	double phi = Jet_phi[iJet];
 	double ptjet = Jet_pt[iJet];//p4.Pt();
 	
+	//NOTE (24.5.2025) --> should we use Photon40EB here instead?
 	if (pass_basic_notrig_noveto &&
 	    HLT_Photon50EB_TightID_TightIso && ptgam>=55. && ptjet>30.) {
 	  //ptjet>30. && ptjet>0.5*ptgam && ptjet<1.5*ptgam) {
