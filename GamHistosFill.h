@@ -253,6 +253,13 @@ public :
    //Bool_t          HLT_Photon500;
    //Bool_t          HLT_Photon600;
 
+
+   // Triggers and Branches from 25
+   //Bool_t          HLT_Photon30EB_TightID_TightIso; //was already there earlier, see below
+   Bool_t          HLT_Photon40EB_TightID_TightIso;
+   Bool_t          HLT_Photon45EB_TightID_TightIso;
+
+
    // Triggers and branches from 24
    //Bool_t          HLT_Photon50EB_TightID_TightIso_PFJet30;
    Bool_t          HLT_Photon50EB_TightID_TightIso;
@@ -511,6 +518,10 @@ public :
 
    //TBranch        *b_HLT_Photon500;   //!
    //TBranch        *b_HLT_Photon600;   //!
+
+   // Triggers (and branches) from 25
+   TBranch        *b_HLT_Photon40EB_TightID_TightIso_PFJet30;   //!
+   TBranch        *b_HLT_Photon45EB_TightID_TightIso;   //!
 
 
    // Triggers (and branches) from 24
@@ -947,6 +958,9 @@ void GamHistosFill::Init(TTree *tree)
 
    b_HLT_Photon165_HE10 = 0;
 
+   b_HLT_Photon40EB_TightID_TightIso = 0;
+   b_HLT_Photon45EB_TightID_TightIso = 0;
+ 
    b_HLT_Photon50EB_TightID_TightIso = 0;
    //b_HLT_Photon55EB_TightID_TightIso = 0;
    b_HLT_Photon75EB_TightID_TightIso = 0;
@@ -1077,13 +1091,17 @@ void GamHistosFill::Init(TTree *tree)
        fChain->SetBranchAddress("HLT_Photon75EB_TightID_TightIso", &HLT_Photon75EB_TightID_TightIso, &b_HLT_Photon75EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon90EB_TightID_TightIso", &HLT_Photon90EB_TightID_TightIso, &b_HLT_Photon90EB_TightID_TightIso);
 
-			 if(!isMC){//somehow not found for winter2024P8, so only use for data
-       	//fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
-			 }
+	if(!isMC){//somehow not found for winter2024P8, so only use for data
+       		//fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
+	}
 
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso", &HLT_Photon110EB_TightID_TightIso, &b_HLT_Photon110EB_TightID_TightIso);
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso_PFJet30", &HLT_Photon110EB_TightID_TightIso_PFJet30, &b_HLT_Photon110EB_TightID_TightIso_PFJet30);
    } // is24 is25
+   if (is25){
+       fChain->SetBranchAddress("HLT_Photon40EB_TightID_TightIso", &HLT_Photon40EB_TightID_TightIso, &b_HLT_Photon40EB_TightID_TightIso);
+       fChain->SetBranchAddress("HLT_Photon45EB_TightID_TightIso", &HLT_Photon45EB_TightID_TightIso, &b_HLT_Photon45EB_TightID_TightIso);
+   } // is25
 
    Notify();
 }
