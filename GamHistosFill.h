@@ -520,7 +520,7 @@ public :
    //TBranch        *b_HLT_Photon600;   //!
 
    // Triggers (and branches) from 25
-   TBranch        *b_HLT_Photon40EB_TightID_TightIso_PFJet30;   //!
+   TBranch        *b_HLT_Photon40EB_TightID_TightIso;   //!
    TBranch        *b_HLT_Photon45EB_TightID_TightIso;   //!
 
 
