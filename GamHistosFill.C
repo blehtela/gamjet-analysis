@@ -799,7 +799,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions25_13p6TeV_391658_392301_DCSOnly_TkPx.json"); //get daily json --> w50 (20.05.2025)
     //LoadJSON("files/Collisions25_13p6TeV_391658_392382_DCSOnly_TkPx.json"); //get daily json --> w51 (21.05.2025)
     //LoadJSON("files/Collisions25_13p6TeV_391658_392441_DCSOnly_TkPx.json"); //get daily json --> w52 (23./24.05.2025)
-    LoadJSON("/eos/user/j/jecpcl/public/jec4prompt/daily_dials/daily_dials.json"); //get a hybrid json with golden and DIALS (Nico provides this file, is updated on a daily basis) --> w53 (starting on 27.05.2025)
+    //LoadJSON("/eos/user/j/jecpcl/public/jec4prompt/daily_dials/daily_dials.json"); //get a hybrid json with golden and DIALS (Nico provides this file, is updated on a daily basis) --> w53 (starting on 27.05.2025)
+    LoadJSON("files/daily_dials.json"); //workaround until moving back to lxplus (for vulcan)
 
 
 
