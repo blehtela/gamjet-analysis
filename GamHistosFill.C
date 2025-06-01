@@ -988,7 +988,8 @@ void GamHistosFill::Loop()
   //for 2025, first also use old vetomap from 2024 until we have new one
   if (TString(ds.c_str()).Contains("2025")) {
     if (TString(ds.c_str()).Contains("2025B") ||
-        TString(ds.c_str()).Contains("2025C"))
+        TString(ds.c_str()).Contains("2025C") ||
+				TString(ds.c_str()).Contains("winter2025P8"))
         fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); // UPDATE THIS WHEN NEW ONE AVAILABLE
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
@@ -3196,6 +3197,8 @@ void GamHistosFill::Loop()
 
       //cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
+			if(TString(dataset.c_str()).Contains("winter2025P8")){ mctype="winter2025P8";} //NEW: not used yet
+
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
