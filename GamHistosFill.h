@@ -632,24 +632,36 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 					ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" || 
 					ds=="2024QCD-v14"); //added these already, even though no summer MC for 2024 yet, use winter2024P8 right now.
   is25 = (ds=="2025B" || ds=="2025C" || //added first on 20.05.2025 (w50)
-          ds=="winter2025P8"); 
+          ds=="winter2025P8" ||
+          ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
+      		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
+		      ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
+          ds=="winter2025QCDk"); 
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
-	   ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
-           ds=="2023QCD" || ds=="2023QCD-BPix" || 
-           ds=="2024QCD" || ds=="2024QCD-v14" || ds=="summer2024QCD" ||
-		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
-		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
-	   ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf"); //added 2024QCD already here
+	        ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
+          ds=="2023QCD" || ds=="2023QCD-BPix" || 
+          ds=="2024QCD" || ds=="2024QCD-v14" || ds=="summer2024QCD" ||
+		      ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
+		      ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
+	        ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf"//); //added 2024QCD already here
+          ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
+      		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
+		      ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
+          ds=="winter2025QCDk"); 
   isMG = (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" || 
 					 ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022EEP8" || 
 					 ds=="2022QCD" || ds=="2022EEQCD" || //added winter24 here, too.. checking
            ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
 					 ds=="winter2024P8" || ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" ||
-		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
-		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
+		       ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
+		       ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
 					 ds=="2024QCD-v14" || ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||
            ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test" ||  //added already here
-           ds=="winter2025P8");
+           ds=="winter2025P8" ||
+           ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
+      		 ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
+		       ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
+           ds=="winter2025QCDk"); 
   isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25)
   isRun3 = (is22 || is23 || is24 || is25);
   isRun2 = (is16  || is17 || is18);

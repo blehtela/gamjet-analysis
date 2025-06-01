@@ -689,7 +689,7 @@ void GamHistosFill::Loop()
   } 
   //mc 2025
   // TO BE ADDED. (winter2025)
-  if (ds=="winter2025P8"){
+  if (ds=="winter2025P8" || TString(ds.c_str()).Contains("winter2025QCD")){ //should cover winter2025QCD a,b,c,d,e,f,g,h,i,j,k (11 parts)
     jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51
   }
   //data 2025
@@ -741,7 +741,7 @@ void GamHistosFill::Loop()
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
-  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025C") sera = "2025"; //added on 20.05.2025 (w50)
+  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025C"|| TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54)
   assert(sera!="");
 
   // Load JSON files
@@ -989,7 +989,8 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2025")) {
     if (TString(ds.c_str()).Contains("2025B") ||
         TString(ds.c_str()).Contains("2025C") ||
-				TString(ds.c_str()).Contains("winter2025P8"))
+				TString(ds.c_str()).Contains("winter2025P8") ||
+        TString(ds.c_str()).Contains("winter2025QCD"))
         fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); // UPDATE THIS WHEN NEW ONE AVAILABLE
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
@@ -3198,6 +3199,7 @@ void GamHistosFill::Loop()
       //cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
 			if(TString(dataset.c_str()).Contains("winter2025P8")){ mctype="winter2025P8";} //NEW: not used yet
+			if(TString(dataset.c_str()).Contains("winter2025QCD")){ mctype="winter2025QCD";} //covers also 11 parts a-k
 
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
 			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}
