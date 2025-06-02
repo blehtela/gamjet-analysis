@@ -109,15 +109,14 @@ void GamHistosMixEra(string sepoch, string sver) {
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_%s.root", epoch,ver),"RECREATE"); //only for now... (delete when MC is called 2024P8 again)
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_V14_%s.root", epoch,ver),"RECREATE"); //for MC V14 stuff
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_%sQCD_no-pu_%s.root", epoch,ver),"RECREATE"); //for MC V14 stuff
-	fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter%sP8_%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for MC V14 stuff
-
+	fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter%sP8_winter%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for MC V14 stuff
 
 
 	//TFile *fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root", //GamHistosFill_mc_2023QCD_w4.root
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD-v14_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root",qepoch,ver),"READ"); //default
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_pu-_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
-        fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_no-pu_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
+        fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sQCD_no-pu_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
 
 	assert(fqcd && !fqcd->IsZombie());
     }
