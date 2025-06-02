@@ -53,7 +53,10 @@ void GamHistosMix() {
   //GamHistosMixEra("2023","w14"); //make this contain MC without BPix issue
   //GamHistosMixEra("2023-BPix","w31"); //MC accounted for BPix issue
   //GamHistosMixEra("2023-BPix","w33"); //MC accounted for BPix issue
-  GamHistosMixEra("2024","w44");
+  //GamHistosMixEra("2024","w44");
+
+  //2025
+  GamHistosMixEra("2025", "w54"); //added on 02 Jun 2025
 
 
 }
@@ -81,15 +84,14 @@ void GamHistosMixEra(string sepoch, string sver) {
         //                        ver),"READ");			                //e.g. GamHistosFill_mc_2023P8-BPix_w4.root
         fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_%s.root", //for now the madgraph sample from 2024.. just interim result
                                 ver),"READ");			 
-
-  			fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_%s.root", epoch,ver),"RECREATE"); //only for now...
+	fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_%s.root", epoch,ver),"RECREATE"); //only for now...
 
 
 
         assert(fgam && !fgam->IsZombie());
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_2023QCD-BPix_%s.root", //GamHistosFill_mc_2023QCD-BPix_w4.root
         //                        ver),"READ");
-				fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_2023QCD-BPix_w31.root"),"READ");
+	fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_2023QCD-BPix_w31.root"),"READ");
 
         assert(fqcd && !fqcd->IsZombie());
     }
@@ -99,21 +101,23 @@ void GamHistosMixEra(string sepoch, string sver) {
 				//       epoch,ver),"READ");
         //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_%s.root",epoch,ver),"READ"); //workaround as our mc is currently winter2024P8 instead of 2024P8
         //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8-v14_%s.root",epoch,ver),"READ"); //for MC V14 stuff
-        fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_pu-_%s.root",epoch,ver),"READ");
+        //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_pu-_%s.root",epoch,ver),"READ");
+        fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_no-pu_%s.root",epoch,ver),"READ");
 
 	assert(fgam && !fgam->IsZombie());
 
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_%s.root", epoch,ver),"RECREATE"); //only for now... (delete when MC is called 2024P8 again)
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter24P8_%sQCD_V14_%s.root", epoch,ver),"RECREATE"); //for MC V14 stuff
-	fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_%sQCD_no-pu_%s.root", epoch,ver),"RECREATE"); //for MC V14 stuff
+	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_%sQCD_no-pu_%s.root", epoch,ver),"RECREATE"); //for MC V14 stuff
+	fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter%sP8_%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for MC V14 stuff
 
 
 
 	//TFile *fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root", //GamHistosFill_mc_2023QCD_w4.root
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD-v14_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_%s.root",qepoch,ver),"READ"); //default
-        fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_pu-_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
-
+        //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_pu-_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
+        fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_no-pu_%s.root",qepoch,ver),"READ"); //for the MC V14 stuff
 
 	assert(fqcd && !fqcd->IsZombie());
     }
