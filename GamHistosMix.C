@@ -177,7 +177,18 @@ void recurseGamHistosFile(TDirectory *gamdir, TDirectory *qcddir,
     if (_debug) cout << Form(c," ",gamdir->GetName(),key->GetName())
 		     << endl << flush;
     obj = key->ReadObj(); assert(obj);
-		if (TString(key->GetName()).Contains("_ps")) continue; //added this for w33, might need to remove it again
+    if (TString(key->GetName()).Contains("_ps")) continue; //added this for w33, might need to remove it again
+
+    //for()
+    //added the following lines for w54, since PTG-binned mc (winter2025P8) has additional histos compared to HT-binned only (winter2025QCD)
+    TString currkey = TString(key->GetName()); //the current key
+    if (currkey.Contains("hxsec1") || currkey.Contains("hxsec2") || currkey.Contains("hxsec3") ||
+	currkey.Contains("hnevt1") || currkey.Contains("hnevt2") || currkey.Contains("hnevt3") ||
+	currkey.Contains("hsumw1") || currkey.Contains("hsumw2") || currkey.Contains("hsumw3") ||
+	currkey.Contains("hLHE_HT1") || currkey.Contains("hLHE_HT2") || currkey.Contains("hLHE_HT3") ||
+	currkey.Contains("hHT1") || currkey.Contains("hHT2") || currkey.Contains("hHT3")){ 
+	continue;
+    }
 
 
     // Found a subdirectory: copy it to output and go deeper                   
