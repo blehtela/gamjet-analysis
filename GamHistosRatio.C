@@ -49,7 +49,10 @@ void GamHistosRatios(string ver, string iov);
 // v27->v29->v30->v31(L2L3Res_V2)->v32(L2L3Res_V3)
 //void GamHistosRatio(string ver = "w45") {  //w45 (17.02.2025), using w44 MC (full era based reweighting) and w45 data (nib-based)
 //void GamHistosRatio(string ver = "w48") {  //w48 (27.03.2025), using w48 MC (nib-based reweighting) and w45 data (nib-based)
-void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and w48 data (nib-based)
+//void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and w48 data (nib-based)
+void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and w56 data (nib-based; CDE-rereco and FGHI-prompt)
+
+
 
   //GamHistosRatios(ver,"2016BCDEF");
   //GamHistosRatios(ver,"2016FGH");
@@ -134,7 +137,7 @@ void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and 
   GamHistosRatios(ver, "2024C-rereco");
   GamHistosRatios(ver, "2024D-rereco");
   GamHistosRatios(ver, "2024E-rereco"); 
-  //GamHistosRatios(ver, "2024CDE-rereco"); 
+  GamHistosRatios(ver, "2024CDE-rereco"); 
 
 
   //nib-based
@@ -153,7 +156,9 @@ void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and 
   GamHistosRatios(ver, "2024Gnib2");
   GamHistosRatios(ver, "2024Hnib1");
   GamHistosRatios(ver, "2024Inib1");
-  //GamHistosRatios(ver, "2024FGHI");
+  GamHistosRatios(ver, "2024FGHI");
+
+  GamHistosRatios(ver, "2024CDE-rereco_2024FGHI-prompt");
 
   /*
   GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib1");
@@ -359,7 +364,9 @@ void GamHistosRatios(string ver, string iov) {
       }
 
 	if (iov=="2024Bnib1" || iov=="2024Cnib1" || iov=="2024Dnib1" || iov=="2024Ev1nib1" || iov=="2024Ev2nib1" || iov=="2024Fnib1" ||
-		iov=="2024Fnib2" || iov=="2024Fnib3" || iov=="2024Gnib1" || iov=="2024Gnib2" || iov=="2024Hnib1" || iov=="2024Inib1") {
+		iov=="2024Fnib2" || iov=="2024Fnib3" || iov=="2024Gnib1" || iov=="2024Gnib2" || iov=="2024Hnib1" || iov=="2024Inib1" ||
+		iov=="2024C-rereco" || iov=="2024D-rereco" || iov=="2024E-rereco" || 
+		iov=="2024CDE-rereco" || iov=="2024FGHI" || iov=="2024CDE-rereco" || iov=="2024CDE-rereco_2024FGHI-prompt") {
 
 		string erabasename = iov.substr(0, iov.size()-4);
 		//cout << "erabasename = " << erabasename << endl;
@@ -375,6 +382,16 @@ void GamHistosRatios(string ver, string iov) {
 		// MC and output file when QCD in the Mix
 		///fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_2024QCD_no-pu_w44.root"),"READ"); //NO QCD, reweighted with F
 		///fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-2024QCD_no-pu_%s.root",ci,cv),"RECREATE"); 
+		//
+		//fm = new TFile(Form("rootfiles/GamHistosMix_mc_summer2024P8_summer2024QCD_pu-2024CDEFGHI_%s.root",cv),"READ");
+		//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_summer2024P8-summer2024QCD_pu-2024CDEFGHI_%s.root",ci,cv),"RECREATE"); 
+
+		//QCD but no pu reweighting
+		fm = new TFile(Form("rootfiles/GamHistosMix_mc_summer2024P8_summer2024QCD_no-pu_%s.root",cv),"READ");
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_summer2024P8-summer2024QCD_no-pu_%s.root",ci,cv),"RECREATE"); 
+
+
+
 
 
 
@@ -400,9 +417,19 @@ void GamHistosRatios(string ver, string iov) {
 		//fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-%s-xs%s_w48.root",minbiasxs.c_str(),ci,minbiasxs.c_str()),"READ"); //NO QCD, reweighted with nib-based era
 		//fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-%s_xs%s_%s.root",minbiasxs.c_str(),ci,ci,minbiasxs.c_str(),cv),"RECREATE"); 
 
-		fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-2024CDEFGHI-xs%s_w48.root",minbiasxs.c_str(),minbiasxs.c_str()),"READ"); //NO QCD, reweighted with 2024
-		fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-2024CDEFGHI_xs%s_%s.root",minbiasxs.c_str(),ci,minbiasxs.c_str(),cv),"RECREATE");  //now full era
+		//fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_pu-2024CDEFGHI-xs%s_w48.root",minbiasxs.c_str(),minbiasxs.c_str()),"READ"); //NO QCD, reweighted with 2024
+		//fr = new TFile(Form("rootfiles/w48_xs%s/GamHistosRatio_%s_summer2024P8-noQCD_pu-2024CDEFGHI_xs%s_%s.root",minbiasxs.c_str(),ci,minbiasxs.c_str(),cv),"RECREATE");  //now full era
 
+		// IF NO QCD
+		//fm = new TFile(Form("rootfiles/GamHistosFill_mc_summer2024P8_pu-2024CDEFGHI_%s.root",cv),"READ"); //NO QCD, reweighted with 2024
+		//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_summer2024P8-noQCD_pu-2024CDEFGHI_%s.root",ci,cv),"RECREATE");  //now full era
+		//
+		//NO QCD, no pu reweighting
+		/*
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_summer2024P8_no-pu_%s.root",cv),"READ"); //NO QCD, reweighted with 2024
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_summer2024P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE");  //now full era
+		*/
+	
 
 
 		//when no pu reweighting, no QCD
@@ -410,7 +437,8 @@ void GamHistosRatios(string ver, string iov) {
 		////fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_no-pu_w48.root",minbiasxs.c_str()),"READ"); //NO QCD, not reweighted
 		////fr = new TFile(Form("rootfiles/GamHistosRatio_%s_summer2024P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE"); 
 	}
-	if (iov=="2024C-rereco" || iov=="2024D-rereco" || iov=="2024E-rereco") {
+/*
+	if (iov=="2024C-rereco" || iov=="2024D-rereco" || iov=="2024E-rereco") { //w56: added these to the above one...
 		//string erabasename = iov.substr(0, iov.size()-4);
         	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
 
@@ -461,6 +489,7 @@ void GamHistosRatios(string ver, string iov) {
 		////fm = new TFile(Form("rootfiles/w48_xs%s/GamHistosFill_mc_summer2024P8_no-pu_w48.root",minbiasxs.c_str()),"READ"); //NO QCD, not reweighted
 		////fr = new TFile(Form("rootfiles/GamHistosRatio_%s_summer2024P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE"); 
 	}
+*/
 
 	if(iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib1" || iov=="2024F-ECALCC-HCALDI-nib2" || iov=="2024F-ECALCC-HCALDI-nib3"){
 	      	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
