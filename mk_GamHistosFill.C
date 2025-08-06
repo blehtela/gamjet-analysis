@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w56") { //using w-version names for my code (Bettina)., we are at w56, w57 is for WITHOUT L2L3Res 2025 for dpnote
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w58") { //using w-version names for my code (Bettina), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -96,7 +96,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 			dataset=="2024Fnib1" || dataset=="2024Fnib2" || dataset=="2024Fnib3" || 
       dataset=="2024F-ECALCC-HCALDI-nib1" || dataset=="2024F-ECALCC-HCALDI-nib2" || dataset=="2024F-ECALCC-HCALDI-nib3" ||
 			dataset=="2024Gnib1" || dataset=="2024Gnib2" || dataset=="2024Hnib1" || dataset=="2024Inib1" ||
-      dataset=="2025B" || dataset=="2025C"); //added 2025 data on 20.05.2025, w50
+      dataset=="2025B" || dataset=="2025C" || dataset=="2025Cv2" || dataset=="2025D"); //added 2025 data on 20.05.2025, w50; added 25Cv2 and 25D on 05.08.2025, w58.
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
 		dataset=="2016APVP8" ||
