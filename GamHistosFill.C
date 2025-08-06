@@ -700,7 +700,7 @@ void GamHistosFill::Loop()
   if (ds=="2024Gnib2"){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
-  
+  }  
   if (ds=="2024Hnib1") {
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024H_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
@@ -712,14 +712,15 @@ void GamHistosFill::Loop()
   //mc 2025
   // TO BE ADDED. (winter2025)
   if (ds=="winter2025P8" || TString(ds.c_str()).Contains("winter2025QCD")){ //should cover winter2025QCD a,b,c,d,e,f,g,h,i,j,k (11 parts)
-    jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51
+    jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51, w56.
   }
   //data 2025
   if (ds=="2025B" || ds=="2025C"){
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w50 (use JECs we have, 20.05.2025)
 	  //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w50 (no L2L3Res, 21.05.2025)
     //jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51 (no L2L3Res, updated MC corrections, 21.05.2025)
-    jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w54 (first L2L3Res, 02.06.2025)
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w54, w56 (first L2L3Res, 02.06.2025)
+	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w57 (no L2L3Res, 24.06.2025) RUN WITHOUT L2L3Res for comparison (dpnote)
   }
 
   assert(jec);
@@ -823,7 +824,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions25_13p6TeV_391658_392382_DCSOnly_TkPx.json"); //get daily json --> w51 (21.05.2025)
     //LoadJSON("files/Collisions25_13p6TeV_391658_392441_DCSOnly_TkPx.json"); //get daily json --> w52 (23./24.05.2025)
     //LoadJSON("/eos/user/j/jecpcl/public/jec4prompt/daily_dials/daily_dials.json"); //get a hybrid json with golden and DIALS (Nico provides this file, is updated on a daily basis) --> w53 (starting on 27.05.2025)
-    LoadJSON("files/daily_dials.json"); //workaround until moving back to lxplus (for vulcan)
+    //LoadJSON("files/daily_dials.json"); //workaround until moving back to lxplus (for vulcan)
+    LoadJSON("files/daily_dials_17jun2025.json"); //for dp note
 
 
 
@@ -1087,7 +1089,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_11Jun2025.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_30Jun2025.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -3241,7 +3243,15 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("2022QCD")){ mctype="2022QCD";}
 			if(TString(dataset.c_str()).Contains("2022EEP8")){ mctype="2022EEP8";} //new, for y2022
 			if(TString(dataset.c_str()).Contains("2022EEQCD")){ mctype="2022EEQCD";}
-	
+/*
+	//need to use only the "stem" of the era name for finding the pu reweighting histogram, which is called e.g. pileup_summer2024QCD)
+    	if(TString(ce).Contains("QCDa") || TString(ce).Contains("QCDb") || TString(ce).Contains("QCDc") || TString(ce).Contains("QCDd") || TString(ce).Contains("QCDe") || 
+		TString(ce).Contains("QCDf") || TString(ce).Contains("QCDg") || TString(ce).Contains("QCDh") || TString(ce).Contains("QCDi") || TString(ce).Contains("QCDj")){
+		ce = (se.substr(0, se.size()-1)).c_str(); //remove the small letter
+    	}
+*/
+
+
 	
 			TH1D *hm = _pu[mctype][1]; //workaround since working with split input file lists; use one mc histo for all bins
 			//hm->Write(Form("input_pileup_normalised_%s",mctype.c_str())); //just for checking
@@ -4917,6 +4927,13 @@ void GamHistosFill::LoadPU(){
 
   for (int i = 0; i != neras; ++i) {//here "era" can also just mean year... but technically can be done per era as key in  map
     string se = eras[i]; const char *ce = se.c_str();
+    //need to use only the "stem" of the era name for finding the pu reweighting histogram, which is called e.g. pileup_summer2024QCD)
+    if(TString(ce).Contains("QCDa") || TString(ce).Contains("QCDb") || TString(ce).Contains("QCDc") || TString(ce).Contains("QCDd") || TString(ce).Contains("QCDe") || 
+	TString(ce).Contains("QCDf") || TString(ce).Contains("QCDg") || TString(ce).Contains("QCDh") || TString(ce).Contains("QCDi") || TString(ce).Contains("QCDj")){
+	ce = (se.substr(0, se.size()-1)).c_str(); //remove the small letter
+	se = se.substr(0, se.size()-1);
+    }
+
     for (unsigned int j = 0; j != trigs[se].size(); ++j) { //go through all triggers (j) of that era (se)
       string st = trigs[se][j]; const char *ct = st.c_str(); //st = "string trigger", ct = "char trigger" (rename for clarity...)
 
@@ -4933,10 +4950,12 @@ void GamHistosFill::LoadPU(){
       //TFile *fdt(0); //not needed, have all pu histos in one file now
       TH1D *h(0); 		//store pu histo into this variable
       if (st=="mc") { //when working with mc set, called trigger "mc"
+				cout << "st == mc , and ce = " << ce << " and se = " << se << endl << flush;
 				//do it like:  string erabasename = iov.substr(0, iov.size()-4);
 				string erabasename = se.substr(0,se.size()-1); //why -1 here?
 				///h = (TH1D*)fpu->Get(Form("pileup_%s",erabasename.c_str())); //COMMENTED OUT ON 02.05. due to bug of removing last char (see line above)
-				h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc?
+				//////h = (TH1D*)fpu->Get(Form("pileup_%s",ce)); //but this is the pu in mc? //just get the pu in mc? --> HAD THIS BEFORE DEBUGGING, but errors...
+				h = (TH1D*)fpu->Get(Form("pileup_%s",se.c_str())); //DEBUGGING on 19th of June 2025
 				if (!h) cout << "Failed to find pileup_"<<ce<<endl<<flush;
 				///if (!h) cout << "Failed to find pileup_"<<erabasename.c_str()<<endl<<flush; //remove this again (2.5.)
 
