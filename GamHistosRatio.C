@@ -50,7 +50,9 @@ void GamHistosRatios(string ver, string iov);
 //void GamHistosRatio(string ver = "w45") {  //w45 (17.02.2025), using w44 MC (full era based reweighting) and w45 data (nib-based)
 //void GamHistosRatio(string ver = "w48") {  //w48 (27.03.2025), using w48 MC (nib-based reweighting) and w45 data (nib-based)
 //void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and w48 data (nib-based)
-void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and w56 data (nib-based; CDE-rereco and FGHI-prompt)
+//void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and w56 data (nib-based; CDE-rereco and FGHI-prompt)
+void GamHistosRatio(string ver = "w58") {  //w58 (06.08.2025), using w56 MC and w58 data (only 2025, no pu reweighting)
+
 
 
 
@@ -133,6 +135,7 @@ void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and 
   //GamHistosRatios(ver,"Run3");
  
 
+/*
   //rereco
   GamHistosRatios(ver, "2024C-rereco");
   GamHistosRatios(ver, "2024D-rereco");
@@ -141,13 +144,11 @@ void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and 
 
 
   //nib-based
-  /*
   GamHistosRatios(ver, "2024Bnib1");
   GamHistosRatios(ver, "2024Cnib1");
   GamHistosRatios(ver, "2024Dnib1");
   GamHistosRatios(ver, "2024Ev1nib1");
   GamHistosRatios(ver, "2024Ev2nib1");
-  */
 
   GamHistosRatios(ver, "2024Fnib1");
   GamHistosRatios(ver, "2024Fnib2");
@@ -160,13 +161,17 @@ void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and 
 
   GamHistosRatios(ver, "2024CDE-rereco_2024FGHI-prompt");
 
-  /*
   GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib1");
   GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib2");
   GamHistosRatios(ver, "2024F-ECALCC-HCALDI-nib3");
   */
   //GamHistosRatios(ver, "2024Ev2nib1");
   
+  //2025
+  GamHistosRatios(ver, "2025C");
+  GamHistosRatios(ver, "2025Cv2");
+  GamHistosRatios(ver, "2025D"); 
+
 }
 
 void GamHistosRatios(string ver, string iov) {
@@ -507,6 +512,22 @@ void GamHistosRatios(string ver, string iov) {
 		//when no pu reweighting, no QCD
 		///fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-_w44.root"),"READ"); //NO QCD, reweighted with F
 		///fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE"); 
+	}
+	if(iov=="2025C" || iov=="2025Cv2" || iov=="2025D"){
+	      	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ci,cv),"READ");
+
+		// MC and output file when QCD in the Mix (BUT NO REWEIGHTING)
+		//fm = new TFile(Form("rootfiles/GamHistosMix_mc_winter2024P8_2024QCD_no-pu_w44.root"),"READ"); //NO QCD, reweighted with F
+		//fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-2024QCD_no-pu_%s.root",ci,cv),"RECREATE"); 
+
+		//MC and output file when NO QCD
+		//for pileup reweighting (based on FULL ERAS)
+		///fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2024P8_pu-2024F_w44.root"),"READ"); //NO QCD, reweighted with F
+		///fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2024P8-noQCD_pu-2024F_%s.root",ci,cv),"RECREATE"); 
+
+		//when no pu reweighting, no QCD
+		fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2025P8_no-pu_w56.root"),"READ"); //NO QCD, no reweighting
+		fr = new TFile(Form("rootfiles/GamHistosRatio_%s_winter2025P8-noQCD_no-pu_%s.root",ci,cv),"RECREATE"); 
 	}
 
 
