@@ -826,7 +826,9 @@ void GamHistosFill::Loop()
     //LoadJSON("/eos/user/j/jecpcl/public/jec4prompt/daily_dials/daily_dials.json"); //get a hybrid json with golden and DIALS (Nico provides this file, is updated on a daily basis) --> w53 (starting on 27.05.2025)
     //LoadJSON("files/daily_dials.json"); //workaround until moving back to lxplus (for vulcan)
     //LoadJSON("files/daily_dials_17jun2025.json"); //for dp note
-    LoadJSON("files/daily_dials_06aug2025.json"); //hybrid json (daily dials) for w58 (06.08.2025)
+    //LoadJSON("files/daily_dials_06aug2025.json"); //hybrid json (daily dials) for w58 (06.08.2025)
+    LoadJSON("files/daily_dials_07sep2025.json"); //hybrid json (daily dials) for w59 (07.09.2025)
+
 
 
 
@@ -878,13 +880,13 @@ void GamHistosFill::Loop()
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w44.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
   }
-  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w58 (06.08.2025)
-	  lumi30 = LoadLumi("files/lumi2025_06august2025_photon200_pb_w58.csv");
-	  lumi50 = LoadLumi("files/lumi2025_06august2025_photon110eb_pb_w58.csv");
-	  lumi110 = LoadLumi("files/lumi2025_06august2025_photon50eb_pb_w58.csv");
-	  lumi110 = LoadLumi("files/lumi2025_06august2025_photon45eb_pb_w58.csv");
-	  lumi200 = LoadLumi("files/lumi2025_06august2025_photon40eb_pb_w58.csv");
-	  lumi200 = LoadLumi("files/lumi2025_06august2025_photon30eb_pb_w58.csv");
+  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w59 (07.09.2025)
+	  lumi30 = LoadLumi("files/lumi2025_07september2025_photon200_pb_w59.csv");
+	  lumi50 = LoadLumi("files/lumi2025_07september2025_photon110eb_pb_w59.csv");
+	  lumi110 = LoadLumi("files/lumi2025_07september2025_photon50eb_pb_w59.csv");
+	  lumi110 = LoadLumi("files/lumi2025_07september2025_photon45eb_pb_w59.csv");
+	  lumi200 = LoadLumi("files/lumi2025_07september2025_photon40eb_pb_w59.csv");
+	  lumi200 = LoadLumi("files/lumi2025_07september2025_photon30eb_pb_w59.csv");
   }
 
 
@@ -3834,9 +3836,18 @@ void GamHistosFill::Loop()
       pr50nef->Fill(run, Jet_neEmEF[iJet], w);
 
       //energy fraction balance
+      /*
       pr50efb_chf->Fill(run, rawjet.Pt()*Jet_chHEF[iJet]*(1./gam.Pt()), w); //charged hadron energy fraction
       pr50efb_nhf->Fill(run, rawjet.Pt()*Jet_neHEF[iJet]*(1./gam.Pt()), w); //neutral hadron energy fraction
       pr50efb_nef->Fill(run, rawjet.Pt()*Jet_neEmEF[iJet]*(1./gam.Pt()), w); //neutral electromagnetic energy fraction
+      */
+
+      //energy fraction balance (w59 onwards)
+      pr50efb_chf->Fill(run, rawjet.E()*Jet_chHEF[iJet]*(1./gam.E()), w); //charged hadron energy fraction
+      pr50efb_nhf->Fill(run, rawjet.E()*Jet_neHEF[iJet]*(1./gam.E()), w); //neutral hadron energy fraction
+      pr50efb_nef->Fill(run, rawjet.E()*Jet_neEmEF[iJet]*(1./gam.E()), w); //neutral electromagnetic energy fraction
+
+
 
       //JEC time evolution
       pr50jes->Fill(run, jes, w);
