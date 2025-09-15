@@ -631,7 +631,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 //should do this with "Contains()" fct... more compact
 					ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" || 
 					ds=="2024QCD-v14"); //added these already, even though no summer MC for 2024 yet, use winter2024P8 right now.
-  is25 = (ds=="2025B" || ds=="2025C" ||  ds=="2025Cv2" || ds=="2025D" || //added first on 20.05.2025 (w50), added 25Cv2 and 25D on 06.08.2025 (w58)
+  is25 = (ds=="2025B" || ds=="2025C" ||  ds=="2025Cv2" || ds=="2025D" || ds=="2025E" || //added first on 20.05.2025 (w50), added 25Cv2 and 25D on 06.08.2025 (w58), added 25E on 15.09.2025 (still w59)
           ds=="winter2025P8" ||
           ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
       		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 

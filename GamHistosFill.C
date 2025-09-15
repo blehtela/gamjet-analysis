@@ -715,7 +715,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51, w56.
   }
   //data 2025
-  if (ds=="2025B" || ds=="2025C" || ds=="2025Cv2" || ds=="2025D"){
+  if (ds=="2025B" || ds=="2025C" || ds=="2025Cv2" || ds=="2025D" || ds=="2025E"){
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w50 (use JECs we have, 20.05.2025)
 	  //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w50 (no L2L3Res, 21.05.2025)
     //jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51 (no L2L3Res, updated MC corrections, 21.05.2025)
@@ -765,7 +765,7 @@ void GamHistosFill::Loop()
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
-  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025C"|| ds=="2025Cv2" || ds=="2025D" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
+  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025C"|| ds=="2025Cv2" || ds=="2025D" || ds=="2025E" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
   assert(sera!="");
 
   // Load JSON files
@@ -1021,6 +1021,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2025C") ||
         TString(ds.c_str()).Contains("2025Cv2") ||
         TString(ds.c_str()).Contains("2025D") ||
+        TString(ds.c_str()).Contains("2025E") ||
 	TString(ds.c_str()).Contains("winter2025P8") ||
         TString(ds.c_str()).Contains("winter2025QCD"))
         //fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); // UPDATE THIS WHEN NEW ONE AVAILABLE
