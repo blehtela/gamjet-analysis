@@ -1521,7 +1521,7 @@ void GamHistosFill::Loop()
 
 	//double xmax = 383000.5; //need to update this regularly
 	//double xmax = 389000.5; //386000.5
-  double xmax = 400000.5//updated on 16.09.2025 (w60 second run) //395000.5; //updated on 20.05.2025 for 2025 data
+  double xmax = 400000.5; //updated on 16.09.2025 (w60 second run) //395000.5; //updated on 20.05.2025 for 2025 data
 	double xmin = 355000.5;
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
