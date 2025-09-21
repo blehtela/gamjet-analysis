@@ -724,16 +724,16 @@ void GamHistosFill::Loop()
 	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w57 (no L2L3Res, 24.06.2025) RUN WITHOUT L2L3Res for comparison (dpnote)
   }
   if (ds=="2025Cv1" || ds=="2025Cv2"){
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V2M_DATA_L2L3Residual_AK4PFPuppi.txt"); //w62 (V2M L2L3Res, 21.09.2025)
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
   }
   if (ds=="2025D"){
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V2M_DATA_L2L3Residual_AK4PFPuppi.txt"); //w62 (V2M L2L3Res, 21.09.2025)
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
   }
   if (ds=="2025E"){
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi.txt"); //w62 (V2M L2L3Res, 21.09.2025)
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
   }
   if (ds=="2025F"){
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi.txt"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
   }
 
   assert(jec);
