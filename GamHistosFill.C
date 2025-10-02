@@ -842,15 +842,12 @@ void GamHistosFill::Loop()
     //LoadJSON("files/daily_dials_06aug2025.json"); //hybrid json (daily dials) for w58 (06.08.2025)
     //LoadJSON("files/daily_dials_07sep2025.json"); //hybrid json (daily dials) for w59 (07.09.2025)
     //LoadJSON("files/daily_dials_15sep2025.json"); //hybrid json (daily dials) for w60 (15.09.2025)
-    LoadJSON("files/daily_dials_21sep2025.json"); //hybrid json (daily dials) for w62 (21.09.2025)
-
+    //LoadJSON("files/daily_dials_21sep2025.json"); //hybrid json (daily dials) for w62 (21.09.2025)
+    LoadJSON("files/daily_dials_29sep2025.json"); //hybrid json (daily dials) for w63 (dated to 29.09.2025, but i added it on 2nd of Oct, no newer daily dials available despite newer DCSonly..)
 
 
 
 //TO DO: update JSON
-
-
-
   //Cert_Collisions2023_370354_370790_Golden.json");
 
   // Load pileup JSON
@@ -894,13 +891,13 @@ void GamHistosFill::Loop()
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w44.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
   }
-  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w59 (07.09.2025), updated w60 (15.09.2025), updated w62 (21.09.2025)
-	  lumi30 = LoadLumi("files/lumi2025_21september2025_photon200_pb_w62.csv");
-	  lumi50 = LoadLumi("files/lumi2025_21september2025_photon110eb_pb_w62.csv");
-	  lumi110 = LoadLumi("files/lumi2025_21september2025_photon50eb_pb_w62.csv");
-	  lumi110 = LoadLumi("files/lumi2025_21september2025_photon45eb_pb_w62.csv");
-	  lumi200 = LoadLumi("files/lumi2025_21september2025_photon40eb_pb_w62.csv");
-	  lumi200 = LoadLumi("files/lumi2025_21september2025_photon30eb_pb_w62.csv");
+  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w59 (07.09.2025), updated w60 (15.09.2025), updated w62 (21.09.2025), updated w63 (02.10.2025)
+	  lumi200 = LoadLumi("files/lumi2025_29september2025_photon200_pb_w63.csv");
+	  lumi110 = LoadLumi("files/lumi2025_29september2025_photon110eb_pb_w63.csv");
+	  lumi50 = LoadLumi("files/lumi2025_29september2025_photon50eb_pb_w63.csv");
+	  lumi45 = LoadLumi("files/lumi2025_29september2025_photon45eb_pb_w63.csv");
+	  lumi40 = LoadLumi("files/lumi2025_29september2025_photon40eb_pb_w63.csv");
+	  lumi30 = LoadLumi("files/lumi2025_29september2025_photon30eb_pb_w63.csv");
   }
 
 
