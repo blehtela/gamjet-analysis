@@ -72,7 +72,8 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom);
 //void drawResponseVsRun_custom(string version = "w12", string year=2024) {//for plotting only one year
 //void drawResponseVsRun_2025only(string version = "w39w40", int rereco = 0) { //switched to w15 and w16; w17 and w18; w19 and w20
 //void drawResponseVsRun_2025only(string version = "w56", int rereco = 0) { //w48 added on 06.04.2025 (previous w44 was mid-Feb '25), rereco = 3 for CDE-rereco with FGHI-prompt
-void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 added on 12.08.2025, 25C and early 25D. Data until 6th of Aug approx.
+//void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 added on 12.08.2025, 25C and early 25D. Data until 6th of Aug approx.
+void drawResponseVsRun_2025only(string version = "w62", int rereco = 0) { //w62 (30.09., processed a week earlier or so)
 
     //bool rereco = 1;
 
@@ -90,7 +91,7 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
     
     if(rereco==0){
 	cout << "Looking at 2025 prompt data." << endl;
-	f = new TFile(Form("rootfiles/GamHistosFill_data_2025CD_%s.root",cv), "READ");
+	f = new TFile(Form("rootfiles/GamHistosFill_data_2025CDEF_%s.root",cv), "READ");
 	//f = new TFile(Form("rootfiles/GamHistosFill_data_2025BC_%s.root",cv), "READ");
 	//f = new TFile(Form("rootfiles/GamHistosFill_data_2025BC_noL2L3Res_%s_28May2025.root",cv), "READ");
     } 
@@ -141,8 +142,8 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
     double kbal = 1.13;
     //pr30b->Scale(kbal);
     //double kbal50 = 1.10; //first had this, Mikko suggests 1.107 to make it closer to the other ones
-    double kbal50 = 1.08; //1.15; //1.11 earlier before w29
-    double kbal40 = 1.03; //1.08;
+    double kbal50 = 1.10; //1.08; //1.15; //1.11 earlier before w29
+    double kbal40 = 1.05; //1.03; //1.08;
     pr50b->Scale(kbal50); //now also scaling this
     pr40b->Scale(kbal40);
 
@@ -186,7 +187,8 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
     else{ //starting from 25B, B start: 391531, but no data?
 	//h = tdrHist("h","Response",0.92,1.06,"Run",391500,393000);//w53
 	//h = tdrHist("h","Response",0.92,1.06,"Run",391500,393200);//w54
-	h = tdrHist("h","Response",0.92,1.06,"Run",391500,396000);//w58
+	//h = tdrHist("h","Response",0.92,1.06,"Run",391500,396000);//w58
+	h = tdrHist("h","Response",0.92,1.06,"Run",391500,397300);//w62
     }
     //lumi_136TeV = Form("Photon+jet, Run 3, %s",cv);
     //lumi_136TeV = Form("Photon+jet, Run 3 2024, %s",cv); //for 2024-only version
@@ -203,7 +205,7 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
 			lumi_136TeV = Form("#gamma+jet 2024: CDE-rereco FGHI-prompt, %s",cv);
     }
     else{
-    	lumi_136TeV = Form("Photon+jet, 2025CD, %s",cv);
+    	lumi_136TeV = Form("Photon+jet, 2025CDEF, %s",cv);
 	//lumi_136TeV = Form("#gamma+jet, 2024CDEFGHI-prompt, %s",cv);
     }
 
@@ -274,12 +276,21 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
     l->DrawLine(run25cv2_end,y1+0.045,run25cv2_end,y2-0.035);
     t->DrawLatex(run25cv2_start,0.960,"25Cv2");
 
-    double run25d_start(394286), run25d_end(395032); //preliminary end of D (last one in daily json from 06.08., but i had less)
+    double run25d_start(394286), run25d_end(395967); //updated end of D (30.09.)
     l->DrawLine(run25d_start,y1+0.045,run25d_start,y2-0.035);
     t->DrawLatex(run25d_start,0.960,"25D");
     l->DrawLine(run25d_end,y1+0.045,run25d_end,y2-0.035); //to separate visually 25C and 25D
  
+    double run25e_start(395968), run25e_end(396597); //
+    l->DrawLine(run25e_start,y1+0.045,run25e_start,y2-0.035);
+    t->DrawLatex(run25e_start,0.960,"25E");
+    l->DrawLine(run25e_end,y1+0.045,run25e_end,y2-0.035);
 
+    double run25f_start(396598), run25f_end(397097); // from my json used on 21st of Sep
+    l->DrawLine(run25f_start,y1+0.045,run25f_start,y2-0.035);
+    t->DrawLatex(run25f_start,0.960,"25F");
+    l->DrawLine(run25f_end,y1+0.045,run25f_end,y2-0.035); //PRELIMINARY end of F
+ 
  
 /*
     //removing B if rereco==3 (06.04.2025)
@@ -348,8 +359,11 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
     runstart->DrawLatex(run25cv1_start, 0.955, Form("%.f",run25cv1_start));
     runstart->DrawLatex(run25cv2_start, 0.955, Form("%.f",run25cv2_start));
     runstart->DrawLatex(run25d_start, 0.955, Form("%.f",run25d_start));
+    runstart->DrawLatex(run25e_start, 0.955, Form("%.f",run25e_start));
+    runstart->DrawLatex(run25f_start, 0.955, Form("%.f",run25f_start));
 
-    runstart->DrawLatex(395032, 0.960, "395032"); //preliminary end of 25D
+
+    //runstart->DrawLatex(395032, 0.960, "395032"); //preliminary end of 25D
 
 /*
     if(rereco!=3){ runstart->DrawLatex(run24b_start, 0.955, Form("%.0f",run24b_start)); } //removed B on 06.04.2025 if rereco==3
@@ -562,7 +576,7 @@ void drawResponseVsRun_2025only(string version = "w58", int rereco = 0) { //w58 
 			linktext->DrawLatex(0.13,0.09, "Created on 06.04.2025 with w48 for 2024CDE-rereco and 2024FGHI-prompt data (nib-based V8M).");
 		}
 		else{
-			linktext->DrawLatex(0.13,0.09, "Created on 12.08.2025 with w58 for 2025CD data (until ~5.8.).");
+			linktext->DrawLatex(0.13,0.09, "Created on 21.09.2025 with w62 for 2025CDEF data.");
 		}
 
 
@@ -737,7 +751,7 @@ void drawPFcompVsRun_2025only(string version, int rereco, bool zoom) {
 
     if(rereco==0){
 	cout << "Looking at 2025 prompt data." << endl;
-	f = new TFile(Form("rootfiles/GamHistosFill_data_2025CD_%s.root",cv), "READ"); 
+	f = new TFile(Form("rootfiles/GamHistosFill_data_2025CDEF_%s.root",cv), "READ"); 
 	//f = new TFile(Form("rootfiles/GamHistosFill_data_2025BC_noL2L3Res_%s_28May2025.root",cv), "READ"); //prompt, nib-based
     	//f = new TFile(Form("rootfiles/GamHistosFill_data_2025only_%s.root",cv), "READ"); //for now: hadd on 2024B and 2024C (need to redo this file with new daily json)
 	//f = new TFile(Form("rootfiles/GamHistosFill_data_2025only_BCDEFG-w39_HI-w40.root"), "READ");//intermediate version where i mixed w39 and w40
@@ -892,8 +906,8 @@ void drawPFcompVsRun_2025only(string version, int rereco, bool zoom) {
 	//h = tdrHist("h","PF composition offset",-0.10,+0.10,"Run",378900,387100);
 	//h = tdrHist("h","PF composition offset",-0.10,+0.10,"Run",391500,393200);//w54
 	//h40 = tdrHist("h40","PF composition offset",-0.10,+0.10,"Run",391500,393200);//w54 for photon40
-	h = tdrHist("h","PF composition offset",-0.10,+0.10,"Run",391500,396000);//w54
-	h40 = tdrHist("h40","PF composition offset",-0.10,+0.10,"Run",391500,396000);//w54 for photon40
+	h = tdrHist("h","PF composition offset",-0.10,+0.10,"Run",391500,397300);//w54
+	h40 = tdrHist("h40","PF composition offset",-0.10,+0.10,"Run",391500,397300);//w54 for photon40
     }
 
     //TH1D *h = tdrHist("h2","PF composition offset",-0.80,+0.80,"Run",378900,380600);
@@ -925,7 +939,7 @@ void drawPFcompVsRun_2025only(string version, int rereco, bool zoom) {
     }
     else{
     	//lumi_136TeV = Form("#gamma+jet, 2024BCDEFGHI-prompt, %s",cv);
-    	lumi_136TeV = Form("#gamma+jet, 2025CD-prompt, %s",cv);
+    	lumi_136TeV = Form("#gamma+jet, 2025CDEF-prompt, %s",cv);
     }
     extraText = "Private";
     TCanvas *c1 = tdrCanvas("c2",h,8,11);
@@ -975,8 +989,11 @@ void drawPFcompVsRun_2025only(string version, int rereco, bool zoom) {
     double run25b_start(391531), run25b_end(392158); //end of 24B? - but it based on start of C... Bstart:391531
     double run25cv1_start(392159), run25cv1_end(393108); //run25c_end(392524); //run25c_end(392441); //ends?
     double run25cv2_start(393111), run25cv2_end(393609);
-    double run25d_start(394286), run25d_end(395032);
-
+    //double run25d_start(394286), run25d_end(395032);
+    double run25d_start(394286), run25d_end(395967); //updated end of D (30.09.)
+    double run25e_start(395968), run25e_end(396597); //
+    double run25f_start(396598), run25f_end(397097); // from my json used on 21st of Sep
+ 
 
     //l->SetLineStyle(kDashed);
     l->SetLineColor(kGray);
@@ -995,6 +1012,11 @@ void drawPFcompVsRun_2025only(string version, int rereco, bool zoom) {
     l->DrawLine(run25cv2_end,y1,run25cv2_end,y2);
     l->DrawLine(run25d_start,y1,run25d_start,y2); //2025D start and end
     l->DrawLine(run25d_end,y1,run25d_end,y2);
+    l->DrawLine(run25e_start,y1,run25e_start,y2); //2025D start and end
+    l->DrawLine(run25e_end,y1,run25e_end,y2);
+    l->DrawLine(run25f_start,y1,run25f_start,y2); //2025D start and end
+    l->DrawLine(run25f_end,y1,run25f_end,y2);
+
 
 
     //2024 (maybe remove, since this script is 2025only)
@@ -1034,6 +1056,9 @@ void drawPFcompVsRun_2025only(string version, int rereco, bool zoom) {
     t->DrawLatex(run25cv1_start+10,textposy,"25Cv1");
     t->DrawLatex(run25cv2_start+10,textposy,"25Cv2");
     t->DrawLatex(run25d_start+10,textposy,"25D");
+    t->DrawLatex(run25e_start+10,textposy,"25E");
+    t->DrawLatex(run25f_start+10,textposy,"25F");
+
 
 
     //2024
@@ -1188,7 +1213,7 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
 
     if(rereco==0){
 	cout << "Looking at 2025 prompt data." << endl;
-	f = new TFile(Form("rootfiles/GamHistosFill_data_2025CD_%s.root",cv), "READ"); 
+	f = new TFile(Form("rootfiles/GamHistosFill_data_2025CDEF_%s.root",cv), "READ"); 
 	    //f = new TFile(Form("rootfiles/GamHistosFill_data_2024BCDEFGHI-prompt_%s.root",cv), "READ"); //prompt, nib-based
     }
     else if(rereco==1){
@@ -1248,10 +1273,10 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
     	hr50nhfoff = -0.11;
       */
     	hr50moff = -1.00;
-    	hr50chfoff = -0.30;
-    	hr50nefoff = -0.10;
-    	hr50nhfoff = -0.05;
-		}
+    	hr50chfoff = -0.7;
+    	hr50nefoff = -0.25;
+    	hr50nhfoff = -0.07;
+	}
 
     addOffset(hr50m,hr50moff); //need to adjust this and the following still
     addOffset(hr50efb_chf,hr50chfoff);
@@ -1269,7 +1294,8 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
     else{ //starting from 24B
 	//h = tdrHist("h","PF composition EFB offset",-0.10,+0.10,"Run",378900,387100);
 	//h = tdrHist("h","PF composition EFB offset",-0.10,+0.10,"Run",391500,393200);//w54
-	h = tdrHist("h","PF composition EFB offset",-0.10,+0.10,"Run",391500,396000);//w58
+	//h = tdrHist("h","PF composition EFB offset",-0.10,+0.10,"Run",391500,396000);//w58
+	h = tdrHist("h","PF composition EFB offset",-0.10,+0.10,"Run",391500,397300);//w58
     }
 
     //TH1D *h = tdrHist("h2","PF composition offset",-0.80,+0.80,"Run",378900,380600);
@@ -1294,7 +1320,7 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
     }
     else{
     	//lumi_136TeV = Form("#gamma+jet, 2024BCDEFGHI-prompt, %s",cv);
-    	lumi_136TeV = Form("#gamma+jet, 2025CD-prompt, %s",cv);
+    	lumi_136TeV = Form("#gamma+jet, 2025CDEF-prompt, %s",cv);
     }
     extraText = "Private";
     TCanvas *c1 = tdrCanvas("c2",h,8,11);
@@ -1346,9 +1372,13 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
 
     //2025
     double run25b_start(391531), run25b_end(392158); //end of 24B? - but it based on start of C... Bstart:391531
-    double run25c_start(392159), run25c_end(392705); //run25c_end(392524); //run25c_end(392441); //ends?
-
-
+    double run25cv1_start(392159), run25cv1_end(393108); //run25c_end(392524); //run25c_end(392441); //ends?
+    double run25cv2_start(393111), run25cv2_end(393609);
+    double run25d_start(394286), run25d_end(395967); //updated end of D (30.09.)
+    double run25e_start(395968), run25e_end(396597); //
+    double run25f_start(396598), run25f_end(397097); // from my json used on 21st of Sep
+ 
+ 
 
 
     //l->SetLineStyle(kDashed);
@@ -1372,8 +1402,20 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
     //2025
     l->DrawLine(run25b_start,y1,run25b_start,y2);
     l->DrawLine(run25b_end,y1,run25b_end,y2); //to separate visually 25B and 25C
-    l->DrawLine(run25c_start,y1,run25c_start,y2); //used to draw this -15 before the first data point of this era...
-    l->DrawLine(run25c_end,y1,run25c_end,y2);
+    l->DrawLine(run25cv1_start,y1,run25cv1_start,y2); //used to draw this -15 before the first data point of this era...
+    l->DrawLine(run25cv1_end,y1,run25cv1_end,y2);
+    l->DrawLine(run25cv2_start,y1,run25cv2_start,y2); //used to draw this -15 before the first data point of this era...
+    l->DrawLine(run25cv2_end,y1,run25cv2_end,y2);
+    l->DrawLine(run25d_start,y1,run25d_start,y2); 
+    l->DrawLine(run25d_end,y1,run25d_end,y2);
+    l->DrawLine(run25e_start,y1,run25e_start,y2); 
+    l->DrawLine(run25e_end,y1,run25e_end,y2);
+    l->DrawLine(run25f_start,y1,run25f_start,y2); 
+    l->DrawLine(run25f_end,y1,run25f_end,y2);
+
+
+
+
 
 
 
@@ -1400,7 +1442,13 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
 
     //2025
     t->DrawLatex(run25b_start+10,textposy,"25B");
-    t->DrawLatex(run25c_start+10,textposy,"25C");
+    t->DrawLatex(run25cv1_start+10,textposy,"25Cv1");
+    t->DrawLatex(run25cv2_start+10,textposy,"25Cv2");
+    t->DrawLatex(run25d_start+10,textposy,"25D");
+    t->DrawLatex(run25e_start+10,textposy,"25E");
+    t->DrawLatex(run25f_start+10,textposy,"25F");
+
+
 
 
     //Drawing everything
@@ -1443,7 +1491,7 @@ void drawPFcompEFBvsRun_2025only(string version, int rereco, bool zoom) {
     }
     else{
     	//c1->SaveAs(Form("pdf/drawResponseVsRun_PFcompEFB_2024BCDEFGHI-prompt_%s%s.pdf",cv,ending.c_str()));
-    	c1->SaveAs(Form("pdf/drawResponseVsRun_PFcompEFB_2025CD_%s%s.pdf",cv,ending.c_str()));
+    	c1->SaveAs(Form("pdf/drawResponseVsRun_PFcompEFB_2025CDEF_%s%s.pdf",cv,ending.c_str()));
     }
 
 
