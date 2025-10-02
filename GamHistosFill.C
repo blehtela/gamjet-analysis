@@ -872,7 +872,7 @@ void GamHistosFill::Loop()
   //w32 also used for w33
   //update lumi on 25.10.2024 (w40)
   //update lumi last on 01.11.2024 (w41), also used for w42, w43, w44
-  LumiMap lumi30, lumi50, lumi110, lumi200;
+  LumiMap lumi30, lumi40, lumi45, lumi50, lumi110, lumi200;
   if(TString(ds.c_str()).Contains("2022")){
 	lumi30 = LoadLumi("files/lumi2022_golden_photon30eb_pb_w44.csv");
 	lumi50 = LoadLumi("files/lumi2022_golden_photon50_pb_w44.csv");		//not 50EB, but older trigger
