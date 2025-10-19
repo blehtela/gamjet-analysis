@@ -732,9 +732,13 @@ void GamHistosFill::Loop()
   if (ds=="2025E"){
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
   }
-  if (ds=="2025F"){
+  if (ds=="2025Fv1" || ds=="2025Fv2"){ //still using 25E JECs for both versions of 25F.
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
   }
+  if (ds=="2025G"){	// using 25E corrections for 25G for now.
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
+  }
+
 
   assert(jec);
 
@@ -778,7 +782,8 @@ void GamHistosFill::Loop()
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
-  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025E" ||  ds=="2025F" ||TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
+  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025E" ||  
+	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
   assert(sera!="");
 
   // Load JSON files
@@ -1034,7 +1039,9 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2025C-TrkRadDamage") ||
         TString(ds.c_str()).Contains("2025D") ||
         TString(ds.c_str()).Contains("2025E") ||
-        TString(ds.c_str()).Contains("2025F") ||
+        TString(ds.c_str()).Contains("2025Fv1") ||
+        TString(ds.c_str()).Contains("2025Fv2") ||
+        TString(ds.c_str()).Contains("2025G") ||
 	TString(ds.c_str()).Contains("winter2025P8") ||
         TString(ds.c_str()).Contains("winter2025QCD"))
         //fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); // UPDATE THIS WHEN NEW ONE AVAILABLE
