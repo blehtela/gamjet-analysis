@@ -33,9 +33,10 @@ bool _gh_debug = false;
 bool _gh_debug100 = false;
 
 bool doGamjet = true;
+bool doGamjet1 = true;
 bool doGamjet2 = true;
 bool doJetveto = true; //like in dijet: eta-phi maps
-bool doPFComposition = true; //Gamjet2 (added by Mikko)
+bool doPFComposition = true; //Gamjet2 (added by Mikko), also adding now Gamjet1 (bettina)
 bool smearJets = false;
 
 // Error counters
@@ -77,6 +78,25 @@ class gamjetHistos {
   // Alternative pT bins
   TProfile *presa, *pm0a, *pm2a, *pmna, *pmua;
   TProfile *presj, *pm0j, *pm2j, *pmnj, *pmuj;
+};
+
+class gamjetHistos1 { //basically a copy of gamjetHistos2, just with eta instead of abs(eta) (21.10.2025)
+public:
+
+  TH2D *h2pteta;
+  TProfile2D *p2res, *p2corr, *p2m0, *p2m2, *p2mn, *p2mu;
+  TProfile2D *p2m0x, *p2m2x;
+  TProfile2D *p2m0sym, *p2m0xsym; //added to gamjetHistos2 on 14.05.2025 for investigation of response, copied here
+
+  // Extra for FSR studies
+  TProfile2D *p2mnu, *p2mnx, *p2mux, *p2mnux;
+
+  // Smearing controls
+  TProfile2D *p2jsf;//, *p2jsftc, *p2jsfpf;
+
+  // (Optional) composition plots
+  TProfile2D *p2pt, *p2rho, *p2chf, *p2nef, *p2nhf, *p2cef, *p2muf;
+  TProfile *ppt13, *prho13, *pchf13, *pnef13, *pnhf13, *pcef13, *pmuf13;
 };
 
 class gamjetHistos2 {
@@ -435,14 +455,14 @@ void GamHistosFill::Loop()
     // MadGraph has plenty of uncorrelated soft and hard photons as well
     if (isMC) {
       if (!isQCD) {
-	fChain->SetBranchStatus("nGenIsolatedPhoton",1);
-	fChain->SetBranchStatus("GenIsolatedPhoton_pt",1);
-	fChain->SetBranchStatus("GenIsolatedPhoton_eta",1);
-	fChain->SetBranchStatus("GenIsolatedPhoton_phi",1);
-	fChain->SetBranchStatus("GenIsolatedPhoton_mass",1);
+        fChain->SetBranchStatus("nGenIsolatedPhoton",1);
+        fChain->SetBranchStatus("GenIsolatedPhoton_pt",1);
+        fChain->SetBranchStatus("GenIsolatedPhoton_eta",1);
+        fChain->SetBranchStatus("GenIsolatedPhoton_phi",1);
+        fChain->SetBranchStatus("GenIsolatedPhoton_mass",1);
       }
       else
-	nGenIsolatedPhoton = 0;
+      nGenIsolatedPhoton = 0;
     }
     if (isMC) {
       fChain->SetBranchStatus("nGenJet",1);
@@ -726,7 +746,7 @@ void GamHistosFill::Loop()
   if (ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage"){
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
   }
-  if (ds=="2025D"){
+  if (ds=="2025D" || ds=="2025Dtestfile"){
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
   }
   if (ds=="2025E"){
@@ -782,7 +802,7 @@ void GamHistosFill::Loop()
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
-  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025E" ||  
+  if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
   assert(sera!="");
 
@@ -797,7 +817,7 @@ void GamHistosFill::Loop()
     LoadJSON("files/Cert_Collisions2022_355100_362760_Golden.json");
   if (TString(ds.c_str()).Contains("2023"))
     LoadJSON("files/Cert_Collisions2023_366442_370790_Golden.json");
-//for prompt data 2024B - UPDATE THIS REGULARLY
+  //for prompt data 2024B - UPDATE THIS REGULARLY
   if (TString(ds.c_str()).Contains("2024"))
     //LoadJSON("files/Collisions24_13p6TeV_378981_379355_DCSOnly_TkPx.json");
     //LoadJSON("files/Collisions24_13p6TeV_378981_379774_DCSOnly_TkPx.json"); //daily json from 22.4. -> used with w12
@@ -852,7 +872,7 @@ void GamHistosFill::Loop()
     LoadJSON("files/CombinedJSONS_GoldenRuns_391668to397595_DCSRuns_391658to391668_397596to398315_.json"); //self-made hybrid json (Golden Oct 10th + Daily Oct 19th) for w64 (19.10.2025)
 
 
-//TO DO: update JSON
+  //TO DO: update JSON
   //Cert_Collisions2023_370354_370790_Golden.json");
 
   // Load pileup JSON
@@ -954,28 +974,28 @@ void GamHistosFill::Loop()
     fjv = new TFile("files/hotjets-UL18.root","READ");
   if (TString(ds.c_str()).Contains("2022")) {
     if (TString(ds.c_str()).Contains("2022C") || //also covers nib/fib version
-	TString(ds.c_str()).Contains("2022D") ||
-	TString(ds.c_str()).Contains("2022P8") ||
-	TString(ds.c_str()).Contains("2022P8-PTG") || //added on 01.04.25 (for ptg-binned samples investigations)
+        TString(ds.c_str()).Contains("2022D") ||
+        TString(ds.c_str()).Contains("2022P8") ||
+        TString(ds.c_str()).Contains("2022P8-PTG") || //added on 01.04.25 (for ptg-binned samples investigations)
       	TString(ds.c_str()).Contains("2022QCD"))
       fjv = new TFile("files/jetveto2022CD.root","READ");
     if (TString(ds.c_str()).Contains("2022E") || // incl. EEP8 
-	TString(ds.c_str()).Contains("2022F") || 
-	TString(ds.c_str()).Contains("2022G") ||
+        TString(ds.c_str()).Contains("2022F") || 
+        TString(ds.c_str()).Contains("2022G") ||
       	TString(ds.c_str()).Contains("2022EEP8") ||
-	TString(ds.c_str()).Contains("2022EEQCD") )
+        TString(ds.c_str()).Contains("2022EEQCD") )
       fjv = new TFile("files/jetveto2022EFG.root","READ");
   }
   if (TString(ds.c_str()).Contains("2023")) {
     if (TString(ds.c_str()).Contains("2023B") ||  //should handle also nib/fib version (string contains 2023B etc)
-	TString(ds.c_str()).Contains("2023C") ||
-	(TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix")==false) ||  //need to make sure that it does not use this for BPix stuff
-	(TString(ds.c_str()).Contains("2023QCD") && TString(ds.c_str()).Contains("BPix")==false) )
+        TString(ds.c_str()).Contains("2023C") ||
+        (TString(ds.c_str()).Contains("2023P8") && TString(ds.c_str()).Contains("BPix")==false) ||  //need to make sure that it does not use this for BPix stuff
+        (TString(ds.c_str()).Contains("2023QCD") && TString(ds.c_str()).Contains("BPix")==false) )
       fjv = new TFile("files/jetveto2023BC.root","READ");
  // ADD MONTE CARLO SETS HERE - ALSO NEED JETVETOMAPS	(below: BPix, above: no bpix)
     if (TString(ds.c_str()).Contains("2023D") ||
-	TString(ds.c_str()).Contains("2023P8-BPix") || //overwrites the previous choice of fjv (in case of BPix it first sets the wrong one, as both strings contain 22023P8
-	TString(ds.c_str()).Contains("2023QCD-BPix"))
+        TString(ds.c_str()).Contains("2023P8-BPix") || //overwrites the previous choice of fjv (in case of BPix it first sets the wrong one, as both strings contain 22023P8
+        TString(ds.c_str()).Contains("2023QCD-BPix"))
       fjv = new TFile("files/jetveto2023D.root","READ");
     }
 //for now also use jetvetomap 2023D for the new 2024B prompt reco data:
@@ -989,10 +1009,10 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALRATIO") ||
         TString(ds.c_str()).Contains("2024C-ECALR-HCALDI") ||
-	TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI") ||
-	TString(ds.c_str()).Contains("2024C-rereco") ||
-	TString(ds.c_str()).Contains("2024D-rereco") ||
-	TString(ds.c_str()).Contains("2024E-rereco") ||
+        TString(ds.c_str()).Contains("2024C-ECALCC-HCALDI") ||
+        TString(ds.c_str()).Contains("2024C-rereco") ||
+        TString(ds.c_str()).Contains("2024D-rereco") ||
+        TString(ds.c_str()).Contains("2024E-rereco") ||
         TString(ds.c_str()).Contains("2024Bnib1") ||
         TString(ds.c_str()).Contains("2024Cnib1") ||
         TString(ds.c_str()).Contains("2024Dnib1") ||
@@ -1038,7 +1058,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2025Cv1") ||
         TString(ds.c_str()).Contains("2025Cv2") ||
         TString(ds.c_str()).Contains("2025C-TrkRadDamage") ||
-        TString(ds.c_str()).Contains("2025D") ||
+        TString(ds.c_str()).Contains("2025D") ||  //also covers for 2025Dtestfile
         TString(ds.c_str()).Contains("2025E") ||
         TString(ds.c_str()).Contains("2025Fv1") ||
         TString(ds.c_str()).Contains("2025Fv2") ||
@@ -1969,10 +1989,6 @@ void GamHistosFill::Loop()
 
 
 
-
-
-
-
   // 2D plots for jet response
   TH2D *h2bal = new TH2D("h2bal","",nx,vx,200,0,4);
   TH2D *h2mpf = new TH2D("h2mpf","",nx,vx,300,-2,4);
@@ -2231,6 +2247,95 @@ void GamHistosFill::Loop()
     h->pmuj = new TProfile("pmuj",";p_{T,jet} (GeV);MPFu",npt,vpt);
     
   } // doGamjet
+
+  // Results with eta going from approx. -5.2 to 5.2
+  // basically the same as in Gamjet2 otherwise. Added on 21st of October 2025.
+  gamjetHistos1 *hg1(0);
+  if (doGamjet1){
+    // L2Res pT binning (central+forward hybrid)
+    double vptd[] = 
+    //{59.,85.,104.,170.,236., 302., 370., 460., 575.}; // central
+    //{86., 110., 132., 204., 279., 373.} // forward
+      {15, 21, 28, 37, 49, 59, 86, 110, 132, 170, 204, 236, 279, 302, 373, 460, 575,
+       638, 737, 846, 967, 1101, 1248, 1410, 1588, 1784, 2000, 2238, 2500, 2787, 3103};
+    // ^where did this original binning come from? How is that motivated? (I think it comes from dijet)
+
+    double nptd = sizeof(vptd)/sizeof(vptd[0])-1;
+
+    // L3Res (gamma+jet) pT binning adapted and extended
+    const double vpt[] = {15, 20, 25, 30, 35,
+			  40, 50, 60, 70, 85, 100, 125, 155, 180, 210, 250, 300,
+			  350, 400, 500, 600, 800, 1000, 1200, 1500,
+			  1800, 2100, 2400, 2700, 3000};
+
+    double npt = sizeof(vpt)/sizeof(vpt[0])-1;
+
+    //analogously to Gamjet2, but eta going also to negative values.
+    //add eta-binning including also negative values (i.e. not the abs(eta)). (21 Oct 2025)
+    double vxdneg[] = {-5.191, -4.889, -4.716, -4.538, -4.363, -4.191, -4.013, -3.839, -3.664, -3.489, -3.314, -3.139, -2.964, 
+                      -2.853, -2.65 , -2.5 , -2.322, -2.172, -2.043, -1.93 , -1.83 , -1.74 , -1.653, -1.566, -1.479, -1.392, -1.305, 
+                      -1.218, -1.131, -1.044, -0.957, -0.879, -0.783, -0.696, -0.609, -0.522, -0.435, -0.348, -0.261, -0.174, -0.087, 
+		                  0, 0.087, 0.174, 0.261, 0.348, 0.435, 0.522, 0.609, 0.696, 0.783, 0.879, 0.957, 1.044, 1.131, 1.218, 1.305,
+       		            1.392, 1.479, 1.566, 1.653, 1.74, 1.83, 1.93, 2.043, 2.172, 2.322, 2.5, 2.65, 2.853, 2.964, 3.139, 3.314, 
+                      3.489, 3.664, 3.839, 4.013, 4.191, 4.363, 4.538, 4.716, 4.889, 5.191};
+
+    const int nxdneg = sizeof(vxdneg)/sizeof(vxdneg[0])-1;
+
+
+    if (debug) cout << "Setup doGamjet1 " << endl << flush;
+      
+    fout->mkdir("Gamjet1");
+    fout->cd("Gamjet1");
+
+    gamjetHistos1 *h1 = new gamjetHistos1();
+    hg1 = h1;
+
+    // Counting of events, and JEC L2L3Res+JERSF for undoing
+    h1->h2pteta = new TH2D("h2pteta",";#eta;p_{T,avp} (GeV);N_{events}", nxdneg, vxdneg, nptd, vptd);
+    h1->p2res = new TProfile2D("p2res",";#eta;p_{T,avp} (GeV);JES", nxdneg, vxdneg, nptd, vptd);
+    //TO ADD: p2jes, p2mcjes (later), p2corr
+    h1->p2corr = new TProfile2D("p2corr",";#eta;p_{T,avp} (GeV);fullJEC", nxdneg, vxdneg, nptd, vptd);
+    h1->p2jsf = new TProfile2D("p2jsf",";#eta;p_{T,avp} (GeV);JERSF", nxdneg, vxdneg, nptd, vptd);
+       
+    // MPF decomposition for HDM method
+    h1->p2m0 = new TProfile2D("p2m0",";#eta;p_{T,avp} (GeV);MPF0", nxdneg, vxdneg, nptd, vptd);
+    h1->p2m2 = new TProfile2D("p2m2",";#eta;p_{T,avp} (GeV);MPF2", nxdneg, vxdneg, nptd, vptd);
+    h1->p2mn = new TProfile2D("p2mn",";#eta;p_{T,avp} (GeV);MPFn", nxdneg, vxdneg, nptd, vptd);
+    h1->p2mu = new TProfile2D("p2mu",";#eta;p_{T,avp} (GeV);MPFu", nxdneg, vxdneg, nptd, vptd);
+    
+    h1->p2m0x = new TProfile2D("p2m0x",";#eta;p_{T,avp} (GeV);MPF0X (MPFX)", nxdneg, vxdneg, nptd, vptd, "S");
+    h1->p2m2x = new TProfile2D("p2m2x",";#eta;p_{T,avp} (GeV);MPF2X (DBX)", nxdneg, vxdneg, nptd, vptd, "S");
+
+    // Extra investigations of response, symmetric histos (14.05.2025)
+    h1->p2m0sym = new TProfile2D("p2m0sym",";#eta;p_{T,avp} (GeV);MPF0SYM (MPFSYM)",nxdneg,vxdneg, nptd, vptd, "S");
+    h1->p2m0xsym = new TProfile2D("p2m0xsym",";#eta;p_{T,avp} (GeV);MPF0XSYM (MPFXSYM)",nxdneg,vxdneg, nptd, vptd, "S");
+
+    // Extra for FSR studies
+    h1->p2mnu = new TProfile2D("p2mnu",";#eta;p_{T,avp} (GeV);MPFnu", nxdneg, vxdneg, nptd, vptd);
+    h1->p2mnx = new TProfile2D("p2mnx",";#eta;p_{T,avp} (GeV);MPFNX", nxdneg, vxdneg, nptd, vptd, "S");
+    h1->p2mux = new TProfile2D("p2mux",";#eta;p_{T,avp} (GeV);MPFUX", nxdneg, vxdneg, nptd, vptd, "S");
+    h1->p2mnux = new TProfile2D("p2mnux",";#eta;p_{T,avp} (GeV);MPFNUX", nxdneg, vxdneg, nptd, vptd, "S");
+
+    if (doPFComposition) {
+      fout->mkdir("Gamjet1/PFcomposition");
+      fout->cd("Gamjet1/PFcomposition");
+      h1->p2pt = new TProfile2D("p2pt", ";#eta;p_{T,#gamma} (GeV);p_{T,jet}", nxdneg, vxdneg, nptd, vptd);
+      h1->p2rho = new TProfile2D("p2rho", ";#eta;p_{T,#gamma} (GeV);#rho", nxdneg, vxdneg, nptd, vptd);
+      h1->p2chf = new TProfile2D("p2chf", ";#eta;p_{T,#gamma} (GeV);CHF", nxdneg, vxdneg, nptd, vptd);
+      h1->p2nhf = new TProfile2D("p2nhf", ";#eta;p_{T,#gamma} (GeV);NHF", nxdneg, vxdneg, nptd, vptd);
+      h1->p2nef = new TProfile2D("p2nef", ";#eta;p_{T,#gamma} (GeV);NEF", nxdneg, vxdneg, nptd, vptd);
+      h1->p2cef = new TProfile2D("p2cef", ";#eta;p_{T,#gamma} (GeV);CEF", nxdneg, vxdneg, nptd, vptd);
+      h1->p2muf = new TProfile2D("p2muf", ";#eta;p_{T,#gamma} (GeV);MUF", nxdneg, vxdneg, nptd, vptd);
+      h1->ppt13 = new TProfile("ppt13", ";p_{T,#gamma} (GeV);p_{T,jet}", nptd, vptd);
+      h1->prho13 = new TProfile("prho13", ";p_{T,#gamma} (GeV);#rho", nptd, vptd);
+      h1->pchf13 = new TProfile("pchf13", ";p_{T,#gamma} (GeV);CHF", nptd, vptd);
+      h1->pnhf13 = new TProfile("pnhf13", ";p_{T,#gamma} (GeV);NHF", nptd, vptd);
+      h1->pnef13 = new TProfile("pnef13", ";p_{T,#gamma} (GeV);NEF", nptd, vptd);
+      h1->pcef13 = new TProfile("pcef13", ";p_{T,#gamma} (GeV);CEF", nptd, vptd);
+      h1->pmuf13 = new TProfile("pmuf13", ";p_{T,#gamma} (GeV);MUF", nptd, vptd);
+    }
+  } // doGamjet1
+ 
   
   // Results similar to Dijet2 directory in dijet package
   gamjetHistos2 *hg2(0);
@@ -2361,41 +2466,42 @@ void GamHistosFill::Loop()
 			       nxd,vxd, nptd, vptd);
     */    
 
-		//from Mikko's code modifications
+    //from Mikko's code modifications
     if (doPFComposition) {
 
       fout->mkdir("Gamjet2/PFcomposition");
       fout->cd("Gamjet2/PFcomposition");
+      h->p2pt = new TProfile2D("p2pt", ";#eta;p_{T,#gamma} (GeV);p_{T,jet}", nxd, vxd, nptd, vptd);
+      h->p2rho = new TProfile2D("p2rho", ";#eta;p_{T,#gamma} (GeV);#rho", nxd, vxd, nptd, vptd);
+      h->p2chf = new TProfile2D("p2chf", ";#eta;p_{T,#gamma} (GeV);CHF", nxd, vxd, nptd, vptd);
+      h->p2nhf = new TProfile2D("p2nhf", ";#eta;p_{T,#gamma} (GeV);NHF", nxd, vxd, nptd, vptd);
+      h->p2nef = new TProfile2D("p2nef", ";#eta;p_{T,#gamma} (GeV);NEF", nxd, vxd, nptd, vptd);
+      h->p2cef = new TProfile2D("p2cef", ";#eta;p_{T,#gamma} (GeV);CEF", nxd, vxd, nptd, vptd);
+      h->p2muf = new TProfile2D("p2muf", ";#eta;p_{T,#gamma} (GeV);MUF", nxd, vxd, nptd, vptd);
+      h->ppt13 = new TProfile("ppt13", ";p_{T,#gamma} (GeV);p_{T,jet}", nptd, vptd);
+      h->prho13 = new TProfile("prho13", ";p_{T,#gamma} (GeV);#rho", nptd, vptd);
+      h->pchf13 = new TProfile("pchf13", ";p_{T,#gamma} (GeV);CHF", nptd, vptd);
+      h->pnhf13 = new TProfile("pnhf13", ";p_{T,#gamma} (GeV);NHF", nptd, vptd);
+      h->pnef13 = new TProfile("pnef13", ";p_{T,#gamma} (GeV);NEF", nptd, vptd);
+      h->pcef13 = new TProfile("pcef13", ";p_{T,#gamma} (GeV);CEF", nptd, vptd);
+      h->pmuf13 = new TProfile("pmuf13", ";p_{T,#gamma} (GeV);MUF", nptd, vptd);
 
-      h->p2pt = new TProfile2D("p2pt", ";#eta;p_{T,#gamma} (GeV);p_{T,jet}",
-			       nxd, vxd, nptd, vptd);
-      h->p2rho = new TProfile2D("p2rho", ";#eta;p_{T,#gamma} (GeV);#rho",
-				nxd, vxd, nptd, vptd);
-      h->p2chf = new TProfile2D("p2chf", ";#eta;p_{T,#gamma} (GeV);CHF",
-				nxd, vxd, nptd, vptd);
-      h->p2nhf = new TProfile2D("p2nhf", ";#eta;p_{T,#gamma} (GeV);NHF",
-				nxd, vxd, nptd, vptd);
-      h->p2nef = new TProfile2D("p2nef", ";#eta;p_{T,#gamma} (GeV);NEF",
-				nxd, vxd, nptd, vptd);
-      h->p2cef = new TProfile2D("p2cef", ";#eta;p_{T,#gamma} (GeV);CEF",
-				nxd, vxd, nptd, vptd);
-      h->p2muf = new TProfile2D("p2muf", ";#eta;p_{T,#gamma} (GeV);MUF",
-				nxd, vxd, nptd, vptd);
-      
-      h->ppt13 = new TProfile("ppt13", ";p_{T,#gamma} (GeV);p_{T,jet}",
-			      nptd, vptd);
-      h->prho13 = new TProfile("prho13", ";p_{T,#gamma} (GeV);#rho",
-			       nptd, vptd);
-      h->pchf13 = new TProfile("pchf13", ";p_{T,#gamma} (GeV);CHF",
-			       nptd, vptd);
-      h->pnhf13 = new TProfile("pnhf13", ";p_{T,#gamma} (GeV);NHF",
-			       nptd, vptd);
-      h->pnef13 = new TProfile("pnef13", ";p_{T,#gamma} (GeV);NEF",
-			       nptd, vptd);
-      h->pcef13 = new TProfile("pcef13", ";p_{T,#gamma} (GeV);CEF",
-			       nptd, vptd);
-      h->pmuf13 = new TProfile("pmuf13", ";p_{T,#gamma} (GeV);MUF",
-			       nptd, vptd);
+/*
+      h->p2pt = new TProfile2D("p2pt", ";#eta;p_{T,#gamma} (GeV);p_{T,jet}", nxd, vxd, nptd, vptd);
+      h->p2rho = new TProfile2D("p2rho", ";#eta;p_{T,#gamma} (GeV);#rho", nxd, vxd, nptd, vptd);
+      h->p2chf = new TProfile2D("p2chf", ";#eta;p_{T,#gamma} (GeV);CHF", nxd, vxd, nptd, vptd);
+      h->p2nhf = new TProfile2D("p2nhf", ";#eta;p_{T,#gamma} (GeV);NHF", nxd, vxd, nptd, vptd);
+      h->p2nef = new TProfile2D("p2nef", ";#eta;p_{T,#gamma} (GeV);NEF", nxd, vxd, nptd, vptd);
+      h->p2cef = new TProfile2D("p2cef", ";#eta;p_{T,#gamma} (GeV);CEF", nxd, vxd, nptd, vptd);
+      h->p2muf = new TProfile2D("p2muf", ";#eta;p_{T,#gamma} (GeV);MUF", nxd, vxd, nptd, vptd);
+      h->ppt13 = new TProfile("ppt13", ";p_{T,#gamma} (GeV);p_{T,jet}", nptd, vptd);
+      h->prho13 = new TProfile("prho13", ";p_{T,#gamma} (GeV);#rho", nptd, vptd);
+      h->pchf13 = new TProfile("pchf13", ";p_{T,#gamma} (GeV);CHF", nptd, vptd);
+      h->pnhf13 = new TProfile("pnhf13", ";p_{T,#gamma} (GeV);NHF", nptd, vptd);
+      h->pnef13 = new TProfile("pnef13", ";p_{T,#gamma} (GeV);NEF", nptd, vptd);
+      h->pcef13 = new TProfile("pcef13", ";p_{T,#gamma} (GeV);CEF", nptd, vptd);
+      h->pmuf13 = new TProfile("pmuf13", ";p_{T,#gamma} (GeV);MUF", nptd, vptd);
+*/
       }
   } // doGamjet2
   
@@ -4534,9 +4640,9 @@ void GamHistosFill::Loop()
 	  } // pass
 	} // for ips in PSWeight
 	} // for ieta in etas
-      } // for ialpha in alphas
+ } // for ialpha in alphas
 
-      if (doGamjet && hg) {
+  if (doGamjet && hg) {
 
 	gamjetHistos *h = hg;
 
@@ -4592,9 +4698,76 @@ void GamHistosFill::Loop()
 	  h->pmnj->Fill(ptjet, mpfn, w);
 	  h->pmuj->Fill(ptjet, mpfu, w);
 	}
-      } // doGamjet
+} // doGamjet
+
+if (doGamjet1 && hg1) { //added on 21st of October 2025
+
+	gamjetHistos1 *h1 = hg1;
+
+	// Specific event selection (same as in Gamjet2)
+	bool pass_alpha = (pt2 < 1.00*ptgam || pt2 < pt2min);
+	//bool pass_eta = (abseta >= ymin && abseta < ymax);
+	bool pass = (pass_basic_ext && pass_alpha);// && pass_eta);
+
+	if (pass) {
+	  //double res = Jet_RES[iprobe] / Jet_RES[itag];
+	  double jsf = (smearJets ? Jet_CF[iJet] : 1);
+	  
+	  double abseta = fabs(Jet_eta[iJet]);  //keep just for 'barrel-check' (location)
+    double eta = Jet_eta[iJet];           //just fill eta directly instead of fabs(eta)
+	  h1->h2pteta->Fill(eta, ptgam, w);
+	  
+	  h1->p2res->Fill(eta, ptgam, res, w);
+    if(jes!=0){h1->p2corr->Fill(eta, ptgam, 1./jes, w);}
+	  h1->p2jsf->Fill(eta, ptgam, jsf, w);
+	  h1->p2m0->Fill(eta, ptgam, mpf, w);
+	  h1->p2m2->Fill(eta, ptgam, mpf1, w);
+	  h1->p2mn->Fill(eta, ptgam, mpfn, w);
+	  h1->p2mu->Fill(eta, ptgam, mpfu, w);
+	  
+	  h1->p2m0x->Fill(eta, ptgam, mpfx, w);
+	  h1->p2m2x->Fill(eta, ptgam, mpf1x, w);
+
+	  //investigating mpf (May 2025)
+	  h1->p2m0sym->Fill(eta, ptgam, mpf, w);
+	  h1->p2m0sym->Fill(eta, ptgam, mpfinv, w);
+	  h1->p2m0xsym->Fill(eta, ptgam, mpfx, w);
+	  h1->p2m0xsym->Fill(eta, ptgam, mpfxinv, w);
+
+	  
+	  // Extras for FSR studies
+	  h1->p2mnu->Fill(eta, ptgam, mpfnu, w);
+	  h1->p2mnx->Fill(eta, ptgam, mpfnx, w);
+	  h1->p2mux->Fill(eta, ptgam, mpfux, w);
+	  h1->p2mnux->Fill(eta, ptgam, mpfnux, w);
+
+	  //from Mikko's modifications
+	  if (doPFComposition) {
+	    h1->p2pt->Fill(eta, ptgam, Jet_pt[iJet], w);
+	    h1->p2rho->Fill(eta, ptgam, fixedGridRhoFastjetAll, w);
+	    h1->p2chf->Fill(eta, ptgam, Jet_chHEF[iJet], w);
+	    h1->p2nhf->Fill(eta, ptgam, Jet_neHEF[iJet], w);
+	    h1->p2nef->Fill(eta, ptgam, Jet_neEmEF[iJet], w);
+	    h1->p2cef->Fill(eta, ptgam, Jet_chEmEF[iJet], w);
+	    h1->p2muf->Fill(eta, ptgam, Jet_muEF[iJet], w);
+
+	    if (abseta<1.3) { //check if in barrel, so here for the check keep abseta
+	      h1->ppt13->Fill(ptgam, Jet_pt[iJet], w);
+	      h1->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);
+	      h1->pchf13->Fill(ptgam, Jet_chHEF[iJet], w);
+	      h1->pnhf13->Fill(ptgam, Jet_neHEF[iJet], w);
+	      h1->pnef13->Fill(ptgam, Jet_neEmEF[iJet], w);
+	      h1->pcef13->Fill(ptgam, Jet_chEmEF[iJet], w);
+	      h1->pmuf13->Fill(ptgam, Jet_muEF[iJet], w);
+	    }
+	  } // doPFComposition
+
+	}
+  } // doGamjet1
+
+
       
-      if (doGamjet2 && hg2) {
+if (doGamjet2 && hg2) {
 
 	gamjetHistos2 *h = hg2;
 
@@ -4657,7 +4830,7 @@ void GamHistosFill::Loop()
 	  } // doPFComposition
 
 	}
-      } // doGamjet2
+  } // doGamjet2
 
 		//from Mikko's modifications: 
       // Jet veto maps
