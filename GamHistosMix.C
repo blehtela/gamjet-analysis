@@ -58,10 +58,10 @@ void GamHistosMix() {
   //2025
   //GamHistosMixEra("2025", "w54"); //added on 02 Jun 2025
   //GamHistosMixEra("2024", "w56"); //added on 20 Jun 2025
-  GamHistosMixEra("2025", "w56"); //added on 30 Jun 2025
-
-
-
+  //GamHistosMixEra("2025", "w56"); //added on 30 Jun 2025
+  
+  GamHistosMixEra("summer2024", "w65"); //added on 28 Oct 2025
+  GamHistosMixEra("winter2025", "w65"); //added on 28 Oct 2025
 
 }
 
@@ -110,7 +110,9 @@ void GamHistosMixEra(string sepoch, string sver) {
         //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_summer%sP8_no-pu_%s.root",epoch,ver),"READ");
         //fgam = new TFile(Form("rootfiles/GamHistosFill_mc_summer%sP8_pu-2024CDEFGHI_%s.root",epoch,ver),"READ");//with pu reweighting full 2024
 
-	fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_no-pu_%s.root",epoch,ver),"READ");
+	//fgam = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_no-pu_%s.root",epoch,ver),"READ");
+	fgam = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_no-pu_%s.root",epoch,ver),"READ");	//w65
+
 
 
 
@@ -123,8 +125,8 @@ void GamHistosMixEra(string sepoch, string sver) {
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_summer%sP8_summer%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for 2024, no pu reweighting
 	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_summer%sP8_summer%sQCD_pu-2024CDEFGHI_%s.root",epoch,epoch,ver),"RECREATE"); //for 2024, with pu reweighting full 2024
 
-	fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter%sP8_winter%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for 2025, no pu-reweighting so far
-
+	//fout = new TFile(Form("rootfiles/GamHistosMix_mc_winter%sP8_winter%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for 2025, no pu-reweighting so far
+	fout = new TFile(Form("rootfiles/GamHistosMix_mc_%sP8_%sQCD_no-pu_%s.root",epoch,epoch,ver),"RECREATE"); //for 2025, no pu-reweighting so far
 
 
 
@@ -137,7 +139,9 @@ void GamHistosMixEra(string sepoch, string sver) {
         //fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_summer%sQCD_no-pu_%s.root",qepoch,ver),"READ"); 
 	//fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_summer%sQCD_pu-2024CDEFGHI_%s.root",qepoch,ver),"READ"); 
 
-	fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sQCD_no-pu_%s.root",qepoch,ver),"READ"); 
+	//fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sQCD_no-pu_%s.root",qepoch,ver),"READ"); 
+	fqcd = new TFile(Form("rootfiles/GamHistosFill_mc_%sQCD_no-pu_%s.root",qepoch,ver),"READ"); 
+
 
 
 
