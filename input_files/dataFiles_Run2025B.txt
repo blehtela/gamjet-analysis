@@ -1,4 +1,4 @@
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2025/Data/2025B/date-11Jun2025_time-110000_commit-a76a8e8/Data_2025B_GamJet_EGamma0_Skim_1of1.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2025/Data/2025B/date-11Jun2025_time-110000_commit-a76a8e8/Data_2025B_GamJet_EGamma1_Skim_1of1.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2025/Data/2025B/date-11Jun2025_time-110000_commit-a76a8e8/Data_2025B_GamJet_EGamma2_Skim_1of1.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2025/Data/2025B/date-11Jun2025_time-110000_commit-a76a8e8/Data_2025B_GamJet_EGamma3_Skim_1of1.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2025/Data/2025B/date-10Nov2025_time-084339_commit-fbc64d3/Data_2025B_GamJet_EGamma0_Skim_1of1.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2025/Data/2025B/date-10Nov2025_time-084339_commit-fbc64d3/Data_2025B_GamJet_EGamma1_Skim_1of1.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2025/Data/2025B/date-10Nov2025_time-084339_commit-fbc64d3/Data_2025B_GamJet_EGamma2_Skim_1of1.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2025/Data/2025B/date-10Nov2025_time-084339_commit-fbc64d3/Data_2025B_GamJet_EGamma3_Skim_1of1.root
