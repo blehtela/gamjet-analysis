@@ -1500,7 +1500,7 @@ void GamHistosFill::Loop()
   int nMG = (isMG ? (isQCD ? nMG_qcd : nMG_gam) : 0);
   const int wMG = (isMG ? (isQCD ? wMG_qcd : wMG_gam) : 0);
 
-  //jec4prompt checks
+  //jec4prompt checks --> maybe rename the folder to rawchecks or extrachecks sth, because it is not only jec4prompt anymore (11.11.2025)
   fout->mkdir("jec4prompt");
   fout->cd("jec4prompt");
   TH1D *hgampt = new TH1D("hgam_pt","Photon pT",nx,vx);
@@ -1510,6 +1510,8 @@ void GamHistosFill::Loop()
   TProfile *pbalrawjetptgam = new TProfile("pbalrawjet_ptgam","BAL (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
   TProfile *pmpfrawjetptgam = new TProfile("pmpfrawjet_ptgam","MPF (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
 
+  TH1D *hrawmet = new TH1D("hrawmet","raw MET;raw MET;N_{events}",nx,vx);	//double check binning after running test!
+  TH1D *hmet = new TH1D("hmet","MET;MET;N_{events}",nx,vx);			//double check binning after running test!
 
   
   // PF composition plots stored in a separate directory
@@ -3914,6 +3916,11 @@ void GamHistosFill::Loop()
     //mpf with raw jet pt (use rawmet, check definition further above)
     double rawmpf = 1 + rawmet.Vect().Dot(gam.Vect()) / (ptgam*ptgam);
     pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
+
+   //raw MET and MET distribution (added 11.11.2025)
+    hrawmet->Fill(rawmet, w);
+    hmet->Fill(met, w);
+
   }//end jec4prompt (pass_all)
 
   //could unite this with the previous if, just kept it separately for testing photon stuff (w51)
