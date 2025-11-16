@@ -870,7 +870,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/daily_dials_21sep2025.json"); //hybrid json (daily dials) for w62 (21.09.2025)
     //LoadJSON("files/daily_dials_29sep2025.json"); //hybrid json (daily dials) for w63 (dated to 29.09.2025, but i added it on 2nd of Oct, no newer daily dials available despite newer DCSonly..)
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to397595_DCSRuns_391658to391668_397596to398315_.json"); //self-made hybrid json (Golden Oct 10th + Daily Oct 19th) for w64 (19.10.2025)
-    LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398289_DCSRuns_391658to391668_398290to398903_.json"); //self-made hybrid json (Golden Nov 4th + Daily Nov 11th) for w66 (11.11.2025)
+    //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398289_DCSRuns_391658to391668_398290to398903_.json"); //self-made hybrid json (Golden Nov 4th + Daily Nov 11th) for w66 (11.11.2025)
+    LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398858_DCSRuns_391658to391668_398859to398903_..json"); //self-made hybrid json (Golden Nov 14th + Daily Nov 6th) for w66 (16.11.2025)
 
 
   //TO DO: update JSON
@@ -917,13 +918,13 @@ void GamHistosFill::Loop()
 	lumi110 = LoadLumi("files/lumi2024_golden_photon110eb_pb_w44.csv");
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
   }
-  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w59 (07.09.2025), updated w60 (15.09.2025), updated w62 (21.09.2025), updated w63 (02.10.2025), updated w64 (19.10.2025)
-	  lumi200 = LoadLumi("files/lumi2025_11november2025_photon200_pb_w66.csv");
-	  lumi110 = LoadLumi("files/lumi2025_11november2025_photon110eb_pb_w66.csv");
-	  lumi50 = LoadLumi("files/lumi2025_11november2025_photon50eb_pb_w66.csv");
-	  lumi45 = LoadLumi("files/lumi2025_11november2025_photon45eb_pb_w66.csv");
-	  lumi40 = LoadLumi("files/lumi2025_11november2025_photon40eb_pb_w66.csv");
-	  lumi30 = LoadLumi("files/lumi2025_11november2025_photon30eb_pb_w66.csv");
+  else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w59 (07.09.2025), updated w60 (15.09.2025), updated w62 (21.09.2025), updated w63 (02.10.2025), updated w64 (19.10.2025), w66 (16.11.)
+	  lumi200 = LoadLumi("files/lumi2025_16november2025_photon200_pb_w66.csv");
+	  lumi110 = LoadLumi("files/lumi2025_16november2025_photon110eb_pb_w66.csv");
+	  lumi50 = LoadLumi("files/lumi2025_16november2025_photon50eb_pb_w66.csv");
+	  lumi45 = LoadLumi("files/lumi2025_16november2025_photon45eb_pb_w66.csv");
+	  lumi40 = LoadLumi("files/lumi2025_16november2025_photon40eb_pb_w66.csv");
+	  lumi30 = LoadLumi("files/lumi2025_16november2025_photon30eb_pb_w66.csv");
   }
 
 
@@ -1138,7 +1139,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_27Oct2025.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_16Nov2025.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1511,8 +1512,8 @@ void GamHistosFill::Loop()
   TProfile *pbalrawjetptgam = new TProfile("pbalrawjet_ptgam","BAL (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
   TProfile *pmpfrawjetptgam = new TProfile("pmpfrawjet_ptgam","MPF (using rawjet pt) over photon pT",nx,vx);	//rawjet balance binned in ptgam
 
-  TH1D *hrawmet = new TH1D("hrawmet","raw MET;raw MET;N_{events}",nx,vx);	//double check binning after running test!
-  TH1D *hmet = new TH1D("hmet","MET;MET;N_{events}",nx,vx);			//double check binning after running test!
+  TH1D *hrawmet = new TH1D("hrawmet","raw MET;raw MET p_{T};N_{events}",nx,vx);	//double check binning after running test!
+  TH1D *hmet = new TH1D("hmet","MET;MET p_{T};N_{events}",nx,vx);			//double check binning after running test!
 
   
   // PF composition plots stored in a separate directory
@@ -3919,8 +3920,8 @@ void GamHistosFill::Loop()
     pmpfrawjetptgam->Fill(ptgam, rawmpf, w);
 
    //raw MET and MET distribution (added 11.11.2025)
-    hrawmet->Fill(rawmet, w);
-    hmet->Fill(met, w);
+    hrawmet->Fill(rawmet.Pt(), w);	//E() or Pt() ? 
+    hmet->Fill(met.Pt(), w);
 
   }//end jec4prompt (pass_all)
 
