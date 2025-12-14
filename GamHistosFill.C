@@ -2938,8 +2938,15 @@ void GamHistosFill::Loop()
     // if (Cut(ientry) < 0) continue;
 
     // Safety check for rho being NaN
-    if (!(fixedGridRhoFastjetAll>=0 && fixedGridRhoFastjetAll<150))
-      fixedGridRhoFastjetAll = 34; // average conditions
+    //update - this variable (branch name) depends on which Run (Run3 or not), add this
+    if (!isRun3){
+      if (!(fixedGridRhoFastjetAll>=0 && fixedGridRhoFastjetAll<150))
+        fixedGridRhoFastjetAll = 34; // average conditions
+    }
+    else if (isRun3){
+      if (!(Rho_fixedGridRhoFastjetAll>=0 && Rho_fixedGridRhoFastjetAll<150))
+        Rho_fixedGridRhoFastjetAll = 34; // average conditions
+    } 
     
     // Sanity check PS weights
     if (!isMC) { nPSWeight = 0; }
@@ -3089,12 +3096,12 @@ void GamHistosFill::Loop()
 
       // Calculate L1RC correction
       double corrl1rc(1.); // isRun3
-      if (isRun2) {
-	jecl1rc->setJetPt(phoj.Pt());
-	jecl1rc->setJetEta(phoj.Eta());
-	jecl1rc->setJetA(Jet_area[idx]);
-	jecl1rc->setRho(fixedGridRhoFastjetAll);
-	corrl1rc = jecl1rc->getCorrection();
+      if (isRun2) { //note 12.12.2025: is this only needed for Run2 because in Run3 we have puppijets? (i think so)
+      	jecl1rc->setJetPt(phoj.Pt());
+      	jecl1rc->setJetEta(phoj.Eta());
+      	jecl1rc->setJetA(Jet_area[idx]);
+      	jecl1rc->setRho(fixedGridRhoFastjetAll);
+      	corrl1rc = jecl1rc->getCorrection();
       }
       phoj *= corrl1rc;
 
@@ -3102,11 +3109,11 @@ void GamHistosFill::Loop()
       double refpt = 30; // phoj.Pt~0 leads to negative offset cutoff
       double corrl1rc0(1.); // isRun3
       if (isRun2) {
-	jecl1rc->setJetPt(refpt);
-	jecl1rc->setJetEta(phoj0.Eta());
-	jecl1rc->setJetA(Jet_area[idx]);
-	jecl1rc->setRho(fixedGridRhoFastjetAll);
-	corrl1rc0 = jecl1rc->getCorrection();
+      	jecl1rc->setJetPt(refpt);
+      	jecl1rc->setJetEta(phoj0.Eta());
+      	jecl1rc->setJetA(Jet_area[idx]);
+      	jecl1rc->setRho(fixedGridRhoFastjetAll);
+      	corrl1rc0 = jecl1rc->getCorrection();
       }
       double off0 = (corrl1rc0 - 1) * refpt; // corr*ptref = (ptref-off)
       phoj0off.SetPtEtaPhiM(off0,phoj0.Eta(),phoj0.Phi(),0.);
@@ -3127,7 +3134,7 @@ void GamHistosFill::Loop()
       // Jet_genJetIdx would be great, but only there for UL18 nAOD? Maybe there
       int k = Jet_genJetIdx[iFox];
       if (k>=0 && k<nGenJet) {
-	gam.SetPtEtaPhiM(GenJet_pt[k], GenJet_eta[k], GenJet_phi[k],
+	     gam.SetPtEtaPhiM(GenJet_pt[k], GenJet_eta[k], GenJet_phi[k],
 			 GenJet_mass[k]);
 	// NB: should remove UE clustered into gam. In Minsuk's rho_ZB_new.pdf
 	// QCD_CP5 has about 3.5 GeV/A of UE offset at generator level
@@ -4044,7 +4051,7 @@ void GamHistosFill::Loop()
 	
 		//for pileup investigations (could add this also for other triggers):
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
-	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w);
+	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w); //note: For Run3 only (otherwise variable/branchname is fixedGridRhoFastjetAll in earlier nanoAODs)
 		h_rho_central->Fill(Rho_fixedGridRhoFastjetCentral, w); //w39
 		h_rho_central_charged_pu->Fill(Rho_fixedGridRhoFastjetCentralChargedPileUp, w); //w39
 	  h_npvgood->Fill(PV_npvsGood, w);
@@ -4325,7 +4332,7 @@ void GamHistosFill::Loop()
 	  mvar["mpf1"] = mpf1;
 	  mvar["mpfn"] = mpfn;
 	  mvar["mpfu"] = mpfu;
-	  mvar["rho"] = fixedGridRhoFastjetAll;
+	  mvar["rho"] = isRun3 ? Rho_fixedGridRhoFastjetAll : fixedGridRhoFastjetAll; //added the if statement (? :) here (12.12.2025)
 	  mvar["rjet"] = (ptgam!=0 ? jet.Pt() / ptgam : 0);
 	  mvar["gjet"] = (ptgam!=0 ? genjet.Pt() / ptgam : 0);
 	  mvar["rgen"] = (genjet.Pt()!=0 ? jet.Pt() / genjet.Pt() : 0);
@@ -4560,7 +4567,12 @@ void GamHistosFill::Loop()
 	  }
 	  if (ptgam>230) {
 	    pmuvsmu->Fill(Pileup_nTrueInt, Pileup_nTrueInt, w);
-	    prhovsmu->Fill(Pileup_nTrueInt, fixedGridRhoFastjetAll, w);
+      if(!isRun3){
+	      prhovsmu->Fill(Pileup_nTrueInt, fixedGridRhoFastjetAll, w); //before Run3
+      }
+      else if(isRun3){
+	      prhovsmu->Fill(Pileup_nTrueInt, Rho_fixedGridRhoFastjetAll, w); //Run3
+      }
 	    pnpvgoodvsmu->Fill(Pileup_nTrueInt, PV_npvsGood, w);
 	    pnpvallvsmu->Fill(Pileup_nTrueInt, PV_npvs, w);
 	  } // high pT range
@@ -4587,7 +4599,12 @@ void GamHistosFill::Loop()
 	  }
 
 	  pmuvspt->Fill(ptgam, Pileup_nTrueInt, w);
-	  prhovspt->Fill(ptgam, fixedGridRhoFastjetAll, w);
+    if(!isRun3){
+	    prhovspt->Fill(ptgam, fixedGridRhoFastjetAll, w);
+    }
+    else if(isRun3){
+	    prhovspt->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);
+    }
 	  pnpvgoodvspt->Fill(ptgam, PV_npvsGood, w);
 	  pnpvallvspt->Fill(ptgam, PV_npvs, w);
 
@@ -4596,7 +4613,7 @@ void GamHistosFill::Loop()
     h_mu_noptcuts->Fill(Pileup_nTrueInt, w); //keep one without pt cuts (to be comparable with data histo from brilcalc)
 /*
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
-	  h_rho->Fill(fixedGridRhoFastjetAll, w);
+	  h_rho->Fill(fixedGridRhoFastjetAll, w); //note: this is for NOT Run3, in Run3 need Rho_fixedGridRhoFastjetAll
 		h_rho_central->Fill(fixedGridRhoFastjetCentral, w); //w39
 		h_rho_central_charged_pu->Fill(fixedGridRhoFastjetCentralChargedPileUp, w); //w39
 	  h_npvgood->Fill(PV_npvsGood, w);
@@ -4643,7 +4660,12 @@ void GamHistosFill::Loop()
 	    mh.prmpf1->Fill(ptgam, mpf1, w*wps);
 	    mh.prmpfn->Fill(ptgam, mpfn, w*wps);
 	    mh.prmpfu->Fill(ptgam, mpfu, w*wps);
-	    mh.prho->Fill(ptgam, fixedGridRhoFastjetAll, w);
+      if(isRun3){
+	      mh.prho->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);
+      }
+      else{
+	      mh.prho->Fill(ptgam, fixedGridRhoFastjetAll, w);
+      }
 	    mh.pdjes->Fill(ptgam, djes, w);
 	    mh.pjes->Fill(ptgam, jes, w);
 	    mh.pres->Fill(ptgam, res, w);
@@ -4690,7 +4712,8 @@ void GamHistosFill::Loop()
 	  h->pmnux->Fill(ptgam, mpfnux, w);
 	  
 	  // Composition
-	  h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);
+	  if(!isRun3){h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	  else if(isRun3){h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);}
 	  h->pchf->Fill(ptgam, Jet_chHEF[iJet], w);
 	  h->pnhf->Fill(ptgam, Jet_neHEF[iJet], w);
 	  h->pnef->Fill(ptgam, Jet_neEmEF[iJet], w);
@@ -4754,7 +4777,8 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 	  //from Mikko's modifications
 	  if (doPFComposition) {
 	    h1->p2pt->Fill(eta, ptgam, Jet_pt[iJet], w);
-	    h1->p2rho->Fill(eta, ptgam, fixedGridRhoFastjetAll, w);
+	    if(!isRun3){h1->p2rho->Fill(eta, ptgam, fixedGridRhoFastjetAll, w);}
+	    else if(isRun3){h1->p2rho->Fill(eta, ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	    h1->p2chf->Fill(eta, ptgam, Jet_chHEF[iJet], w);
 	    h1->p2nhf->Fill(eta, ptgam, Jet_neHEF[iJet], w);
 	    h1->p2nef->Fill(eta, ptgam, Jet_neEmEF[iJet], w);
@@ -4763,7 +4787,8 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 
 	    if (abseta<1.3) { //check if in barrel, so here for the check keep abseta
 	      h1->ppt13->Fill(ptgam, Jet_pt[iJet], w);
-	      h1->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);
+	      if(!isRun3){h1->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	      else if(isRun3){h1->prho13->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	      h1->pchf13->Fill(ptgam, Jet_chHEF[iJet], w);
 	      h1->pnhf13->Fill(ptgam, Jet_neHEF[iJet], w);
 	      h1->pnef13->Fill(ptgam, Jet_neEmEF[iJet], w);
@@ -4821,7 +4846,8 @@ if (doGamjet2 && hg2) {
 	  //from Mikko's modifications
 	  if (doPFComposition) {
 	    h->p2pt->Fill(abseta, ptgam, Jet_pt[iJet], w);
-	    h->p2rho->Fill(abseta, ptgam, fixedGridRhoFastjetAll, w);
+	    if(!isRun3){h->p2rho->Fill(abseta, ptgam, fixedGridRhoFastjetAll, w);}
+	    else if(isRun3){h->p2rho->Fill(abseta, ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	    h->p2chf->Fill(abseta, ptgam, Jet_chHEF[iJet], w);
 	    h->p2nhf->Fill(abseta, ptgam, Jet_neHEF[iJet], w);
 	    h->p2nef->Fill(abseta, ptgam, Jet_neEmEF[iJet], w);
@@ -4830,7 +4856,8 @@ if (doGamjet2 && hg2) {
 
 	    if (abseta<1.3) {
 	      h->ppt13->Fill(ptgam, Jet_pt[iJet], w);
-	      h->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);
+	      if(!isRun3){h->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	      else if(isRun3){h->prho13->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	      h->pchf13->Fill(ptgam, Jet_chHEF[iJet], w);
 	      h->pnhf13->Fill(ptgam, Jet_neHEF[iJet], w);
 	      h->pnef13->Fill(ptgam, Jet_neEmEF[iJet], w);
