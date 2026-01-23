@@ -8,6 +8,7 @@
 #include "TH1D.h"
 #include "TProfile.h"
 #include "TProfile2D.h"
+#include "TProfile3D.h"
 #include "TLorentzVector.h"
 #include "TStopwatch.h"
 
@@ -19,9 +20,12 @@
 #include <sstream>
 #include <map>
 
-//typedef for lumimap
-typedef std::map<int,double> LumiMap;
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
+//typedef for lumimap and avgpuMap
+typedef std::map<int,double> LumiMap;
+typedef std::map<std::pair<int,int>,double> LumisecPUmap;  //map containing run, lumi section and average pileup for this LS
 
 
 using namespace std;
@@ -905,6 +909,12 @@ void GamHistosFill::Loop()
   }
 
 
+  //NEW: Load avg pileup per run and lumisection for data
+  //if(!isMC){}
+  //LumisecPUmap avgPUmap = LoadAvgPUdata("/eos/user/b/blehtela/pileup_w69/blehtela/pileup2025CDEFG_JSON_w69.txt");
+  LumisecPUmap avgPUmap = LoadAvgPUdata("avgpileup.csv"); //use the preprocessed file (based on the one above), avgpu precalculated
+
+
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
   //w32 also used for w33
@@ -1150,7 +1160,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_05Dec2025.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_16Jan2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1209,7 +1219,15 @@ void GamHistosFill::Loop()
 
   const int nresp = sizeof(vresp)/sizeof(vresp[0])-1;
 
-
+  //for pileup (added on 12.01.2026, w69)
+  double vmubins[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                      21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 
+                      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 
+                      61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+                      81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+                      101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120};
+  const int nmubins = sizeof(vmubins)/sizeof(vmubins[0])-1;
+ 
 
 
   string dir = (isMC ? "MC" : "DATA");
@@ -1798,10 +1816,19 @@ void GamHistosFill::Loop()
   TH2D *h2mus = new TH2D("h2mus","",nx,vx,100,0,100);
 
   // Plots of npvgood, npvall vs mu
+  //note: originally i had these only for photon pT > 230, in control folder
+  //add version to pileup folder, where only photon50 is required to fire (see further below)
   TProfile *pmuvsmu = new TProfile("pmuvsmu","",100,0,100);
   TProfile *prhovsmu = new TProfile("prhovsmu","",100,0,100);
   TProfile *pnpvgoodvsmu = new TProfile("pnpvgoodvsmu","",100,0,100);
   TProfile *pnpvallvsmu = new TProfile("pnpvallvsmu","",100,0,100);
+
+  //added in w69: --> moved to pileup folder
+  //TProfile *pmuvsmu_photon50 = new TProfile("pmuvsmu_photon50","#mu vs #mu (photon50);#mu;#mu",100,0,100);
+  //TProfile *prhovsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);
+  //TProfile *pnpvgoodvsmu_photon50 = new TProfile("pnpvgoodvsmu_photon50","NPV_{good} vs #mu (photon50);#mu;NPV_{good}",100,0,100);
+  //TProfile *pnpvallvsmu_photon50 = new TProfile("pnpvallvsmu_photon50","NPV_{all} vs #mu (photon50);#mu;NPV_{all}",100,0,100);
+ 
   // Plots of photon corr, err, hoe, r9, vs mu 
   TProfile *pgainvsmu = new TProfile("pgainvsmu","",100,0,100);
   TProfile *pcorrvsmu = new TProfile("pcorrvsmu","",100,0,100);
@@ -1838,9 +1865,8 @@ void GamHistosFill::Loop()
 
 
 
-
-
   //more pileup investigations (w38): plot simple profile (distributions) of rho, mu, NPVall, NPVgood
+  //note (11.01.2026): so far had mu per event only for MC, now implementin also for data
   fout->mkdir("pileup");
   fout->cd("pileup");
   TH1D *h_mu = new TH1D("h_mu","",120,0,120); //use LoadPUJSON, no, should use parsePileupJSON! (need to update)
@@ -1850,6 +1876,19 @@ void GamHistosFill::Loop()
   TH1D *h_rho_central_charged_pu = new TH1D("h_rho_central-charged-pu","",120,0,120);
   TH1D *h_npvgood = new TH1D("h_npvgood","",120,0,120);
   TH1D *h_npvall = new TH1D("h_npvall","",120,0,120);
+
+  //added in w69:
+  TProfile *pmuvsmu_photon50 = new TProfile("pmuvsmu_photon50","#mu vs #mu (photon50);#mu;#mu",100,0,100);
+  TProfile *prhovsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);
+  TProfile *pnpvgoodvsmu_photon50 = new TProfile("pnpvgoodvsmu_photon50","NPV_{good} vs #mu (photon50);#mu;NPV_{good}",100,0,100);
+  TProfile *pnpvallvsmu_photon50 = new TProfile("pnpvallvsmu_photon50","NPV_{all} vs #mu (photon50);#mu;NPV_{all}",100,0,100);
+ 
+
+  //more pileup-related histograms (w69, 11.01.2026)
+  //TProfile3D *p3_mpf_pt_eta_mu = new TProfile3D("p3_mpf_pt_eta_mu", ";#eta_{jet};p_{T,#gamma};#mu;MPF", ny,vy,nx,vx,nmubins,vmubins,nresp,vresp);
+  TProfile3D *p3_mpf_pt_eta_mu = new TProfile3D("p3_mpf_pt_eta_mu", ";#eta_{jet};p_{T,#gamma};#mu;MPF", ny,vy,nx,vx,nmubins,vmubins); //wait, i dont need to put nresp here, it will get averaged in profile
+
+
 
   fout->cd("control"); //go back to one directory before
 
@@ -3237,7 +3276,7 @@ void GamHistosFill::Loop()
     
     // Pileup
     double TruePUrms(0);
-    if (!isMC) Pileup_nTrueInt = getTruePU(run,luminosityBlock,&TruePUrms);
+    if (!isMC) Pileup_nTrueInt = getTruePU(run,luminosityBlock,&TruePUrms); //i think this is deprecated (at least was yielding empty hists), use my new implementation?
     double ptgam = gam.Pt();
 
     // Trigger selection. Take care to match pT bin edges
@@ -3646,6 +3685,10 @@ void GamHistosFill::Loop()
 	   << " in file " << _filename << endl << flush;
       continue;
     }
+
+    //Read pileup for this event
+    double muval = avgPUmap[make_pair(run,luminosityBlock)];  //see my function below
+
 
     // Event filters for 2016 and 2017+2018 data and MC
     // UL lists are separate, but all filter recommendations looked the same
@@ -4060,7 +4103,23 @@ void GamHistosFill::Loop()
 
 	
 		//for pileup investigations (could add this also for other triggers):
-	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
+    //work with two variables instead of using the same name for data and MC.. could change this of course.
+    if(isMC){
+	    h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
+      p3_mpf_pt_eta_mu->Fill(gam.Pt(), jet.Eta(), Pileup_nTrueInt, mpf, w);
+    }
+    else{//added this in version w69 (11.01.2026)
+      //double muval = calcAvgPUdata("/eos/user/b/blehtela/pileup_w69/blehtela/pileup2025CDEFG_JSON_w69.txt", run, luminosityBlock);  //see my function below
+      //double muval = LoadAvgPUdata("/eos/user/b/blehtela/pileup_w69/blehtela/pileup2025CDEFG_JSON_w69.txt", run, luminosityBlock);  //see my function below
+      //double muval = avgPUmap[make_pair(run,luminosityBlock)];  //see my function below
+      h_mu->Fill(muval, w); //for data, read the muvalue for this event's lumisection from the .csv (privately created)
+      pmuvsmu_photon50->Fill(muval, muval, w);
+      prhovsmu_photon50->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);
+      pnpvgoodvsmu_photon50->Fill(muval, PV_npvsGood, w);
+      pnpvallvsmu_photon50->Fill(muval, PV_npvs, w);
+
+      p3_mpf_pt_eta_mu->Fill(gam.Pt(), jet.Eta(), muval, mpf, w);
+    }
 	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w); //note: For Run3 only (otherwise variable/branchname is fixedGridRhoFastjetAll in earlier nanoAODs)
 		h_rho_central->Fill(Rho_fixedGridRhoFastjetCentral, w); //w39
 		h_rho_central_charged_pu->Fill(Rho_fixedGridRhoFastjetCentralChargedPileUp, w); //w39
@@ -4620,7 +4679,13 @@ void GamHistosFill::Loop()
 
 		//more pileup stuff (introduced in w38); number of events over mu,rho,NPVall,NPVgood
 		//template below, should be per trigger!! (remember pT cuts)
-    h_mu_noptcuts->Fill(Pileup_nTrueInt, w); //keep one without pt cuts (to be comparable with data histo from brilcalc)
+    if(isMC){
+      h_mu_noptcuts->Fill(Pileup_nTrueInt, w); //keep one without pt cuts (to be comparable with data histo from brilcalc)
+    }
+    else{
+      h_mu_noptcuts->Fill(avgPUmap[make_pair(run,luminosityBlock)], w); //read from map
+    }
+ 
 /*
 	  h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
 	  h_rho->Fill(fixedGridRhoFastjetAll, w); //note: this is for NOT Run3, in Run3 need Rho_fixedGridRhoFastjetAll
@@ -5376,3 +5441,174 @@ LumiMap GamHistosFill::LoadLumi(string filename){
 
     return lumi; //return the lumimap
 }//end of lumimap
+
+
+//start again: function to read the average pileup per run and lumisection directly from my newly created .csv (with extra script)
+//essentially like for lumimap above
+LumisecPUmap GamHistosFill::LoadAvgPUdata(string filename){ // takes .csv input file with lumi-sections and avg PU
+  fstream lumifile; //the file containing run,LS,avgPU
+  lumifile.open(filename, ios::in); //open the .csv file
+  LumisecPUmap avgPUmap;  //prepare the map
+
+  //reading file (use vector of strings)
+  vector<string> row;
+  string currline, colentry, temp;
+
+  //read the file
+  int nrows=0;
+  while(getline(lumifile, currline)){
+    row.clear();
+    stringstream str(currline);//break words
+    //cout << "currline: " << currline << endl;
+    char delim = ','; //delimiter is a comma here
+
+    while(getline(str, colentry, delim)){ //loop through columns of this row
+      //cout << "row: " << row << endl;
+      row.push_back(colentry); //add current column's entry to row vector
+    }
+
+    //show FIRST, MIDDLE, and LAST entry of row
+    if(row.at(0)[0]!='#'){ //make sure that first entry isn't starting with # (as these would be comments)
+      nrows+=1; //increase valid row counter by one
+      /*
+      cout << "row (first element = run): " << row.at(0) << endl; // first element
+      cout << "row (second element = LS): " << row.at(1) << endl; // second element
+      cout << "row (last element = avgPU): " << row.back() << endl;
+      */
+      //cout << "row is: " << row << endl;
+          
+      //store the run
+      stringstream runstring;
+      int runnum;
+      runstring << row.at(0);
+      runstring >> runnum;
+            
+      //store the LS
+      stringstream lumistring;
+      int lumisec; 
+      lumistring << row.at(1);
+      lumistring >> lumisec;
+
+      //store the avgPU
+      stringstream pustring;
+      double avgpu; 
+      pustring << row.back();
+      pustring >> avgpu;
+            
+      //avgPUmap.emplace((runnum, lumisec), avgpu); //fill value to avgPUmap
+      avgPUmap[make_pair(runnum, lumisec)] = avgpu;
+    }
+  }//stop reading file
+
+  //print the avg pu map (debugging, testing only)
+  /*
+  for(const auto& elem : avgPUmap){ //iterator through map's elements
+      cout << "runnum, lumisec: " << elem.first << " avgpu: " << elem.second << " " << endl;
+  }
+  */
+
+  return avgPUmap; //return the map of run,LS,avgpu
+}
+
+
+/*
+//function to read the average pileup for a given event (data) depending on its run and lumi-section, based on pileup .txt
+LumisecPUmap GamHistosFill::LoadAvgPUdata(string filename){ // takes .csv input file with lumi-sections and avg PU
+//double GamHistosFill::calcAvgPUdata(string filename, int runnum, int lumisec){ // takes .csv input file with lumi-sections and avg PU
+    const char* runnumstr = Form("%i", runnum);
+    //read in the .txt file for, e.g. 50EB, photon trigger
+    ifstream inputfile(filename);
+    json pileupjson = json::parse(inputfile);
+
+    int listsize = pileupjson[runnumstr].size(); //the number of lumisections stored for this run
+    //double minbiasxs = 69200; //in mikrobarn, check if this is what we want or if we want the other value
+    double minbiasxs = 73500;
+    double LSavgPU = 9999; //initialise with unrealistic value as a double-check later
+
+    LumisecPUmap avgPUmap;
+
+    cout << "-------------------------------------------------------------------------------" << endl << flush;
+    cout << " Starting to iterate through the pileup json and calculate avgPU per run and LS. " << endl << flush;
+
+    for(const auto& run : pileupjson.items()){
+      cout << "run.key() = " << run.key() << "\n"; //<< " with run.value() = " << run.value() << "\n";
+      //if(run.key() == "392295"){
+			  //cout << "run.key() = " << run.key() << " with run.value() = " << run.value() << "\n";
+		  //}
+
+		  const char* currentRun = Form("%s", run.key().c_str());
+		  int listsize = pileupjson[currentRun].size();
+		  cout << "pileupjson[currentRun].size() = " << listsize << endl << flush;
+
+		  for(int i=0; i<listsize; ++i){
+			  double avgBunchInstLumiPerOrbitFreq = pileupjson[currentRun][i][3].get<double>();
+			  double LSavgPU = avgBunchInstLumiPerOrbitFreq*minbiasxs;
+			  int currentLS = pileupjson[currentRun][i][0].get<int>();
+			  cout << "[LS = " << currentLS << ", avgBunchInstLumiPerOrbigFreq = " << avgBunchInstLumiPerOrbitFreq << "] calculate avg pileup in this LS, avgPU = " << LSavgPU << endl << flush;
+        avgPUmap[currentRun][currentLS] = LSavgPU;
+		  }
+	  }
+
+    if(LSavgPU > 3000){
+      cout << Form("WARNING: found PU > 3000 (LSavgPU = %f), there must be an error! (check calcAvgPUdata function)", LSavgPU) << endl << flush;
+    }
+
+    return avgPUmap;
+}//end of LoadAvgPUdata
+*/
+
+/*
+void pileupPerLSfromJSON(){
+	ifstream inputfile("/eos/user/b/blehtela/pileup_w69/blehtela/pileup2025CDEFG_JSON_w69.txt");	//, ifstream::binary);
+	json pileupjson = json::parse(inputfile);
+	cout << "-------------------------------------------------------------------------------" << endl << flush;
+	cout << " Starting to iterate through the pileup json and calculate avgPU per run and LS. " << endl << flush;
+
+	//cout << "Test run 392295, which lumi sections are there:" << endl << flush;
+	for(const auto& run : pileupjson.items()){
+		cout << "run.key() = " << run.key() << "\n"; //<< " with run.value() = " << run.value() << "\n";
+		if(run.key() == "392295"){
+			cout << "run.key() = " << run.key() << " with run.value() = " << run.value() << "\n";
+    }
+  }
+
+		const char* currentRun = Form("%s", run.key().c_str());
+
+
+
+		int listsize = pileupjson[currentRun].size();
+		cout << "pileupjson[currentRun].size() = " << listsize << endl << flush;
+
+
+    return LSavgPU; //return the lumisection-avgPU-map
+}//end of LoadAvgPUdata
+
+// THIS IS TOO SLOW WITH THE MULTIPLICATION - instead precalculate and read the average PU for run and LS (see above)
+//function to calclate the average pileup for a given event (data) depending on its run and lumi-section, based on pileup .txt
+//LumisecPUmap GamHistosFill::LoadAvgPUdata(string filename){ // takes .csv input file with lumi-sections and avg PU
+double GamHistosFill::calcAvgPUdata(string filename, int runnum, int lumisec){ // takes .csv input file with lumi-sections and avg PU
+    const char* runnumstr = Form("%i", runnum);
+    //read in the .txt file for, e.g. 50EB, photon trigger
+    ifstream inputfile(filename);
+    json pileupjson = json::parse(inputfile);
+
+    int listsize = pileupjson[runnumstr].size(); //the number of lumisections stored for this run
+    double minbiasxs = 69200; //in mikrobarn, check if this is what we want or if we want the other value
+    double LSavgPU = 9999; //initialise with unrealistic value as a double-check later
+
+    for(int i=0; i<listsize; ++i){
+      if(pileupjson[runnumstr][i][0] == lumisec){
+        double avgBunchInstLumiPerOrbitFreq = pileupjson[runnumstr][i][3];
+        //LSavgPU = avgBunchInstLumiPerOrbitFreq*minbiasxs;
+        cout << "avgBunchInstLumiPerOrbitFreq: " << avgBunchInstLumiPerOrbitFreq << endl << flush;
+        //return LSavgPU;
+      }
+    }
+
+    if(LSavgPU > 3000){
+      cout << Form("WARNING: found PU > 3000 (LSavgPU = %f), there must be an error! (check calcAvgPUdata function)", LSavgPU) << endl << flush;
+    }
+
+    return LSavgPU; //return the lumisection-avgPU-map
+}//end of calcAvgPUdata
+*/
