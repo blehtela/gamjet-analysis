@@ -30,6 +30,8 @@ using namespace std;
 
 //typedef for lumimap
 typedef std::map<int,double> LumiMap;
+typedef std::map<pair<int,int>,double> LumisecPUmap;
+
 
 
 // Header file for the classes stored in the TTree if any.
@@ -571,9 +573,12 @@ public :
    bool LoadJSON(string json);
    void LoadPU();
    LumiMap LoadLumi(string filename); //added function for writing lumimap based on brilcalc input file
+   LumisecPUmap LoadAvgPUdata(string filename); //(13.01.2026)
+   double calcAvgPUdata(string filename, int runnum, int lumisec); //added fct for avg PU (w69, 12.01.2026)
    std::map<int, std::map<int, int> > _json;
    map<string, map<int, TH1D*> > _pu;
    map<string, map<int, double> >  _lumi;
+   map<pair<int,int>, double>  _avgpu; //remove this? added on 14.01.2026
 };
 
 #endif
