@@ -1879,20 +1879,24 @@ void GamHistosFill::Loop()
 
   //added in w69:
   TProfile *pmuvsmu_photon50 = new TProfile("pmuvsmu_photon50","#mu vs #mu (photon50);#mu;#mu",100,0,100);
-  TProfile *prhovsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);
-  TProfile *prhocentralvsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);  //CENTRAL
-  TProfile *prhochargedpuvsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);  //CENTRAL
+  TProfile *prhovsmu_photon50 = new TProfile("prhovsmu_photon50","#rho_{all} vs #mu (photon50);#mu;#rho",100,0,100);
+  TProfile *prhocentralvsmu_photon50 = new TProfile("prhovsmu_photon50","#rho_{central} vs #mu (photon50);#mu;#rho",100,0,100);  //CENTRAL, w71
+  TProfile *prhocentralchargedpuvsmu_photon50 = new TProfile("prhovsmu_photon50","#rho_{central-charged-PU} vs #mu (photon50);#mu;#rho",100,0,100);  //CHARGED PU, w71
   TProfile *pnpvgoodvsmu_photon50 = new TProfile("pnpvgoodvsmu_photon50","NPV_{good} vs #mu (photon50);#mu;NPV_{good}",100,0,100);
   TProfile *pnpvallvsmu_photon50 = new TProfile("pnpvallvsmu_photon50","NPV_{all} vs #mu (photon50);#mu;NPV_{all}",100,0,100);
 
   //added in w70:
   TProfile *pmuvsmu_photon110 = new TProfile("pmuvsmu_photon110","#mu vs #mu (photon110);#mu;#mu",100,0,100);
-  TProfile *prhovsmu_photon110 = new TProfile("prhovsmu_photon110","#rho vs #mu (photon110);#mu;#rho",100,0,100);
+  TProfile *prhovsmu_photon110 = new TProfile("prhovsmu_photon110","#rho_{all} vs #mu (photon110);#mu;#rho",100,0,100);
+  TProfile *prhocentralvsmu_photon110 = new TProfile("prhovsmu_photon110","#rho_{central} vs #mu (photon110);#mu;#rho",100,0,100);  //CENTRAL, w71
+  TProfile *prhocentralchargedpuvsmu_photon110 = new TProfile("prhovsmu_photon110","#rho_{central-charged-PU} vs #mu (photon110);#mu;#rho",100,0,100);  //CHARGED PU, w71
   TProfile *pnpvgoodvsmu_photon110 = new TProfile("pnpvgoodvsmu_photon110","NPV_{good} vs #mu (photon110);#mu;NPV_{good}",100,0,100);
   TProfile *pnpvallvsmu_photon110 = new TProfile("pnpvallvsmu_photon110","NPV_{all} vs #mu (photon110);#mu;NPV_{all}",100,0,100);
   //added also in w70:
   TProfile *pmuvsmu_photon200 = new TProfile("pmuvsmu_photon200","#mu vs #mu (photon200);#mu;#mu",100,0,100);
-  TProfile *prhovsmu_photon200 = new TProfile("prhovsmu_photon200","#rho vs #mu (photon200);#mu;#rho",100,0,100);
+  TProfile *prhovsmu_photon200 = new TProfile("prhovsmu_photon200","#rho_{all} vs #mu (photon200);#mu;#rho",100,0,100);
+  TProfile *prhocentralvsmu_photon200 = new TProfile("prhovsmu_photon200","#rho_{central} vs #mu (photon200);#mu;#rho",100,0,100);  //CENTRAL, w71
+  TProfile *prhocentralchargedpuvsmu_photon200 = new TProfile("prhovsmu_photon200","#rho_{central-charged-PU} vs #mu (photon200);#mu;#rho",100,0,100);  //CHARGED PU, w71
   TProfile *pnpvgoodvsmu_photon200 = new TProfile("pnpvgoodvsmu_photon200","NPV_{good} vs #mu (photon200);#mu;NPV_{good}",100,0,100);
   TProfile *pnpvallvsmu_photon200 = new TProfile("pnpvallvsmu_photon200","NPV_{all} vs #mu (photon200);#mu;NPV_{all}",100,0,100);
  
@@ -1901,7 +1905,7 @@ void GamHistosFill::Loop()
   //TProfile3D *p3_mpf_pt_eta_mu = new TProfile3D("p3_mpf_pt_eta_mu", ";#eta_{jet};p_{T,#gamma};#mu;MPF", ny,vy,nx,vx,nmubins,vmubins,nresp,vresp);
   TProfile3D *p3_mpf_pt_eta_mu = new TProfile3D("p3_mpf_pt_eta_mu", ";#eta_{jet};p_{T,#gamma};#mu;MPF", ny,vy,nx,vx,nmubins,vmubins); //wait, i dont need to put nresp here, it will get averaged in profile
 
-  //to check if i fill the correct things w70
+  //to check if i fill the correct things w70 (filled only in w71)
   TProfile2D *p2_mpf_pt_mu_eta0p0to1p3 = new TProfile2D("p2_mpf_pt_mu_eta0p0to1p3", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
   TProfile2D *p2_mpf_pt_mu_eta1p3to2p5 = new TProfile2D("p2_mpf_pt_mu_eta1p3to2p5", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
   TProfile2D *p2_mpf_pt_mu_eta2p5to3p0 = new TProfile2D("p2_mpf_pt_mu_eta2p5to3p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
@@ -4152,6 +4156,8 @@ void GamHistosFill::Loop()
     pmuvsmu_photon50->Fill(muval, muval, w);
     //prhovsmu_photon50->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);  //do a new histo with this
     prhovsmu_photon50->Fill(muval, Rho_fixedGridRhoFastjetAll, w); //rho
+    prhocentralvsmu_photon50->Fill(Rho_fixedGridRhoFastjetCentral, w);  //rho central
+    prhocentralchargedpuvsmu_photon50->Fill(muval, Rho_fixedGridRhoFastjetCentralChargedPileup, w); //w71, rho central charged pu
 
     pnpvgoodvsmu_photon50->Fill(muval, PV_npvsGood, w);
     pnpvallvsmu_photon50->Fill(muval, PV_npvs, w);
@@ -4199,6 +4205,8 @@ void GamHistosFill::Loop()
     pmuvsmu_photon110->Fill(muval, muval, w);
     //prhovsmu_photon110->Fill(muval, Rho_fixedGridRhoFastjetCentral, w); //do a new histo
     prhovsmu_photon110->Fill(muval, Rho_fixedGridRhoFastjetAll, w);
+    prhocentralvsmu_photon110->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);
+    prhocentralchargedpuvsmu_photon110->Fill(muval, Rho_fixedGridRhoFastjetCentralChargedPileUp, w);
     pnpvgoodvsmu_photon110->Fill(muval, PV_npvsGood, w);
     pnpvallvsmu_photon110->Fill(muval, PV_npvs, w);
 
@@ -4222,6 +4230,8 @@ void GamHistosFill::Loop()
     pmuvsmu_photon200->Fill(muval, muval, w);
     //prhovsmu_photon200->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);
     prhovsmu_photon200->Fill(muval, Rho_fixedGridRhoFastjetAll, w);
+    prhocentralvsmu_photon200->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);
+    prhocentralchargedpuvsmu_photon200->Fill(muval, Rho_fixedGridRhoFastjetCentralChargedPileUp, w);
     pnpvgoodvsmu_photon200->Fill(muval, PV_npvsGood, w);
     pnpvallvsmu_photon200->Fill(muval, PV_npvs, w);
 
