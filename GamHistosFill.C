@@ -1160,7 +1160,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_16Jan2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_23Jan2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1880,14 +1880,32 @@ void GamHistosFill::Loop()
   //added in w69:
   TProfile *pmuvsmu_photon50 = new TProfile("pmuvsmu_photon50","#mu vs #mu (photon50);#mu;#mu",100,0,100);
   TProfile *prhovsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);
+  TProfile *prhocentralvsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);  //CENTRAL
+  TProfile *prhochargedpuvsmu_photon50 = new TProfile("prhovsmu_photon50","#rho vs #mu (photon50);#mu;#rho",100,0,100);  //CENTRAL
   TProfile *pnpvgoodvsmu_photon50 = new TProfile("pnpvgoodvsmu_photon50","NPV_{good} vs #mu (photon50);#mu;NPV_{good}",100,0,100);
   TProfile *pnpvallvsmu_photon50 = new TProfile("pnpvallvsmu_photon50","NPV_{all} vs #mu (photon50);#mu;NPV_{all}",100,0,100);
+
+  //added in w70:
+  TProfile *pmuvsmu_photon110 = new TProfile("pmuvsmu_photon110","#mu vs #mu (photon110);#mu;#mu",100,0,100);
+  TProfile *prhovsmu_photon110 = new TProfile("prhovsmu_photon110","#rho vs #mu (photon110);#mu;#rho",100,0,100);
+  TProfile *pnpvgoodvsmu_photon110 = new TProfile("pnpvgoodvsmu_photon110","NPV_{good} vs #mu (photon110);#mu;NPV_{good}",100,0,100);
+  TProfile *pnpvallvsmu_photon110 = new TProfile("pnpvallvsmu_photon110","NPV_{all} vs #mu (photon110);#mu;NPV_{all}",100,0,100);
+  //added also in w70:
+  TProfile *pmuvsmu_photon200 = new TProfile("pmuvsmu_photon200","#mu vs #mu (photon200);#mu;#mu",100,0,100);
+  TProfile *prhovsmu_photon200 = new TProfile("prhovsmu_photon200","#rho vs #mu (photon200);#mu;#rho",100,0,100);
+  TProfile *pnpvgoodvsmu_photon200 = new TProfile("pnpvgoodvsmu_photon200","NPV_{good} vs #mu (photon200);#mu;NPV_{good}",100,0,100);
+  TProfile *pnpvallvsmu_photon200 = new TProfile("pnpvallvsmu_photon200","NPV_{all} vs #mu (photon200);#mu;NPV_{all}",100,0,100);
  
 
   //more pileup-related histograms (w69, 11.01.2026)
   //TProfile3D *p3_mpf_pt_eta_mu = new TProfile3D("p3_mpf_pt_eta_mu", ";#eta_{jet};p_{T,#gamma};#mu;MPF", ny,vy,nx,vx,nmubins,vmubins,nresp,vresp);
   TProfile3D *p3_mpf_pt_eta_mu = new TProfile3D("p3_mpf_pt_eta_mu", ";#eta_{jet};p_{T,#gamma};#mu;MPF", ny,vy,nx,vx,nmubins,vmubins); //wait, i dont need to put nresp here, it will get averaged in profile
 
+  //to check if i fill the correct things w70
+  TProfile2D *p2_mpf_pt_mu_eta0p0to1p3 = new TProfile2D("p2_mpf_pt_mu_eta0p0to1p3", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
+  TProfile2D *p2_mpf_pt_mu_eta1p3to2p5 = new TProfile2D("p2_mpf_pt_mu_eta1p3to2p5", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
+  TProfile2D *p2_mpf_pt_mu_eta2p5to3p0 = new TProfile2D("p2_mpf_pt_mu_eta2p5to3p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
+  TProfile2D *p2_mpf_pt_mu_eta3p0to5p0 = new TProfile2D("p2_mpf_pt_mu_eta3p0to5p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
 
 
   fout->cd("control"); //go back to one directory before
@@ -3686,8 +3704,15 @@ void GamHistosFill::Loop()
       continue;
     }
 
-    //Read pileup for this event
-    double muval = avgPUmap[make_pair(run,luminosityBlock)];  //see my function below
+    //Read pileup for this event (if data) or read directly from nanoAOD (if MC)
+    //double muval = avgPUmap[make_pair(run,luminosityBlock)];  //see my function below
+    double muval;
+    if(isMC){
+      muval = Pileup_nTrueInt;
+    }
+    else{
+      muval = avgPUmap[make_pair(run,luminosityBlock)];
+    }
 
 
     // Event filters for 2016 and 2017+2018 data and MC
@@ -4104,6 +4129,7 @@ void GamHistosFill::Loop()
 	
 		//for pileup investigations (could add this also for other triggers):
     //work with two variables instead of using the same name for data and MC.. could change this of course.
+    /*
     if(isMC){
 	    h_mu->Fill(Pileup_nTrueInt, w); //problem: this variable is not existing for data... will be empty, could calculate from parsePileupJSON? (this is reweighted)
       p3_mpf_pt_eta_mu->Fill(gam.Pt(), jet.Eta(), Pileup_nTrueInt, mpf, w);
@@ -4120,11 +4146,38 @@ void GamHistosFill::Loop()
 
       p3_mpf_pt_eta_mu->Fill(gam.Pt(), jet.Eta(), muval, mpf, w);
     }
+    */
+    //set muval now correctly for both data and MC, so dont need any if(isMC) here anymore
+    h_mu->Fill(muval, w); //for data, read the muvalue for this event's lumisection from the .csv (privately created), for MC from nanoAOD
+    pmuvsmu_photon50->Fill(muval, muval, w);
+    //prhovsmu_photon50->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);  //do a new histo with this
+    prhovsmu_photon50->Fill(muval, Rho_fixedGridRhoFastjetAll, w); //rho
+
+    pnpvgoodvsmu_photon50->Fill(muval, PV_npvsGood, w);
+    pnpvallvsmu_photon50->Fill(muval, PV_npvs, w);
+
+    p3_mpf_pt_eta_mu->Fill(gam.Pt(), jet.Eta(), muval, mpf, w); //need to check if this really works as it should
+ 
 	  h_rho->Fill(Rho_fixedGridRhoFastjetAll, w); //note: For Run3 only (otherwise variable/branchname is fixedGridRhoFastjetAll in earlier nanoAODs)
 		h_rho_central->Fill(Rho_fixedGridRhoFastjetCentral, w); //w39
 		h_rho_central_charged_pu->Fill(Rho_fixedGridRhoFastjetCentralChargedPileUp, w); //w39
 	  h_npvgood->Fill(PV_npvsGood, w);
 	  h_npvall->Fill(PV_npvs, w);
+
+    //trying if this works, ultimately want to have only one TProfile3D to replace the different eta-region (make it continuos)
+    if(abs(jet.Eta())<1.3){
+      p2_mpf_pt_mu_eta0p0to1p3->Fill(gam.Pt(), muval, mpf, w);
+    }
+    else if(abs(jet.Eta())>=1.3 && abs(jet.Eta())<2.5){
+      p2_mpf_pt_mu_eta1p3to2p5->Fill(gam.Pt(), muval, mpf, w);
+    }
+    else if(abs(jet.Eta())>=2.5 && abs(jet.Eta())<3.5){
+      p2_mpf_pt_mu_eta2p5to3p0->Fill(gam.Pt(), muval, mpf, w);
+    }
+     else if(abs(jet.Eta())>=3.0 && abs(jet.Eta())<5.0){
+      p2_mpf_pt_mu_eta3p0to5p0->Fill(gam.Pt(), muval, mpf, w);
+    }
+
 
 	}
 	if (itrg==110 && ptgam>120) { //offline cut ptgam > 120 (used to be 110)
@@ -4141,6 +4194,14 @@ void GamHistosFill::Loop()
 		///h2n110_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n110_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
 
+
+    //for higher pt (photon110)
+    pmuvsmu_photon110->Fill(muval, muval, w);
+    //prhovsmu_photon110->Fill(muval, Rho_fixedGridRhoFastjetCentral, w); //do a new histo
+    prhovsmu_photon110->Fill(muval, Rho_fixedGridRhoFastjetAll, w);
+    pnpvgoodvsmu_photon110->Fill(muval, PV_npvsGood, w);
+    pnpvallvsmu_photon110->Fill(muval, PV_npvs, w);
+
 	}
 	if (itrg==200 && ptgam>230) {
 	  pr230n->Fill(run, w);
@@ -4155,6 +4216,14 @@ void GamHistosFill::Loop()
 		p2bal200_jetetaphi->Fill(jet.Eta(), jet.Phi(), bal, w);
 		//h2n200_jetetaphi->Fill(jet.Eta(), jet.Phi(), w); //event rate 
 		h2n200_gametaphi->Fill(gam.Eta(), gam.Phi(), w); //event rate (photon eta, photon phi)
+
+
+    //for even higher pt (photon200)
+    pmuvsmu_photon200->Fill(muval, muval, w);
+    //prhovsmu_photon200->Fill(muval, Rho_fixedGridRhoFastjetCentral, w);
+    prhovsmu_photon200->Fill(muval, Rho_fixedGridRhoFastjetAll, w);
+    pnpvgoodvsmu_photon200->Fill(muval, PV_npvsGood, w);
+    pnpvallvsmu_photon200->Fill(muval, PV_npvs, w);
 
 	}
 	if (iGam!=-1 && Photon_seedGain[iGam]==1) {
