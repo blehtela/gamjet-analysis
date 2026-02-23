@@ -439,6 +439,10 @@ void GamHistosFill::Loop()
     if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavCvL",1);
     if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavQG",1);
 
+    //UParT tagging branches (w72, added on 23.02.2026)
+    if (isRun3) fChain->SetBranchStatus("Jet_btagUParTAK4CvL",1);
+    if (isRun3) fChain->SetBranchStatus("Jet_btagUParTAK4CvB",1);
+
     //if (isMC && isRun3) {
     if (isMG) {
       fChain->SetBranchStatus("LHE_HT",1);
@@ -1160,7 +1164,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_26Jan2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_23Feb2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1912,7 +1916,45 @@ void GamHistosFill::Loop()
   TProfile2D *p2_mpf_pt_mu_eta3p0to5p0 = new TProfile2D("p2_mpf_pt_mu_eta3p0to5p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
 
 
-  fout->cd("control"); //go back to one directory before
+
+  // New flavour studies (started in 2026) stored in a separate directory, starting from w72
+  // combines plots that are for all events either in the "pf" or in the "runs" folder
+  fout->mkdir("flavour");
+  fout->cd("flavour");  
+  
+  // --- like in pf folder, but c-tagged jet --- //
+  TH2D *h2pteta_ctag = new TH2D("h2pteta_ctag","#eta and p_{T} for c-tagged events;p_{T, #gamma};#eta_{jet}",nx,vx,ny,vy);
+  TProfile *pabseta_ctag = new TProfile("pabseta_ctag","|#eta| for c-tagged jets (cut);p_{T, #gamma};|#eta_{jet}|",nx,vx);
+
+  // 1D composition and response for c-tagged events
+  TProfile *pdb_ctag = new TProfile("pdb_ctag","Direct Balance for c-tagged events;p_{T,#gamma};DB",nx,vx);
+  TProfile *pmpf_ctag = new TProfile("pmpf_ctag","MPF for c-tagged events;p_{T,#gamma};MPF",nx,vx);
+  TProfile *pchf_ctag = new TProfile("pchf_ctag","charged Hadron energy fraction for c-tagged events;p_{T,#gamma};chHEF",nx,vx);
+  TProfile *pnhf_ctag = new TProfile("pnhf_ctag","neutral Hadron energy fraction for c-tagged events;p_{T,#gamma};neHEF",nx,vx);
+  TProfile *pnef_ctag = new TProfile("pnef_ctag","neutral EM energy fraction for c-tagged events;p_{T,#gamma};neEmEF",nx,vx);
+  TProfile *pcef_ctag = new TProfile("pcef_ctag","charged EM energy fraction for c-tagged events;p_{T,#gamma};chEmEF",nx,vx);
+  TProfile *pmuf_ctag = new TProfile("pmuf_ctag","muon energy fraction for c-tagged events;p_{T,#gamma};muEF",nx,vx);
+  //TProfile *ppuf = new TProfile("ppuf","",nx,vx); //not implementing this, dont know why we had it in pf folder
+
+  // --- like in runs folder, but c-tagged jet --- //
+  //only for photon50 for now
+
+  // Time stability of JEC for c-tagged events
+  TProfile *pr50b_ctag = new TProfile("pr50b_ctag","time-stability of DB for c-tagged events;Run;BAL;",histnx,xmin,xmax);
+  TProfile *pr50m_ctag = new TProfile("pr50m_ctag","time-stability of MPF for c-tagged events;Run;MPF;",histnx,xmin,xmax);
+
+  // Time stability of PF composition
+  TProfile *pr50chf_ctag = new TProfile("pr50chf_ctag","charged hadron fraction (c-tagged events);Run;CHF;",histnx,xmin,xmax);
+  TProfile *pr50efb_chf_ctag = new TProfile("pr50efb_chf_ctag","CHF #times p_{T,rawj} / p_{T,#gamma} (c-tagged events);Run;EFB CHF;",histnx,xmin,xmax);
+  //
+  TProfile *pr50nhf_ctag = new TProfile("pr50nhf_ctag","neutral hadron fraction (c-tagged events);Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr50efb_nhf_ctag = new TProfile("pr50efb_nhf_ctag","NHF #times p_{T,rawj} / p_{T,#gamma} (c-tagged events);Run;EFB NHF;",histnx,xmin,xmax);
+  //
+  TProfile *pr50nef_ctag = new TProfile("pr50nef_ctag","neutral EM fraction (c-tagged events);Run;NHF;",histnx,xmin,xmax);
+  TProfile *pr50efb_nef_ctag = new TProfile("pr50efb_nef_ctag","NEF #times p_{T,rawj} / p_{T,#gamma} (c-tagged events);Run;EFB NEF;",histnx,xmin,xmax);
+
+
+  fout->cd("control"); //go back to two directories before (should rearrange this, noted 23.02.2026)
 
 	//new (w27+w28): 2D plots for gain vs pt and eta (nx = #xbins, vx = pt-xbins, ny=#ybins, vy=eta-ybins)
 	//changed to narrower eta-bins called veta, #bins=nveta
@@ -2224,8 +2266,9 @@ void GamHistosFill::Loop()
   TH1D *hgamtrig_mc = new TH1D("hgamtrig_mc","",197,15,1000);
 
   // Flavor plots stored in a separate directory
-  fout->mkdir("flavor");
-  fout->cd("flavor");
+  //fout->mkdir("flavor"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
+  fout->mkdir("flavor_old"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
+  fout->cd("flavor_old");
 
   map<string, double> mvar;
   map<string, map<string, map<string, TH1*> > > mp;
@@ -3582,7 +3625,7 @@ void GamHistosFill::Loop()
         ++nJets;
 
         if (iJet==-1) { // Leading jet for balance
-            iJet = i;
+            iJet = i;   //note (23.02.2026): shouldnt we do a pT ordering first?... (ok in nanoAOD seem to be ordered.)
             jet = jeti;
             djes = Jet_deltaJES[i];
             jes = (1.-Jet_rawFactor[i]);
@@ -3596,23 +3639,23 @@ void GamHistosFill::Loop()
           }
 	      }
 	
-	// Calculate L1RC correction
-	rawjet = (1-Jet_rawFactor[i]) * jeti;
-	double corrl1rc(1.); // isRun3
-	if (isRun2) {
-	  jecl1rc->setJetPt(rawjet.Pt());
-	  jecl1rc->setJetEta(rawjet.Eta());
-	  jecl1rc->setJetA(Jet_area[i]);
-	  jecl1rc->setRho(fixedGridRhoFastjetAll);
-	  corrl1rc = jecl1rc->getCorrection();
-	}
-	rcjet = corrl1rc * rawjet;
-	
-	// Corrected type-I chsMET calculation
-	corrjets += jeti;
-	rawjets += rawjet;
-	rcjets += rcjet;
-	rcoffsets += (rawjet - rcjet);
+      	// Calculate L1RC correction
+      	rawjet = (1-Jet_rawFactor[i]) * jeti;
+      	double corrl1rc(1.); // isRun3
+      	if (isRun2) {
+      	  jecl1rc->setJetPt(rawjet.Pt());
+      	  jecl1rc->setJetEta(rawjet.Eta());
+      	  jecl1rc->setJetA(Jet_area[i]);
+      	  jecl1rc->setRho(fixedGridRhoFastjetAll);
+      	  corrl1rc = jecl1rc->getCorrection();
+      	}
+      	rcjet = corrl1rc * rawjet;
+      
+      	// Corrected type-I chsMET calculation
+      	corrjets += jeti;
+      	rawjets += rawjet;
+      	rcjets += rcjet;
+      	rcoffsets += (rawjet - rcjet);
       } // non-photon jet
     } // for i in nJet
     
@@ -3622,16 +3665,16 @@ void GamHistosFill::Loop()
     genjet2.SetPtEtaPhiM(0,0,0,0);
     if (isMC) {
       for (Int_t i = 0; i != nGenJet; ++i) {
-	geni.SetPtEtaPhiM(GenJet_pt[i],GenJet_eta[i],GenJet_phi[i],
+        geni.SetPtEtaPhiM(GenJet_pt[i],GenJet_eta[i],GenJet_phi[i],
 			  GenJet_mass[i]);
-	if (iJet!=-1 && geni.DeltaR(jet)<0.4 && iGenJet==-1) {
-	  iGenJet = i;
-	  genjet = geni;
-	}
-	else if (iJet2!=-1 && geni.DeltaR(jet2)<0.4 && iGenJet2==-1) {
-	  iGenJet2 = i;
-	  genjet2 = geni;
-	}
+	      if (iJet!=-1 && geni.DeltaR(jet)<0.4 && iGenJet==-1) {
+	        iGenJet = i;
+	        genjet = geni;
+	      }
+	      else if (iJet2!=-1 && geni.DeltaR(jet2)<0.4 && iGenJet2==-1) {
+	        iGenJet2 = i;
+	        genjet2 = geni;
+	      }
       } // for i in nGenJet
     } // isMC
 
@@ -3662,6 +3705,13 @@ void GamHistosFill::Loop()
     metn.SetPz(0);
     met1.SetPz(0);
     metu.SetPz(0);
+
+    //c-tagging (new 23.02.2026)
+    //thresholds from BTV for 2024: https://indico.cern.ch/event/1453067/contributions/6493264/attachments/3057855/5406570/250428_BTV.pdf
+    double CvL_tight = 0.650; 
+    double CvB_tight = 0.421; 
+    bool tagged_cjet = (Jet_btagUParTAK4CvL[iJet] > CvL_tight && Jet_btagUParTAK4CvB[iJet] < CvB_tight);
+ 
     
     // Calculate basic variables
     double ptjet = jet.Pt();
@@ -4062,6 +4112,15 @@ void GamHistosFill::Loop()
       pr50chf->Fill(run, Jet_chHEF[iJet], w);
       pr50nhf->Fill(run, Jet_neHEF[iJet], w);
       pr50nef->Fill(run, Jet_neEmEF[iJet], w);
+
+      //same but for c-tagged events (w72, 23.02.2026)
+      if(tagged_cjet){
+        pr50b_ctag->Fill(run, bal, w); 
+        pr50m_ctag->Fill(run, mpf, w);
+        pr50chf_ctag->Fill(run, Jet_chHEF[iJet], w);
+        pr50nhf_ctag->Fill(run, Jet_neHEF[iJet], w);
+        pr50nef_ctag->Fill(run, Jet_neEmEF[iJet], w);
+      }
 
       //energy fraction balance
       /*
@@ -4673,6 +4732,23 @@ void GamHistosFill::Loop()
 	  pmuf->Fill(ptgam, Jet_muEF[iJet], w);
 	  //if (isRun3) Jet_chFPV0EF[iJet] = 0;
 	  //ppuf->Fill(ptgam, Jet_chFPV0EF[iJet], w);
+
+    //same but c-tagged (added in w72, 23.02.2026)
+    if(tagged_cjet){
+      h2pteta_ctag->Fill(ptgam, Jet_eta[iJet], w);
+      pabseta_ctag->Fill(ptgam, fabs(Jet_eta[iJet]), w);
+
+  	  // 1D composition and response
+  	  pdb_ctag->Fill(ptgam, bal, w);
+  	  pmpf_ctag->Fill(ptgam, mpf, w);
+  	  pchf_ctag->Fill(ptgam, Jet_chHEF[iJet], w);
+  	  pnhf_ctag->Fill(ptgam, Jet_neHEF[iJet], w);
+  	  pnef_ctag->Fill(ptgam, Jet_neEmEF[iJet], w);
+  	  pcef_ctag->Fill(ptgam, Jet_chEmEF[iJet], w);
+  	  pmuf_ctag->Fill(ptgam, Jet_muEF[iJet], w);
+    }
+
+
 	  
 	  // 2D composition and response
 	  if (ptgam>230) {
