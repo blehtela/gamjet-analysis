@@ -92,6 +92,10 @@ public:
   TProfile2D *p2m0x, *p2m2x;
   TProfile2D *p2m0sym, *p2m0xsym; //added to gamjetHistos2 on 14.05.2025 for investigation of response, copied here
 
+  //new for w73 (extra NHF plots)
+  TH3D *h3ptetanhf;
+  TProfile3D *p3m0nhf, *p3m2nhf; 
+
   // Extra for FSR studies
   TProfile2D *p2mnu, *p2mnx, *p2mux, *p2mnux;
 
@@ -1166,7 +1170,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_25Feb2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_01Mar2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -2402,6 +2406,10 @@ void GamHistosFill::Loop()
 
     const int nxdneg = sizeof(vxdneg)/sizeof(vxdneg[0])-1;
 
+    //w73: for the NHF in the TH3D (z-axis, NHF)
+    double vznhf[] = {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
+    const int nznhf = sizeof(vznhf)/sizeof(vznhf[0])-1;
+
 
     if (debug) cout << "Setup doGamjet1 " << endl << flush;
       
@@ -2454,6 +2462,12 @@ void GamHistosFill::Loop()
       h1->pnef13 = new TProfile("pnef13", ";p_{T,#gamma} (GeV);NEF", nptd, vptd);
       h1->pcef13 = new TProfile("pcef13", ";p_{T,#gamma} (GeV);CEF", nptd, vptd);
       h1->pmuf13 = new TProfile("pmuf13", ";p_{T,#gamma} (GeV);MUF", nptd, vptd);
+
+      //new in w73: added more NHF plots (01.03.2026)
+      //x: signed jet eta, y: photon pT, z: NHF
+      h1->h3ptetanhf = new TH3D("h3ptetanhf",";#eta_{jet};p_{T,#gamma} (GeV);NHF;N_{events}", nxdneg, vxdneg, nptd, vptd, nznhf, vznhf);
+      h1->p3m0nhf = new TProfile3D("p3m0nhf",";#eta_{jet};p_{T,#gamma} (GeV);NHF;MPF0", nxdneg, vxdneg, nptd, vptd, nznhf, vznhf);
+      h1->p3m2nhf = new TProfile3D("p3m2nhf",";#eta_{jet};p_{T,#gamma} (GeV);NHF;MPF2", nxdneg, vxdneg, nptd, vptd, nznhf, vznhf);
     }
   } // doGamjet1
  
@@ -4993,6 +5007,11 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 	  double abseta = fabs(Jet_eta[iJet]);  //keep just for 'barrel-check' (location)
     double eta = Jet_eta[iJet];           //just fill eta directly instead of fabs(eta)
 	  h1->h2pteta->Fill(eta, ptgam, w);
+
+    //for the extra NHF plots (w73)
+    h1->h3ptetanhf->Fill(eta, ptgam, Jet_neHEF[iJet], w);     //w73: added on 01.03.2026
+    h1->p3m0nhf->Fill(eta, ptgam, mpf, Jet_neHEF[iJet], w);   //w73: added on 01.03.2026
+    h1->p3m2nhf->Fill(eta, ptgam, mpf1, Jet_neHEF[iJet], w);  //w73: added on 01.03.2026
 	  
 	  h1->p2res->Fill(eta, ptgam, res, w);
     if(jes!=0){h1->p2corr->Fill(eta, ptgam, 1./jes, w);}
