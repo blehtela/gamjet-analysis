@@ -232,6 +232,8 @@ void GamHistosFill::Loop()
 
   int _ntot(0), _nevents(0), _nbadevents_json(0), _nbadevents_trigger(0);
   int _nbadevents_veto(0);
+  int count_ctag = 0; //w72 (25.02.2026)
+
   
   if (true) { // ProcessFast
     fChain->SetBranchStatus("*",0);  // disable all branches
@@ -1164,7 +1166,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_23Feb2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_25Feb2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -3710,7 +3712,18 @@ void GamHistosFill::Loop()
     //thresholds from BTV for 2024: https://indico.cern.ch/event/1453067/contributions/6493264/attachments/3057855/5406570/250428_BTV.pdf
     double CvL_tight = 0.650; 
     double CvB_tight = 0.421; 
+    /*
+    bool tagged_cjet = false;
+    if((Jet_btagUParTAK4CvL[iJet] > CvL_tight) && (Jet_btagUParTAK4CvB[iJet] < CvB_tight)){
+      tagged_cjet = true;
+    }
+    */
     bool tagged_cjet = (Jet_btagUParTAK4CvL[iJet] > CvL_tight && Jet_btagUParTAK4CvB[iJet] < CvB_tight);
+    //cout << "Jet_btagUParTAK4CvL[iJet]" << Jet_btagUParTAK4CvL[iJet] << endl << flush;
+    //cout << "tagged_cjet = " << tagged_cjet << endl << flush; //see what happens when outputting the value... it should be false for nonexisting branches
+    if(tagged_cjet){
+      count_ctag++;
+    }
  
     
     // Calculate basic variables
@@ -4740,7 +4753,8 @@ void GamHistosFill::Loop()
 
   	  // 1D composition and response
   	  pdb_ctag->Fill(ptgam, bal, w);
-  	  pmpf_ctag->Fill(ptgam, mpf, w);
+      //cout << "tagged_cjet = " << tagged_cjet << endl << flush;
+  	  pmpf_ctag->Fill(ptgam, mpf, w); //try what happens when not filling
   	  pchf_ctag->Fill(ptgam, Jet_chHEF[iJet], w);
   	  pnhf_ctag->Fill(ptgam, Jet_neHEF[iJet], w);
   	  pnef_ctag->Fill(ptgam, Jet_neEmEF[iJet], w);
@@ -5137,6 +5151,14 @@ if (doGamjet2 && hg2) {
       	 << (100.*_nbadevents_trigger/_ntot) << "%) \n";
     cout << "Skipped " << _nbadevents_veto << " events due to veto ("
       	 << (100.*_nbadevents_veto/_nevents) << "%) \n";
+
+    //w72: c-tagging info and extra warning
+    cout << "\n---------------------------------------------------------------------------------------------------" << endl << flush;
+    cout << "There were " << count_ctag << " c-tagged events ("
+      	 << (100.*count_ctag/_nevents) << "%) \n";
+    cout << "IMPORTANT: CHECK THAT THE SKIMS ACTUALLY HAD THE RELEVANT C-TAGGING BRANCHES! See the output, in the log-file, and whether there are any Errors with SetBranchStatus! Even when the branches do not exist, the variable might get assigned some value that is in the memory which leads to faulty histograms!" << endl << flush;
+    cout << "For comparison, a realistic value for the fraction of c-tagged events from a case where the branches existed is: " << endl << flush;
+    cout << "----------------------------------------------------------------------------------------------------\n" << endl << flush;
 
     // Add extra plot for jet response vs photon pT
     if (isMC) {
