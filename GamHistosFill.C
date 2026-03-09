@@ -922,8 +922,16 @@ void GamHistosFill::Loop()
   //NEW: Load avg pileup per run and lumisection for data
   //if(!isMC){}
   //LumisecPUmap avgPUmap = LoadAvgPUdata("/eos/user/b/blehtela/pileup_w69/blehtela/pileup2025CDEFG_JSON_w69.txt");
-  LumisecPUmap avgPUmap = LoadAvgPUdata("avgpileup.csv"); //use the preprocessed file (based on the one above), avgpu precalculated
+  //LumisecPUmap avgPUmap = LoadAvgPUdata("avgpileup.csv"); //use the preprocessed file (based on the one above), avgpu precalculated
 
+  LumisecPUmap avgPUmap;
+  if(TString(ds.c_str()).Contains("2024")){
+	avgPUmap = LoadAvgPUdata("avgpileup2024.csv");
+  }
+  else if(TString(ds.c_str()).Contains("2025")){
+	avgPUmap = LoadAvgPUdata("avgpileup2025.csv");
+  }
+	
 
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
@@ -1170,7 +1178,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_08Mar2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_09Mar2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -5010,8 +5018,11 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 
     //for the extra NHF plots (w73)
     h1->h3ptetanhf->Fill(eta, ptgam, Jet_neHEF[iJet], w);     //w73: added on 01.03.2026
-    h1->p3m0nhf->Fill(eta, ptgam, mpf, Jet_neHEF[iJet], w);   //w73: added on 01.03.2026
-    h1->p3m2nhf->Fill(eta, ptgam, mpf1, Jet_neHEF[iJet], w);  //w73: added on 01.03.2026
+    //h1->p3m0nhf->Fill(eta, ptgam, mpf, Jet_neHEF[iJet], w);   //w73: added on 01.03.2026
+    //h1->p3m2nhf->Fill(eta, ptgam, mpf1, Jet_neHEF[iJet], w);  //w73: added on 01.03.2026
+    h1->p3m0nhf->Fill(eta, ptgam, Jet_neHEF[iJet], mpf, w);   //w73: changed on 09.03.2026
+    h1->p3m2nhf->Fill(eta, ptgam, Jet_neHEF[iJet], mpf1, w);  //w73: changed on 09.03.2026
+	
 	  
 	  h1->p2res->Fill(eta, ptgam, res, w);
     if(jes!=0){h1->p2corr->Fill(eta, ptgam, 1./jes, w);}
@@ -5172,12 +5183,12 @@ if (doGamjet2 && hg2) {
       	 << (100.*_nbadevents_veto/_nevents) << "%) \n";
 
     //w72: c-tagging info and extra warning
-    cout << "\n---------------------------------------------------------------------------------------------------" << endl << flush;
+    cout << "\n------------------------------------------------------------------------------------------------------------------------------------------------------" << endl << flush;
     cout << "There were " << count_ctag << " c-tagged events ("
       	 << (100.*count_ctag/_nevents) << "%) \n";
     cout << "IMPORTANT: CHECK THAT THE SKIMS ACTUALLY HAD THE RELEVANT C-TAGGING BRANCHES! See the output, in the log-file, and whether there are any Errors with SetBranchStatus! Even when the branches do not exist, the variable might get assigned some value that is in the memory which leads to faulty histograms!" << endl << flush;
-    cout << "For comparison, a realistic value for the fraction of c-tagged events from a case where the branches existed is: " << endl << flush;
-    cout << "----------------------------------------------------------------------------------------------------\n" << endl << flush;
+    cout << "For comparison, a realistic value for the fraction of c-tagged events from a case where the branches existed is: 0.5 to 0.6% " << endl << flush;
+    cout << "----------------------------------------------------------------------------------------------------------------------------------------------------\n" << endl << flush;
 
     // Add extra plot for jet response vs photon pT
     if (isMC) {
