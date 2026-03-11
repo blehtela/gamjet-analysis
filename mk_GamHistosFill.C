@@ -46,7 +46,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w73") { //using w-version names for my code (Bettina), w60 (25F), w59 (25D), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w74") { //using w-version names for my code (Bettina), w60 (25F), w59 (25D), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -98,7 +98,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 			dataset=="2024Gnib1" || dataset=="2024Gnib2" || dataset=="2024Hnib1" || dataset=="2024Inib1" ||
       dataset=="2025B" || dataset=="2025Cv1" || dataset=="2025Cv2" || dataset=="2025D" || dataset=="2025Dtestfile" || dataset=="2025E" || //dataset=="2025F" ||//); //
       dataset=="2025Fv1" || dataset=="2025Fv2" || dataset=="2025G" || //added 2025G and split F to Fv1 and Fv2 on 19.10.2025, w64.
-      dataset=="2025C-TrkRadDamage"); //added 2025 data on 20.05.2025, w50; added 25Cv2 and 25D on 06.08.2025, w58. 25E on 15sep2025, still w59. 25F on 15sep2025, w60. Added 25C-TrkRadDamage on 02Oct2025, w63.
+      dataset=="2025C-TrkRadDamage" ||
+	dataset=="2026A"); //added 2025 data on 20.05.2025, w50; added 25Cv2 and 25D on 06.08.2025, w58. 25E on 15sep2025, still w59. 25F on 15sep2025, w60. Added 25C-TrkRadDamage on 02Oct2025, w63. Added 2026 data on 11.03.2026 (w74).
 
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
@@ -110,6 +111,12 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 		dataset=="2023P8" || //);// || dataset=="2023QCD");
   		dataset=="2023P8-BPix" || //added the BPix MC files
   		dataset=="winter2024P8" || dataset=="summer2024P8" ||  dataset=="summer2024P8" ||
+		dataset=="summer2024P8_PTG10to100-HT40to100" || dataset=="summer2024P8_PTG10to100-HT100to200" || dataset=="summer2024P8_PTG10to100-HT200to400" ||
+		dataset=="summer2024P8_PTG10to100-HT400to600" || dataset=="summer2024P8_PTG10to100-HT600to1000" || dataset=="summer2024P8_PTG10to100-HT1000toInf" ||
+		dataset=="summer2024P8_PTG100to200-HT40to200" || dataset=="summer2024P8_PTG100to200-HT200to400" || dataset=="summer2024P8_PTG100to200-HT400to600" ||
+		dataset=="summer2024P8_PTG100to200-HT600to1000" || dataset=="summer2024P8_PTG100to200-HT1000toInf" || 
+		dataset=="summer2024P8_PTG200toInf-HT40to400" ||dataset=="summer2024P8_PTG200toInf-HT400to600" ||
+		dataset=="summer2024P8_PTG200toInf-HT600to1000" ||dataset=="summer2024P8_PTG200toInf-HT1000toInf" ||
 			dataset=="winter2024P8-test" || dataset=="summer2024P8-test" || 
 			dataset=="winter2024P8-v14" || //winter 2024 madgraph p8 (added on 07.08.2024)
 			dataset=="winter2024P8a" || dataset=="winter2024P8b" || dataset=="winter2024P8c" || //winter 2024 madgraph p8 (added on 07.08.2024)

@@ -50,6 +50,7 @@ public :
    bool            is23;
    bool            is24;
    bool            is25;
+   bool            is26;
    bool            isRun2, isRun3;
    bool            isQCD;
    bool            isMG;
@@ -637,6 +638,12 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 					ds=="winter2024P8-test" ||
 					ds=="winter2024P8-v14" ||  //in use since 21.08.2024
 		ds=="2024P8" || ds=="2024QCD" || ds=="summer2024P8" || ds=="summer2024QCD" || ds=="summer2024P8-test" ||
+		ds=="summer2024P8_PTG10to100-HT40to100" || ds=="summer2024P8_PTG10to100-HT100to200" || ds=="summer2024P8_PTG10to100-HT200to400" ||
+		ds=="summer2024P8_PTG10to100-HT400to600" || ds=="summer2024P8_PTG10to100-HT600to1000" || ds=="summer2024P8_PTG10to100-HT1000toInf" ||
+		ds=="summer2024P8_PTG100to200-HT40to200" || ds=="summer2024P8_PTG100to200-HT200to400" || ds=="summer2024P8_PTG100to200-HT400to600" ||
+		ds=="summer2024P8_PTG100to200-HT600to1000" || ds=="summer2024P8_PTG100to200-HT1000toInf" || 
+		ds=="summer2024P8_PTG200toInf-HT40to400" || ds=="summer2024P8_PTG200toInf-HT400to600" ||
+		ds=="summer2024P8_PTG200toInf-HT600to1000" || ds=="summer2024P8_PTG200toInf-HT1000toInf" || //added those 15 parts on 11.03.2026 (w74)
 		//ds.c_str().Contains("summer2024QCD") || //testing with contains
 		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
@@ -651,6 +658,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
       		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
 		      ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
           ds=="winter2025QCDk"); 
+  is26 = (ds=="2026A"); //added 2026A on 10.03.2026 (w74)
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	        ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
           ds=="2023QCD" || ds=="2023QCD-BPix" || 
@@ -671,16 +679,18 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		       ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
 					 ds=="2024QCD-v14" || ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||
            ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test" ||  //added already here
+	   TString(ds.c_str()).Contains("summer2024P8")	|| //to make it a bit easier (should adjust the rest also, accounts for all 15 parts)
            ds=="winter2025P8" ||
            ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
       		 ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
 		       ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
            ds=="winter2025QCDk"); 
-  isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25)
+  isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25)
   isRun3 = (is22 || is23 || is24 || is25);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24 || is25);
-  
+
+
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
