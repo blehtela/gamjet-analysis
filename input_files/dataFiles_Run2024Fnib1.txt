@@ -1,2 +1,2 @@
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Fib/16June2025/2024/Data/GamJet/Data_2024F_GamJet_EGamma0_nib1-fib1-382229-382262.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Fib/16June2025/2024/Data/GamJet/Data_2024F_GamJet_EGamma1_nib1-fib1-382229-382262.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/fibskims/2024/Data/GamJet/Data_2024F_GamJet_EGamma0_nib1-fib1-382229-382262.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/fibskims/2024/Data/GamJet/Data_2024F_GamJet_EGamma1_nib1-fib1-382229-382262.root
