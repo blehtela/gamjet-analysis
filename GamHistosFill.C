@@ -1204,7 +1204,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_13Mar2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_13Mar2026_more-run-numbers.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1640,7 +1640,8 @@ void GamHistosFill::Loop()
 
 	//double xmax = 383000.5; //need to update this regularly
 	//double xmax = 389000.5; //386000.5
-  double xmax = 400000.5; //updated on 16.09.2025 (w60 second run) //395000.5; //updated on 20.05.2025 for 2025 data
+  //double xmax = 400000.5; //updated on 16.09.2025 (w60 second run) //395000.5; //updated on 20.05.2025 for 2025 data
+  double xmax = 403000.5; //updated on 13.03.2026 (w74 second run, for 2026 data) 
 	double xmin = 355000.5;
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
