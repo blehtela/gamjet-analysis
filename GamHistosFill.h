@@ -686,9 +686,9 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		       ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
            ds=="winter2025QCDk"); 
   isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25)
-  isRun3 = (is22 || is23 || is24 || is25);
+  isRun3 = (is22 || is23 || is24 || is25 || is26);
   isRun2 = (is16  || is17 || is18);
-  assert(is16 || is17 || is18 || is22 || is23 || is24 || is25);
+  assert(is16 || is17 || is18 || is22 || is23 || is24 || is25 || is26);
 
 
 // if parameter tree is not specified (or zero), connect the file
@@ -770,11 +770,11 @@ void GamHistosFill::Init(TTree *tree)
 
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("Jet_area", Jet_area, &b_Jet_area);
-   if (!(is22 || is23 || is24 || is25)) fChain->SetBranchAddress("Jet_btagDeepB", Jet_btagDeepB, &b_Jet_btagDeepB);
-   if (!(is22 || is23 || is24 || is25)) fChain->SetBranchAddress("Jet_btagDeepC", Jet_btagDeepC, &b_Jet_btagDeepC);
+   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_btagDeepB", Jet_btagDeepB, &b_Jet_btagDeepB);
+   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_btagDeepC", Jet_btagDeepC, &b_Jet_btagDeepC);
    //fChain->SetBranchAddress("Jet_btagDeepCvB", Jet_btagDeepCvB, &b_Jet_btagDeepCvB);
    //fChain->SetBranchAddress("Jet_btagDeepCvL", Jet_btagDeepCvL, &b_Jet_btagDeepCvL);
-   if (is22 || is23 || is24 || is25) {
+   if (is22 || is23 || is24 || is25 || is26) {
      fChain->SetBranchAddress("Jet_btagDeepFlavB", Jet_btagDeepFlavB, &b_Jet_btagDeepFlavB);
      //fChain->SetBranchAddress("Jet_btagDeepFlavC", Jet_btagDeepFlavC, &b_Jet_btagDeepFlavC);
      fChain->SetBranchAddress("Jet_btagDeepFlavCvB", Jet_btagDeepFlavCvB, &b_Jet_btagDeepFlavCvB);
@@ -791,7 +791,7 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Jet_chFPV2EF", Jet_chFPV2EF, &b_Jet_chFPV2EF);
    //fChain->SetBranchAddress("Jet_chFPV3EF", Jet_chFPV3EF, &b_Jet_chFPV3EF);
 
-  if(is25){ //need these branches to replace jetID
+  if(is25 || is26){ //need these branches to replace jetID
     fChain->SetBranchAddress("Jet_chMultiplicity", Jet_chMultiplicity, &b_Jet_chMultiplicity);
     fChain->SetBranchAddress("Jet_neMultiplicity", Jet_neMultiplicity, &b_Jet_neMultiplicity);
   }
@@ -804,15 +804,15 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_neEmEF", Jet_neEmEF, &b_Jet_neEmEF);
    fChain->SetBranchAddress("Jet_neHEF", Jet_neHEF, &b_Jet_neHEF);
 
-   if (is24 || is25) fChain->SetBranchAddress("Jet_hfEmEF", Jet_hfEmEF, &b_Jet_hfEmEF);   //new in 2024
-   if (is24 || is25) fChain->SetBranchAddress("Jet_hfHEF", Jet_hfHEF, &b_Jet_hfHEF);      //new in 2024
+   if (is24 || is25 || is26) fChain->SetBranchAddress("Jet_hfEmEF", Jet_hfEmEF, &b_Jet_hfEmEF);   //new in 2024
+   if (is24 || is25 || is26) fChain->SetBranchAddress("Jet_hfHEF", Jet_hfHEF, &b_Jet_hfHEF);      //new in 2024
 
    fChain->SetBranchAddress("Jet_phi", Jet_phi, &b_Jet_phi);
    fChain->SetBranchAddress("Jet_pt", Jet_pt, &b_Jet_pt);
    //fChain->SetBranchAddress("Jet_puIdDisc", Jet_puIdDisc, &b_Jet_puIdDisc);
-   if (!(is22 || is23 || is24 || is25)) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
+   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
-   if(!is25) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025)
+   if(!(is25 || is26)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025)
    //fChain->SetBranchAddress("Jet_nConstituents", Jet_nConstituents, &b_Jet_nConstituents);
    //fChain->SetBranchAddress("Jet_nElectrons", Jet_nElectrons, &b_Jet_nElectrons);
    //fChain->SetBranchAddress("Jet_nMuons", Jet_nMuons, &b_Jet_nMuons);
@@ -829,14 +829,14 @@ void GamHistosFill::Init(TTree *tree)
 
    fChain->SetBranchAddress("nPhoton", &nPhoton, &b_nPhoton);
    //if (!is16)
-   if (!(is16 || is22 || is23 || is24 || is25)) 
+   if (!(is16 || is22 || is23 || is24 || is25 || is26)) 
      fChain->SetBranchAddress("Photon_eCorr", Photon_eCorr, &b_Photon_eCorr);
    else
      b_Photon_eCorr = 0;
    fChain->SetBranchAddress("Photon_energyErr", Photon_energyErr, &b_Photon_energyErr);
    fChain->SetBranchAddress("Photon_eta", Photon_eta, &b_Photon_eta);
    fChain->SetBranchAddress("Photon_hoe", Photon_hoe, &b_Photon_hoe);
-   if (!(is22 || is23 || is24 || is25)) fChain->SetBranchAddress("Photon_mass", Photon_mass, &b_Photon_mass);
+   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Photon_mass", Photon_mass, &b_Photon_mass);
    //fChain->SetBranchAddress("Photon_mvaID", Photon_mvaID, &b_Photon_mvaID);
    //fChain->SetBranchAddress("Photon_mvaID_Fall17V1p1", Photon_mvaID_Fall17V1p1, &b_Photon_mvaID_Fall17V1p1);
    //fChain->SetBranchAddress("Photon_pfRelIso03_all", Photon_pfRelIso03_all, &b_Photon_pfRelIso03_all);
@@ -951,7 +951,7 @@ void GamHistosFill::Init(TTree *tree)
      fChain->SetBranchAddress("GenJet_pt", GenJet_pt, &b_GenJet_pt);
      fChain->SetBranchAddress("GenJet_partonFlavour", GenJet_partonFlavour, &b_GenJet_partonFlavour);
 
-     if (is22 || is23 || is24 || is25)
+     if (is22 || is23 || is24 || is25 || is26)
        fChain->SetBranchAddress("LHE_HT", &LHE_HT, &b_LHE_HT);
 
      if (!isQCD) {
@@ -1069,7 +1069,7 @@ void GamHistosFill::Init(TTree *tree)
 
    } // is16
 
-   if (is17 || is18 || is22 || is23 || is24 || is25) {
+   if (is17 || is18 || is22 || is23 || is24 || is25 || is26) {
 
    // also in 2016
    fChain->SetBranchAddress("HLT_Photon300_NoHE", &HLT_Photon300_NoHE, &b_HLT_Photon300_NoHE);
@@ -1097,7 +1097,7 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("HLT_Photon20_HoverELoose", &HLT_Photon20_HoverELoose, &b_HLT_Photon20_HoverELoose);
    fChain->SetBranchAddress("HLT_Photon30_HoverELoose", &HLT_Photon30_HoverELoose, &b_HLT_Photon30_HoverELoose);
 
-   } // is17 || is18 || is22 || is23 || is24 || is25
+   } // is17 || is18 || is22 || is23 || is24 || is25 || is26
    if (is17 && !isMC) {
 
      fChain->SetBranchAddress("HLT_Photon40_HoverELoose", &HLT_Photon40_HoverELoose, &b_HLT_Photon40_HoverELoose);
@@ -1116,15 +1116,15 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("HLT_Photon120EB_TightID_TightIso", &HLT_Photon120EB_TightID_TightIso, &b_HLT_Photon120EB_TightID_TightIso);
 
    } // is18
-   if (is22 || is23 || is24 || is25) {
+   if (is22 || is23 || is24 || is25 || is26) {
 
        //fChain->SetBranchAddress("HLT_Photon20", &HLT_Photon20, &b_HLT_Photon20);
        fChain->SetBranchAddress("HLT_Photon30EB_TightID_TightIso", &HLT_Photon30EB_TightID_TightIso, &b_HLT_Photon30EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon100EBHE10", &HLT_Photon100EBHE10, &b_HLT_Photon100EBHE10);
        fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso", &HLT_Photon110EB_TightID_TightIso, &b_HLT_Photon110EB_TightID_TightIso);
 
-   } // is22 is23 is24 is25
-   if (is24 || is25){
+   } // is22 is23 is24 is25 || is26
+   if (is24 || is25 || is26){
        //fChain->SetBranchAddress("HLT_Photon50EB_TightID_TightIso_PFJet30", &HLT_Photon50EB_TightID_TightIso_PFJet30, &b_HLT_Photon50EB_TightID_TightIso_PFJet30);
        fChain->SetBranchAddress("HLT_Photon50EB_TightID_TightIso", &HLT_Photon50EB_TightID_TightIso, &b_HLT_Photon50EB_TightID_TightIso);
        //fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
@@ -1137,11 +1137,11 @@ void GamHistosFill::Init(TTree *tree)
 
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso", &HLT_Photon110EB_TightID_TightIso, &b_HLT_Photon110EB_TightID_TightIso);
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso_PFJet30", &HLT_Photon110EB_TightID_TightIso_PFJet30, &b_HLT_Photon110EB_TightID_TightIso_PFJet30);
-   } // is24 is25
-   if (is25){
+   } // is24 is25 || is26
+   if (is25 || is26){
        fChain->SetBranchAddress("HLT_Photon40EB_TightID_TightIso", &HLT_Photon40EB_TightID_TightIso, &b_HLT_Photon40EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon45EB_TightID_TightIso", &HLT_Photon45EB_TightID_TightIso, &b_HLT_Photon45EB_TightID_TightIso);
-   } // is25
+   } // is25 || is26
 
    Notify();
 }
