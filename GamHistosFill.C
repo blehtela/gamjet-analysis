@@ -1157,11 +1157,11 @@ void GamHistosFill::Loop()
       TString(ds.c_str()).Contains("2024") ||
       TString(ds.c_str()).Contains("2025"))
     h2jv = (TH2D*)fjv->Get("jetvetomap");
-  if (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025"))
+  if (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025") || TString(ds.c_str()).Contains("2026")) //added now also 2026 here, not sure if will keep it?
     bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpix vetomap for all '24 stuff
   if (!h2jv) cout << "Jetvetomap histo not found for " << ds << endl << flush;
   assert(h2jv);
-  if (!bpixjv && (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025")) ){ //need extra bpix veto map only for 2024 data (for 2023 handled differntly via 2023D, see above)
+  if (!bpixjv && (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025") || TString(ds.c_str()).Contains("2026")) ){ //need extra bpix veto map only for 2024 data (for 2023 handled differntly via 2023D, see above)
 		cout << "Jetvetomap for bpix not found for " << ds << endl << flush; //
   	assert(bpixjv);
 	}
