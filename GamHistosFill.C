@@ -977,10 +977,14 @@ void GamHistosFill::Loop()
 	  lumi40 = LoadLumi("files/lumi2025_05december2025_photon40eb_pb_w67.csv");
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
-
-  // TO DO FOR 2026!!!!
-
-
+  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026) 
+	  lumi200 = LoadLumi("files/lumi2026_13march2026_photon200_pb_w74.csv");
+	  lumi110 = LoadLumi("files/lumi2026_13march2026_photon110eb_pb_w74.csv");
+	  lumi50 = LoadLumi("files/lumi2026_13march2026_photon50eb_pb_w74.csv");
+	  lumi45 = LoadLumi("files/lumi2026_13march2026_photon45eb_pb_w74.csv");
+	  lumi40 = LoadLumi("files/lumi2026_13march2026_photon40eb_pb_w74.csv");
+	  lumi30 = LoadLumi("files/lumi2026_13march2026_photon30eb_pb_w74.csv");
+  }
 
 
 	//earlier...
