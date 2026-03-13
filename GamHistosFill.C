@@ -1159,7 +1159,8 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2022") ||
       TString(ds.c_str()).Contains("2023") ||
       TString(ds.c_str()).Contains("2024") ||
-      TString(ds.c_str()).Contains("2025"))
+      TString(ds.c_str()).Contains("2025") ||
+      TString(ds.c_str()).Contains("2026"))
     h2jv = (TH2D*)fjv->Get("jetvetomap");
   if (TString(ds.c_str()).Contains("2024") || TString(ds.c_str()).Contains("2025") || TString(ds.c_str()).Contains("2026")) //added now also 2026 here, not sure if will keep it?
     bpixjv = (TH2D*)fjv->Get("jetvetomap_bpix"); //loading the bpix vetomap for all '24 stuff
