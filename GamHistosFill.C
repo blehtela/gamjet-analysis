@@ -903,6 +903,9 @@ void GamHistosFill::Loop()
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398289_DCSRuns_391658to391668_398290to398903_.json"); //self-made hybrid json (Golden Nov 4th + Daily Nov 11th) for w66 (11.11.2025)
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398858_DCSRuns_391658to391668_398859to398903_.json"); //self-made hybrid json (Golden Nov 14th + Daily Nov 6th) for w66 (16.11.2025)
     LoadJSON("files/Cert_Collisions2025_391658_398860_Golden.json"); //GOLDEN json (Nov 18th) for w67 (added on 05.12.2025)
+  if (TString(ds.c_str()).Contains("2026"))
+    LoadJSON("files/Collisions26_13p6TeV_401623_401733_DCSOnly_TkPx.json"); //daily json (Mar 13th) for w74 (added on 13.03.2026)
+
 
 
 
@@ -974,6 +977,8 @@ void GamHistosFill::Loop()
 	  lumi40 = LoadLumi("files/lumi2025_05december2025_photon40eb_pb_w67.csv");
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
+
+  // TO DO FOR 2026!!!!
 
 
 
