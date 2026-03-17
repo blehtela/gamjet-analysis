@@ -785,7 +785,9 @@ void GamHistosFill::Loop()
   //data 2026 (preparation for w74)
   if (ds=="2026A" || ds=="2026B"){	// using 25G corrections for 26A for now. (or leave away completely?)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w74, still JECs from last year
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w74, still JECs from last year, no L2L3Res as requested by Mikko
+    	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w74, still JECs from last year, no L2L3Res as requested by Mikko
+    	jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w75, still L2L3 residual JECs from last year
+
   }
 
   assert(jec);
@@ -904,7 +906,11 @@ void GamHistosFill::Loop()
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398858_DCSRuns_391658to391668_398859to398903_.json"); //self-made hybrid json (Golden Nov 14th + Daily Nov 6th) for w66 (16.11.2025)
     LoadJSON("files/Cert_Collisions2025_391658_398860_Golden.json"); //GOLDEN json (Nov 18th) for w67 (added on 05.12.2025)
   if (TString(ds.c_str()).Contains("2026"))
-    LoadJSON("files/Collisions26_13p6TeV_401623_401733_DCSOnly_TkPx.json"); //daily json (Mar 13th) for w74 (added on 13.03.2026)
+    //LoadJSON("files/Collisions26_13p6TeV_401623_401733_DCSOnly_TkPx.json"); //daily json (Mar 13th) for w74 (added on 13.03.2026)
+    //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx.json"); //daily json (Mar 16th) for w75 (added on 16.03.2026)
+    LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib1.json"); //modified daily json, only Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
+    //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib2.json"); //modified daily json, without Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
+
 
 
 
@@ -977,13 +983,13 @@ void GamHistosFill::Loop()
 	  lumi40 = LoadLumi("files/lumi2025_05december2025_photon40eb_pb_w67.csv");
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
-  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026) 
-	  lumi200 = LoadLumi("files/lumi2026_13march2026_photon200_pb_w74.csv");
-	  lumi110 = LoadLumi("files/lumi2026_13march2026_photon110eb_pb_w74.csv");
-	  lumi50 = LoadLumi("files/lumi2026_13march2026_photon50eb_pb_w74.csv");
-	  lumi45 = LoadLumi("files/lumi2026_13march2026_photon45eb_pb_w74.csv");
-	  lumi40 = LoadLumi("files/lumi2026_13march2026_photon40eb_pb_w74.csv");
-	  lumi30 = LoadLumi("files/lumi2026_13march2026_photon30eb_pb_w74.csv");
+  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026)
+	  lumi200 = LoadLumi("files/lumi2026_16march2026_photon200_pb_w75.csv");
+	  lumi110 = LoadLumi("files/lumi2026_16march2026_photon110eb_pb_w75.csv");
+	  lumi50 = LoadLumi("files/lumi2026_16march2026_photon50eb_pb_w75.csv");
+	  lumi45 = LoadLumi("files/lumi2026_16march2026_photon45eb_pb_w75.csv");
+	  lumi40 = LoadLumi("files/lumi2026_16march2026_photon40eb_pb_w75.csv");
+	  lumi30 = LoadLumi("files/lumi2026_16march2026_photon30eb_pb_w75.csv");
   }
 
 
@@ -1204,7 +1210,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_13Mar2026_more-run-numbers.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_13Mar2026_more-run-numbers-AND-L2L3RES.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1957,11 +1963,10 @@ void GamHistosFill::Loop()
   TProfile2D *p2_mpf_pt_mu_eta3p0to5p0 = new TProfile2D("p2_mpf_pt_mu_eta3p0to5p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
 
 
-
   // New flavour studies (started in 2026) stored in a separate directory, starting from w72
   // combines plots that are for all events either in the "pf" or in the "runs" folder
-  fout->mkdir("flavour");
-  fout->cd("flavour");  
+  fout->mkdir("flavour_new");
+  fout->cd("flavour_new");  
   
   // --- like in pf folder, but c-tagged jet --- //
   TH2D *h2pteta_ctag = new TH2D("h2pteta_ctag","#eta and p_{T} for c-tagged events;p_{T, #gamma};#eta_{jet}",nx,vx,ny,vy);
@@ -2307,9 +2312,10 @@ void GamHistosFill::Loop()
   TH1D *hgamtrig_mc = new TH1D("hgamtrig_mc","",197,15,1000);
 
   // Flavor plots stored in a separate directory
-  //fout->mkdir("flavor"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
-  fout->mkdir("flavor_old"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
-  fout->cd("flavor_old");
+  //renamed it back to 'flavor' for Mikko. Note: the histograms in this directory have not been checked during Run3.
+  fout->mkdir("flavor"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
+  //fout->mkdir("flavor_old"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
+  fout->cd("flavor");
 
   map<string, double> mvar;
   map<string, map<string, map<string, TH1*> > > mp;
