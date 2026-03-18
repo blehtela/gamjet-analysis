@@ -10,7 +10,11 @@
 
 bool multiera = true; //draw all eras given in iov list
 //string id = "w60"; //version of code used to produce the input files for this
-string id = "w63"; 
+//string id = "w63"; 
+//string id = "w65"; 
+string id = "w66"; 
+
+
 
 // Forward declaration of function call
 //void drawMPF2025new(string sobj, string var, string name, double x1, double x2); //, double z1, double z2); //start with only upper plot, will add lower one later
@@ -25,8 +29,8 @@ void drawMPF2025new() {
 	drawMPF2025new("pf/pmpf","p_{T} in GeV","MPF", 15.,4000.,0.85,1.15); //20.,60.
 	drawMPF2025new("pf/pdb","p_{T} in GeV","DB", 15.,4000.,0.7,1.3); //20.,60.
 	*/
-	drawMPF2025new("pf/pmpf","p_{T} in GeV","MPF", 15.,4000.,0.98,1.02); //20.,60.
-	drawMPF2025new("pf/pdb","p_{T} in GeV","DB", 15.,4000.,0.97,1.03); //20.,60.
+	drawMPF2025new("pf/pmpf","p_{T} in GeV","MPF", 15.,4000.,0.95,1.05); //20.,60.
+	drawMPF2025new("pf/pdb","p_{T} in GeV","DB", 15.,4000.,0.91,1.06); //20.,60.
 
 	//drawMPF2025new("pileup/h_npvgood","NPV_{good}","NPVgood",10.0,80.0);
 	//drawMPF2025new("pileup/h_npvall","NPV_{all}","NPVall",10.0,80.0);
@@ -42,7 +46,15 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
   setTDRStyle();
   TDirectory *curdir = gDirectory;
   //string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025F", "winter2025P8"};  //no qcd, no 25B
-  string iovs[] = {"2025Cv1", "2025Cv2", "2025C-TrkRadDamage"};  //no qcd, no 25B
+  //string iovs[] = {"2025Cv1", "2025Cv2", "2025C-TrkRadDamage"};  //no qcd, no 25B
+  //
+  //string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025Fv1", "2025Fv2", "2025G"};  //no qcd, no 25B
+  //string iovs[] = {"summer2024P8", "winter2025P8", "summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"};  //comparing the MCs, P8 and mix, no pu-reweighting
+  ////string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025Fv1", "2025Fv2", "2025G", "summer2024P8", "winter2025P8", "summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"};  //comparing the MCs, P8 and mix, no pu-reweighting
+
+  //string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025Fv1", "2025Fv2", "2025G", "summer2024P8", "winter2025P8"}; // try this first
+  string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025Fv1", "2025Fv2", "2025G", "summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"};  //comparing the MCs,
+
 
 
 
@@ -55,25 +67,39 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
   //MARKERS
   //2025
   mmarker["winter2025P8"] = kOpenCircle; //NOT reweighted
+  mmarker["winter2025P8_winter2025QCD"] = kOpenCircle; //NOT reweighted
   mmarker["2025Cv1"] = kFullTriangleUp;
   mmarker["2025Cv2"] = kFullTriangleDown;
   mmarker["2025C-TrkRadDamage"] = kFullSquare;
 
   mmarker["2025D"] = kFullCircle;
   mmarker["2025E"] = kFullSquare;
-  mmarker["2025F"] = kFullStar;
- 
+  mmarker["2025Fv1"] = kFullDiamond;
+  mmarker["2025Fv2"] = kOpenDiamond;
+  mmarker["2025G"] = kFullStar;
+
+
+  //mc2024
+  mmarker["summer2024P8"] = kOpenCircle; //NOT reweighted (maybe plot without marker?)
+  mmarker["summer2024P8_summer2024QCD"] = kOpenCircle;
 
   //COLOURS
   //2025
   mcolor["winter2025P8"] = kGreen+2; //NOT reweighted
+  mcolor["winter2025P8_winter2025QCD"] = kGreen+2; //NOT reweighted
   mcolor["2025Cv1"] = kOrange+1;
   mcolor["2025Cv2"] = kPink+1;
   mcolor["2025C-TrkRadDamage"] = kTeal+5; //kGreen+1;
   mcolor["2025D"] = kBlue+1;
   mcolor["2025E"] = kGreen+1;
-  mcolor["2025F"] = kCyan+1;
+  mcolor["2025Fv1"] = kCyan+1;
+  mcolor["2025Fv2"] = kCyan+2;
+  mcolor["2025G"] = kBrown+2;
  
+  //mc2024
+  mcolor["summer2024P8"] = kMagenta;
+  mcolor["summer2024P8_summer2024QCD"] = kMagenta+1;
+
   
   const char *cvar = var.c_str(); //x-variable
   const char *cname = name.c_str();
@@ -84,6 +110,7 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
 
   h->GetXaxis()->SetRangeUser(x1,x2);
   if(name=="DB"){
+    //h->GetYaxis()->SetRangeUser(0.85,1.15); //set this depending on the type of plot
     h->GetYaxis()->SetRangeUser(0.85,1.15); //set this depending on the type of plot
   }
   else if(name=="MPF"){
@@ -91,7 +118,22 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
     h->GetYaxis()->SetRangeUser(0.93,1.1); //set this depending on the type of plot
   }
   //TH1D *h2 = tdrHist("h2","data/MC",z1,z2); //TO DO
-  TH1D *h2 = tdrHist("h2","data/data Cv1",z1,z2); //TO DO: JUST FOR NOW COMPARE WITH Cv1
+  //TH1D *h2 = tdrHist("h2","data/data Cv1",z1,z2); //TO DO: JUST FOR NOW COMPARE WITH Cv1
+  //TH1D *h2 = tdrHist("h2","data/winter2025P8",z1,z2); 
+  TH1D *h2 = tdrHist("h2","data/MC(s24P8+QCD)",z1,z2); 
+  h2->GetYaxis()->SetTitleSize(0.039);
+  //h2->GetYaxis()->SetTitleSize(0.043);
+
+  h2->GetYaxis()->SetTitleOffset(3.26); //1.96 //does not go that high?
+  //h2->GetYaxis()->SetLabelSize(0.05);
+  //h->GetYaxis()->SetLabelSize(0.05);
+  //h2->GetYaxis()->SetTitleOffset(1.3);
+  //h2->GetYaxis()->SetTitleOffset(0);
+  h2->SetLabelSize(0.04, "Y");
+  //h2->GetYaxis()->SetTitleOffset(1.6);
+  h2->GetYaxis()->SetTitleOffset(0);
+  //gPad->Modified();
+
 
 
   lumi_13TeV = "Run3"; // 4=13 TeV
@@ -122,22 +164,38 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
   TLine *l = new TLine(); //only for ratio
   l->SetLineStyle(kDashed);
   l->SetLineColor(kGray);
+  l->DrawLine(h->GetXaxis()->GetXmin(),1,h->GetXaxis()->GetXmax(),1); //adjust! ADDED NOW IN w65
   gPad->SetLogx(); //not here
 
   //TLegend *leg = tdrLeg(0.46,0.850-niov*0.06,0.80,0.850); //after adding also average-info (x1,y1,x2,y2)
+  /*
   double legx1 = 0.46;
   double legx2 = 0.80;
   //double legy1 = 0.850-niov*0.05;
   double legy2 = 0.85;
+  */
+
+  //NEW
+  double legx1 = 0.35;
+  double legx2 = 0.69;
+  double legy2 = 0.83;
 
   if(name=="MPF"){
+    /*
     legx1=0.3;
     //legx2=;
     //legy1=;
     legy2=0.35;
+    */
+
+    //NEW
+    legx1=0.3;
+    legy2=0.31;
   }
-  TLegend *leg = tdrLeg(legx1,legy2-niov*0.05,legx2,legy2);
+  //TLegend *leg = tdrLeg(legx1,legy2-niov*0.05,legx2,legy2); //distances, for one column legend
+  TLegend *leg = tdrLeg(legx1,legy2-niov*0.03,legx2,legy2);   //distances, for two column legend
   //TLegend *leg = tdrLeg(0.46,0.850-niov*0.05,0.80,0.850); //after adding also average-info (x1,y1,x2,y2)
+  leg->SetNColumns(2);    //when it is getting too much otherwise...
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
 
@@ -163,18 +221,30 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
 
     //draw this iov's distributions (four histos, for data mu from extra file?)
     //if(iov=="summer2024P8"){// Monte Carlo
-    if(iov=="winter2025P8"){// Monte Carlo
-    	fd = new TFile(Form("rootfiles/GamHistosFill_mc_%s_no-pu_w56.root",ciov)); //rootfiles/GamHistosFill_mc_winter2025P8_no-pu_w56.root
+    if(iov=="summer2024P8" || iov=="winter2025P8"){ // Monte Carlo
+    	//fd = new TFile(Form("rootfiles/GamHistosFill_mc_%s_no-pu_%s.root",ciov, cid)); //rootfiles/GamHistosFill_mc_winter2025P8_no-pu_w56.root
+      fd = new TFile(Form("rootfiles/GamHistosFill_mc_%s_no-pu_w65.root",ciov)); //need to hardcode to w65, since MC not updated in w66
     	assert(fd && !fd->IsZombie());
     }
+    else if(iov=="summer2024P8_summer2024QCD" || iov=="winter2025P8_winter2025QCD"){// Monte Carlo MIX (sig+bkg)
+    	//fd = new TFile(Form("rootfiles/GamHistosMix_mc_%s_no-pu_%s.root",ciov, cid)); //rootfiles/GamHistosFill_mc_winter2025P8_no-pu_w56.root
+    	fd = new TFile(Form("rootfiles/GamHistosMix_mc_%s_no-pu_w65.root",ciov)); //hardcoded to w65
+    	assert(fd && !fd->IsZombie());
+    } 
     else{ //data
     	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",ciov,cid));
     }
 
     //always same MC for now
     //fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2025P8_no-pu_w56.root")); //rootfiles/GamHistosFill_mc_winter2025P8_no-pu_w56.root
-    fm = new TFile(Form("rootfiles/GamHistosFill_data_2025Cv1_%s.root",cid)); // TO DO: JUST FOR NOW Cv1
+    //fm = new TFile(Form("rootfiles/GamHistosFill_data_2025Cv1_%s.root",cid)); // TO DO: JUST FOR NOW Cv1
+    //fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter2025P8_no-pu_%s.root",cid)); // winter2025P8 (no qcd?)
+
+    //fm = new TFile(Form("rootfiles/GamHistosFill_mc_summer2024P8_no-pu_%s.root",cid)); // winter2025P8 (no qcd?)
+    //fm = new TFile(Form("rootfiles/GamHistosMix_mc_summer2024P8_summer2024QCD_no-pu_%s.root",cid)); // summer2024P8 (with QCD)
+    fm = new TFile(Form("rootfiles/GamHistosMix_mc_summer2024P8_summer2024QCD_no-pu_w65.root")); // summer2024P8 (with QCD), always w65
  
+
  
     assert(fd && !fd->IsZombie());
     assert(fm && !fm->IsZombie());
@@ -218,7 +288,9 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
     tdrDraw(hd,"Pz",(mmarker[iov] ? mmarker[iov] : kFullCircle), (mcolor[iov] ? mcolor[iov] : kBlack));
     if(name!="Mu" && iov!="winter2025P8"){ //for mu, do not add the data here, as this histo is empty, i.e. not drawn, will come from separate file (see lower)
 	    //leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
-	    leg->AddEntry(hd,Form("%s data",ciov),"PLE");
+
+      //leg->AddEntry(hd,Form("%s data",ciov),"PLE");//why data... we see it from era
+      leg->AddEntry(hd,Form("%s",ciov),"PLE"); //for all.. but could specify that for MC we don't wont marker
     }
     else if(name=="Mu" && iov=="summer2024P8"){ //need to add this manually
 	    //leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
@@ -315,9 +387,10 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
     if (id!="")
 	//c1->SaveAs(Form("pdf/drawMPF2025new_%s_%s_%s.pdf",cdataera,name.c_str(),id.c_str()));
 	//c1->SaveAs(Form("pdf/drawMPF2025new_TEST_%s_%s.pdf",name.c_str(),id.c_str()));
-	c1->SaveAs(Form("pdf/drawMPF2025new_compare-Cv1-Cv2-CTrkRadDamage_%s_%s.pdf",name.c_str(),id.c_str()));
+	//c1->SaveAs(Form("pdf/drawMPF2025new_compare-Cv1-Cv2-CTrkRadDamage_%s_%s.pdf",name.c_str(),id.c_str()));
+	c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025CDEFG_%s_%s.pdf",name.c_str(),id.c_str()));
     else 
-	c1->SaveAs(Form("pdf/drawMPF2025new_compare-Cv1-Cv2-CTrkRadDamage_%s.pdf",name.c_str()));
+	c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025CDEFG_%s.pdf",name.c_str()));
 } // void drawMPF2025new
 
 
