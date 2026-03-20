@@ -3473,7 +3473,8 @@ void GamHistosFill::Loop()
        (isRun3 && is24 &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
-	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 //(HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<110 && (itrg=50))  ||
 	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
@@ -3482,7 +3483,8 @@ void GamHistosFill::Loop()
 	(isRun3 && (is25 || is26) &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
-	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 //(HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<110 && (itrg=50))  ||
 	 (HLT_Photon45EB_TightID_TightIso && pt>=45 && pt<50 && (itrg=45)) ||
 	 (HLT_Photon40EB_TightID_TightIso && pt>=40 && pt<45 && (itrg=40)) ||
 	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
