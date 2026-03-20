@@ -783,7 +783,7 @@ void GamHistosFill::Loop()
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F.
   }
   //data 2026 (preparation for w74)
-  if (ds=="2026A" || ds=="2026B"){	// using 25G corrections for 26A for now. (or leave away completely?)
+  if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B")){	// using 25G corrections for 26A for now. (or leave away completely?)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w74, still JECs from last year
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w74, still JECs from last year, no L2L3Res as requested by Mikko
     	//jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w75, still L2L3 residual JECs from last year
@@ -835,7 +835,7 @@ void GamHistosFill::Loop()
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
-  if (ds=="2026A" || ds=="2026B") sera="2026"; //or should it be also here treated as an era of 2025?
+  if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B")) sera="2026"; //or should it be also here treated as an era of 2025?
   assert(sera!="");
 
   // Load JSON files

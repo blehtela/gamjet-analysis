@@ -658,7 +658,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
       		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
 		      ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
           ds=="winter2025QCDk"); 
-  is26 = (ds=="2026A" || ds=="2026B"); //added 2026A on 10.03.2026 (w74), 2026B on 13.03.2026 (also w74)
+  is26 = (ds=="2026A" || ds=="2026B" || ds=="2026Beg0" || ds=="2026Beg1" || ds=="2026Beg2" || ds=="2026Beg3" || ds=="2026Beg4" || ds=="2026Beg5"); //added 2026A on 10.03.2026 (w74), 2026B on 13.03.2026 (also w74), splitted lists (w76)
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	        ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
           ds=="2023QCD" || ds=="2023QCD-BPix" || 
