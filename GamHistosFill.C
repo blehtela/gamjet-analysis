@@ -786,8 +786,8 @@ void GamHistosFill::Loop()
   if (ds=="2026A" || ds=="2026B"){	// using 25G corrections for 26A for now. (or leave away completely?)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w74, still JECs from last year
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w74, still JECs from last year, no L2L3Res as requested by Mikko
-    	jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w75, still L2L3 residual JECs from last year
-
+    	//jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w75, still L2L3 residual JECs from last year
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w75, no L2L3residuals
   }
 
   assert(jec);
@@ -908,8 +908,9 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2026"))
     //LoadJSON("files/Collisions26_13p6TeV_401623_401733_DCSOnly_TkPx.json"); //daily json (Mar 13th) for w74 (added on 13.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx.json"); //daily json (Mar 16th) for w75 (added on 16.03.2026)
-    LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib1.json"); //modified daily json, only Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
+    //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib1.json"); //modified daily json, only Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib2.json"); //modified daily json, without Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
+    LoadJSON("files/CombinedJSONS_DCSCMLE_Runs_401624to402040.json"); //combined JSON (from Nestor, Mar 20th) for w76 (added on 20.03.2026)
 
 
 
@@ -947,6 +948,9 @@ void GamHistosFill::Loop()
   else if(TString(ds.c_str()).Contains("2025")){
 	avgPUmap = LoadAvgPUdata("avgpileup2025.csv");
   }
+  else if(TString(ds.c_str()).Contains("2026")){
+	avgPUmap = LoadAvgPUdata("avgpileup2026.csv");
+  }
 
   //TO DO: add this for fresh 2026 data also. Update as we go, with new json.
 	
@@ -983,14 +987,15 @@ void GamHistosFill::Loop()
 	  lumi40 = LoadLumi("files/lumi2025_05december2025_photon40eb_pb_w67.csv");
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
-  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026)
-	  lumi200 = LoadLumi("files/lumi2026_16march2026_photon200_pb_w75.csv");
-	  lumi110 = LoadLumi("files/lumi2026_16march2026_photon110eb_pb_w75.csv");
-	  lumi50 = LoadLumi("files/lumi2026_16march2026_photon50eb_pb_w75.csv");
-	  lumi45 = LoadLumi("files/lumi2026_16march2026_photon45eb_pb_w75.csv");
-	  lumi40 = LoadLumi("files/lumi2026_16march2026_photon40eb_pb_w75.csv");
-	  lumi30 = LoadLumi("files/lumi2026_16march2026_photon30eb_pb_w75.csv");
+  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026)
+	  lumi200 = LoadLumi("files/lumi2026_20march2026_photon200_pb_w76.csv");
+	  lumi110 = LoadLumi("files/lumi2026_20march2026_photon110eb_pb_w76.csv");
+	  lumi50 = LoadLumi("files/lumi2026_20march2026_photon50eb_pb_w76.csv");
+	  lumi45 = LoadLumi("files/lumi2026_20march2026_photon45eb_pb_w76.csv");
+	  lumi40 = LoadLumi("files/lumi2026_20march2026_photon40eb_pb_w76.csv");
+	  lumi30 = LoadLumi("files/lumi2026_20march2026_photon30eb_pb_w76.csv");
   }
+
 
 
 	//earlier...
@@ -1210,7 +1215,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_13Mar2026_more-run-numbers-AND-L2L3RES.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_17Mar2026_onlyL2Rel2026MC.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
