@@ -29,7 +29,9 @@ void clean(TH1 *p, double maxerr = 0.03) {
 //void drawGainsVsPt(string era = "2025G", string version = "w73") {
 //void drawGainsVsPt(string era = "2026A", string version = "w75") {
 //void drawGainsVsPt(string era = "2026Bnib1", string version = "w75") {
-void drawGainsVsPt(string era = "2026Bnib2", string version = "w75") {
+//void drawGainsVsPt(string era = "2026Bnib2", string version = "w75") {
+void drawGainsVsPt(string era = "2026B", string version = "w77") { //31.03.2026 (data up to 23.3. approx.)
+
 
 
 //void drawGainsVsPt(string era = "2023Cv4", string version = "w9") {
