@@ -7,7 +7,8 @@
 #include "../tdrstyle_mod22.C"
 
 // Clean
-void clean(TH1 *p, double maxerr = 0.005) {
+//void clean(TH1 *p, double maxerr = 0.005) {
+void clean(TH1 *p, double maxerr = 0.03) {
   
   for (int i = 1; i != p->GetNbinsX()+1; ++i) {
     if (p->GetBinError(i)==0 || p->GetBinError(i)>maxerr) {
@@ -23,7 +24,12 @@ void clean(TH1 *p, double maxerr = 0.005) {
 //void drawGainsVsPt(string era = "2024BCD", string version = "w25") {
 ///void drawGainsVsPt(string era = "2024G", string version = "w42") {
 ///void drawGainsVsPt(string era = "2024F", string version = "w42") {
-void drawGainsVsPt(string era = "2024I", string version = "w42") {
+//void drawGainsVsPt(string era = "2024I", string version = "w42") {
+
+//void drawGainsVsPt(string era = "2025G", string version = "w73") {
+//void drawGainsVsPt(string era = "2026A", string version = "w75") {
+//void drawGainsVsPt(string era = "2026Bnib1", string version = "w75") {
+void drawGainsVsPt(string era = "2026Bnib2", string version = "w75") {
 
 
 //void drawGainsVsPt(string era = "2023Cv4", string version = "w9") {
@@ -33,22 +39,29 @@ void drawGainsVsPt(string era = "2024I", string version = "w42") {
   const char *cv = version.c_str();
   //string eram = (era=="Run3"||era=="Run2" ? era : "2022");
   //string eram = "2023"; //hard-coded this for now...
-  string eram = "2024"; //hard-coded this for now...
+  //string eram = "2024"; //hard-coded this for now...
+  string eram = "2025"; //hard-coded this for now...
   const char *ceram = eram.c_str();
 
   setTDRStyle();
   TDirectory *curdir = gDirectory;
 
   // Open input files
+  // data
   TFile *f = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s.root",
 			    cera,cv),"READ");
   if (!f || f->IsZombie())
     f = new TFile(Form("files/GamHistosFill_data_%s_%s.root",
 		       cera,cv),"READ");
   assert(f && !f->IsZombie());
+  // mc
   //TFile *fm = new TFile(Form("rootfiles/GamHistosFill_mc_%sP8_%s.root", //needed to hardcode for now
+  /*
   TFile *fm = new TFile(Form("rootfiles/GamHistosFill_mc_winter%sP8_pu-%s_w41.root",
 			     ceram,cera),"READ");
+  */
+  TFile *fm = new TFile(Form("rootfiles/GamHistosMix_mc_summer2024P8_summer2024QCD_no-pu_w65.root"),"READ");
+ 
 
   if (!fm || fm->IsZombie())
     fm = new TFile(Form("files/GamHistosFill_mc_%sP8_%s.root",
@@ -110,6 +123,8 @@ void drawGainsVsPt(string era = "2024I", string version = "w42") {
 
   // Setup canvas
   TH1D *h = tdrHist("h","Response",0.945,1.095);
+  //TH1D *h = tdrHist("h","Response",0.621,1.095); //19.03.2026
+
   TH1D *hd = tdrHist("hd","Gain ratio",0.97,1.03);
   lumi_136TeV = Form("Photon+jet, %s, %s",cera,cv);
   extraText = "Private";
@@ -216,7 +231,9 @@ void drawGainsVsPt(string era = "2024I", string version = "w42") {
 			       100.*f1m->GetParError(0)));
 
   //c1->SaveAs(Form("pdf/drawGainVsPt_%s_%s.pdf",cera,cv));
-  c1->SaveAs(Form("pdf/drawGainVsPt_%s_w41%s.pdf",cera,cv));
+  //c1->SaveAs(Form("pdf/drawGainVsPt_%s_w41%s.pdf",cera,cv));
+  c1->SaveAs(Form("pdf/drawGainVsPt_%s_%s.pdf",cera,cv));
+
 
 
 } // drawGainsVsPt
