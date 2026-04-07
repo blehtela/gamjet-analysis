@@ -783,11 +783,16 @@ void GamHistosFill::Loop()
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F.
   }
   //data 2026 (preparation for w74)
-  if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B")){	// using 25G corrections for 26A for now. (or leave away completely?)
+  if (ds=="2026A"){	// using 25G corrections for 26A for now. (or leave away completely?)
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w78, no L2L3residuals for 2026A?
+  }
+  //if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B")){	// using 25G corrections for 26A for now. (or leave away completely?)
+  if (ds=="2026B" || TString(ds.c_str()).Contains("2026B")){	// using 25G corrections for 26A for now. (or leave away completely?)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w74, still JECs from last year
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w74, still JECs from last year, no L2L3Res as requested by Mikko
     	//jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w75, still L2L3 residual JECs from last year
-      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w75, no L2L3residuals
+      //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w75, no L2L3residuals
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w77, first L2L3residuals, V0M (27.03.2026)
   }
 
   assert(jec);
@@ -910,8 +915,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx.json"); //daily json (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib1.json"); //modified daily json, only Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib2.json"); //modified daily json, without Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
-    LoadJSON("files/CombinedJSONS_DCSCMLE_Runs_401624to402040.json"); //combined JSON (from Nestor, Mar 20th) for w76 (added on 20.03.2026)
-
+    //LoadJSON("files/CombinedJSONS_DCSCMLE_Runs_401624to402040.json"); //combined JSON (from Nestor, Mar 20th) for w76 (added on 20.03.2026)
+    LoadJSON("files/CombinedJSONS_MLJSONRuns_401630to402172_DCSRuns_402173to402244.json"); //combined JSON (created March 25th, shared in our 2025/2026Prompt group) (w77)
 
 
 
@@ -987,13 +992,13 @@ void GamHistosFill::Loop()
 	  lumi40 = LoadLumi("files/lumi2025_05december2025_photon40eb_pb_w67.csv");
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
-  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026)
-	  lumi200 = LoadLumi("files/lumi2026_20march2026_photon200_pb_w76.csv");
-	  lumi110 = LoadLumi("files/lumi2026_20march2026_photon110eb_pb_w76.csv");
-	  lumi50 = LoadLumi("files/lumi2026_20march2026_photon50eb_pb_w76.csv");
-	  lumi45 = LoadLumi("files/lumi2026_20march2026_photon45eb_pb_w76.csv");
-	  lumi40 = LoadLumi("files/lumi2026_20march2026_photon40eb_pb_w76.csv");
-	  lumi30 = LoadLumi("files/lumi2026_20march2026_photon30eb_pb_w76.csv");
+  else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026), updated w77 (27.03.2026)
+	  lumi200 = LoadLumi("files/lumi2026_27march2026_photon200_pb_w77.csv");
+	  lumi110 = LoadLumi("files/lumi2026_27march2026_photon110eb_pb_w77.csv");
+	  lumi50 = LoadLumi("files/lumi2026_27march2026_photon50eb_pb_w77.csv");
+	  lumi45 = LoadLumi("files/lumi2026_27march2026_photon45eb_pb_w77.csv");
+	  lumi40 = LoadLumi("files/lumi2026_27march2026_photon40eb_pb_w77.csv");
+	  lumi30 = LoadLumi("files/lumi2026_27march2026_photon30eb_pb_w77.csv");
   }
 
 
@@ -1143,8 +1148,9 @@ void GamHistosFill::Loop()
   //for 2026, first use the old vetomap (2026) berfore we have a new one
   if (TString(ds.c_str()).Contains("2026")) { //this would be enough, since we use the same vetomap for all of 25 right now...
     if (TString(ds.c_str()).Contains("2026A") ||
-	TString(ds.c_str()).Contains("2026B"))
-        fjv = new TFile("files/jetveto2025CDEFG_V3M.root","READ"); //updated in w68 with V3M.
+	      TString(ds.c_str()).Contains("2026B"))
+        //fjv = new TFile("files/jetveto2025CDEFG_V3M.root","READ");  //old map, updated in w68 with V3M.
+        fjv = new TFile("files/jetveto2026B_V0M.root","READ");        //updated in w77 with V0M.
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
@@ -1215,7 +1221,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_17Mar2026_onlyL2Rel2026MC.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_31Mar2026_onlyL2Rel2026MC.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -3306,24 +3312,25 @@ void GamHistosFill::Loop()
       iGamOrig = iGam;
       gamorig = gam;
 
-      iFox = (jentry%2); // "random" selection from two leading jets
+      iFox = (jentry%2); // "random" selection from two leading jets // TO DO: account for different probability for quark and gluon jets (can account for this in the event weight, still choose randomly)
       // Jet_genJetIdx would be great, but only there for UL18 nAOD? Maybe there
       int k = Jet_genJetIdx[iFox];
-      if (k>=0 && k<nGenJet) {
+      if (k>=0 && k<nGenJet) { //TO DO: CHECK THAT DELTAR IS LOWER THAN 0P2 (calculate it with 4vec of gen-jet, later)
 	     gam.SetPtEtaPhiM(GenJet_pt[k], GenJet_eta[k], GenJet_phi[k],
 			 GenJet_mass[k]);
 	// NB: should remove UE clustered into gam. In Minsuk's rho_ZB_new.pdf
 	// QCD_CP5 has about 3.5 GeV/A of UE offset at generator level
 	double area = Jet_area[iFox];
-	gam *= (gam.Pt()>0 ? 1 - 3.5*area/gam.Pt() : 1.);
-	rawgam = gam;
+	//emulated fake photon, remove UE
+	gam *= (gam.Pt()>0 ? 1 - 3.5*area/gam.Pt() : 1.); //genjet consists of orig parton and the UE around it, dont use the entire jet energy, but only from the original parton (as far as possible)
+	rawgam = gam; //could additionally do response correction for photon
 
 	fox.SetPtEtaPhiM(Jet_pt[iFox], Jet_eta[iFox], Jet_phi[iFox],
 			 Jet_mass[iFox]);
-	fox *= (1-Jet_rawFactor[iFox]);
+	fox *= (1-Jet_rawFactor[iFox]); //Raw energy of the jet that we chose to be fake-photon
 	// Calculate L1RC correction
 	double corrl1rc(1.); // isRun3
-	if (isRun2) {
+	if (isRun2) { //remove pileup (not needed in Run3, puppi), so energy comes from genjet
 	  jecl1rc->setJetPt(fox.Pt());
 	  jecl1rc->setJetEta(fox.Eta());
 	  jecl1rc->setJetA(Jet_area[iFox]);
@@ -3333,7 +3340,7 @@ void GamHistosFill::Loop()
 	fox *= corrl1rc;
 	// NB2: should also remove UE clustered into fox. In Minsuk's plot
 	// QCD_CP5 has about 2.5 GeV/A of UE offset at FullSim level
-	fox *= (fox.Pt()>0 ? 1 - 2.5*area/fox.Pt() : 1.);
+	fox *= (fox.Pt()>0 ? 1 - 2.5*area/fox.Pt() : 1.); //remove UE on reco-level (number is smaller than before, becose on reco-level we dont see full UE)
 
 	// NB3: For consistency with gamma+jet, phoj should still have reco UE
 	phoj.SetPtEtaPhiM(2.5*area,0,0,0);
