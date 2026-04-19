@@ -794,6 +794,9 @@ void GamHistosFill::Loop()
       //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w75, no L2L3residuals
       jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w77, first L2L3residuals, V0M (27.03.2026)
   }
+  if (ds=="2026C" || TString(ds.c_str()).Contains("2026C")){
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w78 (still with 2026B JECs)
+  }
 
   assert(jec);
 
@@ -840,7 +843,7 @@ void GamHistosFill::Loop()
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
-  if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B")) sera="2026"; //or should it be also here treated as an era of 2025?
+  if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026C")) sera="2026"; //or should it be also here treated as an era of 2025?
   assert(sera!="");
 
   // Load JSON files
@@ -916,8 +919,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib1.json"); //modified daily json, only Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib2.json"); //modified daily json, without Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/CombinedJSONS_DCSCMLE_Runs_401624to402040.json"); //combined JSON (from Nestor, Mar 20th) for w76 (added on 20.03.2026)
-    LoadJSON("files/CombinedJSONS_MLJSONRuns_401630to402172_DCSRuns_402173to402244.json"); //combined JSON (created March 25th, shared in our 2025/2026Prompt group) (w77)
-
+    //LoadJSON("files/CombinedJSONS_MLJSONRuns_401630to402172_DCSRuns_402173to402244.json"); //combined JSON (created March 25th, shared in our 2025/2026Prompt group) (w77)
+    LoadJSON("files/CombinedJSONS_GoldenRuns_402099to402604_DCSRuns_401623to402099_402605to402655_.json"); //new hybrid (created April 7th by myself - see my notes)
 
 
 
@@ -993,12 +996,12 @@ void GamHistosFill::Loop()
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026), updated w77 (27.03.2026)
-	  lumi200 = LoadLumi("files/lumi2026_27march2026_photon200_pb_w77.csv");
-	  lumi110 = LoadLumi("files/lumi2026_27march2026_photon110eb_pb_w77.csv");
-	  lumi50 = LoadLumi("files/lumi2026_27march2026_photon50eb_pb_w77.csv");
-	  lumi45 = LoadLumi("files/lumi2026_27march2026_photon45eb_pb_w77.csv");
-	  lumi40 = LoadLumi("files/lumi2026_27march2026_photon40eb_pb_w77.csv");
-	  lumi30 = LoadLumi("files/lumi2026_27march2026_photon30eb_pb_w77.csv");
+	  lumi200 = LoadLumi("files/lumi2026_07april2026_photon200_pb_w78.csv");
+	  lumi110 = LoadLumi("files/lumi2026_07april2026_photon110eb_pb_w78.csv");
+	  lumi50 = LoadLumi("files/lumi2026_07april2026_photon50eb_pb_w78.csv");
+	  lumi45 = LoadLumi("files/lumi2026_07april2026_photon45eb_pb_w78.csv");
+	  lumi40 = LoadLumi("files/lumi2026_07april2026_photon40eb_pb_w78.csv");
+	  lumi30 = LoadLumi("files/lumi2026_07april2026_photon30eb_pb_w78.csv");
   }
 
 
@@ -1148,9 +1151,10 @@ void GamHistosFill::Loop()
   //for 2026, first use the old vetomap (2026) berfore we have a new one
   if (TString(ds.c_str()).Contains("2026")) { //this would be enough, since we use the same vetomap for all of 25 right now...
     if (TString(ds.c_str()).Contains("2026A") ||
-	      TString(ds.c_str()).Contains("2026B"))
+	      TString(ds.c_str()).Contains("2026B") ||
+	      TString(ds.c_str()).Contains("2026C"))
         //fjv = new TFile("files/jetveto2025CDEFG_V3M.root","READ");  //old map, updated in w68 with V3M.
-        fjv = new TFile("files/jetveto2026B_V0M.root","READ");        //updated in w77 with V0M.
+        fjv = new TFile("files/jetveto2026B_V0M.root","READ");        //updated in w77 with V0M. Also in use for w78 (also on 2026C)
   }
   if (!fjv) cout << "Jetvetomap file not found for " << ds << endl << flush;
   assert(fjv);
