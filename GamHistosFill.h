@@ -55,6 +55,7 @@ public :
    bool            isQCD;
    bool            isMG;
    bool            isPTG; //flag for ptht-binned samples
+   bool            isLowPU; //flag for low PU runs (so far only used for 26C, added in w79, April 2026)
    string          dataset;
    string	   puera;  //data era used for pu reweighting
    string          version;
@@ -259,6 +260,8 @@ public :
    //Bool_t          HLT_Photon500;
    //Bool_t          HLT_Photon600;
 
+   //add this trigger in 26 for low PU (since the other 30GeV is prescaled)
+   Bool_t          HLT_Photon30_HoverELoose_L1SingleEG20;
 
    // Triggers and Branches from 25
    //Bool_t          HLT_Photon30EB_TightID_TightIso; //was already there earlier, see below
@@ -529,6 +532,9 @@ public :
    //TBranch        *b_HLT_Photon500;   //!
    //TBranch        *b_HLT_Photon600;   //!
 
+   //from 2026 (low PU)
+   TBranch        *b_HLT_Photon30_HoverELoose_L1SingleEG20; //!
+
    // Triggers (and branches) from 25
    TBranch        *b_HLT_Photon40EB_TightID_TightIso;   //!
    TBranch        *b_HLT_Photon45EB_TightID_TightIso;   //!
@@ -687,6 +693,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		       ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
            ds=="winter2025QCDk"); 
   isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25)
+  isLowPU = (TString(ds.c_str()).Contains("2026C"));
   isRun3 = (is22 || is23 || is24 || is25 || is26);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24 || is25 || is26);
@@ -999,6 +1006,8 @@ void GamHistosFill::Init(TTree *tree)
 
    b_HLT_Photon165_HE10 = 0;
 
+   b_HLT_Photon30_HoverELoose_L1SingleEG20 = 0;
+
    b_HLT_Photon40EB_TightID_TightIso = 0;
    b_HLT_Photon45EB_TightID_TightIso = 0;
  
@@ -1132,9 +1141,10 @@ void GamHistosFill::Init(TTree *tree)
        fChain->SetBranchAddress("HLT_Photon75EB_TightID_TightIso", &HLT_Photon75EB_TightID_TightIso, &b_HLT_Photon75EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon90EB_TightID_TightIso", &HLT_Photon90EB_TightID_TightIso, &b_HLT_Photon90EB_TightID_TightIso);
 
-	if(!isMC){//somehow not found for winter2024P8, so only use for data
-       		//fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
-	}
+	  if(!isMC){//somehow not found for winter2024P8, so only use for data
+        //fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
+        fChain->SetBranchAddress("HLT_Photon30_HoverELoose_L1SingleEG20", &HLT_Photon30_HoverELoose_L1SingleEG20, &b_HLT_Photon30_HoverELoose_L1SingleEG20);
+	  }
 
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso", &HLT_Photon110EB_TightID_TightIso, &b_HLT_Photon110EB_TightID_TightIso);
        //fChain->SetBranchAddress("HLT_Photon110EB_TightID_TightIso_PFJet30", &HLT_Photon110EB_TightID_TightIso_PFJet30, &b_HLT_Photon110EB_TightID_TightIso_PFJet30);

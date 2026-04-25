@@ -92,6 +92,9 @@ public:
   TProfile2D *p2m0x, *p2m2x;
   TProfile2D *p2m0sym, *p2m0xsym; //added to gamjetHistos2 on 14.05.2025 for investigation of response, copied here
 
+  //new TH3D requested by Mikko, added in w79
+  TH3D *h3m0, *h3m2;    //these are TH3D versions of p2m0 and p2m2
+
   //new for w73 (extra NHF plots)
   TH3D *h3ptetanhf;
   TProfile3D *p3m0nhf, *p3m2nhf; 
@@ -120,6 +123,8 @@ public:
   TProfile2D *p2m0x, *p2m2x;
   TProfile2D *p2m0sym, *p2m0xsym; //added 14.05.2025 for investigation of response
 
+  //new TH3D requested by Mikko, added in w79
+  TH3D *h3m0, *h3m2;    //these are TH3D versions of p2m0 and p2m2
 
 
   // Extra for FSR studies
@@ -279,6 +284,10 @@ void GamHistosFill::Loop()
       fChain->SetBranchStatus("HLT_Photon30EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon110EB_TightID_TightIso",1);
       fChain->SetBranchStatus("HLT_Photon100EBHE10",1);
+      //if (ds=="2026C" || TString(ds.c_str()).Contains("2026C")){
+      if(isLowPU){
+        fChain->SetBranchStatus("HLT_Photon30_HoverELoose_L1SingleEG20",1); //new in w79 for low PU run (should be unprescaled)
+      }
     }
     if (is24 || is25 || is26) { //new 2024 trigger paths
       fChain->SetBranchStatus("HLT_Photon50EB_TightID_TightIso",1);
@@ -920,8 +929,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib2.json"); //modified daily json, without Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/CombinedJSONS_DCSCMLE_Runs_401624to402040.json"); //combined JSON (from Nestor, Mar 20th) for w76 (added on 20.03.2026)
     //LoadJSON("files/CombinedJSONS_MLJSONRuns_401630to402172_DCSRuns_402173to402244.json"); //combined JSON (created March 25th, shared in our 2025/2026Prompt group) (w77)
-    LoadJSON("files/CombinedJSONS_GoldenRuns_402099to402604_DCSRuns_401623to402099_402605to402655_.json"); //new hybrid (created April 7th by myself - see my notes)
-
+    //LoadJSON("files/CombinedJSONS_GoldenRuns_402099to402604_DCSRuns_401623to402099_402605to402655_.json"); //new hybrid (created April 7th by myself - see my notes)
+    LoadJSON("files/CombinedJSONS_GoldenRuns_401630to402513_DCSRuns_402514to403026_.json"); //new hybrid: golden covering all of 2026B and MLEnhanced golden for 26C;
 
 
   //TO DO: update JSON
@@ -996,12 +1005,12 @@ void GamHistosFill::Loop()
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026), updated w77 (27.03.2026)
-	  lumi200 = LoadLumi("files/lumi2026_07april2026_photon200_pb_w78.csv");
-	  lumi110 = LoadLumi("files/lumi2026_07april2026_photon110eb_pb_w78.csv");
-	  lumi50 = LoadLumi("files/lumi2026_07april2026_photon50eb_pb_w78.csv");
-	  lumi45 = LoadLumi("files/lumi2026_07april2026_photon45eb_pb_w78.csv");
-	  lumi40 = LoadLumi("files/lumi2026_07april2026_photon40eb_pb_w78.csv");
-	  lumi30 = LoadLumi("files/lumi2026_07april2026_photon30eb_pb_w78.csv");
+	  lumi200 = LoadLumi("files/lumi2026_19april2026_photon200_pb_w79.csv");
+	  lumi110 = LoadLumi("files/lumi2026_19april2026_photon110eb_pb_w79.csv");
+	  lumi50 = LoadLumi("files/lumi2026_19april2026_photon50eb_pb_w79.csv");
+	  lumi45 = LoadLumi("files/lumi2026_19april2026_photon45eb_pb_w79.csv");
+	  lumi40 = LoadLumi("files/lumi2026_19april2026_photon40eb_pb_w79.csv");
+	  lumi30 = LoadLumi("files/lumi2026_19april2026_photon30eb_pb_w79.csv");
   }
 
 
@@ -1225,7 +1234,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_31Mar2026_onlyL2Rel2026MC.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_22Apr2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -2491,6 +2500,10 @@ void GamHistosFill::Loop()
     h1->p2m0x = new TProfile2D("p2m0x",";#eta;p_{T,avp} (GeV);MPF0X (MPFX)", nxdneg, vxdneg, nptd, vptd, "S");
     h1->p2m2x = new TProfile2D("p2m2x",";#eta;p_{T,avp} (GeV);MPF2X (DBX)", nxdneg, vxdneg, nptd, vptd, "S");
 
+    // MPF in TH3D (w79, 19.04.2026)
+    h1->h3m0 = new TH3D("h3m0",";#eta_{jet};p_{T,#gamma} (GeV);MPF0;N_{events}", nxdneg, vxdneg, nptd, vptd, nresp, vresp);
+    h1->h3m2 = new TH3D("h3m2",";#eta_{jet};p_{T,#gamma} (GeV);MPF2;N_{events}", nxdneg, vxdneg, nptd, vptd, nresp, vresp);
+
     // Extra investigations of response, symmetric histos (14.05.2025)
     h1->p2m0sym = new TProfile2D("p2m0sym",";#eta;p_{T,avp} (GeV);MPF0SYM (MPFSYM)",nxdneg,vxdneg, nptd, vptd, "S");
     h1->p2m0xsym = new TProfile2D("p2m0xsym",";#eta;p_{T,avp} (GeV);MPF0XSYM (MPFXSYM)",nxdneg,vxdneg, nptd, vptd, "S");
@@ -2602,6 +2615,10 @@ void GamHistosFill::Loop()
 			      "MPF0X (MPFX)",nxd,vxd, nptd, vptd, "S");
     h->p2m2x = new TProfile2D("p2m2x",";#eta;p_{T,avp} (GeV);"
 			      "MPF2X (DBX)",nxd,vxd, nptd, vptd, "S");
+
+    // MPF in TH3D (w79, 19.04.2026)
+    h->h3m0 = new TH3D("h3m0",";abs. #eta_{jet};p_{T,#gamma} (GeV);MPF0;N_{events}", nxd, vxd, nptd, vptd, nresp, vresp);
+    h->h3m2 = new TH3D("h3m2",";abs. #eta_{jet};p_{T,#gamma} (GeV);MPF2;N_{events}", nxd, vxd, nptd, vptd, nresp, vresp);
 
     // Extra investigations of response, symmetric histos (14.05.2025)
     h->p2m0sym = new TProfile2D("p2m0sym",";#eta;p_{T,avp} (GeV);"
@@ -2913,6 +2930,8 @@ void GamHistosFill::Loop()
     if (jentry%10000==0) cout << "." << flush;
     ++nlap;
 
+    //Safety reset (needed?)
+    HLT_Photon30_HoverELoose_L1SingleEG20 = kFALSE;
     //Safety resets for triggers only in 2025
     HLT_Photon40EB_TightID_TightIso = HLT_Photon45EB_TightID_TightIso = kFALSE;
     //Safety resets for triggers only in 2024
@@ -2975,6 +2994,11 @@ void GamHistosFill::Loop()
 	b_HLT_Photon110EB_TightID_TightIso->GetEntry(ientry);
       if (b_HLT_Photon100EB_TightID_TightIso && is18) // not in 2016-17, 2018A
 	b_HLT_Photon100EB_TightID_TightIso->GetEntry(ientry);
+
+      // Only 2026C
+      //if (b_HLT_Photon30_HoverELoose_L1SingleEG20 && (TString(ds.c_str()).TContains("2026C")))
+      if (b_HLT_Photon30_HoverELoose_L1SingleEG20 && isLowPU)
+  b_HLT_Photon30_HoverELoose_L1SingleEG20->GetEntry(ientry);
 
       // Only 25 and 26
       if (b_HLT_Photon40EB_TightID_TightIso && (is25 || is26))
@@ -3055,11 +3079,13 @@ void GamHistosFill::Loop()
 	     HLT_Photon45EB_TightID_TightIso ||
 	     HLT_Photon50EB_TightID_TightIso ||
 	     HLT_Photon30EB_TightID_TightIso ||
+       HLT_Photon30_HoverELoose_L1SingleEG20 || //added in w79 (only 2026C) [note: here just checking if NONE of the trgs fired]
 	     HLT_Photon90_R9Id90_HE10_IsoM ||
 	     HLT_Photon75_R9Id90_HE10_IsoM ||
 	     HLT_Photon50_R9Id90_HE10_IsoM ||
 	     HLT_Photon30_HoverELoose ||
 	     HLT_Photon20_HoverELoose)) ||
+    //(isLowPU && ) ||
 	  (is18 &&
 	   !(HLT_Photon200 ||
 	     HLT_Photon175 || 
@@ -3498,7 +3524,8 @@ void GamHistosFill::Loop()
 	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<110 && (itrg=50))  ||
 	 (HLT_Photon45EB_TightID_TightIso && pt>=45 && pt<50 && (itrg=45)) ||
 	 (HLT_Photon40EB_TightID_TightIso && pt>=40 && pt<45 && (itrg=40)) ||
-	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
+	 //(HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
+   (!isLowPU ? (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30)) : (HLT_Photon30_HoverELoose_L1SingleEG20 && pt>=30 &&pt<50  && (itrg=30)))  || //for low PU, in case the Photon30EB does not fire
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 ))
@@ -3943,7 +3970,13 @@ void GamHistosFill::Loop()
       if (HLT_Photon120EB_TightID_TightIso) hgam120t->Fill(ptgam, w);
       if (HLT_Photon110EB_TightID_TightIso) hgam110t->Fill(ptgam, w);
       if (HLT_Photon100EB_TightID_TightIso) hgam100t->Fill(ptgam, w);
-      if (HLT_Photon30EB_TightID_TightIso) hgam30t->Fill(ptgam, w);
+      if(isLowPU){
+        if (HLT_Photon30_HoverELoose_L1SingleEG20) hgam30t->Fill(ptgam, w);
+      }
+      else {
+        if (HLT_Photon30EB_TightID_TightIso) hgam30t->Fill(ptgam, w);
+      }
+      //if (HLT_Photon30EB_TightID_TightIso) hgam30t->Fill(ptgam, w);
       if (HLT_Photon40EB_TightID_TightIso) hgam40t->Fill(ptgam, w); //new, added hgam40t (24.05.2025)
       if (HLT_Photon45EB_TightID_TightIso) hgam45t->Fill(ptgam, w); //new, added hgam45t (24.05.2025)
       if (HLT_Photon50EB_TightID_TightIso) hgam50t->Fill(ptgam, w); //new, added hgam50t (27.05.2024)
@@ -5092,6 +5125,10 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 	  h1->p2m0xsym->Fill(eta, ptgam, mpfx, w);
 	  h1->p2m0xsym->Fill(eta, ptgam, mpfxinv, w);
 
+    //new TH3D (w79, April 2026)
+    h1->h3m0->Fill(eta, ptgam, mpf, w);
+    h1->h3m2->Fill(eta, ptgam, mpf1, w);
+
 	  
 	  // Extras for FSR studies
 	  h1->p2mnu->Fill(eta, ptgam, mpfnu, w);
@@ -5160,6 +5197,10 @@ if (doGamjet2 && hg2) {
 	  h->p2m0sym->Fill(abseta, ptgam, mpfinv, w);
 	  h->p2m0xsym->Fill(abseta, ptgam, mpfx, w);
 	  h->p2m0xsym->Fill(abseta, ptgam, mpfxinv, w);
+
+    //new TH3D (w79, April 2026)
+    h->h3m0->Fill(abseta, ptgam, mpf, w);
+    h->h3m2->Fill(abseta, ptgam, mpf1, w);
 
 	  
 	  // Extras for FSR studies
@@ -5444,6 +5485,7 @@ void GamHistosFill::LoadPU(){
 
 
 
+  // NOTE: might want to add also Photon40EB stuff (if unprescaled?, or Photon30EB)
   ////trigs["2024"].push_back("HLT_Photon30EB_TightID_TightIso");
   trigs["2024"].push_back("HLT_Photon50EB_TightID_TightIso");
   //trigs[puera.c_str()].push_back("HLT_Photon50EB_TightID_TightIso"); //currently run once for each era, so this (1 entry) is enough
