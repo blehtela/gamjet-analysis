@@ -1313,7 +1313,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_26Apr2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_30Apr2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -2071,10 +2071,10 @@ void GamHistosFill::Loop()
   fout->mkdir("smearingJER");
   fout->cd("smearingJER");
 
-  TH1D *h_jet_pt_smearOff = new TH1D("h_jet_pt_smearOff","Jet transverse momentum distribution (NOT smeared);p_{T,jet}",250,0,250);
-  TH1D *h_jet_pt_smearOn  = new TH1D("h_jet_pt_smearOn","Jet transverse momentum distribution (if SMEARED);p_{T,jet}",250,0,250);
-  TH1D *h_jet_smearFactor = new TH1D("h_jet_pt_smearFactor","smearing factor for reco jet p_{T};smearJER",300,0.7,1.3);
-  TH1D *h_jet_deltaPt_smearOff = new TH1D("h_jet_dpt_smearOff","Relative difference in gen and reco jet p_{T} (without smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
+  TH1D *h_jet_pt_smearOff = new TH1D("h_jet_pt_smearOff","Jet transverse momentum distribution (NOT smeared);p_{T,jet}",300,0,300); //go up to 300GeV (used to be 250GeV)
+  TH1D *h_jet_pt_smearOn  = new TH1D("h_jet_pt_smearOn","Jet transverse momentum distribution (if SMEARED);p_{T,jet}",300,0,300); //go up to 300GeV (used to be 250GeV)
+  TH1D *h_jet_smearFactor = new TH1D("h_jet_pt_smearFactor","smearing factor for reco jet p_{T};smearJER",500,0.5,1.5); //go from 0.5 to 1.5 (used to be 0.7 to 1.3 with 300 bins)
+  TH1D *h_jet_deltaPt_smearOff = new TH1D("h_jet_deltaPt_smearOff","Relative difference in gen and reco jet p_{T} (without smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
   TH1D *h_jet_deltaPt_smearOn  = new TH1D("h_jet_deltaPt_smearOn","Relative difference in gen and reco jet p_{T} (with smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
 
 
