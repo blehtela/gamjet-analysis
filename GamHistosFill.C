@@ -313,9 +313,9 @@ void GamHistosFill::Loop()
   int count_ctag = 0; //w72 (25.02.2026)
 
   //w80: add some counters for JER SF investigations (want to know about gen-matching, 30.04.2026)
-  int count_sameIndexGenMatching;
-  int count_diffIndexGenMatching;
-  int count_noMatchedGen;
+  int count_sameIndexGenMatching(0);
+  int count_diffIndexGenMatching(0);
+  int count_noMatchedGen(0);
  
 
   
@@ -5538,7 +5538,7 @@ if (doGamjet2 && hg2) {
     cout << "GEN-MATCHING for JER SF studies (jet energy resolution smearing):" << endl << flush;
     cout << "> Events where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
     cout << "> Events where 'manually' matched gen-jet's index differs from Jet_genJetIdx[i]: n = " << count_diffIndexGenMatching << "\n";
-    cout << "> Events where no matching gen-jet was found and stochastic method was used for JER SF application". << count_noMatchedGen << endl << flush;
+    cout << "> Events where no matching gen-jet was found and stochastic method was used for JER SF application" << count_noMatchedGen << endl << flush;
 
 
     // Add extra plot for jet response vs photon pT
