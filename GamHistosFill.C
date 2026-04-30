@@ -20,6 +20,9 @@
 #include <sstream>
 #include <map>
 
+
+#include <memory> //w80
+#include <random> //w80
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
@@ -41,7 +44,14 @@ bool doGamjet1 = true;
 bool doGamjet2 = true;
 bool doJetveto = true; //like in dijet: eta-phi maps
 bool doPFComposition = true; //Gamjet2 (added by Mikko), also adding now Gamjet1 (bettina)
-bool smearJets = false;
+
+//for jet smearing
+bool smearJets = true; //false;
+int smearNMax = 3;      //same value as in Sami's Z+jet analysis
+int randseed = 26042026;
+//mutable  (can only make it mutable if it is declared as member var in .h ...so not now)
+std::mt19937 randNumGenerator = std::mt19937(randseed); //from namespace std (mersenne twister)
+
 
 // Error counters
 int cntErrDR(0);
@@ -160,6 +170,12 @@ class jetvetoHistos {
   TProfile2D *p2chf, *p2nhf, *p2nef;
 };
 
+
+// ---------------------------------------------------------- //
+//    Helper functions for retrieving JECs and JER SF
+// ---------------------------------------------------------- //
+
+
 // Helper function to retrieve FactorizedJetCorrector 
 FactorizedJetCorrector *getFJC(string l1="", string l2="", string res="",
 			       string path="") {
@@ -202,7 +218,60 @@ FactorizedJetCorrector *getFJC(string l1="", string l2="", string res="",
   FactorizedJetCorrector *jec = new FactorizedJetCorrector(v);
 
   return jec;
-} // getJFC      
+} // getFJC      
+
+
+// w80 onwards: Helper function to retrieve corrrection factor from jet energy resolution smearing
+// sfFile = is the .txt file containing the scale factors (JER SF)
+// path = general path where to search for the file name
+FactorizedJetCorrector *getJERSF(string sfFile="", string path="") {
+
+  //setting the default path to find SFs
+  if (path=="") path = "CondFormats/JetMETObjects/data";
+  const char *csfdir = path.c_str();      //char version of the SF directory name
+  const char *csffile = sfFile.c_str();   //char version of the SF file name
+  string s("");
+
+  //get the SF
+  vector<JetCorrectorParameters> v;
+  if(sfFile!=""){
+    s = Form("%s/%s.txt",csfdir,csffile);
+    cout << s << endl << flush;
+    JetCorrectorParameters *psf = new JetCorrectorParameters(s);
+    v.push_back(*psf);
+  }
+
+  FactorizedJetCorrector *jersf = new FactorizedJetCorrector(v); //does it need to be a vector?
+  return jersf;
+}//end of getJERSF(), formerly getScaleFactor(), definition
+
+
+JME::JetResolution *getJetPtResolution(string resolutionFile="", string path=""){
+
+  //setting the default path to find SFs
+  if (path=="") path = "CondFormats/JetMETObjects/data";
+  const char *cresdir = path.c_str();                //char version of the SF directory name
+  const char *cresfile = resolutionFile.c_str();    //char version of the PtResolution file name
+  string s("");
+
+  //get the pT resolution
+  vector<JetCorrectorParameters> v;
+  if(resolutionFile!=""){
+    s = Form("%s/%s.txt",cresdir,cresfile);
+    cout << s << endl << flush;
+    //JME::JetResolution *resolution = new JME::JetResolution(s);
+  }
+  //else{
+  //  cout << "smearJets is true, but no pT resolutoin file found. Aborting." << endl << flush;
+  //  exit(1);
+  //}
+  JME::JetResolution *resolution = new JME::JetResolution(s);
+
+  return resolution;
+}//end of getJetPtResolution()
+
+
+
 
 void GamHistosFill::Loop()
 {
@@ -645,7 +714,7 @@ void GamHistosFill::Loop()
       ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" ||
 			TString(ds.c_str()).Contains("summer2024QCD") || //should cover summer2024QCD a,b,c,d,e,f,g,h,i (10 parts)
-			TString(ds.c_str()).Contains("summer2024P8") || //should cover summer2024P8 all PTG and HT bins (15 parts), added for w74 (11.03.2026)
+			TString(ds.c_str()).Contains("summer2024P8") || //should cover summer2024P8 all PTG and HT bins (15 parts), added for w74 (11.03.2026), should also cover tiny-test version (w80, 26.04.2026)
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "" ); //updated on 12.06.2025 with w56
@@ -809,6 +878,16 @@ void GamHistosFill::Loop()
 
   assert(jec);
 
+  // TO DO: customise this based on year - so far only running on summer2028P8 MC.
+  //no need to read the JERSF file for each jet, so in case pt smearing is wanted, load it once here.
+  //same goes for pT resolution file
+  FactorizedJetCorrector *jersf(0); //similar as to how we handle the JECs (see jec variable)
+  JME::JetResolution *jetPTresolution(0); //w80
+  if(smearJets){
+    jersf = getJERSF("Prompt26_2026B_JRV0M_MC_SF_AK4PFPuppi"); //w80 (first implementation) 
+    jetPTresolution = getJetPtResolution("Summer23BPixPrompt23_RunD_JRV1_MC_PtResolution_AK4PFPuppi"); //w80
+  }
+
   
   string sera("");
   if (ds=="2016APVP8" || ds=="2016APVQCD") sera = "2016APV";
@@ -848,7 +927,7 @@ void GamHistosFill::Loop()
       ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
-	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins
+	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80)
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
@@ -1126,13 +1205,13 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Hnib1") || //should include Ha, Hb, Hc, Hd, Hskim
         TString(ds.c_str()).Contains("2024Inib1") ||
         TString(ds.c_str()).Contains("winter2024P8") || //also for MC now 2024.
-        TString(ds.c_str()).Contains("summer2024P8") ||
+        TString(ds.c_str()).Contains("summer2024P8") || //covers also summer2024P8-tiny-test
         TString(ds.c_str()).Contains("winter2024P8-test") || 
-        TString(ds.c_str()).Contains("summer2024P8-test") ||
+        TString(ds.c_str()).Contains("summer2024P8-test") || //not needed due to "Contains(summer2024P8)" two lines above
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024. //should cover also summer2024QCD, but will write explicity
 	      TString(ds.c_str()).Contains("summer2024QCD") || //covers also the 10 parts a-j
-	      TString(ds.c_str()).Contains("summer2024P8") || //covers also the 15 parts as in PTG-HT bins (w74, 11.03.2026)
+	      TString(ds.c_str()).Contains("summer2024P8") || //covers also the 15 parts as in PTG-HT bins (w74, 11.03.2026), and tiny-test (w80, 26.04.2026)
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
         //fjv = new TFile("files/jetveto2024F.root","READ"); //V5M: updated this last on 16.08. (for w34 and onwards)
 				//fjv = new TFile("files/jetveto2024FG_FPix_V6M.root","READ"); //V6M: updated this last on 14.10. (for w39 and onwards)
@@ -1234,7 +1313,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_22Apr2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_26Apr2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1985,6 +2064,18 @@ void GamHistosFill::Loop()
   TProfile2D *p2_mpf_pt_mu_eta1p3to2p5 = new TProfile2D("p2_mpf_pt_mu_eta1p3to2p5", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
   TProfile2D *p2_mpf_pt_mu_eta2p5to3p0 = new TProfile2D("p2_mpf_pt_mu_eta2p5to3p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
   TProfile2D *p2_mpf_pt_mu_eta3p0to5p0 = new TProfile2D("p2_mpf_pt_mu_eta3p0to5p0", "MPF (photon50);p_{T,#gamma};#mu;MPF", nx,vx,nmubins,vmubins);
+
+
+  //New folder for investigating what happens when i apply JER smearing
+  //add similar histograms as Z+jet analysis also checks, might need to adjust x-range
+  fout->mkdir("smearingJER");
+  fout->cd("smearingJER");
+
+  TH1D *h_jet_pt_smearOff = new TH1D("h_jet_pt_smearOff","Jet transverse momentum distribution (NOT smeared);p_{T,jet}",250,0,250);
+  TH1D *h_jet_pt_smearOn  = new TH1D("h_jet_pt_smearOn","Jet transverse momentum distribution (if SMEARED);p_{T,jet}",250,0,250);
+  TH1D *h_jet_smearFactor = new TH1D("h_jet_pt_smearFactor","smearing factor for reco jet p_{T};smearJER",300,0.7,1.3);
+  TH1D *h_jet_deltaPt_smearOff = new TH1D("h_jet_dpt_smearOff","Relative difference in gen and reco jet p_{T} (without smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
+  TH1D *h_jet_deltaPt_smearOn  = new TH1D("h_jet_deltaPt_smearOn","Relative difference in gen and reco jet p_{T} (with smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
 
 
   // New flavour studies (started in 2026) stored in a separate directory, starting from w72
@@ -3312,7 +3403,7 @@ void GamHistosFill::Loop()
       	jecl1rc->setJetPt(phoj.Pt());
       	jecl1rc->setJetEta(phoj.Eta());
       	jecl1rc->setJetA(Jet_area[idx]);
-      	jecl1rc->setRho(fixedGridRhoFastjetAll);
+      	jecl1rc->setRho(fixedGridRhoFastjetAll);  //note: this is Run2, in Run3, the variable is Rho_fixedGridRhoFastjetAll (but there i dont do L1corr)
       	corrl1rc = jecl1rc->getCorrection();
       }
       phoj *= corrl1rc;
@@ -3592,7 +3683,7 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("winter2025QCD")){ mctype="winter2025QCD";} //covers also 11 parts a-k
 
 			if(TString(dataset.c_str()).Contains("winter2024P8")){ mctype="winter2024P8";}
-			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}	//should cover all 15 parts
+			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}	//should cover all 15 parts, covers also tiny-test (w80)
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
 			if(TString(dataset.c_str()).Contains("summer2024QCD")){ mctype="summer2024QCD";} //covers also 10 parts a-j
 
@@ -3674,7 +3765,7 @@ void GamHistosFill::Loop()
     // Select leading jets. Just exclude photon, don't apply JetID yet
     Float_t         Jet_resFactor[nJetMax]; // Custom addition
     Float_t         Jet_deltaJES[nJetMax]; // Custom addition
-    Float_t         Jet_CF[nJetMax]; // Custom addition
+    Float_t         Jet_CF[nJetMax]; // Custom addition, Note (25.04.2026): seems has not been implemented so far for gamjet. Am not using it like this
     int iJet(-1), iJet2(-1), nJets(0);
     double djes(1), jes(1), res(1);
     jet.SetPtEtaPhiM(0,0,0,0);
@@ -3713,10 +3804,147 @@ void GamHistosFill::Loop()
         Jet_resFactor[i] = (1.0 - 1.0/l2l3rescorr);
       }
 
-      // Smear jets
-      if (smearJets) {
-	      assert(false);
-      }
+      // Smear jets //Note (25.04.2026): this was not implemented so far, had assert(false);
+      //w80: implementing JER smearing, applied after applying JECs
+      //only smear if it is MC, we are in jet-loop still, jet index is i
+      if (smearJets && isMC && (i < smearNMax)) {
+	      //assert(false);
+
+        //------------------ define some reco jet variables (current jet index) --------------------------//
+        //will need a temporary Lorentzvector of the current jet, to conveniently check deltaR
+        TLorentzVector jet_tmp;
+        jet_tmp.SetPtEtaPhiM(Jet_pt[i], Jet_eta[i], Jet_phi[i], Jet_mass[i]);
+        double pt_reco = jet_tmp.Pt();  //pt of the reco jet with index i
+        double eta_reco = jet_tmp.Eta(); //pt_reco already defined earlier
+        double rho = Rho_fixedGridRhoFastjetAll;
+        //double resolution = m_jetResolution->getResolution({{JME::Binning::JetPt, pt_reco}, {JME::Binning::JetEta, eta_reco}, {JME::Binning::Rho, rho}});
+        // get the resolution in simulation sigma_jer = resolution = res_sim
+        //double resolution = m_jetResolution->getResolution({{JME::Binning::JetPt, Jet_pt[i]}, {JME::Binning::JetEta, Jet_eta[i]}});
+
+
+        //------------------ get the jet pt resolution and scale factors from two .txt filex ---------------------------//
+        //read from .txt file, implementation of getter fct getSF() is in beginning of this code
+        //not necessary to call this again for each jet, since it does not depend on the individual event - call this once after calling getFJC.
+        //FactorizedJetCorrector *jersf(0); //similar as to how we handle the JECs (see jec variable)
+        //jersf = getJERSF("Prompt26_2026B_JRV0M_MC_SF_AK4PFPuppi"); //w80 (first implementation) 
+        //get the scale factor from the file depending on the variables reco pt, reco eta, rho
+        jersf->setJetPt(pt_reco);
+        jersf->setJetEta(eta_reco);
+        jersf->setRho(rho);
+        double SF = jersf->getCorrection();
+
+        //get the jet Pt resolution (essentially the same as above just different way of using function)
+        //also this is enough to be done once.
+        //not necessary to call this again for each jet, since it does not depend on the individual event - call this once after calling getFJC.
+        //JME::JetResolution *jetPTresolution = getJetPtResolution("Summer23BPixPrompt23_RunD_JRV1_MC_PtResolution_AK4PFPuppi"); //w80
+        double resolution = jetPTresolution->getResolution({{JME::Binning::JetPt, pt_reco}, {JME::Binning::JetEta, eta_reco}, {JME::Binning::Rho, rho}});
+
+
+        //------ check jet-matching criteria ------//
+		    //attempt a matching of reco to gen (i.e. loop through gen-jets seeing if one matches)
+  		  bool matched_gen = false;
+
+
+        TLorentzVector genjet_tmp; //temporary genjet
+        genjet_tmp.SetPtEtaPhiM(0,0,0,0);
+
+        //loop as long as there are gen jets left to check and as long as there was no matching one
+        //NOTE: in Sami's code he uses int j = Jet_genJetIdx[i]; 
+        Int_t genidx = 0;
+        Float_t pt_gen_matched = -99.9;
+		    while((genidx < nGenJet) && (matched_gen==false)){
+          genjet_tmp.SetPtEtaPhiM(GenJet_pt[genidx],GenJet_eta[genidx],GenJet_phi[genidx],GenJet_mass[genidx]);
+			    //double pt_gen = GenJet[genidx].Pt();
+			    double pt_gen = genjet_tmp.Pt();
+          double deltaR(9999.9); //initialise, then calculate below
+          deltaR = genjet_tmp.DeltaR(jet_tmp);
+
+			    //check matching requirements - if they are true, smear, if not, not
+			    double Rcone = 0.4;             //the used jet radius, we use AK4
+          //double pt_reco = jet_tmp.Pt();  //pt of the reco jet with index i //define outside while
+			    //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_reco);
+			    matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
+          ++genidx;
+		    }//end of while() for finding matching gen jet
+
+
+        //------ apply the smearing -----------//
+        // note, need to apply it also on other jets not just the leading one (so for each i)
+        //set smearNmax to 3.0 (like in Sami's code)
+
+		    //if gen-matching successful, use scaling method for smearing, otherwise stochastic method
+        double smearJER = 1.0; //initialise in a way it would not do anything (multiply by 1.0)
+		    if(matched_gen){
+          // SCALING METHOD
+
+          //pt of the matched genjet
+          pt_gen_matched = genjet_tmp.Pt(); //after this gen-jet the while loop stopped, so it was the matching one
+
+	        //should swap pt_reco with pt_gen for relativ res?
+	        smearJER = 1.0 + (SF - 1.0) * (pt_reco - pt_gen_matched)/pt_reco;
+	        //smearJER = 1.0 + (SF - 1.0) * (pt_reco - pt_gen_matched)/pt_gen_matched;
+
+
+          //if matched gen, also fill the pT difference (reco-gen)/gen before and after smearing
+          //pt_gen_matched = genjet_tmp.Pt(); //after this gen-jet the while loop stopped, so it was the matching one
+          h_jet_deltaPt_smearOff->Fill((pt_reco - pt_gen_matched)/pt_gen_matched);
+          h_jet_deltaPt_smearOn->Fill((pt_reco*smearJER - pt_gen_matched)/pt_gen_matched);
+
+		    }//end of scaling method for JER smearing implementation
+		    else{ //if there was no matching gen jet
+          // STOCHASTIC METHOD (only allows to degrade resolution)
+          // res_sim = resolution in simulation = sigma_jer
+          // get the resolution in simulation sigma_jer = reoslution = res_sim
+          //double resolution = m_jetResolution->getResolution({{JME::Binning::JetPt, Jet_pt[i]}, {JME::Binning::JetEta, Jet_eta[i]}});
+          //double eta_reco = jet_tmp.Eta(); //pt_reco already defined earlier
+          //double rho = Rho_fixedGridRhoFastjetAll;
+          //double resolution = m_jetResolution->getResolution({{JME::Binning::JetPt, pt_reco}, {JME::Binning::JetEta, eta_reco}, {JME::Binning::Rho, rho}});
+          //can use resolution from above
+
+          //get the scale factor depending on the variables reco pt, reco eta, rho
+          //wait: this is already done outside of this if/else statement, can just use jersf as is
+          /*
+          jersf->setJetPt(pt_reco);
+          jersf->setJetEta(eta_reco);
+          jersf->setRho(rho);
+          double SF = jersf->getCorrection();
+          */
+
+          //use random number from normal distribution (std::normal_distribution)
+          //the distribution is a Gaussian with zero mean and variance equal to the given jet energy resolution sigma_jer = resolution
+          //smear jet pt by random gauss variable
+          /*
+          double sigma = resolution * sqrt(pow(SF,2) - 1);
+          normal_distribution<> normRand(0, sigma);
+          smearJER = 1 + normRand(randNumGenerator);
+          */
+          std::normal_distribution<> normRand(0, resolution);
+          //smearJER = 1 + normRand(randNumGenerator) * sqrt(max(pow(SF,2) - 1, 0));
+          if(SF > 1.0){
+            smearJER = 1 + normRand(randNumGenerator) * sqrt(pow(SF,2) - 1);
+          }
+          else{
+            smearJER = 1.0;
+          }
+
+          
+        } //end of stochastic method for obtaining correction factor for JER smearing
+
+        //store reco jet pt and before smearing
+        h_jet_pt_smearOff->Fill(Jet_pt[i]);
+
+        //apply the smearing, in case of negative value for the correction factor, set pT to zero.
+        Jet_pt[i] = (smearJER > 0) ? (Jet_pt[i]*smearJER) : 0;
+        Jet_CF[i] = smearJER; //store the correction factor
+
+        //store smearing factor and reco jet pt AFTER smearing
+        h_jet_pt_smearOn->Fill(Jet_pt[i]);
+        h_jet_smearFactor->Fill(smearJER);
+
+		  }//end of if(smearJets && isMC)
+
+	    //}
+      //}
       
       // Check that jet is not photon and pTcorr>15 GeV
       if (Jet_pt[i]>15 && (iGam==-1 || i != Photon_jetIdx[iGam]) && (!isQCD || i != iFox)) {
@@ -3762,6 +3990,8 @@ void GamHistosFill::Loop()
     } // for i in nJet
     
     // Select genjet matching leading and subleading reco jet
+    // NOTE (25.4.2026): do we need to do this hear again after the smearing?
+    // i guess yes?
     int iGenJet(-1), iGenJet2(-1);
     genjet.SetPtEtaPhiM(0,0,0,0);
     genjet2.SetPtEtaPhiM(0,0,0,0);
@@ -5035,7 +5265,7 @@ void GamHistosFill::Loop()
 
 	if (pass) {
 	
-	  double jsf = (smearJets ? Jet_CF[iJet] : 1);
+	  double jsf = (smearJets ? Jet_CF[iJet] : 1);//so far always resulted in 1.0, becaus smearJets was false, now need to dobule-check
 	  double ptjet = Jet_pt[iJet];
 	  double ptavp = 0.5*(ptgam + ptjet); // Do better later, now pT,ave (not pT,avp)
 	  h->hpt13->Fill(ptgam, w);
@@ -5094,7 +5324,7 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 
 	if (pass) {
 	  //double res = Jet_RES[iprobe] / Jet_RES[itag];
-	  double jsf = (smearJets ? Jet_CF[iJet] : 1);
+	  double jsf = (smearJets ? Jet_CF[iJet] : 1); //so far always resulted in 1.0, becaus smearJets was false, now need to dobule-check
 	  
 	  double abseta = fabs(Jet_eta[iJet]);  //keep just for 'barrel-check' (location)
     double eta = Jet_eta[iJet];           //just fill eta directly instead of fabs(eta)
@@ -5176,7 +5406,7 @@ if (doGamjet2 && hg2) {
 	if (pass) {
 	
 	  //double res = Jet_RES[iprobe] / Jet_RES[itag];
-	  double jsf = (smearJets ? Jet_CF[iJet] : 1);
+	  double jsf = (smearJets ? Jet_CF[iJet] : 1);//so far always resulted in 1.0, becaus smearJets was false, now need to dobule-check
 	  
 	  double abseta = fabs(Jet_eta[iJet]);
 	  h->h2pteta->Fill(abseta, ptgam, w);
@@ -5455,6 +5685,7 @@ void GamHistosFill::LoadPU(){
   trigs["winter2024P8-v14"].push_back("mc"); //photon mc
   trigs["winter2024P8-test"].push_back("mc"); //photon mc
   trigs["summer2024P8-test"].push_back("mc"); //photon mc
+  trigs["summer2024P8-tiny-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
   trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
 

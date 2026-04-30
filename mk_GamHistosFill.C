@@ -9,6 +9,10 @@
 #include "CondFormats/JetMETObjects/interface/SimpleJetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
+#include "CondFormats/JetMETObjects/interface/JetResolutionObject.h"
+#include "JetMETCorrections/Modules/interface/JetResolution.h"
+
+
 #include "GamHistosFill.h"
 
 #include "TSystem.h"
@@ -38,6 +42,11 @@ R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/FactorizedJetCorrector_cc)
 
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/SimpleJetCorrectionUncertainty_cc)
 R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/JetCorrectionUncertainty_cc)
+
+R__LOAD_LIBRARY(CondFormats/JetMETObjects/src/JetResolutionObject_cc)
+R__LOAD_LIBRARY(JetMETCorrections/Modules/src/JetResolution_cc)
+
+
 
 R__LOAD_LIBRARY(GamHistosFill_C)
 #else
@@ -118,7 +127,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 		dataset=="summer2024P8_PTG100to200-HT600to1000" || dataset=="summer2024P8_PTG100to200-HT1000toInf" || 
 		dataset=="summer2024P8_PTG200toInf-HT40to400" ||dataset=="summer2024P8_PTG200toInf-HT400to600" ||
 		dataset=="summer2024P8_PTG200toInf-HT600to1000" ||dataset=="summer2024P8_PTG200toInf-HT1000toInf" ||
-			dataset=="winter2024P8-test" || dataset=="summer2024P8-test" || 
+			dataset=="winter2024P8-test" || dataset=="summer2024P8-test" || dataset=="summer2024P8-tiny-test" || //added tiny-test (w80, 26.04.2026)
 			dataset=="winter2024P8-v14" || //winter 2024 madgraph p8 (added on 07.08.2024)
 			dataset=="winter2024P8a" || dataset=="winter2024P8b" || dataset=="winter2024P8c" || //winter 2024 madgraph p8 (added on 07.08.2024)
       dataset=="winter2025P8"); //MC winter 2025 madgraph P8 (HT and PTG binned) added on 20.05.2025
@@ -161,6 +170,9 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
   
   gROOT->ProcessLine(".L CondFormats/JetMETObjects/src/SimpleJetCorrectionUncertainty.cc+");
   gROOT->ProcessLine(".L CondFormats/JetMETObjects/src/JetCorrectionUncertainty.cc+");
+
+  gROOT->ProcessLine(".L CondFormats/JetMETObjects/src/JetResolutionObject.cc+");
+  gROOT->ProcessLine(".L JetMETCorrections/Modules/src/JetResolution.cc+");
 
   gROOT->ProcessLine(".L GamHistosFill.C+g");
 #endif

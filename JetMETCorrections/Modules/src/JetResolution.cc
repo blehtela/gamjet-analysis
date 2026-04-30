@@ -1,3 +1,5 @@
+#define STANDALONE
+
 #ifndef STANDALONE
 #include <JetMETCorrections/Modules/interface/JetResolution.h>
 #include <FWCore/Framework/interface/EventSetup.h>
@@ -8,10 +10,6 @@
 #else
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
 #endif
-
-#include <iostream>
-
-//note: found this code from Sami's Z+jet repository, using it now also for gamjet (w80, 25.04.2026)
 
 namespace JME {
 
@@ -57,31 +55,13 @@ namespace JME {
     }
 #endif
 
-    float JetResolutionScaleFactor::getScaleFactor(const JetParameters& parameters,
-                                                   Variation variation /* = Variation::NOMINAL*/,
-                                                   std::string uncertaintySource /* = ""*/) const {
+    float JetResolutionScaleFactor::getScaleFactor(const JetParameters& parameters, Variation variation/* = Variation::NOMINAL*/) const {
         const JetResolutionObject::Record* record = m_object->getRecord(parameters);
         if (! record)
             return 1;
 
         const std::vector<float>& parameters_values = record->getParametersValues();
-        const std::vector<std::string>& parameter_names = m_object->getDefinition().getParametersName();
-        size_t parameter = static_cast<size_t>(variation);
-        if (!uncertaintySource.empty()) {
-          if (variation == Variation::DOWN)
-            parameter = std::distance(parameter_names.begin(),
-                                      std::find(parameter_names.begin(), parameter_names.end(), uncertaintySource + "Down"));
-          else if (variation == Variation::UP)
-            parameter = std::distance(parameter_names.begin(),
-                                      std::find(parameter_names.begin(), parameter_names.end(), uncertaintySource + "Up"));
-          if (parameter >= parameter_names.size()) {
-            std::string s;
-            for (const auto& piece : parameter_names)
-              s += piece + " ";
-            //throw std::cout << "InvalidParameter " << "Invalid value for 'uncertaintySource' parameter. Only " + s + " are supported.\n";
-          }
-        }
-        return parameters_values[parameter];
+        return parameters_values[static_cast<size_t>(variation)];
     }
 
 }

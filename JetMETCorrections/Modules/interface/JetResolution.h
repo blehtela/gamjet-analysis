@@ -3,10 +3,12 @@
 
 // If you want to use the JER code in standalone mode, you'll need to create a new define named 'STANDALONE'. If you use gcc for compiling, you'll need to add
 // -DSTANDALONE to the command line
-// In standalone mode, no reference to CMSSW exists, so the only way to retrieve resolutions and scale factors are from text files. //note (25.04.2026): i think that's what we want for now!
-// Note: took this code from Sami's repository when implementing JER smearing (w80,25.04.2026).
+// In standalone mode, no reference to CMSSW exists, so the only way to retrieve resolutions and scale factors are from text files.
 
-#include <CondFormats/JetMETObjects/interface/JetResolutionObject.h>
+//#include "CondFormats/JetMETObjects/interface/JetResolutionObject.h"
+#include "../../../CondFormats/JetMETObjects/interface/JetResolutionObject.h"
+
+#define STANDALONE
 
 #ifndef STANDALONE
 namespace edm {
@@ -55,9 +57,7 @@ namespace JME {
             static const JetResolutionScaleFactor get(const edm::EventSetup&, const std::string&);
 #endif
 
-            float getScaleFactor(const JetParameters& parameters,
-                                 Variation variation = Variation::NOMINAL,
-                                 std::string uncertaintySource = "") const;
+            float getScaleFactor(const JetParameters& parameters, Variation variation = Variation::NOMINAL) const;
 
             void dump() const {
                 m_object->dump();
@@ -75,3 +75,4 @@ namespace JME {
 };
 
 #endif
+
