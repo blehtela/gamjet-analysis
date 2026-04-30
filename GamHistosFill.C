@@ -312,6 +312,12 @@ void GamHistosFill::Loop()
   int _nbadevents_veto(0);
   int count_ctag = 0; //w72 (25.02.2026)
 
+  //w80: add some counters for JER SF investigations (want to know about gen-matching, 30.04.2026)
+  int count_sameIndexGenMatching;
+  int count_diffIndexGenMatching;
+  int count_noMatchedGen;
+ 
+
   
   if (true) { // ProcessFast
     fChain->SetBranchStatus("*",0);  // disable all branches
@@ -3844,6 +3850,9 @@ void GamHistosFill::Loop()
 		    //attempt a matching of reco to gen (i.e. loop through gen-jets seeing if one matches)
   		  bool matched_gen = false;
 
+        //new: add criterion of minimum pT needed by gen jet (set to 0.1GeV)
+        double minGenJetPt = 0.01;
+
 
         TLorentzVector genjet_tmp; //temporary genjet
         genjet_tmp.SetPtEtaPhiM(0,0,0,0);
@@ -3863,9 +3872,22 @@ void GamHistosFill::Loop()
 			    double Rcone = 0.4;             //the used jet radius, we use AK4
           //double pt_reco = jet_tmp.Pt();  //pt of the reco jet with index i //define outside while
 			    //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_reco);
-			    matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
+			    //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
+			    matched_gen = (pt_gen > minGenJetPt) && (deltaR < 0.5*Rcone) && (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
+
           ++genidx;
 		    }//end of while() for finding matching gen jet
+
+        //check: matching gen-jet by the loop above versus using Jet_genJetIdx[i] - is it the same index we obtain?
+        if(matched_gen && genidx == Jet_genJetIdx[i]){
+          ++count_sameIndexGenMatching;
+        }
+        else if(matched_gen && genidx != Jet_genJetIdx[i]){
+          ++count_diffIndexGenMatching;
+        }
+        else{
+          ++count_noMatchedGen;
+        }
 
 
         //------ apply the smearing -----------//
@@ -5511,6 +5533,13 @@ if (doGamjet2 && hg2) {
     cout << "IMPORTANT: CHECK THAT THE SKIMS ACTUALLY HAD THE RELEVANT C-TAGGING BRANCHES! See the output, in the log-file, and whether there are any Errors with SetBranchStatus! Even when the branches do not exist, the variable might get assigned some value that is in the memory which leads to faulty histograms!" << endl << flush;
     cout << "For comparison, a realistic value for the fraction of c-tagged events from a case where the branches existed is: 0.5 to 0.6% " << endl << flush;
     cout << "----------------------------------------------------------------------------------------------------------------------------------------------------\n" << endl << flush;
+
+    //w80
+    cout << "GEN-MATCHING for JER SF studies (jet energy resolution smearing):" << endl << flush;
+    cout << "> Events where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
+    cout << "> Events where 'manually' matched gen-jet's index differs from Jet_genJetIdx[i]: n = " << count_diffIndexGenMatching << "\n";
+    cout << "> Events where no matching gen-jet was found and stochastic method was used for JER SF application". << count_noMatchedGen << endl << flush;
+
 
     // Add extra plot for jet response vs photon pT
     if (isMC) {
