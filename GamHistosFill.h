@@ -655,6 +655,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		ds=="summer2024P8_PTG200toInf-HT40to400" || ds=="summer2024P8_PTG200toInf-HT400to600" ||
 		ds=="summer2024P8_PTG200toInf-HT600to1000" || ds=="summer2024P8_PTG200toInf-HT1000toInf" || //added those 15 parts on 11.03.2026 (w74)
 		//ds.c_str().Contains("summer2024QCD") || //testing with contains
+    TString(ds.c_str()).Contains("summer2024P8") || //w80: added this - in next cleanup, can remove the more specific ds names !
 		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
 //should do this with "Contains()" fct... more compact

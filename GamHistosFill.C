@@ -723,7 +723,7 @@ void GamHistosFill::Loop()
 			TString(ds.c_str()).Contains("summer2024P8") || //should cover summer2024P8 all PTG and HT bins (15 parts), added for w74 (11.03.2026), should also cover tiny-test version (w80, 26.04.2026)
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "" ); //updated on 12.06.2025 with w56
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "" ); //updated on 12.06.2025 with w56 (note: is there V3?)
 
   }
   //data2024 (per era)
@@ -1319,7 +1319,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_30Apr2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_01May2026v2.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -3854,39 +3854,49 @@ void GamHistosFill::Loop()
         double minGenJetPt = 0.01;
 
 
+        // 01.05.2026: remove while loop (maybe bring this up in minijerc on Tuesday)
+        //instead of doing a matching from scratch (for this, the criteria might be too lose, or insufficient),
+        //take the given genJetIdx from the current jet and check if it is "good enough", i.e. fulfills our "matching criterion"
+        //note: personally, i would not call this 'matching', because we don't really search the matching genjet..
+ 
         TLorentzVector genjet_tmp; //temporary genjet
         genjet_tmp.SetPtEtaPhiM(0,0,0,0);
 
         //loop as long as there are gen jets left to check and as long as there was no matching one
         //NOTE: in Sami's code he uses int j = Jet_genJetIdx[i]; 
-        Int_t genidx = 0;
+        //Int_t genidx = 0; //how i would have done it
+        Int_t genidx = Jet_genJetIdx[i];  //like in zjet code: use the given gen-jet index from current jet i
         Float_t pt_gen_matched = -99.9;
-		    while((genidx < nGenJet) && (matched_gen==false)){
+
+        //eliminating while loop, see explanation above
+		    //while((genidx < nGenJet) && (matched_gen==false)){
+        if(genidx >= 0){
           genjet_tmp.SetPtEtaPhiM(GenJet_pt[genidx],GenJet_eta[genidx],GenJet_phi[genidx],GenJet_mass[genidx]);
-			    //double pt_gen = GenJet[genidx].Pt();
-			    double pt_gen = genjet_tmp.Pt();
-          double deltaR(9999.9); //initialise, then calculate below
-          deltaR = genjet_tmp.DeltaR(jet_tmp);
+        }
+			  //double pt_gen = GenJet[genidx].Pt();
+			  double pt_gen = genjet_tmp.Pt();
+        double deltaR(9999.9); //initialise, then calculate below
+        deltaR = genjet_tmp.DeltaR(jet_tmp);
 
-			    //check matching requirements - if they are true, smear, if not, not
-			    double Rcone = 0.4;             //the used jet radius, we use AK4
-          //double pt_reco = jet_tmp.Pt();  //pt of the reco jet with index i //define outside while
-			    //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_reco);
-			    //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
-			    matched_gen = (pt_gen > minGenJetPt) && (deltaR < 0.5*Rcone) && (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
+			  //check matching requirements - if they are true, smear, if not, not
+			  double Rcone = 0.4;             //the used jet radius, we use AK4
+        //double pt_reco = jet_tmp.Pt();  //pt of the reco jet with index i //define outside while
+			  //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_reco);
+			  //matched_gen = (deltaR < 0.5*Rcone) and (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
+			  matched_gen = (pt_gen > minGenJetPt) && (deltaR < 0.5*Rcone) && (abs(pt_reco - pt_gen) < 3.0 * resolution * pt_gen); //see discussion in permilleJERC channel
 
-          ++genidx;
-		    }//end of while() for finding matching gen jet
+        //++genidx;
+		    //}//end of while() for finding matching gen jet
 
         //check: matching gen-jet by the loop above versus using Jet_genJetIdx[i] - is it the same index we obtain?
         if(matched_gen && genidx == Jet_genJetIdx[i]){
-          ++count_sameIndexGenMatching;
+          count_sameIndexGenMatching++;
         }
         else if(matched_gen && genidx != Jet_genJetIdx[i]){
-          ++count_diffIndexGenMatching;
+          count_diffIndexGenMatching++;
         }
         else{
-          ++count_noMatchedGen;
+          count_noMatchedGen++;
         }
 
 
@@ -5538,7 +5548,7 @@ if (doGamjet2 && hg2) {
     cout << "GEN-MATCHING for JER SF studies (jet energy resolution smearing):" << endl << flush;
     cout << "> Events where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
     cout << "> Events where 'manually' matched gen-jet's index differs from Jet_genJetIdx[i]: n = " << count_diffIndexGenMatching << "\n";
-    cout << "> Events where no matching gen-jet was found and stochastic method was used for JER SF application" << count_noMatchedGen << endl << flush;
+    cout << "> Events where no matching gen-jet was found and stochastic method was used for JER SF application: " << count_noMatchedGen << endl << flush;
 
 
     // Add extra plot for jet response vs photon pT
@@ -5715,6 +5725,8 @@ void GamHistosFill::LoadPU(){
   trigs["winter2024P8-test"].push_back("mc"); //photon mc
   trigs["summer2024P8-test"].push_back("mc"); //photon mc
   trigs["summer2024P8-tiny-test"].push_back("mc"); //photon mc
+  trigs["summer2024P8-jmenano"].push_back("mc"); //photon mc
+  trigs["summer2024P8-jmenano-tiny-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
   trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
 
