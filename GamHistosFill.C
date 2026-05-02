@@ -5548,9 +5548,9 @@ if (doGamjet2 && hg2) {
 
     //w80
     cout << "GEN-MATCHING for JER SF studies (jet energy resolution smearing):" << endl << flush;
-    cout << "> Events where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
-    cout << "> Events where 'manually' matched gen-jet's index differs from Jet_genJetIdx[i]: n = " << count_diffIndexGenMatching << "\n";
-    cout << "> Events where no matching gen-jet was found and stochastic method was used for JER SF application: " << count_noMatchedGen << endl << flush;
+    cout << "> #jets where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
+    cout << "> #jets where 'manually' matched gen-jet's index differs from Jet_genJetIdx[i]: n = " << count_diffIndexGenMatching << "\n";
+    cout << "> #jets where no matching gen-jet was found and stochastic method was used for JER SF application: " << count_noMatchedGen << endl << flush;
 
 
     // Add extra plot for jet response vs photon pT
