@@ -60,6 +60,7 @@ public :
    bool            isMG;
    bool            isPTG; //flag for ptht-binned samples
    bool            isLowPU; //flag for low PU runs (so far only used for 26C, added in w79, April 2026)
+   bool            isJMEnano; //flag to check if sample is a jmenano sample (needed to switch off jetId branch for summer2024P8-jmenano)
    string          dataset;
    string	   puera;  //data era used for pu reweighting
    string          version;
@@ -699,6 +700,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="winter2025QCDk"); 
   isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25) (the Contains also covers tiny-test)
   isLowPU = (TString(ds.c_str()).Contains("2026C"));
+  isJMEnano = (TString(ds.c_str()).Contains("jmenano")); //for switching off Jet_jetId branch in case of 2024 MC jmenano
   isRun3 = (is22 || is23 || is24 || is25 || is26);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24 || is25 || is26);
@@ -825,7 +827,8 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Jet_puIdDisc", Jet_puIdDisc, &b_Jet_puIdDisc);
    if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
-   if(!(is25 || is26)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025)
+   //if(!(is25 || is26)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025) NOTE: also some '24 are now migrated to v15...
+   if(!(is25 || is26) && !(isMC && is24 && isJMEnano)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);  //w80 updated
    //fChain->SetBranchAddress("Jet_nConstituents", Jet_nConstituents, &b_Jet_nConstituents);
    //fChain->SetBranchAddress("Jet_nElectrons", Jet_nElectrons, &b_Jet_nElectrons);
    //fChain->SetBranchAddress("Jet_nMuons", Jet_nMuons, &b_Jet_nMuons);

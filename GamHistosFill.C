@@ -498,7 +498,8 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_mass",1);
     fChain->SetBranchStatus("Jet_rawFactor",1);
     fChain->SetBranchStatus("Jet_area",1);
-    if(!is25 && !is26){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
+    //if(!is25 && !is26){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
+    if(!is25 && !is26 && !(isMC && is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
 
     //multiplicity needed for replacing jetID in 2025
     if(is25 || is26){
@@ -1319,7 +1320,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_01May2026v2.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_02May2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -4297,7 +4298,8 @@ void GamHistosFill::Loop()
       if (fabs(Jet_eta[iJet]) <= 2.7) { Jet_passJetIdTightLepVeto = Jet_passJetIdTight && (Jet_muEF[iJet] < 0.8f) && (Jet_chEmEF[iJet] < 0.8f); } 
       else { Jet_passJetIdTightLepVeto = Jet_passJetIdTight; }
 
-      bool pass_jetid = ((is25 || is26) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+      //bool pass_jetid = ((is25 || is26) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+      bool pass_jetid = ((is25 || is26 || (isMC && is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
 
 
       //bool pass_veto = true; //for now: replaced by pass_jetveto and pass_gamveto, since applying jetvetomap also to photons
