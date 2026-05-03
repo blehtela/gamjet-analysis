@@ -891,8 +891,9 @@ void GamHistosFill::Loop()
   FactorizedJetCorrector *jersf(0); //similar as to how we handle the JECs (see jec variable)
   JME::JetResolution *jetPTresolution(0); //w80
   if(smearJets){
-    jersf = getJERSF("Prompt26_2026B_JRV0M_MC_SF_AK4PFPuppi"); //w80 (first implementation) 
-    jetPTresolution = getJetPtResolution("Summer23BPixPrompt23_RunD_JRV1_MC_PtResolution_AK4PFPuppi"); //w80
+    //jersf = getJERSF("Prompt26_2026B_JRV0M_MC_SF_AK4PFPuppi"); //w80 (first implementation)  - for comparison to data2026
+    jersf = getJERSF("Prompt25_2025CDEFG_JRV2M_MC_SF_AK4PFPuppi"); //w80 (first implementation)  - for comparison to data2025
+    jetPTresolution = getJetPtResolution("Summer23BPixPrompt23_RunD_JRV1_MC_PtResolution_AK4PFPuppi"); //w80 (used for 23/24/25/26)
   }
 
   
@@ -5548,9 +5549,16 @@ if (doGamjet2 && hg2) {
 
     //w80
     cout << "GEN-MATCHING for JER SF studies (jet energy resolution smearing):" << endl << flush;
-    cout << "> #jets where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
+    cout << "> #jets (! not events) where 'manually' found matching gen-jet has same index as given in Jet_genJetIdx[i]: n = " << count_sameIndexGenMatching << "\n";
     cout << "> #jets where 'manually' matched gen-jet's index differs from Jet_genJetIdx[i]: n = " << count_diffIndexGenMatching << "\n";
     cout << "> #jets where no matching gen-jet was found and stochastic method was used for JER SF application: " << count_noMatchedGen << endl << flush;
+    cout << "----------------------" << endl << flush;
+    int numAllJets = count_sameIndexGenMatching + count_diffIndexGenMatching + count_noMatchedGen;
+    int numScaledJets = count_sameIndexGenMatching + count_diffIndexGenMatching;
+    int numStochasticJets = count_noMatchedGen;
+    cout << "Approximately " << (100.*(numScaledJets/numAllJets)) << "of all jets (" << numAllJets << ") were smeared with SCALING method. \n";
+    cout << "Approximately " << (100.*(numStochasticJets/numAllJets)) << "of all jets (" << numAllJets << ") were smeared with STOCHASTIC method. \n";
+
 
 
     // Add extra plot for jet response vs photon pT
