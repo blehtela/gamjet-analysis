@@ -656,6 +656,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		ds=="summer2024P8_PTG200toInf-HT40to400" || ds=="summer2024P8_PTG200toInf-HT400to600" ||
 		ds=="summer2024P8_PTG200toInf-HT600to1000" || ds=="summer2024P8_PTG200toInf-HT1000toInf" || //added those 15 parts on 11.03.2026 (w74)
 		//ds.c_str().Contains("summer2024QCD") || //testing with contains
+    TString(ds.c_str()).Contains("2024") || //covers also 2024[C,D,E,F,G,H,Iv1,Iv2]-jmenano
     TString(ds.c_str()).Contains("summer2024P8") || //w80: added this - in next cleanup, can remove the more specific ds names !
 		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
@@ -665,12 +666,14 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
   is25 = (ds=="2025B" || ds=="2025Cv1" ||  ds=="2025Cv2" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  //ds=="2025F" ||//added first on 20.05.2025 (w50), added 25Cv2 and 25D on 06.08.2025 (w58), added 25E on 15.09.2025 (still w59), added 25F on 15.09.2025 (move to w60)
 	  ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || //added split of F in Fv1 and Fv2, and 25G on 19.10.2025 (w64)
           ds=="2025C-TrkRadDamage" || //added TrkRadDamage on 02.10.2025 (w63)
+	  TString(ds.c_str()).Contains("2025") || // is this ok? (03.05.2026, w80)
           ds=="winter2025P8" ||
           ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
       		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
 		      ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
           ds=="winter2025QCDk"); 
-  is26 = (ds=="2026A" || ds=="2026B" || ds=="2026Beg0" || ds=="2026Beg1" || ds=="2026Beg2" || ds=="2026Beg3" || ds=="2026Beg4" || ds=="2026Beg5" || //could just check "Contains("2026B")"...
+  is26 = (TString(ds.c_str()).Contains("2026") || // is this ok? (03.05.2026, w80), trying to replace stuff, but not quite yet... 
+	  ds=="2026A" || ds=="2026B" || ds=="2026Beg0" || ds=="2026Beg1" || ds=="2026Beg2" || ds=="2026Beg3" || ds=="2026Beg4" || ds=="2026Beg5" || //could just check "Contains("2026B")"...
           ds=="2026C" || ds=="2026Ceg0" || ds=="2026Ceg1" || ds=="2026Ceg2" || ds=="2026Ceg3" || ds=="2026Ceg4" || ds=="2026Ceg5"); //added 2026A on 10.03.2026 (w74), 2026B on 13.03.2026 (also w74), splitted lists (w76), added 2026C on 07.04.2026 (w78)
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	        ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
@@ -1149,7 +1152,7 @@ void GamHistosFill::Init(TTree *tree)
        fChain->SetBranchAddress("HLT_Photon75EB_TightID_TightIso", &HLT_Photon75EB_TightID_TightIso, &b_HLT_Photon75EB_TightID_TightIso);
        fChain->SetBranchAddress("HLT_Photon90EB_TightID_TightIso", &HLT_Photon90EB_TightID_TightIso, &b_HLT_Photon90EB_TightID_TightIso);
 
-	  if(!isMC){//somehow not found for winter2024P8, so only use for data
+	  if(!isMC && is26){//somehow not found for winter2024P8, so only use for data (only 26?) - enable for data but use only for lowPU
         //fChain->SetBranchAddress("HLT_Photon55EB_TightID_TightIso", &HLT_Photon55EB_TightID_TightIso, &b_HLT_Photon55EB_TightID_TightIso);
         fChain->SetBranchAddress("HLT_Photon30_HoverELoose_L1SingleEG20", &HLT_Photon30_HoverELoose_L1SingleEG20, &b_HLT_Photon30_HoverELoose_L1SingleEG20);
 	  }

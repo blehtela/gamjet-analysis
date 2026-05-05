@@ -51,6 +51,9 @@ int smearNMax = 3;      //same value as in Sami's Z+jet analysis
 int randseed = 26042026;
 //mutable  (can only make it mutable if it is declared as member var in .h ...so not now)
 std::mt19937 randNumGenerator = std::mt19937(randseed); //from namespace std (mersenne twister)
+string smearJERSFyear = "jersf2025"; //to put in the file name, so we don tneed to wonder about it later
+//NOTE: just make some config file for specifying JER SF, Pt Resolutoin, JEC, pileup, lumi, json, etc files
+//Make a new dev branch to do these developments
 
 
 // Error counters
@@ -361,6 +364,7 @@ void GamHistosFill::Loop()
       fChain->SetBranchStatus("HLT_Photon100EBHE10",1);
       //if (ds=="2026C" || TString(ds.c_str()).Contains("2026C")){
       if(isLowPU){
+        cout << "[debug] this is a low PU era - double-check." << endl << flush;
         fChain->SetBranchStatus("HLT_Photon30_HoverELoose_L1SingleEG20",1); //new in w79 for low PU run (should be unprescaled)
       }
     }
@@ -499,7 +503,10 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_rawFactor",1);
     fChain->SetBranchStatus("Jet_area",1);
     //if(!is25 && !is26){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
-    if(!is25 && !is26 && !(isMC && is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
+    //if(!is25 && !is26 && !(isMC && is24 && isJMEnano) && !(is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
+    if(!is25 && !is26 && !(is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
+
+
 
     //multiplicity needed for replacing jetID in 2025
     if(is25 || is26){
@@ -835,7 +842,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51, w56.
   }
   //data 2025
-  if (ds=="2025B"){ //|| ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025D" || ds=="2025E" || ds=="2025F"){
+  if (ds=="2025B" || ds=="2025B-jmenano"){ //|| ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025D" || ds=="2025E" || ds=="2025F"){
     //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w50 (use JECs we have, 20.05.2025)
 	  //jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w50 (no L2L3Res, 21.05.2025)
     //jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w51 (no L2L3Res, updated MC corrections, 21.05.2025)
@@ -845,25 +852,25 @@ void GamHistosFill::Loop()
 
 	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w57 (no L2L3Res, 24.06.2025) RUN WITHOUT L2L3Res for comparison (dpnote)
   }
-  if (ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage"){
+  if (ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025Cv1-jmenano"|| ds=="2025Cv2-jmenano"){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
 
   }
-  if (ds=="2025D" || ds=="2025Dtestfile"){
+  if (ds=="2025D" || ds=="2025Dtestfile" || ds=="2025D-jmenano"){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
 
   }
-  if (ds=="2025E"){
+  if (ds=="2025E" || ds=="2025E-jmenano"){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
   }
-  if (ds=="2025Fv1" || ds=="2025Fv2"){ //still using 25E JECs for both versions of 25F. //updated to 25F JECs in w68 with V3M.
+  if (ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025Fv1-jmenano"|| ds=="2025Fv2-jmenano"){ //still using 25E JECs for both versions of 25F. //updated to 25F JECs in w68 with V3M.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F
   }
-  if (ds=="2025G"){	// using 25E corrections for 25G for now. //updated to 25F JECs in w68 with V3M.
+  if (ds=="2025G" || ds=="2025G-jmenano"){	// using 25E corrections for 25G for now. //updated to 25F JECs in w68 with V3M.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F.
   }
@@ -1321,7 +1328,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_02May2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_05May2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1559,31 +1566,78 @@ void GamHistosFill::Loop()
     double vsumw3[4] = {7.15389e+10, 4.24602e+09, 8.18488e+08, 6.67776e+07}; //sum of weights for ptgam bin 1
 
 
+    //make this flexible depending on whether we use jmenano or other MC
+    //int vnevt1[6], vnevt2[5], vnevt3[4]; //declare the three arrays holding number of events in each of the three PTG bins
+    //double vsumw1[6], vsumw2[5], vsumw3[4]; //declare arrays to hold sum of weights for each ptgam bin
+
+    //for summer2024P8 MC (gamjet, which is NOT jmenano)
+    //for summer2024P8-jmenano MC (gamjet, which is jmenano)
+    //if(!(TString(ds.c_str()).Contains("jmenano"))){
+    //if it is jmenano, assign first array, if not, then second (cannot use ? operator here..) 
+    // OR JUST OVERWRITE THE ARRAYS IN CASE OF JMENANO?
+    // THESE NUMBERS I GOT BASED ON MY SKIMMED FILES!!! (calculated them on 4th of May 2026, w80)
+    int vnevt1jmenano[6] = {223, 227, 253, 813, 499, 172}; //number of events retrieved with extra script for Summer24
+    int vnevt2jmenano[5] = {218, 239, 106, 72, 21}; //number of events retrieved with extra script for Summer24
+    int vnevt3jmenano[4] = {261, 72, 46, 24}; //number of events retrieved with extra script for Summer24
+    double vsumw1jmenano[6] = {9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1
+    double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
+    double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08,6.48062e+07 }; //sum of weights for ptgam bin 1
+
+    //this would be so much easier reading from a file --> just take different file for jmenano... TO DO!
+
+
     //setting the correct bin contents in the histograms (btw: this could be handled very differently, without histos, will change it at some point)
     cout << "nht_gam1 = " << nht_gam1 << endl;
     for (int i = 0; i < nht_gam1; ++i) { //why did changing != to < fix it but wasnt needed for the others?
       cout << "test: " << i << endl;
+      int nevt1 = isJMEnano ? vnevt1jmenano[i] : vnevt1[i];
+      double sumw1 = isJMEnano ? vsumw1jmenano[i] : vsumw1[i];
+      hnevt1->SetBinContent(i+1, nevt1);
+      nMG_gam1 += nevt1;
+      hsumw1->SetBinContent(i+1, sumw1);
+      wMG_gam1 += sumw1;
+ 
+      /*
       hnevt1->SetBinContent(i+1, vnevt1[i]);
       nMG_gam1 += vnevt1[i];
       hsumw1->SetBinContent(i+1, vsumw1[i]);
       wMG_gam1 += vsumw1[i];
+      */
       //could handle also the other bins in same for loop via these if's, but kept in separate for-loops now
     }
     cout << "Loaded (local) MadGraph event numbers for 1st PTG bin (" << nMG_gam1 << ", sumw=" << wMG_gam1 << ")" << endl << flush;
 
     for (int i = 0; i != nht_gam2; ++i) {
+      int nevt2 = isJMEnano ? vnevt2jmenano[i] : vnevt2[i];
+      int sumw2 = isJMEnano ? vsumw2jmenano[i] : vsumw2[i];
+      hnevt2->SetBinContent(i+1, nevt2);
+      nMG_gam2 += nevt2;
+      hsumw2->SetBinContent(i+1, sumw2);
+      wMG_gam2 += sumw2;
+
+      /*
       hnevt2->SetBinContent(i+1, vnevt2[i]);
       nMG_gam2 += vnevt2[i];
       hsumw2->SetBinContent(i+1, vsumw2[i]);
       wMG_gam2 += vsumw2[i];
+      */
     }
     cout << "Loaded (local) MadGraph event numbers for 2nd PTG bin (" << nMG_gam2 << ", sumw=" << wMG_gam2 << ")" << endl << flush;
 
     for (int i = 0; i != nht_gam3; ++i) {
+      int nevt3 = isJMEnano ? vnevt3jmenano[i] : vnevt3[i];
+      int sumw3 = isJMEnano ? vsumw3jmenano[i] : vsumw3[i];
+      hnevt3->SetBinContent(i+1, nevt3);
+      nMG_gam3 += vnevt3[i];
+      hsumw3->SetBinContent(i+1, sumw3);
+      wMG_gam3 += sumw3;
+ 
+      /*
       hnevt3->SetBinContent(i+1, vnevt3[i]);
       nMG_gam3 += vnevt3[i];
       hsumw3->SetBinContent(i+1, vsumw3[i]);
       wMG_gam3 += vsumw3[i];
+      */
     }
     cout << "Loaded (local) MadGraph event numbers for 3rd PTG bin (" << nMG_gam3 << ", sumw=" << wMG_gam3 << ")" << endl << flush;
  
@@ -3096,7 +3150,8 @@ void GamHistosFill::Loop()
 
       // Only 2026C
       //if (b_HLT_Photon30_HoverELoose_L1SingleEG20 && (TString(ds.c_str()).TContains("2026C")))
-      if (b_HLT_Photon30_HoverELoose_L1SingleEG20 && isLowPU)
+      //if (b_HLT_Photon30_HoverELoose_L1SingleEG20 && isLowPU)
+      if (isLowPU && b_HLT_Photon30_HoverELoose_L1SingleEG20)
   b_HLT_Photon30_HoverELoose_L1SingleEG20->GetEntry(ientry);
 
       // Only 25 and 26
@@ -4300,7 +4355,9 @@ void GamHistosFill::Loop()
       else { Jet_passJetIdTightLepVeto = Jet_passJetIdTight; }
 
       //bool pass_jetid = ((is25 || is26) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
-      bool pass_jetid = ((is25 || is26 || (isMC && is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+      //bool pass_jetid = ((is25 || is26 || (isMC && is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+      bool pass_jetid = ((is25 || is26 || (is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+
 
 
       //bool pass_veto = true; //for now: replaced by pass_jetveto and pass_gamveto, since applying jetvetomap also to photons
@@ -5300,7 +5357,7 @@ void GamHistosFill::Loop()
 
 	if (pass) {
 	
-	  double jsf = (smearJets ? Jet_CF[iJet] : 1);//so far always resulted in 1.0, becaus smearJets was false, now need to dobule-check
+	  double jsf = (smearJets ? Jet_CF[iJet] : 1);//so far always resulted in 1.0, because smearJets was false, now need to dobule-check
 	  double ptjet = Jet_pt[iJet];
 	  double ptavp = 0.5*(ptgam + ptjet); // Do better later, now pT,ave (not pT,avp)
 	  h->hpt13->Fill(ptgam, w);
@@ -5556,8 +5613,11 @@ if (doGamjet2 && hg2) {
     int numAllJets = count_sameIndexGenMatching + count_diffIndexGenMatching + count_noMatchedGen;
     int numScaledJets = count_sameIndexGenMatching + count_diffIndexGenMatching;
     int numStochasticJets = count_noMatchedGen;
-    cout << "Approximately " << (100.*(numScaledJets/numAllJets)) << "of all jets (" << numAllJets << ") were smeared with SCALING method. \n";
-    cout << "Approximately " << (100.*(numStochasticJets/numAllJets)) << "of all jets (" << numAllJets << ") were smeared with STOCHASTIC method. \n";
+    //cout << "Approximately " << (100.*(numScaledJets/numAllJets)) << "of all jets (" << numAllJets << ") were smeared with SCALING method. \n";
+    //cout << "Approximately " << (100.*(numStochasticJets/numAllJets)) << "of all jets (" << numAllJets << ") were smeared with STOCHASTIC method. \n";
+    cout << "Approximately " << numScaledJets << " of all smeared jets (" << numAllJets << ") were smeared with SCALING method. \n";
+    cout << "Approximately " << numStochasticJets << " of all smeared jets (" << numAllJets << ") were smeared with STOCHASTIC method. \n" << endl << flush;
+
 
 
 
