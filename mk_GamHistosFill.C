@@ -55,7 +55,7 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w80") { //using w-version names for my code (Bettina), w60 (25F), w59 (25D), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
+void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w81") { //using w-version names for my code (Bettina), w60 (25F), w59 (25D), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -117,7 +117,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 		//should solve all of the below with TString... TO DO
 		TString(dataset.c_str()).Contains("2026B") || TString(dataset.c_str()).Contains("2026C") ||
 	    dataset=="2026A" || dataset=="2026B" || dataset=="2026Beg0" || dataset=="2026Beg1" || dataset=="2026Beg2" || dataset=="2026Beg3" || dataset=="2026Beg4" || dataset=="2026Beg5" ||
-      dataset=="2026C" || dataset=="2026Ceg0" || dataset=="2026Ceg1" || dataset=="2026Ceg2" || dataset=="2026Ceg3" || dataset=="2026Ceg4" || dataset=="2026Ceg5" ); //added 2025 data on 20.05.2025, w50; added 25Cv2 and 25D on 06.08.2025, w58. 25E on 15sep2025, still w59. 25F on 15sep2025, w60. Added 25C-TrkRadDamage on 02Oct2025, w63. Added 2026 data on 11.03.2026 (w74). Splitting sets (20.03.2026, w76)
+      dataset=="2026C" || dataset=="2026Ceg0" || dataset=="2026Ceg1" || dataset=="2026Ceg2" || dataset=="2026Ceg3" || dataset=="2026Ceg4" || dataset=="2026Ceg5" ||
+		TString(dataset.c_str()).Contains("2026D")); //added 2025 data on 20.05.2025, w50; added 25Cv2 and 25D on 06.08.2025, w58. 25E on 15sep2025, still w59. 25F on 15sep2025, w60. Added 25C-TrkRadDamage on 02Oct2025, w63. Added 2026 data on 11.03.2026 (w74). Splitting sets (20.03.2026, w76)
 
 
   bool addMC = (dataset=="2016P8" || dataset=="2017P8" || dataset=="2018P8" ||
