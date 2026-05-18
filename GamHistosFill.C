@@ -55,6 +55,10 @@ string smearJERSFyear = "jersf2025"; //to put in the file name, so we don tneed 
 //NOTE: just make some config file for specifying JER SF, Pt Resolutoin, JEC, pileup, lumi, json, etc files
 //Make a new dev branch to do these developments
 
+//for PS weights
+bool applyPSweight = true;
+int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
+
 
 // Error counters
 int cntErrDR(0);
@@ -451,8 +455,8 @@ void GamHistosFill::Loop()
 
     // MC weights
     if (isMC)  fChain->SetBranchStatus("genWeight",1);
-    if (isMC)  fChain->SetBranchStatus("nPSWeight",1);
-    if (isMC)  fChain->SetBranchStatus("PSWeight",1);
+    if (isMC)  fChain->SetBranchStatus("nPSWeight",1);  //was already here before w82
+    if (isMC)  fChain->SetBranchStatus("PSWeight",1);   //was already here before w82
     //if (isMC && !isRun3)  fChain->SetBranchStatus("nPSWeight",1);
     //if (isMC && !isRun3)  fChain->SetBranchStatus("PSWeight",1);
 
@@ -1031,7 +1035,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/CombinedJSONS_GoldenRuns_402099to402604_DCSRuns_401623to402099_402605to402655_.json"); //new hybrid (created April 7th by myself - see my notes)
     //LoadJSON("files/CombinedJSONS_GoldenRuns_401630to402513_DCSRuns_402514to403026_.json"); //new hybrid: golden covering all of 2026B and MLEnhanced golden for 26C;
     //LoadJSON("files/Collisions26_13p6TeV_401623_403493_DCSOnly_TkPx.json"); //new DAILY ONLY (issue with combining..)  for w81
-    LoadJSON("files/CombinedJSONS_GoldenRuns_MLEnhancedGolden_401630to403457_DCSRuns_403458to403493_.json"); //new hybrid (issue with combining..)  for w81, 2026D added
+    //LoadJSON("files/CombinedJSONS_GoldenRuns_MLEnhancedGolden_401630to403457_DCSRuns_403458to403493_.json"); //new hybrid (issue with combining..)  for w81, 2026D added
+    LoadJSON("files/CombinedJSONS_GoldenRuns_401630to403774_DCSRuns_403775to403895_.json"); //MLenhanced + DCSdaily (15.05.2026), still w81 including new 26D files.
 
 
 
@@ -1110,12 +1115,12 @@ void GamHistosFill::Loop()
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026), updated w77 (27.03.2026), updated w81 (07.05.2026)
-	  lumi200 = LoadLumi("files/lumi2026_07may2026_photon200_pb_w81.csv");
-	  lumi110 = LoadLumi("files/lumi2026_07may2026_photon110eb_pb_w81.csv");
-	  lumi50 = LoadLumi("files/lumi2026_07may2026_photon50eb_pb_w81.csv");
-	  lumi45 = LoadLumi("files/lumi2026_07may2026_photon45eb_pb_w81.csv");
-	  lumi40 = LoadLumi("files/lumi2026_07may2026_photon40eb_pb_w81.csv");
-	  lumi30 = LoadLumi("files/lumi2026_07may2026_photon30eb_pb_w81.csv");
+	  lumi200 = LoadLumi("files/lumi2026_15may2026_photon200_pb_w81.csv");
+	  lumi110 = LoadLumi("files/lumi2026_15may2026_photon110eb_pb_w81.csv");
+	  lumi50 = LoadLumi("files/lumi2026_15may2026_photon50eb_pb_w81.csv");
+	  lumi45 = LoadLumi("files/lumi2026_15may2026_photon45eb_pb_w81.csv");
+	  lumi40 = LoadLumi("files/lumi2026_15may2026_photon40eb_pb_w81.csv");
+	  lumi30 = LoadLumi("files/lumi2026_15may2026_photon30eb_pb_w81.csv");
   }
 
 
@@ -1340,7 +1345,7 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_07May2026.root", //added date just for tests today
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_17May2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1588,15 +1593,32 @@ void GamHistosFill::Loop()
     //if it is jmenano, assign first array, if not, then second (cannot use ? operator here..) 
     // OR JUST OVERWRITE THE ARRAYS IN CASE OF JMENANO?
     // THESE NUMBERS I GOT BASED ON MY SKIMMED FILES!!! (calculated them on 4th of May 2026, w80)
+    /*
     int vnevt1jmenano[6] = {223, 227, 253, 813, 499, 172}; //number of events retrieved with extra script for Summer24
     int vnevt2jmenano[5] = {218, 239, 106, 72, 21}; //number of events retrieved with extra script for Summer24
     int vnevt3jmenano[4] = {261, 72, 46, 24}; //number of events retrieved with extra script for Summer24
     double vsumw1jmenano[6] = {9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1
     double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
     double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08,6.48062e+07 }; //sum of weights for ptgam bin 1
+    */
 
     //this would be so much easier reading from a file --> just take different file for jmenano... TO DO!
 
+
+    // updated numbers based on the original jmenano files, i.e. before skimming! (15.05.2026) - issue that this is #files not #events....
+    //don't know why it was so low in the old implementation (see 2022, only HT-binned) - can use event numbers from DAS!
+    //or get the skimmed files' event numbers from my extra script (however: they are not even used in the binweighting i think... just in a histo)
+    //NOTE (17.5.2026): these are the evtnums for the fullFiles (need to add the one for the skimmed ones, but doesnt enter weight at this point)
+    //int vnevt1jmenano[6] = {141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
+    //int vnevt2jmenano[5] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
+    //int vnevt3jmenano[4] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
+    //NOTE (17.05.2026): these are the evtnums based on my own script for SKIMMED FILES
+    int vnevt1jmenano[6] = {28891616, 38169817, 49120893, 188516685, 120130199, 42581488}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
+    int vnevt2jmenano[5] = {105214756, 95303408, 41543855, 20056068, 6290441}; //number of events retrieved with extra script for Summer24
+    int vnevt3jmenano[4] = {127097845, 26419681, 13457034, 5219203}; //number of events retrieved with extra script for Summer24
+    double vsumw1jmenano[6] = {9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1
+    double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
+    double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
 
     //setting the correct bin contents in the histograms (btw: this could be handled very differently, without histos, will change it at some point)
     cout << "nht_gam1 = " << nht_gam1 << endl;
@@ -2150,6 +2172,25 @@ void GamHistosFill::Loop()
   TH1D *h_jet_smearFactor = new TH1D("h_jet_pt_smearFactor","smearing factor for reco jet p_{T};smearJER",500,0.5,1.5); //go from 0.5 to 1.5 (used to be 0.7 to 1.3 with 300 bins)
   TH1D *h_jet_deltaPt_smearOff = new TH1D("h_jet_deltaPt_smearOff","Relative difference in gen and reco jet p_{T} (without smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
   TH1D *h_jet_deltaPt_smearOn  = new TH1D("h_jet_deltaPt_smearOn","Relative difference in gen and reco jet p_{T} (with smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
+
+  //w82: for (FSR) PSweight investigations (added 17.05.2026)
+  fout->mkdir("PSweight");
+  fout->cd("PSweight");
+  TH1D *h_psweight0 = new TH1D("h_psweight0", ";PSWeight[0];N_{events}", 300, 0, 3);
+  TH1D *h_psweight1 = new TH1D("h_psweight1", ";PSWeight[1];N_{events}", 300, 0, 3);
+  TH1D *h_psweight2 = new TH1D("h_psweight2", ";PSWeight[2];N_{events}", 300, 0, 3);
+  TH1D *h_psweight3 = new TH1D("h_psweight3", ";PSWeight[3];N_{events}", 300, 0, 3);
+  TH1D *h_psweight4 = new TH1D("h_psweight4", ";PSWeight[4];N_{events}", 300, 0, 3);
+  TH1D *h_psweight5 = new TH1D("h_psweight5", ";PSWeight[5];N_{events}", 300, 0, 3);
+
+  //and for the comparison of what psweight does
+  TH1D *h_jet_pt_psweightOff = new TH1D("h_jet_pt_psweightOff","Jet transverse momentum distribution (no PSweight var.);p_{T,jet}",1300,0,1300); //go up to 300GeV (used to be 250GeV)
+  TH1D *h_jet_pt_psweightOn = new TH1D("h_jet_pt_psweightOn",Form("Jet transverse momentum distribution (with psweightIndex = %s );p_{T,jet}", psweightIndex),1300,0,1300); //go up to 300GeV (used to be 250GeV)
+  TProfile *prbal_psweightOff = new TProfile("prbal_psweightOff","DB without PSweight variation;p_{T,#gamma};DB",nx,vx);
+  TProfile *prbal_psweightOn = new TProfile("prbal_psweightOn",Form("DB with FSR psweightIndex = %s * nominalScale ;p_{T,#gamma};DB", psweightIndex),nx,vx);
+  TProfile *prmpf_psweightOff = new TProfile("prmpf_psweightOff","MPF without PSweight variation;p_{T,#gamma};MPF",nx,vx);
+  TProfile *prmpf_psweightOn = new TProfile("prmpf_psweightOn",Form("MPF with FSR psweightIndex = %s * nominalScale ;p_{T,#gamma};MPF", psweightIndex),nx,vx);
+
 
 
   // New flavour studies (started in 2026) stored in a separate directory, starting from w72
@@ -3344,7 +3385,15 @@ void GamHistosFill::Loop()
 			}
 		}
 		*/
-    assert(nPSWeight<=nPSWeightMax);
+    assert(nPSWeight<=nPSWeightMax); //NOTE (17.05.2026): what is this?
+
+    //w82: book-keeping: store this event's PS weights for the given FSR PS weight variation
+    h_psweight0->Fill(PSWeight[0]);
+    h_psweight1->Fill(PSWeight[1]);
+    h_psweight2->Fill(PSWeight[2]);
+    h_psweight3->Fill(PSWeight[3]);
+    h_psweight4->Fill(PSWeight[4]);
+    h_psweight5->Fill(PSWeight[5]);
 
     // Does the run/LS pass the latest JSON selection?
     if (!isMC && _json[run][luminosityBlock]==0) {
@@ -3549,6 +3598,8 @@ void GamHistosFill::Loop()
     //bool isMC = (run==1);
     assert((isMC && run==1) || (!isMC && run!=1));
     double w = (isMC ? genWeight : 1);    //in case of MC set w to genWeight, otherwise (data) leave it 1
+    //keep event weight including ps weight as a separate variable, to plot also the difference with/without ps weight var
+    double evtWeightWithPS = ((isMC && applyPSweight) ? w*PSWeight[psweightIndex]: w); //if applying PS weight scale var, do it here
     if (isMG && !isPTG) {
       int iht = hxsec->FindBin(LHE_HT);
       double xsec = hxsec->GetBinContent(iht);
@@ -3557,6 +3608,7 @@ void GamHistosFill::Loop()
       double sumw = hsumw->GetBinContent(iht);
       double wht = (sumw ? xsec / sumw : 1);
       w *= wht;
+      evtWeightWithPS *= wht;
       hLHE_HT->Fill(LHE_HT); // cross-check hnevt afterwards
       hHT->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
     }
@@ -3571,6 +3623,7 @@ void GamHistosFill::Loop()
         double sumw = hsumw1->GetBinContent(iht);
         double wht = (sumw ? xsec / sumw : 1);
         w *= wht;
+        evtWeightWithPS *= wht;
         hLHE_HT1->Fill(LHE_HT); // cross-check hnevt afterwards
         hHT1->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
       }
@@ -3581,6 +3634,7 @@ void GamHistosFill::Loop()
         double sumw = hsumw2->GetBinContent(iht);
         double wht = (sumw ? xsec / sumw : 1);
         w *= wht;
+        evtWeightWithPS *= wht;
         hLHE_HT2->Fill(LHE_HT); // cross-check hnevt afterwards
         hHT2->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
       }
@@ -3591,6 +3645,7 @@ void GamHistosFill::Loop()
         double sumw = hsumw3->GetBinContent(iht);
         double wht = (sumw ? xsec / sumw : 1);
         w *= wht;
+        evtWeightWithPS *= wht;
         hLHE_HT3->Fill(LHE_HT); // cross-check hnevt afterwards
         hHT3->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
       }
@@ -3829,12 +3884,14 @@ void GamHistosFill::Loop()
       double nd  = hd->GetBinContent(k); //get number of data events with this pu number?
       double wt = (nm>0 ? nd / nm : 0); // divide pu from data by pu from mc --> this will be the weight
       w *= wt;
+      evtWeightWithPS *= wt;
     }
     // Normalize data luminosity (except for 22-23)
     if (!isMC && pass_trig && !isRun3) { // i think i did this somewhere else already
       double lumi = _lumi[sera][itrg];
       assert(lumi>0);
       w *= 1./lumi;
+      evtWeightWithPS *= 1./lumi;
     }
 
     // Select leading jets. Just exclude photon, don't apply JetID yet
@@ -5101,7 +5158,7 @@ void GamHistosFill::Loop()
 	int nmax = (isMC ? 1 : 100);
 	for (int i=0; i!=nmax; ++i) {
 	  mu = gRandom->Gaus(Pileup_nTrueInt,TruePUrms);
-	  double w1 = 0.01*w;
+	  double w1 = 0.01*w; //NOTE (17.05.2026): where does the 0.01 come from????
 	  if (HLT_Photon20_HoverELoose         && pt>=20)  hmus20->Fill(mu,w1);
 	  if (HLT_Photon30_HoverELoose         && pt>=30)  hmus30->Fill(mu,w1);
    	  //if (HLT_Photon40EB_TightID_TightIso  && pt>=55)  hmus40->Fill(mu,w1); //not yet
@@ -5167,6 +5224,17 @@ void GamHistosFill::Loop()
 	  pr2mpf->Fill(ptgam, gam.Eta(), mpf, w);
 	  prbal0->Fill(ptgam, bal, w);
 	  prmpf0->Fill(ptgam, mpf, w);
+
+    //w82: for my FSR PSweight investigations - in data these histo pairs should show exactly the same.
+    prmpf_psweightOff->Fill(ptgam, mpf, w); //is the same as prmpf esentially
+    prmpf_psweightOn->Fill(ptgam, mpf, evtWeightWithPS); //event weight contains the extra PSweight factor
+    prbal_psweightOff->Fill(ptgam, bal, w); //could also just clone prbal
+    prbal_psweightOn->Fill(ptgam, bal, evtWeightWithPS);
+
+    h_jet_pt_psweightOff->Fill(Jet_pt[iJet], w) //note: make sure iJet is recalculated (resorting after JER SF)
+    h_jet_pt_psweightOn->Fill(Jet_pt[iJet], evtWeightWithPS//note: make sure iJet is recalculated (resorting after JER SF)
+
+
 
     	//with tiny eta bins
     	//pr50mpf_vs
