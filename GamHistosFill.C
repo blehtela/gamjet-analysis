@@ -59,6 +59,8 @@ string smearJERSFyear = "jersf2025"; //to put in the file name, so we don tneed 
 bool applyPSweight = true;
 int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
 
+//store in jetmet eos (for big MC helpful...)
+bool storeEOSjetmet = true;
 
 // Error counters
 int cntErrDR(0);
@@ -954,7 +956,7 @@ void GamHistosFill::Loop()
 	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80)
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
-	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
+	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
   if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026C") || TString(ds.c_str()).Contains("2026D")) sera="2026"; //or should it be also here treated as an era of 2025?
   assert(sera!="");
 
@@ -1259,7 +1261,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2025E") ||
         TString(ds.c_str()).Contains("2025Fv1") ||
         TString(ds.c_str()).Contains("2025Fv2") ||
-        TString(ds.c_str()).Contains("2025G") ||
+        TString(ds.c_str()).Contains("2025G") ||	//also covers 2025G-jmenano
 	TString(ds.c_str()).Contains("winter2025P8") ||
         TString(ds.c_str()).Contains("winter2025QCD"))
         //fjv = new TFile("files/jetveto2024BCDEFGHI.root","READ"); // UPDATE THIS WHEN NEW ONE AVAILABLE
@@ -1345,12 +1347,28 @@ void GamHistosFill::Loop()
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
   TDirectory *curdir = gDirectory;
-  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_17May2026.root", //added date just for tests today
+  /*
+  TFile *fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_20May2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
+  */
 
   //to do (w50): add the string with pu- only for pu reweighted case, do for this %s = (puera.c_str()!="") ? Form("_pu-%s",puera.c_str()) : "", 
+
+  //test in May 2026 for the huge MC files to not fill up my small AFS... 
+  TFile *fout(0);
+  if(storeEOSjetmet){
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_20May2026.root", 
+             version.c_str(),
+			       isMC ? "mc" : "data",
+			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
+			    "RECREATE");
+  }
+  else{
+    cout << "Check outputfile (called fout) in code and where it is stored. Check boolean storeEOSjetmet. " << endl << flush;
+  }
+
 
   assert(fout && !fout->IsZombie());
   
@@ -1609,10 +1627,15 @@ void GamHistosFill::Loop()
     //don't know why it was so low in the old implementation (see 2022, only HT-binned) - can use event numbers from DAS!
     //or get the skimmed files' event numbers from my extra script (however: they are not even used in the binweighting i think... just in a histo)
     //NOTE (17.5.2026): these are the evtnums for the fullFiles (need to add the one for the skimmed ones, but doesnt enter weight at this point)
+
+    // NOTE: USE THE ONES FROM DAS FOR THE CALCULATION of the MC lumi (used in the lumi-weight) --> lumi_MC = nevt(DAS)/xs(sample)
+    // for the lumi_data, use one full year like e.g. 2024CDEFGHI with brilcalc (is one value per year), goldenJSON for 2024 to brilcalc (or from PdmV)
+    //from PdmV for 2024:  	109.95 /fb
+
     //int vnevt1jmenano[6] = {141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
     //int vnevt2jmenano[5] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
     //int vnevt3jmenano[4] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
-    //NOTE (17.05.2026): these are the evtnums based on my own script for SKIMMED FILES
+    //NOTE (17.05.2026): these are the evtnums based on my own script for SKIMMED FILES (those we should use in lumi-scaling, not for genweight.)
     int vnevt1jmenano[6] = {28891616, 38169817, 49120893, 188516685, 120130199, 42581488}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
     int vnevt2jmenano[5] = {105214756, 95303408, 41543855, 20056068, 6290441}; //number of events retrieved with extra script for Summer24
     int vnevt3jmenano[4] = {127097845, 26419681, 13457034, 5219203}; //number of events retrieved with extra script for Summer24
@@ -1620,16 +1643,25 @@ void GamHistosFill::Loop()
     double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
     double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
 
+    //work in progress
+    double vnormgensumw1jmenano[6] = { insert the numbers from the other script, essentially the: summedGenWeight/summedGenEventCount }; //sum of weights for ptgam bin 1
+    double vnormgensumw2jmenano[5] = {}; //sum of weights for ptgam bin 1
+    double vnormgensumw3jmenano[4] = {}; //sum of weights for ptgam bin 1
+
+
+
     //setting the correct bin contents in the histograms (btw: this could be handled very differently, without histos, will change it at some point)
     cout << "nht_gam1 = " << nht_gam1 << endl;
-    for (int i = 0; i < nht_gam1; ++i) { //why did changing != to < fix it but wasnt needed for the others?
+    for (int i = 0; i < nht_gam1; ++i) { //(old note, 2025): why did changing != to < fix it but wasnt needed for the others? -- update (May 2026): i think it does cause an issue in the others.. ok no, doesnt fix it.
       cout << "test: " << i << endl;
       int nevt1 = isJMEnano ? vnevt1jmenano[i] : vnevt1[i];
       double sumw1 = isJMEnano ? vsumw1jmenano[i] : vsumw1[i];
       hnevt1->SetBinContent(i+1, nevt1);
       nMG_gam1 += nevt1;
       hsumw1->SetBinContent(i+1, sumw1);
-      wMG_gam1 += sumw1;
+      if(sumw1<0){cout << Form("negative weight in 1st PTG bin, HT bin index %d, sumw1 = %f", i, sumw1) << endl << flush;}
+      else{cout << Form("positive (or zero) weight in 1st PTG bin, HT bin index %d, sumw1 = %f", i, sumw1) << endl << flush;}
+      wMG_gam1 += sumw1; //how can this end up being negative in the end?....
  
       /*
       hnevt1->SetBinContent(i+1, vnevt1[i]);
@@ -1641,13 +1673,20 @@ void GamHistosFill::Loop()
     }
     cout << "Loaded (local) MadGraph event numbers for 1st PTG bin (" << nMG_gam1 << ", sumw=" << wMG_gam1 << ")" << endl << flush;
 
-    for (int i = 0; i != nht_gam2; ++i) {
+    //for (int i = 0; i != nht_gam2; ++i) {
+    for (int i = 0; i < nht_gam2; ++i) {
       int nevt2 = isJMEnano ? vnevt2jmenano[i] : vnevt2[i];
-      int sumw2 = isJMEnano ? vsumw2jmenano[i] : vsumw2[i];
+      double sumw2 = isJMEnano ? vsumw2jmenano[i] : vsumw2[i]; //bug was the following: used in there instead of double..
       hnevt2->SetBinContent(i+1, nevt2);
       nMG_gam2 += nevt2;
       hsumw2->SetBinContent(i+1, sumw2);
       wMG_gam2 += sumw2;
+
+      cout << "isJMEnano = " << isJMEnano << endl << flush;
+      cout << "--------------- nevt2 = " << nevt2 << "-------------- sumw2 = " << sumw2 << endl << flush;
+      if(sumw2<0){cout << Form("negative weight in 2nd PTG bin, HT bin index %d, sumw2 = %f", i, sumw2) << endl << flush;}
+      else{cout << Form("positive (or zero) weight in 2nd PTG bin, HT bin index %d, sumw2 = %f", i, sumw2) << endl << flush;}
+ 
 
       /*
       hnevt2->SetBinContent(i+1, vnevt2[i]);
@@ -1658,13 +1697,18 @@ void GamHistosFill::Loop()
     }
     cout << "Loaded (local) MadGraph event numbers for 2nd PTG bin (" << nMG_gam2 << ", sumw=" << wMG_gam2 << ")" << endl << flush;
 
-    for (int i = 0; i != nht_gam3; ++i) {
+    //for (int i = 0; i != nht_gam3; ++i) {
+    for (int i = 0; i < nht_gam3; ++i) {
       int nevt3 = isJMEnano ? vnevt3jmenano[i] : vnevt3[i];
-      int sumw3 = isJMEnano ? vsumw3jmenano[i] : vsumw3[i];
+      double sumw3 = isJMEnano ? vsumw3jmenano[i] : vsumw3[i];
       hnevt3->SetBinContent(i+1, nevt3);
-      nMG_gam3 += vnevt3[i];
+      nMG_gam3 += nevt3; //corrected
+      //nMG_gam3 += vnevt3[i]; //was a bug still
       hsumw3->SetBinContent(i+1, sumw3);
       wMG_gam3 += sumw3;
+
+      if(sumw3<0){cout << Form("negative weight in 3rd PTG bin, HT bin index %d, sumw3 = %f", i, sumw3) << endl << flush;}
+      else{cout << Form("positive (or zero) weight in 3rd PTG bin, HT bin index %d, sumw3 = %f", i, sumw3) << endl << flush;}
  
       /*
       hnevt3->SetBinContent(i+1, vnevt3[i]);
@@ -1779,6 +1823,11 @@ void GamHistosFill::Loop()
   const int nht = (isMG ? (isQCD ? nht_qcd : nht_gam) : 0);             //this isnt either
   int nMG = (isMG ? (isQCD ? nMG_qcd : nMG_gam) : 0);
   const int wMG = (isMG ? (isQCD ? wMG_qcd : wMG_gam) : 0);
+  //note (19.05.2026) about the few lines above: i still think these are not reused... if yes would have to account for ptg-binned samples, but i dont
+  //could change nMG to account for HT bins in all three PTG-bins appropriately and then also introduce the recalculation of HT bins as done further below!!
+  if(isPTG){
+    nMG = (isMG ? (isQCD ? wMG_qcd : (nMG_gam1+nMG_gam2+nMG_gam3)) : 0);
+  }
 
   //jec4prompt checks --> maybe rename the folder to rawchecks or extrachecks sth, because it is not only jec4prompt anymore (11.11.2025)
   fout->mkdir("jec4prompt");
@@ -2173,6 +2222,11 @@ void GamHistosFill::Loop()
   TH1D *h_jet_deltaPt_smearOff = new TH1D("h_jet_deltaPt_smearOff","Relative difference in gen and reco jet p_{T} (without smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
   TH1D *h_jet_deltaPt_smearOn  = new TH1D("h_jet_deltaPt_smearOn","Relative difference in gen and reco jet p_{T} (with smearing);#Deltap_{T} = (p_{T,jet}^{reco}-p_{T,jet}^{gen}) / p_{T,jet}^{gen}",1000,-50,50);
 
+  //to check an alterantive when relative resolution is calculated versus gen pt
+  TH1D *h_jet_pt_smearOnAlternative  = new TH1D("h_jet_pt_smearOnAlternative","Jet transverse momentum distribution (if SMEARED with alternative, relres vs genpt, affects scaling only);p_{T,jet}",300,0,300); //go up to 300GeV (used to be 250GeV)
+  TH1D *h_jet_smearFactorAlternative = new TH1D("h_jet_pt_smearFactorAlternative","smearing factor for reco jet p_{T} (alternative, where relres vs genpt);smearJERalternative",500,0.5,1.5); //go from 0.5 to 1.5 (used to be 0.7 to 1.3 with 300 bins)
+ 
+
   //w82: for (FSR) PSweight investigations (added 17.05.2026)
   fout->mkdir("PSweight");
   fout->cd("PSweight");
@@ -2185,11 +2239,11 @@ void GamHistosFill::Loop()
 
   //and for the comparison of what psweight does
   TH1D *h_jet_pt_psweightOff = new TH1D("h_jet_pt_psweightOff","Jet transverse momentum distribution (no PSweight var.);p_{T,jet}",1300,0,1300); //go up to 300GeV (used to be 250GeV)
-  TH1D *h_jet_pt_psweightOn = new TH1D("h_jet_pt_psweightOn",Form("Jet transverse momentum distribution (with psweightIndex = %s );p_{T,jet}", psweightIndex),1300,0,1300); //go up to 300GeV (used to be 250GeV)
+  TH1D *h_jet_pt_psweightOn = new TH1D("h_jet_pt_psweightOn",Form("Jet transverse momentum distribution (with psweightIndex = %d );p_{T,jet}", psweightIndex),1300,0,1300); //go up to 300GeV (used to be 250GeV)
   TProfile *prbal_psweightOff = new TProfile("prbal_psweightOff","DB without PSweight variation;p_{T,#gamma};DB",nx,vx);
-  TProfile *prbal_psweightOn = new TProfile("prbal_psweightOn",Form("DB with FSR psweightIndex = %s * nominalScale ;p_{T,#gamma};DB", psweightIndex),nx,vx);
+  TProfile *prbal_psweightOn = new TProfile("prbal_psweightOn",Form("DB with FSR psweightIndex = %d * nominalScale ;p_{T,#gamma};DB", psweightIndex),nx,vx);
   TProfile *prmpf_psweightOff = new TProfile("prmpf_psweightOff","MPF without PSweight variation;p_{T,#gamma};MPF",nx,vx);
-  TProfile *prmpf_psweightOn = new TProfile("prmpf_psweightOn",Form("MPF with FSR psweightIndex = %s * nominalScale ;p_{T,#gamma};MPF", psweightIndex),nx,vx);
+  TProfile *prmpf_psweightOn = new TProfile("prmpf_psweightOn",Form("MPF with FSR psweightIndex = %d * nominalScale ;p_{T,#gamma};MPF", psweightIndex),nx,vx);
 
 
 
@@ -2276,7 +2330,7 @@ void GamHistosFill::Loop()
 
 /*
 	//larger eta-range (w35f).. going up to 5.19
-	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gagetaphi", "Rate for 50GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
+	TH2D *h2n50_gametaphi = new TH2D("h2bal50_gametaphi", "Rate for 50GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n110_gametaphi = new TH2D("h2bal110_gametaphi", "Rate for 110GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
  	TH2D *h2n200_gametaphi = new TH2D("h2bal200_gametaphi", "Rate for 200GeV #gamma-trigger;#eta_{#gamma};#phi_{#gamma};N_{evt}", ny, vy, 72, -TMath::Pi(), TMath::Pi());
 */
@@ -3054,6 +3108,7 @@ void GamHistosFill::Loop()
        << nentries << " entries" << endl;
 
   //cannot do the following for the PTG samples
+  //Note (19.05.2026): but maybe i should because i get nMG!=nentries....
   if (isMG && nentries!=nMG && !isPTG) {
     cout << "Nentries = "<<nentries<<", expected nMG = "<<nMG<<endl << flush;
      //assert(false);
@@ -3623,6 +3678,10 @@ void GamHistosFill::Loop()
         double sumw = hsumw1->GetBinContent(iht);
         double wht = (sumw ? xsec / sumw : 1);
         w *= wht;
+        //should be wht = sumnevt/sumw = 1. /(sumw/sumnevt) --> note: when updated in CalcGenWeight script, sumw is already normalised and can keep code above
+        // this w/(normalisedSumwWeight) will be 1.0 for most of the sample (in LO samples)
+        cout << "weight: " << w << endl << flush;
+        //for MC: scale to data-lumi
         evtWeightWithPS *= wht;
         hLHE_HT1->Fill(LHE_HT); // cross-check hnevt afterwards
         hHT1->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
@@ -3648,6 +3707,12 @@ void GamHistosFill::Loop()
         evtWeightWithPS *= wht;
         hLHE_HT3->Fill(LHE_HT); // cross-check hnevt afterwards
         hHT3->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+        // add an extra histogram for photon pT (before any cuts)
+        // for each of the weighted histos (with all weights) like hHT1 etc, add one without the weights but with SAME BINNING, and one with only lumi-weight
+        // note: also hadd the three HT histos to see whether it is smooth
+        //for data we have trigger prescale weights? will discuss another time
+        //for MC this lumiweight will smooth out everything, needed for fair MC-data-comparison
+        // use lumi for 2024/2025/2026 ? (split sample in three parts), if you use same sample for three years, when you hadd in the end you add same event three times....
       }
     }
 
@@ -4032,21 +4097,23 @@ void GamHistosFill::Loop()
 
 		    //if gen-matching successful, use scaling method for smearing, otherwise stochastic method
         double smearJER = 1.0; //initialise in a way it would not do anything (multiply by 1.0)
+        double smearJERalternative = 1.0; //FOR A TEST
 		    if(matched_gen){
           // SCALING METHOD
 
           //pt of the matched genjet
           pt_gen_matched = genjet_tmp.Pt(); //after this gen-jet the while loop stopped, so it was the matching one
 
-	        //should swap pt_reco with pt_gen for relativ res?
+	        //should swap pt_reco with pt_gen for relativ res? //plot both to evaluate difference?
 	        smearJER = 1.0 + (SF - 1.0) * (pt_reco - pt_gen_matched)/pt_reco;
 	        //smearJER = 1.0 + (SF - 1.0) * (pt_reco - pt_gen_matched)/pt_gen_matched;
+          smearJERalternative = 1.0 + (SF - 1.0) * (pt_reco - pt_gen_matched)/pt_gen_matched; //as test, not applied just observed
 
 
           //if matched gen, also fill the pT difference (reco-gen)/gen before and after smearing
           //pt_gen_matched = genjet_tmp.Pt(); //after this gen-jet the while loop stopped, so it was the matching one
-          h_jet_deltaPt_smearOff->Fill((pt_reco - pt_gen_matched)/pt_gen_matched);
-          h_jet_deltaPt_smearOn->Fill((pt_reco*smearJER - pt_gen_matched)/pt_gen_matched);
+          h_jet_deltaPt_smearOff->Fill((pt_reco - pt_gen_matched)/pt_gen_matched, w);     //forgot to apply the weight... fixed in w83
+          h_jet_deltaPt_smearOn->Fill((pt_reco*smearJER - pt_gen_matched)/pt_gen_matched, w);//forgot to apply the weight... fixed in w83
 
 		    }//end of scaling method for JER smearing implementation
 		    else{ //if there was no matching gen jet
@@ -4099,20 +4166,27 @@ void GamHistosFill::Loop()
         h_jet_pt_smearOn->Fill(Jet_pt[i]);
         h_jet_smearFactor->Fill(smearJER);
 
+        //in case we do relative resolution vs gen-pt
+        h_jet_pt_smearOnAlternative->Fill(pt_reco*smearJERalternative); //does only differ for scaling method
+        h_jet_smearFactorAlternative->Fill(smearJERalternative); //differs for scaling method (is vs gen pt)
+
 		  }//end of if(smearJets && isMC)
 
 	    //}
       //}
       
+      //NOTE(18.05.2026): should all this be done in separate loop after jet smearing, so we can reorder first?
       // Check that jet is not photon and pTcorr>15 GeV
       if (Jet_pt[i]>15 && (iGam==-1 || i != Photon_jetIdx[iGam]) && (!isQCD || i != iFox)) {
 	
         //++nJets;
-        jeti.SetPtEtaPhiM(Jet_pt[i], Jet_eta[i], Jet_phi[i], Jet_mass[i]);
+        jeti.SetPtEtaPhiM(Jet_pt[i], Jet_eta[i], Jet_phi[i], Jet_mass[i]); //caution, has smeared pT!
         if (gam.DeltaR(jeti)<0.2) continue; // should not happen, but does?
         ++nJets;
 
         if (iJet==-1) { // Leading jet for balance
+        /////if(iJet==-1 && jeti.Pt() > (Jet_pt[i+1]) && jeti.Pt() > (Jet_pt[i+2])) //-1 means first loop iteration
+        /////make it possible that ordering changes!
             iJet = i;   //note (23.02.2026): shouldnt we do a pT ordering first?... (ok in nanoAOD seem to be ordered.)
             jet = jeti;
             djes = Jet_deltaJES[i];
@@ -4128,7 +4202,7 @@ void GamHistosFill::Loop()
 	      }
 	
       	// Calculate L1RC correction
-      	rawjet = (1-Jet_rawFactor[i]) * jeti;
+      	rawjet = (1-Jet_rawFactor[i]) * jeti; //NOTE: is this still correct after JER SF??
       	double corrl1rc(1.); // isRun3
       	if (isRun2) {
       	  jecl1rc->setJetPt(rawjet.Pt());
@@ -5231,8 +5305,8 @@ void GamHistosFill::Loop()
     prbal_psweightOff->Fill(ptgam, bal, w); //could also just clone prbal
     prbal_psweightOn->Fill(ptgam, bal, evtWeightWithPS);
 
-    h_jet_pt_psweightOff->Fill(Jet_pt[iJet], w) //note: make sure iJet is recalculated (resorting after JER SF)
-    h_jet_pt_psweightOn->Fill(Jet_pt[iJet], evtWeightWithPS//note: make sure iJet is recalculated (resorting after JER SF)
+    h_jet_pt_psweightOff->Fill(Jet_pt[iJet], w); //note: make sure iJet is recalculated (resorting after JER SF)
+    h_jet_pt_psweightOn->Fill(Jet_pt[iJet], evtWeightWithPS);//note: make sure iJet is recalculated (resorting after JER SF)
 
 
 
