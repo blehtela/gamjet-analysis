@@ -51,9 +51,8 @@ void GamHistosRatios(string ver, string iov);
 //void GamHistosRatio(string ver = "w48") {  //w48 (27.03.2025), using w48 MC (nib-based reweighting) and w45 data (nib-based)
 //void GamHistosRatio(string ver = "w48") {  //w48 (31.03.2025), using w48 MC and w48 data (nib-based)
 //void GamHistosRatio(string ver = "w56") {  //w56 (20.06.2025), using w56 MC and w56 data (nib-based; CDE-rereco and FGHI-prompt)
-void GamHistosRatio(string ver = "w58") {  //w58 (06.08.2025), using w56 MC and w58 data (only 2025, no pu reweighting)
-
-
+//void GamHistosRatio(string ver = "w58") {  //w58 (06.08.2025), using w56 MC and w58 data (only 2025, no pu reweighting)
+void GamHistosRatio(string ver = "w65") {  //w65 (28.10.2025), using w65 MC and w65 data (only 2025, no pu reweighting)
 
 
   //GamHistosRatios(ver,"2016BCDEF");
@@ -168,9 +167,13 @@ void GamHistosRatio(string ver = "w58") {  //w58 (06.08.2025), using w56 MC and 
   //GamHistosRatios(ver, "2024Ev2nib1");
   
   //2025
-  GamHistosRatios(ver, "2025C");
+  GamHistosRatios(ver, "2025Cv1");
   GamHistosRatios(ver, "2025Cv2");
   GamHistosRatios(ver, "2025D"); 
+  GamHistosRatios(ver, "2025E");
+  GamHistosRatios(ver, "2025Fv1");
+  GamHistosRatios(ver, "2025Fv2");
+  GamHistosRatios(ver, "2025G"); 
 
 }
 
