@@ -113,7 +113,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
 		TString(dataset.c_str()).Contains("2024G") || TString(dataset.c_str()).Contains("2024H") || TString(dataset.c_str()).Contains("2024Iv1") || TString(dataset.c_str()).Contains("2024Iv2") ||
 		//for the jmenano datasets... go with Contains (covers 2025Cv1-jmenano etc)
 		TString(dataset.c_str()).Contains("2025Cv1") || TString(dataset.c_str()).Contains("2025Cv2") || TString(dataset.c_str()).Contains("2025D") || TString(dataset.c_str()).Contains("2025E") || 
-		TString(dataset.c_str()).Contains("2025Fv1") || TString(dataset.c_str()).Contains("2025Fv2") || TString(dataset.c_str()).Contains("2025G") || 
+		TString(dataset.c_str()).Contains("2025Fv1") || TString(dataset.c_str()).Contains("2025Fv2") || TString(dataset.c_str()).Contains("2025G") ||  //should also take care of jmenano version
 		//should solve all of the below with TString... TO DO
 		TString(dataset.c_str()).Contains("2026B") || TString(dataset.c_str()).Contains("2026C") ||
 	    dataset=="2026A" || dataset=="2026B" || dataset=="2026Beg0" || dataset=="2026Beg1" || dataset=="2026Beg2" || dataset=="2026Beg3" || dataset=="2026Beg4" || dataset=="2026Beg5" ||
