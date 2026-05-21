@@ -1,4 +1,4 @@
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_1of4.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_2of4.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_3of4.root
-root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_4of4.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/GJets/date-09Mar2026_time-165702_commit-fbc64d3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_1of4.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/GJets/date-09Mar2026_time-165702_commit-fbc64d3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_2of4.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/GJets/date-09Mar2026_time-165702_commit-fbc64d3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_3of4.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/GJets/date-09Mar2026_time-165702_commit-fbc64d3/MCSummer24_2024_GamJet_GJetsHT1000toInfPTG100to200_Skim_4of4.root
