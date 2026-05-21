@@ -44,7 +44,10 @@ void mk_CalcGenWeight(string pthtbin = "X") {
 		pthtbin=="summer2024P8_PTG100to200-HT400to600" || pthtbin=="summer2024P8_PTG100to200-HT600to1000" || 
 		pthtbin=="summer2024P8_PTG100to200-HT1000toInf" || pthtbin=="summer2024P8_PTG200toInf-HT40to400" || 
 		pthtbin=="summer2024P8_PTG200toInf-HT400to600" || pthtbin=="summer2024P8_PTG200toInf-HT600to1000" || 
-		pthtbin=="summer2024P8_PTG200toInf-HT1000toInf");
+		pthtbin=="summer2024P8_PTG200toInf-HT1000toInf" ||
+		// adding for jmenano (04.05.2026), like: input_files/mcFiles_summer2024P8-jmenano_bin13of15.txt
+		TString(pthtbin.c_str()).Contains("summer2024P8-jmenano") || 
+		TString(pthtbin.c_str()).Contains("summer2024P8-jmenano-fullFiles") );
 
  //cout << "Clean old shared objects and link files" << endl << flush;
   //gSystem->Exec("rm *.d");
