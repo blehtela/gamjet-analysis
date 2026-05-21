@@ -69,6 +69,8 @@ void CalcGenWeight::Loop() {
 	//switch on the genEventSumw branch
 	fChain->SetBranchStatus("*",0); //switch off all branches
 	fChain->SetBranchStatus("genEventSumw",1); //switch on branch with genEventSumw, the gen event weight
+	fChain->SetBranchStatus("genEventCount",1); //switch on branch with genEventSumw, the gen event weight
+
 
 	//Loop through events to add the get genEventSumw for each event
 	Long64_t nentries = fChain->GetEntries();
@@ -76,11 +78,14 @@ void CalcGenWeight::Loop() {
 
 	//double summedGenWeight(0.0);
 	Double_t summedGenWeight(0);
+	Double_t summedGenEventCount(0);
+
 	for(Long64_t jentry=0; jentry<nentries; jentry++){
 		Long64_t ientry = LoadTree(jentry);
 		if(ientry<0) break;
 		b_genEventSumw->GetEntry(ientry); //read from branch
 		summedGenWeight += genEventSumw;
+		summedGenEventCount += genEVentCount;
 		//cout << "genEventSumw now: " << genEventSumw << endl << flush; 
 		//cout << "current total sum: " << summedGenWeight << endl << flush;
     	
@@ -90,10 +95,12 @@ void CalcGenWeight::Loop() {
 
 	cout << "\nProcessed " << nentries << " entries." << endl << flush;
 
-
+	//summedGenWeight / summedEventCount
+	//summedEVentcount is not the same as nevents
 
 	//write to file: sample name, summedGenWeight (or write it to console for now)
 	cout << "Total sum of gen event weights in sample " << pthtbin << " is: " << summedGenWeight << endl << flush;
+	cout << "Normalised (by gen evt count) summedGenWeight in sample:  " << pthtbin << " is: " << summedGenWeight/summedGenEventCount << endl << flush;
 	cout << "----------------------------------------\n" << endl << flush;
 
 	ofstream outputfile;
