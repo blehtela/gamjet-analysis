@@ -13,7 +13,10 @@ bool multiera = true; //draw all eras given in iov list
 //string id = "w63"; 
 //string id = "w65"; 
 //string id = "w66"; 
-string id = "w75";  //adding 2026 data
+//string id = "w75";  //adding 2026 data
+//string id = "w77";  //adding 2026 data, 31.3. (ran data on 27.03., JSON 24.3.?)
+string id = "w80";  //for 05.05.2026
+
 
 
 // Forward declaration of function call
@@ -54,7 +57,10 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
 
   //string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025Fv1", "2025Fv2", "2025G", "summer2024P8", "winter2025P8"}; // try this first
   //string iovs[] = {"2025Cv1", "2025Cv2", "2025D", "2025E", "2025Fv1", "2025Fv2", "2025G", "summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"};  //comparing the MCs,
-  string iovs[] = {"2025G", "2026A", "2026Bnib1" ,"2026Bnib2", "summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"};  //comparing the MCs,
+  //string iovs[] = {"2025G", "2026A", "2026Bnib1" ,"2026Bnib2", "summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"};  //comparing the MCs,
+  //
+  //string iovs[] = {"2025G", "2026A", "2026B", "summer2024P8_summer2024QCD"};  //for JERC (31.03.2026)
+  string iovs[] = {"2025G-jmenano", "2026B-jmenano", "2026C-jmenano", "2026D", "summer2024P8_summer2024QCD"};  //for miniJERC (05.05.2026)
 
 
 
@@ -78,11 +84,18 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
   mmarker["2025Fv1"] = kFullDiamond;
   mmarker["2025Fv2"] = kOpenDiamond;
   mmarker["2025G"] = kFullStar;
+  mmarker["2025G-jmenano"] = kFullStar;
+
 
   //2026
   mmarker["2026A"] = kOpenDiamond;
   mmarker["2026Bnib1"] = kFullCircle;
   mmarker["2026Bnib2"] = kFullCircle;
+  mmarker["2026B"] = kFullCircle;
+  mmarker["2026B-jmenano"] = kFullCircle;
+  mmarker["2026C-jmenano"] = kFullDiamond;
+  mmarker["2026D"] = kFullStar;
+
 
 
   //mc2024
@@ -106,11 +119,18 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
   mcolor["2025Fv2"] = kCyan+2;
   //mcolor["2025G"] = kBrown+2;
   mcolor["2025G"] = kAzure-3;
+  mcolor["2025G-jmenano"] = kAzure-3;
+
+
 
   //2026
   mcolor["2026A"] = kOrange+3;
   mcolor["2026Bnib1"] = kViolet+1;
   mcolor["2026Bnib2"] = kSpring-8;
+  mcolor["2026B"] = kSpring-8;
+  mcolor["2026B-jmenano"] = kSpring-8;
+  mcolor["2026C-jmenano"] = kViolet+1;
+  mcolor["2026D"] = kOrange+2;
  
   //mc2024
   mcolor["summer2024P8"] = kMagenta;
@@ -199,7 +219,10 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
   double legx1 = 0.38;  //19.03.2026
   //double legx2 = 0.69;
   double legx2 = 0.86;  //19.03.2026
-  double legy2 = 0.83;
+  //double legy2 = 0.83;
+  double legy2 = 0.81; //31.03.2026
+
+
 
   if(name=="MPF"){
     /*
@@ -214,9 +237,11 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
     //legy2=0.31; //changed for w75
   }
   //TLegend *leg = tdrLeg(legx1,legy2-niov*0.05,legx2,legy2); //distances, for one column legend
-  TLegend *leg = tdrLeg(legx1,legy2-niov*0.03,legx2,legy2);   //distances, for two column legend
+  //TLegend *leg = tdrLeg(legx1,legy2-niov*0.03,legx2,legy2);   //distances, for two column legend
+  TLegend *leg = tdrLeg(legx1,legy2-niov*0.05,legx2,legy2); //distances, for one column legend
   //TLegend *leg = tdrLeg(0.46,0.850-niov*0.05,0.80,0.850); //after adding also average-info (x1,y1,x2,y2)
-  leg->SetNColumns(2);    //when it is getting too much otherwise...
+  //leg->SetNColumns(2);    //when it is getting too much otherwise...
+  leg->SetNColumns(1);  //for early 2026 this is enough
   leg->SetTextSize(0.03);
   leg->SetTextFont(42);
 
@@ -263,6 +288,15 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
     */
     else if(iov=="2025G"){// processed this earlier
     	fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w73.root",ciov)); //hardcoded to w73
+    	assert(fd && !fd->IsZombie());
+    }
+    else if(iov=="2026A"){// processed this earlier, now again WITHOUT L2L3res
+    	//fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_w75.root",ciov)); //hardcoded to w75
+      fd = new TFile(Form("rootfiles/GamHistosFill_data_%s_%s_onlyL2Rel2026MC.root",ciov,cid)); //hardcoded
+    	assert(fd && !fd->IsZombie());
+    }
+    else if(iov=="2026D"){// processed this earlier, now again WITHOUT L2L3res
+      fd = new TFile(Form("rootfiles/GamHistosFill_data_2026D_no-eg4_w81.root")); //hardcoded
     	assert(fd && !fd->IsZombie());
     }
     else{ //data
@@ -331,19 +365,21 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
 
 
     //"summer2024P8_summer2024QCD", "winter2025P8_winter2025QCD"
-    if(name!="Mu" && (iov=="summer2024P8_summer2024QCD" || iov=="winter2025P8_winter2025QCD")){
+    if(name!="Mu" && (iov=="summer2024P8_summer2024QCD" || iov=="winter2025P8_winter2025QCD" || "2026A")){
       if(iov=="summer2024P8_summer2024QCD"){
         leg->AddEntry(hd, Form("s24P8_s24QCD"), "PLE");
       }
       else if(iov=="winter2025P8_winter2025QCD"){
         leg->AddEntry(hd, Form("w25P8_w25QCD"), "PLE");
       }
+      else if(iov=="2026A"){
+        leg->AddEntry(hd, Form("%s (only L2Rel corr.)",ciov), "PLE");
+      }
     }
-    //if(name!="Mu" && iov!="winter2025P8"){ //for mu, do not add the data here, as this histo is empty, i.e. not drawn, will come from separate file (see lower)
     else if(name!="Mu" && iov!="winter2025P8"){ //for mu, do not add the data here, as this histo is empty, i.e. not drawn, will come from separate file (see lower)
 	    //leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
-
       //leg->AddEntry(hd,Form("%s data",ciov),"PLE");//why data... we see it from era
+      std::cout << "Add standard entry to legend for: " << ciov << std::endl << std::flush;
       leg->AddEntry(hd,Form("%s",ciov),"PLE"); //for all.. but could specify that for MC we don't wont marker
     }
     else if(name=="Mu" && iov=="summer2024P8"){ //need to add this manually
@@ -354,6 +390,19 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
 	    //leg->AddEntry(hd,Form("%s (%.2f #pm %.2f)",ciov,xmean, xmeanerr),"PLE");
 	    leg->AddEntry(hd,Form("%s MC (no pu-reweighting)",ciov),"PLE");
     }
+    if(name!="Mu" && (iov=="2025G" || iov=="2026B")){ //add this, check if sensible
+      std::cout << "\nAdd standard entry to legend for: " << ciov << std::endl << std::flush;
+      leg->AddEntry(hd,Form("%s",ciov),"PLE"); //for all.. but could specify that for MC we don't wont marker
+    }
+    else if(name!="Mu" && (iov=="2025G-jmenano" || iov=="2026B-jmenano" || iov=="2026C-jmenano" || iov=="2026D")){ //add this, check if sensible
+      std::cout << "\nAdd standard entry to legend for: " << ciov << std::endl << std::flush;
+      leg->AddEntry(hd,Form("%s",ciov),"PLE"); //for all.. but could specify that for MC we don't wont marker
+    }
+
+
+
+    //if(name!="Mu" && iov!="winter2025P8"){ //for mu, do not add the data here, as this histo is empty, i.e. not drawn, will come from separate file (see lower)
+ 
 
 
     //additionally if mc
@@ -443,7 +492,9 @@ void drawMPF2025new(string sobj, string var, string name, double x1, double x2, 
 	//c1->SaveAs(Form("pdf/drawMPF2025new_TEST_%s_%s.pdf",name.c_str(),id.c_str()));
 	//c1->SaveAs(Form("pdf/drawMPF2025new_compare-Cv1-Cv2-CTrkRadDamage_%s_%s.pdf",name.c_str(),id.c_str()));
 	//c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025CDEFG_%s_%s.pdf",name.c_str(),id.c_str()));
-	c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025G_2026AB_%s_%s.pdf",name.c_str(),id.c_str()));
+	//c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025G_2026AB_%s_%s.pdf",name.c_str(),id.c_str()));
+	c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025G_2026BC_jmenano_26D-prompt_%s_%s.pdf",name.c_str(),id.c_str()));
+
     else 
 	c1->SaveAs(Form("pdf/drawMPF2025new_compare-2025CDEFG_%s.pdf",name.c_str()));
 } // void drawMPF2025new
