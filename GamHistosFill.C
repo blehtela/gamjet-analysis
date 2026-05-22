@@ -798,17 +798,17 @@ void GamHistosFill::Loop()
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024B_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024B_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Cnib1" || ds=="2024C-rereco") { 
+  if (ds=="2024Cnib1" || ds=="2024C-rereco" || TString(ds.c_str()).Contains("2024C")) { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024C_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Dnib1" || ds=="2024D-rereco") { 
+  if (ds=="2024Dnib1" || ds=="2024D-rereco") || TString(ds.c_str()).Contains("2024D") { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024D_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Ev1nib1"|| ds=="2024E-rereco"){ //separated 24E corrections starting from V4M jecs
+  if (ds=="2024Ev1nib1"|| ds=="2024E-rereco" || TString(ds.c_str()).Contains("2024E")){ //separated 24E corrections starting from V4M jecs
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024E_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev1_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
@@ -818,37 +818,37 @@ void GamHistosFill::Loop()
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024E_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev2_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib1" || ds=="2024F-ECALCC-HCALDI-nib1") {
+  if (ds=="2024Fnib1" || ds=="2024F-ECALCC-HCALDI-nib1" || TString(ds.c_str()).Contains("2024Fnib1")) {
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib2" || ds=="2024F-ECALCC-HCALDI-nib2") {
+  if (ds=="2024Fnib2" || ds=="2024F-ECALCC-HCALDI-nib2" || TString(ds.c_str()).Contains("2024Fnib2")) {
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3") {
+  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3" || TString(ds.c_str()).Contains("2024Fnib3")) {
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib3_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Gnib1") { 
+  if (ds=="2024Gnib1" || TString(ds.c_str()).Contains("2024Gnib1")) { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
-  if (ds=="2024Gnib2"){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
+  if (ds=="2024Gnib2" || TString(ds.c_str()).Contains("2024Gnib2")){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }  
-  if (ds=="2024Hnib1") {
+  if (ds=="2024Hnib1" || TString(ds.c_str()).Contains("2024Hnib1")) {
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024H_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Inib1") { 
+  if (ds=="2024Inib1" || TString(ds.c_str()).Contains("2024Gnib1")) { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2025)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024I_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
