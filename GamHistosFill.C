@@ -1027,7 +1027,7 @@ void GamHistosFill::Loop()
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398289_DCSRuns_391658to391668_398290to398903_.json"); //self-made hybrid json (Golden Nov 4th + Daily Nov 11th) for w66 (11.11.2025)
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398858_DCSRuns_391658to391668_398859to398903_.json"); //self-made hybrid json (Golden Nov 14th + Daily Nov 6th) for w66 (16.11.2025)
     LoadJSON("files/Cert_Collisions2025_391658_398860_Golden.json"); //GOLDEN json (Nov 18th) for w67 (added on 05.12.2025)
-  if (TString(ds.c_str()).Contains("2026"))
+  if (TString(ds.c_str()).Contains("2026")){
     //LoadJSON("files/Collisions26_13p6TeV_401623_401733_DCSOnly_TkPx.json"); //daily json (Mar 13th) for w74 (added on 13.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx.json"); //daily json (Mar 16th) for w75 (added on 16.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx_Bnib1.json"); //modified daily json, only Bnib1 (Mar 16th) for w75 (added on 16.03.2026)
@@ -1038,11 +1038,17 @@ void GamHistosFill::Loop()
     //LoadJSON("files/CombinedJSONS_GoldenRuns_401630to402513_DCSRuns_402514to403026_.json"); //new hybrid: golden covering all of 2026B and MLEnhanced golden for 26C;
     //LoadJSON("files/Collisions26_13p6TeV_401623_403493_DCSOnly_TkPx.json"); //new DAILY ONLY (issue with combining..)  for w81
     //LoadJSON("files/CombinedJSONS_GoldenRuns_MLEnhancedGolden_401630to403457_DCSRuns_403458to403493_.json"); //new hybrid (issue with combining..)  for w81, 2026D added
-    LoadJSON("files/CombinedJSONS_GoldenRuns_401630to403774_DCSRuns_403775to403895_.json"); //MLenhanced + DCSdaily (15.05.2026), still w81 including new 26D files.
-
-
-
-
+    //LoadJSON("files/CombinedJSONS_GoldenRuns_401630to403774_DCSRuns_403775to403895_.json"); //MLenhanced + DCSdaily (15.05.2026), still w81 including new 26D files.
+	if (TString(ds.c_str()).Contains("2026B")){//w83 (21.05.2026)
+		LoadJSON("files/Cert_Collisions2026_401624_403493_golden.json"); //w83 (golden json)
+	}
+	if (TString(ds.c_str()).Contains("2026C")){//w83 (21.05.2026)
+		LoadJSON("files/Cert_Collisions2026_lowPU_19May2026.json"); //w83 (low pu json)
+	}
+	if (TString(ds.c_str()).Contains("2026D")){//w83 (21.05.2026)
+		LoadJSON("files/Collisions26_MLEnhancedGolden_Latest_21May2026.json"); //w83 (ML enhanced golden json, latest)
+	}
+  } //added this bracket for w83 with three different jsons for 2026
 
 
   //TO DO: update JSON
@@ -1078,8 +1084,18 @@ void GamHistosFill::Loop()
 	avgPUmap = LoadAvgPUdata("avgpileup2025.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){
-	avgPUmap = LoadAvgPUdata("avgpileup2026.csv");
+	//avgPUmap = LoadAvgPUdata("avgpileup2026.csv");
+	if(TString(ds.c_str()).Contains("2026B")){
+		avgPUmap = LoadAvgPUdata("avgpileup2026B.csv");
+	}
+  	else if(TString(ds.c_str()).Contains("2026C")){
+		avgPUmap = LoadAvgPUdata("avgpileup2026C.csv");
+  	}
+  	else if(TString(ds.c_str()).Contains("2026D")){
+		avgPUmap = LoadAvgPUdata("avgpileup2026D.csv");
+  	}
   }
+
 
   //TO DO: add this for fresh 2026 data also. Update as we go, with new json.
 	
@@ -1117,13 +1133,41 @@ void GamHistosFill::Loop()
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026), updated w77 (27.03.2026), updated w81 (07.05.2026)
+	  /*
 	  lumi200 = LoadLumi("files/lumi2026_15may2026_photon200_pb_w81.csv");
 	  lumi110 = LoadLumi("files/lumi2026_15may2026_photon110eb_pb_w81.csv");
 	  lumi50 = LoadLumi("files/lumi2026_15may2026_photon50eb_pb_w81.csv");
 	  lumi45 = LoadLumi("files/lumi2026_15may2026_photon45eb_pb_w81.csv");
 	  lumi40 = LoadLumi("files/lumi2026_15may2026_photon40eb_pb_w81.csv");
 	  lumi30 = LoadLumi("files/lumi2026_15may2026_photon30eb_pb_w81.csv");
-  }
+	  */
+	
+	if(TString(ds.c_str()).Contains("2026B")){ //w83 (21.05.2026, based on golden json)
+		lumi200 = LoadLumi("files/lumi2026_21may2026_2026B_photon200_w83.csv");
+		lumi110 = LoadLumi("files/lumi2026_21may2026_2026B_photon110eb_w83.csv");
+		lumi50 = LoadLumi("files/lumi2026_21may2026_2026B_photon50eb_w83.csv");
+		lumi45 = LoadLumi("files/lumi2026_21may2026_2026B_photon45eb_w83.csv");
+		lumi40 = LoadLumi("files/lumi2026_21may2026_2026B_photon40eb_w83.csv");
+		lumi30 = LoadLumi("files/lumi2026_21may2026_2026B_photon30eb_w83.csv");
+	}
+	if(TString(ds.c_str()).Contains("2026C")){ //w83 (21.05.2026, based on low PU json)
+		lumi200 = LoadLumi("files/lumi2026_21may2026_2026C_photon200_w83.csv");
+		lumi110 = LoadLumi("files/lumi2026_21may2026_2026C_photon110eb_w83.csv");
+		lumi50 = LoadLumi("files/lumi2026_21may2026_2026C_photon50eb_w83.csv");
+		lumi45 = LoadLumi("files/lumi2026_21may2026_2026C_photon45eb_w83.csv");
+		lumi40 = LoadLumi("files/lumi2026_21may2026_2026C_photon40eb_w83.csv");
+		lumi30 = LoadLumi("files/lumi2026_21may2026_2026C_photon30eb_w83.csv");
+	}
+	if(TString(ds.c_str()).Contains("2026D")){ //w83 (21.05.2026, based on current ML enhanced golden json, latest)
+		lumi200 = LoadLumi("files/lumi2026_21may2026_2026D_photon200_w83.csv");
+		lumi110 = LoadLumi("files/lumi2026_21may2026_2026D_photon110eb_w83.csv");
+		lumi50 = LoadLumi("files/lumi2026_21may2026_2026D_photon50eb_w83.csv");
+		lumi45 = LoadLumi("files/lumi2026_21may2026_2026D_photon45eb_w83.csv");
+		lumi40 = LoadLumi("files/lumi2026_21may2026_2026D_photon40eb_w83.csv");
+		lumi30 = LoadLumi("files/lumi2026_21may2026_2026D_photon30eb_w83.csv");
+	}
+
+  }//if2026
 
 
 
