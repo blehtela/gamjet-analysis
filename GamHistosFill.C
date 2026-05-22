@@ -823,12 +823,12 @@ void GamHistosFill::Loop()
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib2" || ds=="2024F-ECALCC-HCALDI-nib2" || TString(ds.c_str()).Contains("2024Fnib2")) {
+  if (ds=="2024Fnib2" || ds=="2024F-ECALCC-HCALDI-nib2" || TString(ds.c_str()).Contains("2024Fnib2")) { //think
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3" || TString(ds.c_str()).Contains("2024Fnib3")) {
+  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3" || TString(ds.c_str()).Contains("2024Fnib3") || TString(ds.c_str()).Contains("2024F")) {//think about this choice for 2024F!!!
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib3_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
