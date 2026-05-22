@@ -838,7 +838,7 @@ void GamHistosFill::Loop()
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
-  if (ds=="2024Gnib2" || TString(ds.c_str()).Contains("2024Gnib2")){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
+  if (ds=="2024Gnib2" || TString(ds.c_str()).Contains("2024Gnib2") || TString(ds.c_str()).Contains("2024G")){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
