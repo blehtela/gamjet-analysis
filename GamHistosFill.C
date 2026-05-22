@@ -799,47 +799,58 @@ void GamHistosFill::Loop()
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024B_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Cnib1" || ds=="2024C-rereco") { 
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024C_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024C_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Dnib1" || ds=="2024D-rereco") { 
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024D_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024D_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Ev1nib1"|| ds=="2024E-rereco"){ //separated 24E corrections starting from V4M jecs
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024E_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024E_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024E_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev1_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Ev2nib1"){ //separated 24E corrections starting from V4M jecs
+	//no updates for w83, since we use rereco of full E (see above)
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024E_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev2_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Fnib1" || ds=="2024F-ECALCC-HCALDI-nib1") {
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Fnib2" || ds=="2024F-ECALCC-HCALDI-nib2") {
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3") {
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib3_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib3_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Gnib1") { 
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
   if (ds=="2024Gnib2"){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }  
   if (ds=="2024Hnib1") {
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024H_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024H_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
   if (ds=="2024Inib1") { 
-	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024I_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
+	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2025)
+	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024I_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
   //mc 2025
@@ -860,25 +871,28 @@ void GamHistosFill::Loop()
   }
   if (ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025Cv1-jmenano"|| ds=="2025Cv2-jmenano"){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
-
+    	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
+  	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
   }
   if (ds=="2025D" || ds=="2025Dtestfile" || ds=="2025D-jmenano"){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
-
+    	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
   }
   if (ds=="2025E" || ds=="2025E-jmenano"){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
+    	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
   }
   if (ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025Fv1-jmenano"|| ds=="2025Fv2-jmenano"){ //still using 25E JECs for both versions of 25F. //updated to 25F JECs in w68 with V3M.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F
+    	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F
+    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
   }
   if (ds=="2025G" || ds=="2025G-jmenano"){	// using 25E corrections for 25G for now. //updated to 25F JECs in w68 with V3M.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
-    	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F.
+    	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F.
+  	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V3M L2L3Res, 22.05.2026)
   }
   //data 2026 (preparation for w74)
   if (ds=="2026A"){	// using 25G corrections for 26A for now. (or leave away completely?)
@@ -890,13 +904,19 @@ void GamHistosFill::Loop()
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w74, still JECs from last year, no L2L3Res as requested by Mikko
     	//jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w75, still L2L3 residual JECs from last year
       //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w75, no L2L3residuals
-      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w77, first L2L3residuals, V0M (27.03.2026)
+      //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w77, first L2L3residuals, V0M (27.03.2026)
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w83, V1M (22.05.2026)
+
   }
   if (ds=="2026C" || TString(ds.c_str()).Contains("2026C")){
-      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w78 (still with 2026B JECs)
+      //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w78 (still with 2026B JECs)
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026C_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (first 2026C JECs)
+
   }
   if (ds=="2026D" || TString(ds.c_str()).Contains("2026D")){
-      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w81 (05.05.2026, still with 2026B JECs) 
+      //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w81 (05.05.2026, still with 2026B JECs) 
+      jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026D_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (22.05.2026, first 2026D JECs) 
+
   }
 
 
@@ -1672,25 +1692,27 @@ void GamHistosFill::Loop()
     //or get the skimmed files' event numbers from my extra script (however: they are not even used in the binweighting i think... just in a histo)
     //NOTE (17.5.2026): these are the evtnums for the fullFiles (need to add the one for the skimmed ones, but doesnt enter weight at this point)
 
-    // NOTE: USE THE ONES FROM DAS FOR THE CALCULATION of the MC lumi (used in the lumi-weight) --> lumi_MC = nevt(DAS)/xs(sample)
+    // NOTE: USE THE ONES FROM DAS FOR THE CALCULATION of the MC lumi (used in the lumi-weight) --> lumi_MC = nevt(DAS)/xs(sample) --> precalculate this, so the ratio does not need to be done in each event.
+    // could do this in the CalcGenWeight script actually.
     // for the lumi_data, use one full year like e.g. 2024CDEFGHI with brilcalc (is one value per year), goldenJSON for 2024 to brilcalc (or from PdmV)
-    //from PdmV for 2024:  	109.95 /fb
-
-    //int vnevt1jmenano[6] = {141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
-    //int vnevt2jmenano[5] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
-    //int vnevt3jmenano[4] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
+    //from PdmV for 2024:  	109.95 /fb, for 2025:, for 2026: 
+    int vnevt1jmenano[6] = {141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
+    int vnevt2jmenano[5] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
+    int vnevt3jmenano[4] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
     //NOTE (17.05.2026): these are the evtnums based on my own script for SKIMMED FILES (those we should use in lumi-scaling, not for genweight.)
-    int vnevt1jmenano[6] = {28891616, 38169817, 49120893, 188516685, 120130199, 42581488}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
-    int vnevt2jmenano[5] = {105214756, 95303408, 41543855, 20056068, 6290441}; //number of events retrieved with extra script for Summer24
-    int vnevt3jmenano[4] = {127097845, 26419681, 13457034, 5219203}; //number of events retrieved with extra script for Summer24
+    //int vnevt1jmenano[6] = {28891616, 38169817, 49120893, 188516685, 120130199, 42581488}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
+    //int vnevt2jmenano[5] = {105214756, 95303408, 41543855, 20056068, 6290441}; //number of events retrieved with extra script for Summer24
+    //int vnevt3jmenano[4] = {127097845, 26419681, 13457034, 5219203}; //number of events retrieved with extra script for Summer24
     double vsumw1jmenano[6] = {9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1
     double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
     double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
 
-    //work in progress
+    //TO DO: work in progress
+    /*
     double vnormgensumw1jmenano[6] = { insert the numbers from the other script, essentially the: summedGenWeight/summedGenEventCount }; //sum of weights for ptgam bin 1
     double vnormgensumw2jmenano[5] = {}; //sum of weights for ptgam bin 1
     double vnormgensumw3jmenano[4] = {}; //sum of weights for ptgam bin 1
+    */
 
 
 
