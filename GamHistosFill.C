@@ -803,7 +803,7 @@ void GamHistosFill::Loop()
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024C_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Dnib1" || ds=="2024D-rereco") || TString(ds.c_str()).Contains("2024D") { 
+  if (ds=="2024Dnib1" || ds=="2024D-rereco" || TString(ds.c_str()).Contains("2024D")) { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024D_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
@@ -1266,6 +1266,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024B") ||
         TString(ds.c_str()).Contains("2024C") ||
         TString(ds.c_str()).Contains("2024D") ||
+        TString(ds.c_str()).Contains("2024E") || //needed to add this for jmenano (w83)
         TString(ds.c_str()).Contains("2024Ev1") ||
         TString(ds.c_str()).Contains("2024Ev2") ||
         TString(ds.c_str()).Contains("2024B-ECALRATIO") ||
@@ -1293,7 +1294,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024G") || //should include Ga, Gb, Gc, Gd
         TString(ds.c_str()).Contains("2024Gtest") ||
         TString(ds.c_str()).Contains("2024H") || //should include Ha, Hb, Hc, Hd, Hskim
-        TString(ds.c_str()).Contains("2024I") || //should include Iv1, Iv2, Iskim
+        TString(ds.c_str()).Contains("2024I") || //should include Iv1, Iv2, Iskim, also jmenano
         TString(ds.c_str()).Contains("2024Fnib1") ||
         TString(ds.c_str()).Contains("2024Fnib2") ||
         TString(ds.c_str()).Contains("2024Fnib3") ||
