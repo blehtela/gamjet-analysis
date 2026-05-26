@@ -1,0 +1,16 @@
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/449/00000/d445ecde-4262-4c97-ac4c-181f38a9a454.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/451/00000/d8dd801c-c45d-4fea-bb9e-3ece33a69ea1.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/449/00000/0a6df02f-6952-4638-9556-0ef5e3a7c55b.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/451/00000/924fb3ec-391d-4398-815d-cfe3be6245a8.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/441/00000/8e85e263-3584-435c-b551-6fa3ea397273.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/442/00000/71a25ef2-b1ea-49fb-818b-591a9cd15559.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/441/00000/8f407d32-e8df-4e31-a00b-abd20bf37c35.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/450/00000/2c2b6f60-ee90-4c72-81ea-c2f9cd75666f.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/457/00000/61c5a6fd-24ee-45f4-9312-f144c8e2a17b.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/457/00000/aaf8d01a-2189-4c2a-ae32-3ee01d2fc8dd.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/451/00000/4cf1e284-f53d-415c-a894-291eba8db9f8.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/457/00000/39a5e791-b5b4-429a-b502-5cb316d52cdb.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/487/00000/f8881634-e37c-46ca-a56b-3b8c8d50252b.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/443/00000/ba6f86d0-e808-46fd-9564-e5c740065d57.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/457/00000/ac7d12f6-97db-47b6-99e8-2d8dabc3be9f.root
+root://cms-xrd-global.cern.ch//store/data/Run2026D/EGamma3/NANOAOD/PromptReco-v1/000/403/457/00000/6b0ecbc9-7d68-496e-95ed-25749dfc96d6.root
