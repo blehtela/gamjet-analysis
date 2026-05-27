@@ -108,9 +108,10 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
       dataset=="2025B" || dataset=="2025Cv1" || dataset=="2025Cv2" || dataset=="2025D" || dataset=="2025Dtestfile" || dataset=="2025E" || //dataset=="2025F" ||//); //
       dataset=="2025Fv1" || dataset=="2025Fv2" || dataset=="2025G" || //added 2025G and split F to Fv1 and Fv2 on 19.10.2025, w64.
       dataset=="2025C-TrkRadDamage" ||
-    //like for 2025 DATA:
+    //like for 2025 DATA: //this covers also 24Gnib1 for example or 24Gnib1-jmenano, also rereco is covered here 2024C-rereco or 2024C-rereco-jmenano
 		TString(dataset.c_str()).Contains("2024C") || TString(dataset.c_str()).Contains("2024D") || TString(dataset.c_str()).Contains("2024E") || TString(dataset.c_str()).Contains("2024F") || 
-		TString(dataset.c_str()).Contains("2024G") || TString(dataset.c_str()).Contains("2024H") || TString(dataset.c_str()).Contains("2024Iv1") || TString(dataset.c_str()).Contains("2024Iv2") ||
+		TString(dataset.c_str()).Contains("2024G") || TString(dataset.c_str()).Contains("2024H") || TString(dataset.c_str()).Contains("2024I") || 
+		TString(dataset.c_str()).Contains("2024Iv1") || TString(dataset.c_str()).Contains("2024Iv2") ||
 		//for the jmenano datasets... go with Contains (covers 2025Cv1-jmenano etc)
 		TString(dataset.c_str()).Contains("2025Cv1") || TString(dataset.c_str()).Contains("2025Cv2") || TString(dataset.c_str()).Contains("2025D") || TString(dataset.c_str()).Contains("2025E") || 
 		TString(dataset.c_str()).Contains("2025Fv1") || TString(dataset.c_str()).Contains("2025Fv2") || TString(dataset.c_str()).Contains("2025G") ||  //should also take care of jmenano version
