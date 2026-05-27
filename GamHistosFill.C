@@ -510,7 +510,13 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_area",1);
     //if(!is25 && !is26){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
     //if(!is25 && !is26 && !(isMC && is24 && isJMEnano) && !(is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
-    if(!is25 && !is26 && !(is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
+    if(!is25 && !is26 && !(is24 && isJMEnano)){ 
+	fChain->SetBranchStatus("Jet_jetId",1); 
+    }
+    else{
+	cout << "[debugging]: This sample should not have any Jet_jetId branch." << endl << flush;
+    }
+
 
 
 
@@ -798,12 +804,12 @@ void GamHistosFill::Loop()
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024B_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024B_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Cnib1" || ds=="2024C-rereco" || TString(ds.c_str()).Contains("2024C")) { 
+  if (ds=="2024Cnib1" || ds=="2024C-rereco" || TString(ds.c_str()).Contains("2024C")) {  //handles also nib and handles also 2024C-rereco-nib1-jmenano, or 2024C-rereco-jmenano
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024C_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024C_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Dnib1" || ds=="2024D-rereco" || TString(ds.c_str()).Contains("2024D")) { 
+  if (ds=="2024Dnib1" || ds=="2024D-rereco" || TString(ds.c_str()).Contains("2024D")) {  //also handles 24Dnib1-rereco-jmenano
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024D_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024D_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
@@ -818,7 +824,7 @@ void GamHistosFill::Loop()
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024E_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024Ev2_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib1" || ds=="2024F-ECALCC-HCALDI-nib1" || TString(ds.c_str()).Contains("2024Fnib1")) {
+  if (ds=="2024Fnib1" || ds=="2024F-ECALCC-HCALDI-nib1" || TString(ds.c_str()).Contains("2024Fnib1")) { //handles both 24Fnib1-jmenano and prompt
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
@@ -828,27 +834,27 @@ void GamHistosFill::Loop()
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3" || TString(ds.c_str()).Contains("2024Fnib3") || TString(ds.c_str()).Contains("2024F")) {//think about this choice for 2024F!!!
+  if (ds=="2024Fnib3" || ds=="2024F-ECALCC-HCALDI-nib3" || TString(ds.c_str()).Contains("2024Fnib3") || TString(ds.c_str()).Contains("2024Fnib3")) {//think about this choice for 2024F!!!
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024F_nib3_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024F_nib3_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Gnib1" || TString(ds.c_str()).Contains("2024Gnib1")) { 
+  if (ds=="2024Gnib1" || TString(ds.c_str()).Contains("2024Gnib1")) {  //these also handle for example 2024Gnib1-jmenano
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   } 
-  if (ds=="2024Gnib2" || TString(ds.c_str()).Contains("2024Gnib2") || TString(ds.c_str()).Contains("2024G")){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
+  if (ds=="2024Gnib2" || TString(ds.c_str()).Contains("2024Gnib2")){ // || TString(ds.c_str()).Contains("2024G")){ //|| ds=="2024C-rereco" || ds=="2024D-rereco" || ds=="2024E-rereco") { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024G_nib2_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024G_nib2_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }  
-  if (ds=="2024Hnib1" || TString(ds.c_str()).Contains("2024Hnib1") || TString(ds.c_str()).Contains("2024H-jmenano")) {
+  if (ds=="2024Hnib1" || TString(ds.c_str()).Contains("2024Hnib1") || TString(ds.c_str()).Contains("2024H-jmenano")) { //also handles Hnib1-jmenano
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2026)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024H_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024H_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
   }
-  if (ds=="2024Inib1" || TString(ds.c_str()).Contains("2024I-jmenano")) { 
+  if (ds=="2024Inib1" || ds=="2024Iv1-jmenano" || ds=="2024Iv2-jmenano" || TString(ds.c_str()).Contains("2024I") || TString(ds.c_str()).Contains("2024I-jmenano")) { 
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V10M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (updated 22.05.2025)
 	//jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "ReReco24_Run2024I_nib1_V9M_DATA_L2L3Residual_AK4PFPuppi"); //w56 (updated to summer24 l2rel 12.06.2025)
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt24_Run2024I_nib1_V8M_DATA_L2L3Residual_AK4PFPuppi"); //w45 onwards (16.02.2025), V8M
@@ -971,6 +977,7 @@ void GamHistosFill::Loop()
   if (ds=="2024Bnib1" || ds=="2024Cnib1" || ds=="2024Dnib1" || ds=="2024Ev1nib1" || ds=="2024Ev2nib1" || 
       ds=="2024Fnib1" || ds=="2024Fnib2" || ds=="2024Fnib3" || ds=="2024Gnib1" || ds=="2024Gnib2" || ds=="2024Hnib1" || ds=="2024Inib1" || 
       ds=="2024F-ECALCC-HCALDI-nib1" || ds=="2024F-ECALCC-HCALDI-nib2" || ds=="2024F-ECALCC-HCALDI-nib3") sera = "2024";
+  if (TString(ds.c_str()).Contains("2024")) sera = "2024"; //works unless two year-numbers appear in dataset, which should not be typically.. && TString(ds.c_str()).Contains("nib")
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
 	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80)
@@ -1264,7 +1271,7 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2024")) {
     if (TString(ds.c_str()).Contains("2024B-PromptReco-v1") ||
         TString(ds.c_str()).Contains("2024B") ||
-        TString(ds.c_str()).Contains("2024C") ||
+        TString(ds.c_str()).Contains("2024C") || //covers also 2024C-rereco and 2024Cnib1-rereco-jmenano for example
         TString(ds.c_str()).Contains("2024D") ||
         TString(ds.c_str()).Contains("2024E") || //needed to add this for jmenano (w83)
         TString(ds.c_str()).Contains("2024Ev1") ||
@@ -1298,7 +1305,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2024Fnib1") ||
         TString(ds.c_str()).Contains("2024Fnib2") ||
         TString(ds.c_str()).Contains("2024Fnib3") ||
-        TString(ds.c_str()).Contains("2024Gnib1") ||
+        TString(ds.c_str()).Contains("2024Gnib1") || //also handles 2024Gnib1-jmenano and such
         TString(ds.c_str()).Contains("2024Gnib2") ||
         TString(ds.c_str()).Contains("2024Hnib1") || //should include Ha, Hb, Hc, Hd, Hskim
         TString(ds.c_str()).Contains("2024Inib1") ||
@@ -1424,7 +1431,7 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS... 
   TFile *fout(0);
   if(storeEOSjetmet){
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_20May2026.root", 
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_26May2026.root", 
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
@@ -1962,7 +1969,8 @@ void GamHistosFill::Loop()
 	//double xmax = 383000.5; //need to update this regularly
 	//double xmax = 389000.5; //386000.5
   //double xmax = 400000.5; //updated on 16.09.2025 (w60 second run) //395000.5; //updated on 20.05.2025 for 2025 data
-  double xmax = 403000.5; //updated on 13.03.2026 (w74 second run, for 2026 data) 
+  //double xmax = 403000.5; //updated on 13.03.2026 (w74 second run, for 2026 data) 
+  double xmax = 405000.5; //updated on 26.05.2026 (w83 later runs, for 2026 data) 
 	double xmin = 355000.5;
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
