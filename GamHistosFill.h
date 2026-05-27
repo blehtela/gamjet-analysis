@@ -656,7 +656,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		ds=="summer2024P8_PTG200toInf-HT40to400" || ds=="summer2024P8_PTG200toInf-HT400to600" ||
 		ds=="summer2024P8_PTG200toInf-HT600to1000" || ds=="summer2024P8_PTG200toInf-HT1000toInf" || //added those 15 parts on 11.03.2026 (w74)
 		//ds.c_str().Contains("summer2024QCD") || //testing with contains
-    TString(ds.c_str()).Contains("2024") || //covers also 2024[C,D,E,F,G,H,Iv1,Iv2]-jmenano
+    TString(ds.c_str()).Contains("2024") || //covers also 2024[C,D,E,F,G,H,Iv1,Iv2]-jmenano // same for nibs
     TString(ds.c_str()).Contains("summer2024P8") || //w80: added this - in next cleanup, can remove the more specific ds names !
 		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
@@ -832,7 +832,7 @@ void GamHistosFill::Init(TTree *tree)
    if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
    //if(!(is25 || is26)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025) NOTE: also some '24 are now migrated to v15...
-   if(!(is25 || is26) && !(isMC && is24 && isJMEnano)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);  //w80 updated
+   if(!(is24 && isJMEnano) && !(is25 || is26) && !(isMC && is24 && isJMEnano)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);  //w80 updated
    //fChain->SetBranchAddress("Jet_nConstituents", Jet_nConstituents, &b_Jet_nConstituents);
    //fChain->SetBranchAddress("Jet_nElectrons", Jet_nElectrons, &b_Jet_nElectrons);
    //fChain->SetBranchAddress("Jet_nMuons", Jet_nMuons, &b_Jet_nMuons);
