@@ -1,0 +1,10 @@
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma0_nib1-fib1-385836-385842.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma0_nib1-fib2-385863-385889.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma0_nib1-fib3-385908-385934.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma0_nib1-fib4-385986-386010.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma0_nib1-fib5-386025-386319.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma1_nib1-fib1-385836-385842.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma1_nib1-fib2-385863-385889.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma1_nib1-fib3-385908-385934.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma1_nib1-fib4-385986-386010.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024H_GamJet_EGamma1_nib1-fib5-386025-386319.root

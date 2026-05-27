@@ -1,0 +1,14 @@
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib1-379416-379618.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib2-379660-379729.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib3-379765-379866.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib4-379984-380043.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib5-380049-380066.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib6-380074-380115.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma0_nib1-fib7-380126-380236.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib1-379416-379618.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib2-379660-379729.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib3-379765-379866.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib4-379984-380043.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib5-380049-380066.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib6-380074-380115.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/DataReprocessing-JMEnano/GamJet DataReprocessing-JMEnano_2024C_GamJet_EGamma1_nib1-fib7-380126-380236.root

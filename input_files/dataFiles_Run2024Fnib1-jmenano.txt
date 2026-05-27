@@ -1,0 +1,2 @@
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024F_GamJet_EGamma0_nib1-fib1-382229-382262.root
+https://hip-cms-se.csc.fi:2880/store/user/blehtela/jerc/fibskims/2024/Data-JMEnano/GamJet/Data-JMEnano_2024F_GamJet_EGamma1_nib1-fib1-382229-382262.root
