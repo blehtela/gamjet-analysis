@@ -1450,14 +1450,14 @@ void GamHistosFill::Loop()
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
     //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_28May2026.root", 
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_28May2026.root",  //just for one go
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_02Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_28May2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_02Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
