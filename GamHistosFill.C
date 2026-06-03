@@ -1449,8 +1449,8 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS... 
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_28May2026.root", 
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_02Jun2026.root",  //just for one go
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_02Jun2026.root", 
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_02Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
@@ -1656,9 +1656,43 @@ void GamHistosFill::Loop()
   int nMG_gam3(0);
   double wMG_gam3(0);
   TH1D *hxsec1(0), *hxsec2(0), *hxsec3(0), *hnevt1(0), *hnevt2(0), *hnevt3(0), *hsumw1(0), *hsumw2(0), *hsumw3(0);
-  TH1D *hLHE_HT1(0), *hLHE_HT2(0), *hLHE_HT3(0), *hHT1(0), *hHT2(0), *hHT3(0);
+  TH1D *hLHE_PTG1(0), *hLHE_PTG2(0), *hLHE_PTG3(0), *hPTG1(0), *hPTG2(0), *hPTG3(0);
+
+  TH1D *h_eventweight_allbins(0), *h_eventweight1(0), *h_eventweight2(0), *h_eventweight3(0);
+  TH1D *h_genweight_allbins(0), *h_genweight1(0), *h_genweight2(0), *h_genweight3(0);
+  TH1D *h_lumiweight_allbins(0), *h_lumiweight1(0), *h_lumiweight2(0), *h_lumiweight3(0);
+  TH1D *hsumwnorm1(0), *hsumwnorm2(0), *hsumwnorm3(0);
+
   if (isMG && !isQCD && isPTG) {
     cout << "This is a PTG sample." << endl << flush;
+
+    // w85: more control plots for MC binweighting --> do this in the actual if condition
+    fout->mkdir("binweighting_controlplots");
+    fout->cd("binweighting_controlplots");
+    // do one for weight on its own --> just a histogram that stores eventweight from genWeight branch for each event (should we also do this per HT bin?
+    // one for HT for each PTG-bin (weighted, unweighted)
+    //
+    h_eventweight_allbins =  new TH1D("h_eventweight_allbins", "All PTG-HT bins: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
+    h_eventweight1 =  new TH1D("h_eventweight1", "PTG10to100: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
+    h_eventweight2 =  new TH1D("h_eventweight2", "PTG100to200: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
+    h_eventweight3 =  new TH1D("h_eventweight3", "PTG200toInf: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
+ 
+    h_genweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 3);
+    h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc;lumi_weight;N_{events}", 300, 0, 3);
+
+    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 300, 0, 3);
+    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 300, 0, 3);
+    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 300, 0, 3);
+
+    h_lumiweight1 = new TH1D("h_lumiweight1", "lumi weight as lumi_data/lumi_mc per HT-bin in PTG10to100;H_{T} (GeV);lumi_weight", nht_gam1, vht_gam1);
+    h_lumiweight2 = new TH1D("h_lumiweight2", "lumi weight as lumi_data/lumi_mc per HT-bin in PTG100to200;H_{T} (GeV);lumi_weight", nht_gam2, vht_gam2);
+    h_lumiweight3 = new TH1D("h_lumiweight3", "lumi weight as lumi_data/lumi_mc per HT-bin in PTG200toInf;H_{T} (GeV);lumi_weight", nht_gam3, vht_gam3);
+ 
+    hsumwnorm1 = new TH1D("hsumwnorm1","normalised sum of weights in PTG10to100: summedGenWeight/summedGenEventCount;H_{T} (GeV);Sum(weights)/Sum(nGenEvt)",nht_gam1,vht_gam1);
+    hsumwnorm2 = new TH1D("hsumwnorm2","normalised sum of weights in PTG100to200: summedGenWeight/summedGenEventCount;H_{T} (GeV);Sum(weights)/Sum(nGenEvt)",nht_gam2,vht_gam2);
+    hsumwnorm3 = new TH1D("hsumwnorm3","normalised sum of weights in PTG200toInf: summedGenWeight/summedGenEventCount;H_{T} (GeV);Sum(weights)/Sum(nGenEvt)",nht_gam3,vht_gam3);
+
+    //curdir->cd();
 
     //when running over events: select correct HTbins for this particular ptgam bin
     //here it is done before the event loop, so need to fill the three histos (all)
@@ -1675,13 +1709,25 @@ void GamHistosFill::Loop()
     hsumw2 = new TH1D("hsumw2",";H_{T} (GeV);Sum(weights)",nht_gam2,vht_gam2);
     hsumw3 = new TH1D("hsumw3",";H_{T} (GeV);Sum(weights)",nht_gam3,vht_gam3);
 
+
+    /*
     hLHE_HT1 = new TH1D("hLHE_HT1",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam1,vht_gam1); //not here, ok will do it.
     hLHE_HT2 = new TH1D("hLHE_HT2",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam2,vht_gam2);
     hLHE_HT3 = new TH1D("hLHE_HT3",";H_{T} (GeV);N_{evt} (unweighted)", nht_gam3,vht_gam3);
     hHT1 = new TH1D("hHT1",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); //not sure if this needed now? (keep it for now)
     hHT2 = new TH1D("hHT2",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
     hHT3 = new TH1D("hHT3",";H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
+    */
 
+    //update the histogram naming to avoid confusion: one histogram per each PTG bin showing the HT spectrum for this PTG bin.
+    hLHE_PTG1 = new TH1D("hLHE_PTG1","H_{T} spectrum for PTG10to100 bin before before weights (LHE?);H_{T} (GeV);N_{evt} (unweighted)", nht_gam1,vht_gam1);
+    hLHE_PTG2 = new TH1D("hLHE_PTG2","H_{T} spectrum for PTG100to200 bin before before weights (LHE?);H_{T} (GeV);N_{evt} (unweighted)", nht_gam2,vht_gam2);
+    hLHE_PTG3 = new TH1D("hLHE_PTG3","H_{T} spectrum for PTG200toInf bin before before weights (LHE?);H_{T} (GeV);N_{evt} (unweighted)", nht_gam3,vht_gam3);
+    hPTG1 = new TH1D("hPTG1","H_{T} spectrum for PTG10to100;H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); //not sure if this needed now? (keep it for now)
+    hPTG2 = new TH1D("hPTG2","H_{T} spectrum for PTG100to200;H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
+    hPTG3 = new TH1D("hPTG3","H_{T} spectrum for PTG200toInf;H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
+
+    curdir->cd();
 
     // NUMBER OF EVENTS AND SUM OF WEIGHTS PER BIN
     // Reference number of events, retrieved manually with
@@ -1728,7 +1774,7 @@ void GamHistosFill::Loop()
     // NOTE: USE THE ONES FROM DAS FOR THE CALCULATION of the MC lumi (used in the lumi-weight) --> lumi_MC = nevt(DAS)/xs(sample) --> precalculate this, so the ratio does not need to be done in each event.
     // could do this in the CalcGenWeight script actually.
     // for the lumi_data, use one full year like e.g. 2024CDEFGHI with brilcalc (is one value per year), goldenJSON for 2024 to brilcalc (or from PdmV)
-    //from PdmV for 2024:  	109.95 /fb, for 2025:, for 2026: 
+    //from PdmV for 2024:  	109.95 /fb, for 2025:, for 2026: //start testing with lumi-value for 2024, should get also the others for 25/26. (from PdmV)
     int vnevt1jmenano[6] = {141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
     int vnevt2jmenano[5] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
     int vnevt3jmenano[4] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
@@ -1740,13 +1786,88 @@ void GamHistosFill::Loop()
     double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
     double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
 
-    //TO DO: work in progress
-    /*
-    double vnormgensumw1jmenano[6] = { insert the numbers from the other script, essentially the: summedGenWeight/summedGenEventCount }; //sum of weights for ptgam bin 1
-    double vnormgensumw2jmenano[5] = {}; //sum of weights for ptgam bin 1
-    double vnormgensumw3jmenano[4] = {}; //sum of weights for ptgam bin 1
-    */
+    // developments added in w85, fixing binweighting
+    // --------------------------------------------------------------------------------------------------------------------
+    //TO DO: work in progress --> here put summedGenWeight/summedGenEventcount (obtained with my other script)
+    //insert the numbers from the other script, essentially the: summedGenWeight/summedGenEventCount 
+    double vnormgensumw1jmenano[6] = {684146.394272, 206275.381721, 41911.962040, 4367.439010, 1164.045809, 162.632411}; //sum of weights for ptgam bin 1, divided by sum of gen evt counts
+    double vnormgensumw2jmenano[5] = {4037.952164, 2050.650420, 299.427554, 101.796905, 18.288361}; //sum of weights for ptgam bin 2, divided by sum of gen evt counts
+    double vnormgensumw3jmenano[4] = {507.156594, 149.123754, 57.806312, 12.029758}; //sum of weights for ptgam bin 3, divided by sum of gen evt counts
 
+
+
+    // CROSS SECTION PER BIN - moved this further up in w85, since now i need it already for the lumi-weight calculation per bin
+    // Values from Fikri, 28th January 2025 (mattermost)
+    double vxsec1[nht_gam1] = {123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
+    double vxsec2[nht_gam2] = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
+    double vxsec3[nht_gam3] = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
+ 
+
+    // ----------------------- //
+    // lumi-weight calculation //
+    // ----------------------- //
+
+    // calculating the luminosity weight, which is essentially lumi_data / lumi_MC, where lumi_data is read from PdmV twiki,
+    // and lumi_MC is calculated as nevt(DAS)/xs(sample). This quantity therefore has to only be calculated once per MC sample bin.
+    //int nhtptgBins = 15;
+    double lumi_data_fb = 109.95; // this is in inverse fb, check in which unit the XS was given (was given in pb... so need to convert)
+    double lumi_data = 10e3 * lumi_data_fb;
+    double lumiweight1[nht_gam1];
+    double lumiweight2[nht_gam2];
+    double lumiweight3[nht_gam3];
+    double lumi_mc_tmp; //temporary variable holding MC lumi for given bin
+
+    // calculate but also inform user about lumi-weight per bin
+    //PTG10to100 - first PTG bin
+    //for(int j=0; j < nhtptgBins; i++){//calculate in /pb
+    cout << "/n> Calculate lumi-weight for first PTG bin (PTG10to100): " << endl << flush;
+    for(int j=0; j < nht_gam1; j++){//calculate in /pb for given bin
+	lumi_mc_tmp = vnevt1jmenano[j]/vxsec1[j];
+	lumiweight1[j] = lumi_data / lumi_mc_tmp;
+	h_lumiweight1->SetBinContent(j+1, lumiweight1[j]);	//store in histogram for later (control plots)
+	cout << "For HTPTG-bin " << j+1 << " of 15, the lumi-weight is: " << lumiweight1[j] << endl << flush;
+	h_lumiweight_allbins->Fill(lumiweight1[j]); //all bins, HT-inclusive, PTG-inclusive
+    }
+    //PTG100to200 - second PTG bin
+    cout << "> Calculate lumi-weight for second PTG bin (PTG100to200): " << endl << flush;
+    for(int j=0; j < nht_gam2; j++){//calculate in /pb
+	lumi_mc_tmp = vnevt2jmenano[j]/vxsec2[j];
+	lumiweight2[j] = lumi_data / lumi_mc_tmp;
+	h_lumiweight2->SetBinContent(j+1, lumiweight2[j]);	//store in histogram for later (control plots)
+	cout << "For HTPTG-bin " << nht_gam1+j+1 << " of 15, the lumi-weight is: " << lumiweight2[j] << endl << flush;
+	h_lumiweight_allbins->Fill(lumiweight2[j]); //all bins, HT-inclusive, PTG-inclusive
+
+    }
+    //PTG200toInf - third PTG bin
+    cout << "> Calculate lumi-weight for third PTG bin (PTG200toInf): " << endl << flush;
+    for(int j=0; j < nht_gam3; j++){//calculate in /pb
+	lumi_mc_tmp = vnevt3jmenano[j]/vxsec3[j];
+	lumiweight3[j] = lumi_data / lumi_mc_tmp;
+	h_lumiweight3->SetBinContent(j+1, lumiweight3[j]);	//store in histogram for later (control plots)
+	cout << "For HTPTG-bin " << nht_gam1+nht_gam2+j+1 << " of 15, the lumi-weight is: " << lumiweight3[j] << endl << flush;
+	h_lumiweight_allbins->Fill(lumiweight3[j]); //all bins, HT-inclusive, PTG-inclusive
+    }
+    cout << "/n" << endl << flush;
+
+    // reminder:
+    //double vxsec1[nht_gam1] = {123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
+
+
+    // ---------------------- //
+    // gen-weight calculation //
+    // ---------------------- //
+    // see below, use vnormgensumw3jmenano etc.
+    // example for firt PTG bin, where j is the current HT bin in first PTG bin:
+    //
+    // genweightPTG1[j] = vnormgensuw1[j]/genWeight;
+    //
+    // here, w is the per-event genWeight as in Events->genWeight for current event. And vnormgensum1 is containing what i got from my other script.
+    // since this includes a per-event quantity, i cannot calculate this upfront, but needs to happen in the event loop.
+    // the overall weight is then binweight = genweightPTG1 * lumiweightPTG1 = vnormgensum1[j]/genWeight * lumiweight1[j]
+    // try this... w85.
+    // TO DO: adjust all the control histograms, might not be correct anymore PLUS might want some extra for the lumiweight, genweight etc..
+    //
+    // --------------------------------------------------------------------------------------------------------------------
 
 
     //setting the correct bin contents in the histograms (btw: this could be handled very differently, without histos, will change it at some point)
@@ -1755,9 +1876,11 @@ void GamHistosFill::Loop()
       cout << "test: " << i << endl;
       int nevt1 = isJMEnano ? vnevt1jmenano[i] : vnevt1[i];
       double sumw1 = isJMEnano ? vsumw1jmenano[i] : vsumw1[i];
+      double sumwnorm1 = vnormgensumw1jmenano[i]; //w85: need to still calculate this also for the stanard MC sample case, now just for jmenano
       hnevt1->SetBinContent(i+1, nevt1);
       nMG_gam1 += nevt1;
       hsumw1->SetBinContent(i+1, sumw1);
+      hsumwnorm1->SetBinContent(i+1, sumwnorm1); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
       if(sumw1<0){cout << Form("negative weight in 1st PTG bin, HT bin index %d, sumw1 = %f", i, sumw1) << endl << flush;}
       else{cout << Form("positive (or zero) weight in 1st PTG bin, HT bin index %d, sumw1 = %f", i, sumw1) << endl << flush;}
       wMG_gam1 += sumw1; //how can this end up being negative in the end?....
@@ -1820,11 +1943,13 @@ void GamHistosFill::Loop()
  
     
 
-    // CROSS SECTION PER BIN
+    /*
+    // CROSS SECTION PER BIN - moved this further up, since now i need it already for the lumi-weight calculation per bin
     // Values from Fikri, 28th January 2025 (mattermost)
     double vxsec1[nht_gam1] = {123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
     double vxsec2[nht_gam2] = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
     double vxsec3[nht_gam3] = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
+    */
 
     //xsec for pTgam bin 1
     cout << Form("double vxsec1[%d] = {",nht_gam1);
@@ -2345,6 +2470,17 @@ void GamHistosFill::Loop()
   TProfile *prmpf_psweightOff = new TProfile("prmpf_psweightOff","MPF without PSweight variation;p_{T,#gamma};MPF",nx,vx);
   TProfile *prmpf_psweightOn = new TProfile("prmpf_psweightOn",Form("MPF with FSR psweightIndex = %d * nominalScale ;p_{T,#gamma};MPF", psweightIndex),nx,vx);
 
+  // w85: more control plots for MC binweighting --> do this in the actual if condition
+  /*
+  if(isPTG){
+      fout->mkdir("binweighting_controlplots");
+      fout->cd("binweighting_controlplots");
+      // do one for weight on its own --> just a histogram that stores eventweight from genWeight branch for each event
+      // one for HT for each PTG-bin (weighted, unweighted)
+      TH1D *h_genweight =  new TH1D("h_genweight", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 3);
+  }
+  */
+ 
 
 
   // New flavour studies (started in 2026) stored in a separate directory, starting from w72
@@ -3752,7 +3888,14 @@ void GamHistosFill::Loop()
     // Event weights (1 for MadGraph)
     //bool isMC = (run==1);
     assert((isMC && run==1) || (!isMC && run!=1));
-    double w = (isMC ? genWeight : 1);    //in case of MC set w to genWeight, otherwise (data) leave it 1
+
+    // w85:calculate the appropriate weight for a given event belong to a given PTG-HT-bin
+    // which bin it belongs to can be seen from the file (i.e. sample) from which it is read.
+    //double w = (isMC ? (1./genWeight) :1); //get the genWeight in case this is MC
+    //double evtWeightWithPS = ((isMC && applyPSweight) ? w*PSWeight[psweightIndex]: w); //extra version in case of PSweights applied
+ 
+    //double w = (isMC ? genWeight : 1);    //in case of MC set w to genWeight, otherwise (data) leave it 1
+    double w = (isMC ? (1./genWeight) : 1); //new weight to implement binweighting for jmenano // w85
     //keep event weight including ps weight as a separate variable, to plot also the difference with/without ps weight var
     double evtWeightWithPS = ((isMC && applyPSweight) ? w*PSWeight[psweightIndex]: w); //if applying PS weight scale var, do it here
     if (isMG && !isPTG) {
@@ -3768,53 +3911,109 @@ void GamHistosFill::Loop()
       hHT->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
     }
 
+    // ------------------------------------------------ //
+    // gen-weight calculation for HT-PTG-binned samples //
+    // ------------------------------------------------ //
+    // updated for w85. Testing. TO DO: Currently only works for jmenano, need to add more if() or fix it for the standard MC also!!
+    // fixing this for standard MC is semi-urgent, since I want to test the new HT10to40 bin! (which is not yet available in jmenano)
+    // note that w and evtWeightWithPS are already obtained a few lines above ^
     if (isMG && isPTG) {
       //find current ptht bin
       //int ipt = LHEPart_pt[22]; // LHEPart_pdgid == 22 (photon)
       //if(ipt>=10 && ipt<100){
+      // 1) find which PTG bin this events belongs to, one event can only belong to one PTG bin, so w does not get overwritten.
       if(TString(_filename.c_str()).Contains("PTG10to100")){
+        // 2) find which HT bin this event belongs to and store some values 
+        // (check if those are the correct histos and variables used to fill it actually)
         int iht = hxsec1->FindBin(LHE_HT);
         double xsec = hxsec1->GetBinContent(iht);
         double sumw = hsumw1->GetBinContent(iht);
-        double wht = (sumw ? xsec / sumw : 1);
-        w *= wht;
+        double wht = (sumw ? xsec / sumw : 1);  // using still for standard MC, but should update also this
+        //w *= wht;
+        //
+	// 3) calculate the appropriate wait for this PTG-HT bin (can later be supplemented with PS weights etc)
+        double lumiw = h_lumiweight1->GetBinContent(iht); // getting the lumiweight for this PTG-HT-bin
+        double sumwnorm = hsumwnorm1->GetBinContent(iht); //getting the weight based on summedGenWeight/summedGenEventCount calculation (separate script)
+	if(isJMEnano){ 
+	    w*= lumiw * sumwnorm; //for jmenano MC samples
+	    evtWeightWithPS *= lumiw * sumwnorm; // store an additional version of the event-binweight including also a chosen FSR PSweight
+	}
+	else{
+	    w *= wht; //for standard MC until it is fixed to my new approach (introduced for jmenano in w85). 
+	    evtWeightWithPS *= wht;
+	}
+        //book-keeping of the event weight applied (could do also for PS weight)
+        h_eventweight_allbins->Fill(w);
+        h_eventweight1->Fill(w);
         //should be wht = sumnevt/sumw = 1. /(sumw/sumnevt) --> note: when updated in CalcGenWeight script, sumw is already normalised and can keep code above
         // this w/(normalisedSumwWeight) will be 1.0 for most of the sample (in LO samples)
-        cout << "weight: " << w << endl << flush;
+        //cout << "weight: " << w << endl << flush;
         //for MC: scale to data-lumi
-        evtWeightWithPS *= wht;
-        hLHE_HT1->Fill(LHE_HT); // cross-check hnevt afterwards
-        hHT1->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
-      }
+        //evtWeightWithPS *= wht;
+        hLHE_PTG1->Fill(LHE_HT); // cross-check hnevt afterwards
+        hPTG1->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+      }//PTG10to100 (PTG-bin 1)
       //if(ipt>=100 && ipt<200){
       if(TString(_filename.c_str()).Contains("PTG100to200")){
         int iht = hxsec2->FindBin(LHE_HT);
         double xsec = hxsec2->GetBinContent(iht);
         double sumw = hsumw2->GetBinContent(iht);
         double wht = (sumw ? xsec / sumw : 1);
-        w *= wht;
-        evtWeightWithPS *= wht;
-        hLHE_HT2->Fill(LHE_HT); // cross-check hnevt afterwards
-        hHT2->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
-      }
+        //w *= wht;
+ 
+	// new since w85:
+        double lumiw = h_lumiweight2->GetBinContent(iht); //lumiweight for this PTG-HT-bin
+        double sumwnorm = hsumwnorm2->GetBinContent(iht); //weight based on summedGenWeight/summedGenEventCount
+	if(isJMEnano){ 
+	    w*= lumiw * sumwnorm; //for jmenano MC samples
+	    evtWeightWithPS *= lumiw * sumwnorm; // store an additional version of the event-binweight including also a chosen FSR PSweight
+	}
+	else{
+            w *= wht;
+            evtWeightWithPS *= wht;
+	}
+        //book-keeping of the event weight applied (could do also for PS weight)
+        h_eventweight_allbins->Fill(w);
+        h_eventweight2->Fill(w);
+ 
+        hLHE_PTG2->Fill(LHE_HT); // cross-check hnevt afterwards
+        hPTG2->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+      }//PTG100to200
       //if(ipt>=200){
       if(TString(_filename.c_str()).Contains("PTG200toInf")){
         int iht = hxsec3->FindBin(LHE_HT);
         double xsec = hxsec3->GetBinContent(iht);
         double sumw = hsumw3->GetBinContent(iht);
         double wht = (sumw ? xsec / sumw : 1);
-        w *= wht;
-        evtWeightWithPS *= wht;
-        hLHE_HT3->Fill(LHE_HT); // cross-check hnevt afterwards
-        hHT3->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+        //w *= wht;
+        //evtWeightWithPS *= wht;
+
+	// new since w85:
+        double lumiw = h_lumiweight3->GetBinContent(iht); //lumiweight for this PTG-HT-bin
+        double sumwnorm = hsumwnorm3->GetBinContent(iht); //weight based on summedGenWeight/summedGenEventCount
+	if(isJMEnano){ 
+	    w*= lumiw * sumwnorm; //for jmenano MC samples
+	    evtWeightWithPS *= lumiw * sumwnorm; // store an additional version of the event-binweight including also a chosen FSR PSweight
+	}
+	else{
+            w *= wht;
+            evtWeightWithPS *= wht;
+	}
+        //book-keeping of the event weight applied (could do also for PS weight)
+        h_eventweight_allbins->Fill(w);
+        h_eventweight3->Fill(w);
+ 
+
+        hLHE_PTG3->Fill(LHE_HT); // cross-check hnevt afterwards
+        hPTG3->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
         // add an extra histogram for photon pT (before any cuts)
-        // for each of the weighted histos (with all weights) like hHT1 etc, add one without the weights but with SAME BINNING, and one with only lumi-weight
+        // for each of the weighted histos (with all weights) like hPTG1 etc, add one without the weights but with SAME BINNING, and one with only lumi-weight
         // note: also hadd the three HT histos to see whether it is smooth
         //for data we have trigger prescale weights? will discuss another time
         //for MC this lumiweight will smooth out everything, needed for fair MC-data-comparison
         // use lumi for 2024/2025/2026 ? (split sample in three parts), if you use same sample for three years, when you hadd in the end you add same event three times....
       }
-    }
+    }//if (isMC && isPTG)
 
 
 
