@@ -97,24 +97,24 @@ CalcGenWeight::CalcGenWeight(TTree *tree, string pthtbinname) : fChain(0), pthtb
 
    if (tree == 0) {
 
-#ifdef SINGLE_TREE
-      // The following code should be used if you want this class to access
-      // a single tree instead of a chain
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Memory Directory");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("Memory Directory");
-      }
-      f->GetObject("Runs",tree);
+      #ifdef SINGLE_TREE
+            // The following code should be used if you want this class to access
+            // a single tree instead of a chain
+            TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Memory Directory");
+            if (!f || !f->IsOpen()) {
+               f = new TFile("Memory Directory");
+            }
+            f->GetObject("Runs",tree);
+         
+      #else // SINGLE_TREE
+         
+            // The following code should be used if you want this class to access a chain of trees.
+            TChain * chain = new TChain("Runs","");
+            chain->Add("root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT40to100PTG10to100_Skim_5of75.root/Runs"); //not so sure about this? (analoguous to GamHistosFill, but not from MakeClass)
+            tree = chain;
+      #endif // SINGLE_TREE
 
-#else // SINGLE_TREE
-
-      // The following code should be used if you want this class to access a chain of trees.
-      TChain * chain = new TChain("Runs","");
-      chain->Add("root://hip-cms-se.csc.fi/store/user/rverma/cms-jerc-run3/Skim/GamJet/2024/MCSummer24/GJets/date-14Feb2025_time-111503_commit-40144c3/MCSummer24_2024_GamJet_GJetsHT40to100PTG10to100_Skim_5of75.root/Runs"); //not so sure about this? (analoguous to GamHistosFill, but not from MakeClass)
-      tree = chain;
-#endif // SINGLE_TREE
-
-   }
+   } //if ttree == 0
    Init(tree);
 } //end of constructor
 

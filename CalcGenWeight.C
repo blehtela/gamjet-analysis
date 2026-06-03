@@ -64,16 +64,21 @@ void CalcGenWeight::Loop() {
 	cout << "Chained " << nFiles << " files\n" << endl << flush;
 	*/
 
+	cout << "now in loop!" << endl << flush;
+
 	if(fChain == 0) return;
 
 	//switch on the genEventSumw branch
 	fChain->SetBranchStatus("*",0); //switch off all branches
+	cout << "after set branchstatus * for all!" << endl << flush;
 	fChain->SetBranchStatus("genEventSumw",1); //switch on branch with genEventSumw, the gen event weight
-	fChain->SetBranchStatus("genEventCount",1); //switch on branch with genEventSumw, the gen event weight
+	cout << "after set branchstatus 1 for genEventSumw!" << endl << flush;
+	fChain->SetBranchStatus("genEventCount",1); //switch on branch with genEventCount, the gen event count
+	cout << "after set branchstatus 1 for genEventCount!" << endl << flush;
 
 
 	//Loop through events to add the get genEventSumw for each event
-	Long64_t nentries = fChain->GetEntries();
+	Long64_t nentries = fChain->GetEntries(); //this still gives the number of original files, even though running over skim?!
 	cout << "\nStarting loop over " << pthtbin << " with "<< nentries << " entries" << endl;
 
 	//double summedGenWeight(0.0);
@@ -82,10 +87,14 @@ void CalcGenWeight::Loop() {
 
 	for(Long64_t jentry=0; jentry<nentries; jentry++){
 		Long64_t ientry = LoadTree(jentry);
+		//cout << "ientry = " << ientry << endl << flush; //somehow does not go higher than 3...
 		if(ientry<0) break;
-		b_genEventSumw->GetEntry(ientry); //read from branch
+		//b_genEventSumw->GetEntry(ientry); //read from branch (why from branch end not chain?)
+		//b_genEventCount->GetEntry(ientry); //read from branch (why from branch end not chain?)
+		fChain->GetEntry(ientry);
 		summedGenWeight += genEventSumw;
-		summedGenEventCount += genEVentCount;
+		summedGenEventCount += genEventCount;
+		//cout << "genEventCount now: " << genEventCount << endl << flush; 
 		//cout << "genEventSumw now: " << genEventSumw << endl << flush; 
 		//cout << "current total sum: " << summedGenWeight << endl << flush;
     	
@@ -94,22 +103,38 @@ void CalcGenWeight::Loop() {
 	}
 
 	cout << "\nProcessed " << nentries << " entries." << endl << flush;
+	double prelimBinWeight = summedGenWeight/summedGenEventCount;
+	const char* prelimBinWeightString = Form("%f", prelimBinWeight);
+	/*
+	cout << "double(prelimBinWeight): " << double(prelimBinWeight) << endl << flush;
+	cout << "float(prelimBinWeight): " << float(prelimBinWeight) << endl << flush;
+	cout << "summedGenWeight/summedGenEventCount: " << summedGenWeight/summedGenEventCount << endl << flush;
+	cout << "float(summedGenWeight/summedGenEventCount): " << float(summedGenWeight/summedGenEventCount) << endl << flush;
+	//cout << "setprecision(10)" << cout.setprecision(10) << prelimBinWeight << endl << flush;
+	*/
+
+
 
 	//summedGenWeight / summedEventCount
-	//summedEVentcount is not the same as nevents
+	//summedEventCount is not the same as nevents
 
 	//write to file: sample name, summedGenWeight (or write it to console for now)
 	cout << "Total sum of gen event weights in sample " << pthtbin << " is: " << summedGenWeight << endl << flush;
-	cout << "Normalised (by gen evt count) summedGenWeight in sample:  " << pthtbin << " is: " << summedGenWeight/summedGenEventCount << endl << flush;
+	cout << "Total sum of gen event counts in sample " << pthtbin << " is: " << summedGenEventCount << endl << flush;
+	cout << "Normalised (by gen evt count) summedGenWeight in sample:  " << pthtbin << " is: " << prelimBinWeightString << endl << flush;
 	cout << "----------------------------------------\n" << endl << flush;
 
 	ofstream outputfile;
-	const char* filename = Form("genweight_%s.txt", pthtbin.c_str());
+	//const char* filename = Form("genweight_%s.txt", pthtbin.c_str());
+	const char* filename = Form("genweight_%s_newMay2026.txt", pthtbin.c_str());
 	//outputfile.open(filename, app); //operations at end of file only (app = append)
 	outputfile.open(filename, fstream::app); //operations at end of file only (app = append)
 
-
-	outputfile << pthtbin  << " " << nentries << " " << summedGenWeight << "\n"; //write bin, nevts, sumw to file
+	//outputfile << pthtbin  << " " << nentries << " " << summedGenWeight << "\n"; //write bin, nevts, sumw to file
+	const char* outputmessage = Form("File will contain: pthtbin (%s), nentries (#files in chain: %lld), summedGenWeight (%f), summedGenEventCount (%f), summedGenWeight/summedGenEventCount (pure sample bin weight: %f)", pthtbin.c_str(), nentries, summedGenWeight, summedGenEventCount, prelimBinWeight);
+	cout << outputmessage << endl << flush;
+	outputfile << "\npthtbin " << "nentries " << "summedGenWeight " << "summedGenEventCount " << "summedGenWeight/summedGenEventCount "<< "\n"; //write bin, nevts, sumw to file
+	outputfile << pthtbin  << " " << nentries << " " << summedGenWeight << " " << summedGenEventCount << " " << prelimBinWeightString << "\n"; //write bin, nevts, sumw to file
 
 	outputfile.close();
 } //end of CalcGenWeight::Loop()
