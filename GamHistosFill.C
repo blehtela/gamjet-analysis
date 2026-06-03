@@ -59,6 +59,9 @@ string smearJERSFyear = "jersf2025"; //to put in the file name, so we don tneed 
 bool applyPSweight = true;
 int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
 
+//for binweighting
+double maxEventWeight = 10000.; //events with an eventweight w higher than this are skipped (since w85)
+
 //store in jetmet eos (for big MC helpful...)
 bool storeEOSjetmet = true;
 
@@ -325,6 +328,9 @@ void GamHistosFill::Loop()
   int count_sameIndexGenMatching(0);
   int count_diffIndexGenMatching(0);
   int count_noMatchedGen(0);
+
+  //w85: count number of events thrown away due to too high event weight (relevant for MC), added 03.06.2026
+  int count_tooHighEventWeight(0);
  
 
   
@@ -1449,15 +1455,15 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS... 
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_02Jun2026.root", 
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_02Jun2026.root",  //just for one go
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_03Jun2026.root", 
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_03Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_02Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_03Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -4015,6 +4021,12 @@ void GamHistosFill::Loop()
       }
     }//if (isMC && isPTG)
 
+    // w85: Cleaning from events that get very high event weight:
+    if( w > maxEventWeight ){
+	count_tooHighEventWeight++;
+	continue;	//make sure this makes you jump out of the correct for-loop (i.e. skipping this event) - check histogram hgam0
+    }
+
 
 
     //bool doPtHatFilter = true;
@@ -6072,7 +6084,9 @@ if (doGamjet2 && hg2) {
     cout << "Approximately " << numStochasticJets << " of all smeared jets (" << numAllJets << ") were smeared with STOCHASTIC method. \n" << endl << flush;
 
 
-
+    //w85: throwing away events with too high event weight
+    cout << "---------------------------------------------------------------------------------------------" << endl << flush;
+    cout << "\nSkipped " << count_tooHighEventWeight << " events due to too high event weight ( w > " << maxEventWeight << " ). \n" << endl << flush;
 
     // Add extra plot for jet response vs photon pT
     if (isMC) {
