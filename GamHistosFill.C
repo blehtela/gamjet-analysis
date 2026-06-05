@@ -527,7 +527,9 @@ void GamHistosFill::Loop()
 
 
     //multiplicity needed for replacing jetID in 2025
-    if(is25 || is26){
+    //w85: important note - also needed for 24 jmenano samples!
+    //if(is25 || is26){
+    if(is25 || is26 || (is24 && isJMEnano)){
       fChain->SetBranchStatus("Jet_chMultiplicity",1);
       fChain->SetBranchStatus("Jet_neMultiplicity",1);
     }
@@ -1452,18 +1454,18 @@ void GamHistosFill::Loop()
 
   //to do (w50): add the string with pu- only for pu reweighted case, do for this %s = (puera.c_str()!="") ? Form("_pu-%s",puera.c_str()) : "", 
 
-  //test in May 2026 for the huge MC files to not fill up my small AFS... 
+  //test in May 2026 for the huge MC files to not fill up my small AFS...  //TO DO: create better logic for filenaming, because it gets messy.
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_03Jun2026.root", 
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_03Jun2026.root",  //just for one go
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_04Jun2026-EXTRATEST.root", 
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_04Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_03Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_04Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1613,7 +1615,7 @@ void GamHistosFill::Loop()
       cout << Form("%s%1.4g",i==0 ? "" : ", ", vxsec[i]);
     }
     cout << "}; // 2022EEP8 hand-adjusted" << endl << flush;
-  }
+  }//if(isMG && !isQCD &&!isPTG)
 
 
   // COMMENTING THIS OUT FOR NOW --> will do the development on the dev branch... need this code to work..
@@ -1651,6 +1653,19 @@ void GamHistosFill::Loop()
   const int nht_gam2 = sizeof(vht_gam2)/sizeof(vht_gam2[0])-1;
   const int nht_gam3 = sizeof(vht_gam3)/sizeof(vht_gam3[0])-1;
 
+  //get the total number of MC bins in order to normalise the control-plots correctly (otherwise become wrong after hadding)
+  //this is of course only needed when processing the bins separately... if i process all in one go, not needed
+  //bool mcbinprocessing = TString(ds.c_str()).Contains("bin..of.."); //TString.Contains() doesnt support this kind of regex matching
+  bool mcbinprocessing = TString(ds.c_str()).Contains("bin"); //make sure in naming convention that this cannot go wrong...
+  int nMCbins = (mcbinprocessing ? (nht_gam1 + nht_gam2 + nht_gam3) : 1.); // used for scaling ONLY the histograms that are filled once for all (not for event-based histos, just those with SetBinContent!)
+  if(mcbinprocessing){
+	cout << "\n>>>>> MC BIN-BASED PROCESSING with number of MC bins nMCbins = " << nMCbins << endl << flush;
+	cout << "\n>>>>> Remember to divide control plots (h_lumiweight, hsumwnorm, hxsec, hnevt, hsumw) by this factor after hadding all these bins, because they get filled each time this analysis runs, independent of whether the current input data belongs to a given bin or not." << endl << flush;
+  }
+  else{
+	cout << "\n>>>>> Processing all MC bins in one go (one inputfile). Double-check!" << endl << flush;
+  }
+
   //select correct HT histogram based on pT bin (three different pT bins)
   //vector<TH1D*> ht_hists = {vht_gam1, vht_gam2, vht_gam3};
   
@@ -1661,13 +1676,19 @@ void GamHistosFill::Loop()
   double wMG_gam2(0);
   int nMG_gam3(0);
   double wMG_gam3(0);
+
+  
+  TH1D *hgam0_control(0); //check the ptgam spectrum for MC whether event-weighting works (also check cleaning from too high weights)
+
   TH1D *hxsec1(0), *hxsec2(0), *hxsec3(0), *hnevt1(0), *hnevt2(0), *hnevt3(0), *hsumw1(0), *hsumw2(0), *hsumw3(0);
   TH1D *hLHE_PTG1(0), *hLHE_PTG2(0), *hLHE_PTG3(0), *hPTG1(0), *hPTG2(0), *hPTG3(0);
 
   TH1D *h_eventweight_allbins(0), *h_eventweight1(0), *h_eventweight2(0), *h_eventweight3(0);
   TH1D *h_genweight_allbins(0), *h_genweight1(0), *h_genweight2(0), *h_genweight3(0);
+  TH1D *h_invGenweight_allbins(0), *h_invGenweight1(0), *h_invGenweight2(0), *h_invGenweight3(0);
   TH1D *h_lumiweight_allbins(0), *h_lumiweight1(0), *h_lumiweight2(0), *h_lumiweight3(0);
   TH1D *hsumwnorm1(0), *hsumwnorm2(0), *hsumwnorm3(0);
+  //for now, just fill the histograms per PTG-bin, could later add PTG-inclusive control plots also.
 
   if (isMG && !isQCD && isPTG) {
     cout << "This is a PTG sample." << endl << flush;
@@ -1675,20 +1696,31 @@ void GamHistosFill::Loop()
     // w85: more control plots for MC binweighting --> do this in the actual if condition
     fout->mkdir("binweighting_controlplots");
     fout->cd("binweighting_controlplots");
+
+    hgam0_control = new TH1D("hgam0_control","pT spectrum of leading photon (after weights);ptgam;N_{events}",400,0,2000); //hgam0 has 197 bins in range [15,1000] --> 5GeV-wide bins, do this here too
+
+
     // do one for weight on its own --> just a histogram that stores eventweight from genWeight branch for each event (should we also do this per HT bin?
     // one for HT for each PTG-bin (weighted, unweighted)
     //
-    h_eventweight_allbins =  new TH1D("h_eventweight_allbins", "All PTG-HT bins: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
-    h_eventweight1 =  new TH1D("h_eventweight1", "PTG10to100: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
-    h_eventweight2 =  new TH1D("h_eventweight2", "PTG100to200: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
-    h_eventweight3 =  new TH1D("h_eventweight3", "PTG200toInf: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 300, 0, 3);
+    h_eventweight_allbins =  new TH1D("h_eventweight_allbins", "All PTG-HT bins: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 2000, 0, 2);
+    h_eventweight1 =  new TH1D("h_eventweight1", "PTG10to100: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 2000, 0, 2);
+    h_eventweight2 =  new TH1D("h_eventweight2", "PTG100to200: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 2000, 0, 2);
+    h_eventweight3 =  new TH1D("h_eventweight3", "PTG200toInf: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 2000, 0, 2);
  
     h_genweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 3);
-    h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc;lumi_weight;N_{events}", 300, 0, 3);
+    h_invGenweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 3);
+    //h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc (PTG-inclusive);lumi_weight;N_{events}", 300, 0, 3);
+    h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc (PTG-inclusive);H_{T} in GeV;lumi_weight", 300, 0, 3);
 
-    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 300, 0, 3);
-    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 300, 0, 3);
-    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 300, 0, 3);
+    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 200, 0, 20);
+    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 200, 0, 20);
+    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 200, 0, 20);
+    h_invGenweight1 =  new TH1D("h_invGenweight1", "inverse of generator weight (1./genWeight) for each event in PTG10to100 (inclusive in HT);1./genWeight;N_{events}", 300, 0, 3);
+    h_invGenweight2 =  new TH1D("h_invGenweight2", "inverse of generator weight (1./genWeight) for each event in PTG100to200 (inclusive in HT);1./genWeight;N_{events}", 300, 0, 3);
+    h_invGenweight3 =  new TH1D("h_invGenweight3", "inverse of generator weight (1./genWeight) for each event in PTG200toInf (inclusive in HT);1./genWeight;N_{events}", 300, 0, 3);
+
+
 
     h_lumiweight1 = new TH1D("h_lumiweight1", "lumi weight as lumi_data/lumi_mc per HT-bin in PTG10to100;H_{T} (GeV);lumi_weight", nht_gam1, vht_gam1);
     h_lumiweight2 = new TH1D("h_lumiweight2", "lumi weight as lumi_data/lumi_mc per HT-bin in PTG100to200;H_{T} (GeV);lumi_weight", nht_gam2, vht_gam2);
@@ -1831,8 +1863,10 @@ void GamHistosFill::Loop()
 	lumi_mc_tmp = vnevt1jmenano[j]/vxsec1[j];
 	lumiweight1[j] = lumi_data / lumi_mc_tmp;
 	h_lumiweight1->SetBinContent(j+1, lumiweight1[j]);	//store in histogram for later (control plots)
+	//h_lumiweight1->SetBinContent(j+1, (1./nMCbins)*lumiweight1[j]);	//store in histogram for later (control plots), scale by nMCbins
 	cout << "For HTPTG-bin " << j+1 << " of 15, the lumi-weight is: " << lumiweight1[j] << endl << flush;
 	h_lumiweight_allbins->Fill(lumiweight1[j]); //all bins, HT-inclusive, PTG-inclusive
+	//h_lumiweight_allbins->Fill(lumiweight1[j], 1./nMCbins); //all bins, HT-inclusive, PTG-inclusive, need to scale it (before hadd)
     }
     //PTG100to200 - second PTG bin
     cout << "> Calculate lumi-weight for second PTG bin (PTG100to200): " << endl << flush;
@@ -1840,9 +1874,10 @@ void GamHistosFill::Loop()
 	lumi_mc_tmp = vnevt2jmenano[j]/vxsec2[j];
 	lumiweight2[j] = lumi_data / lumi_mc_tmp;
 	h_lumiweight2->SetBinContent(j+1, lumiweight2[j]);	//store in histogram for later (control plots)
+	//h_lumiweight2->SetBinContent(j+1, (1./nMCbins)*lumiweight2[j]);	//store in histogram for later (control plots), scale by nMCbins
 	cout << "For HTPTG-bin " << nht_gam1+j+1 << " of 15, the lumi-weight is: " << lumiweight2[j] << endl << flush;
 	h_lumiweight_allbins->Fill(lumiweight2[j]); //all bins, HT-inclusive, PTG-inclusive
-
+	//h_lumiweight_allbins->Fill(lumiweight2[j], 1./nMCbins); //all bins, HT-inclusive, PTG-inclusive, need to scale it (before hadd)
     }
     //PTG200toInf - third PTG bin
     cout << "> Calculate lumi-weight for third PTG bin (PTG200toInf): " << endl << flush;
@@ -1850,8 +1885,10 @@ void GamHistosFill::Loop()
 	lumi_mc_tmp = vnevt3jmenano[j]/vxsec3[j];
 	lumiweight3[j] = lumi_data / lumi_mc_tmp;
 	h_lumiweight3->SetBinContent(j+1, lumiweight3[j]);	//store in histogram for later (control plots)
+	//h_lumiweight3->SetBinContent(j+1, (1./nMCbins)*lumiweight3[j]);	//store in histogram for later (control plots), scale by nMCbins
 	cout << "For HTPTG-bin " << nht_gam1+nht_gam2+j+1 << " of 15, the lumi-weight is: " << lumiweight3[j] << endl << flush;
 	h_lumiweight_allbins->Fill(lumiweight3[j]); //all bins, HT-inclusive, PTG-inclusive
+	//h_lumiweight_allbins->Fill(lumiweight3[j], 1./nMCbins); //all bins, HT-inclusive, PTG-inclusive, need to scale it (before hadd)
     }
     cout << "/n" << endl << flush;
 
@@ -1887,6 +1924,7 @@ void GamHistosFill::Loop()
       nMG_gam1 += nevt1;
       hsumw1->SetBinContent(i+1, sumw1);
       hsumwnorm1->SetBinContent(i+1, sumwnorm1); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
+      //hsumwnorm1->SetBinContent(i+1, (1./nMCbins)*sumwnorm1); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
       if(sumw1<0){cout << Form("negative weight in 1st PTG bin, HT bin index %d, sumw1 = %f", i, sumw1) << endl << flush;}
       else{cout << Form("positive (or zero) weight in 1st PTG bin, HT bin index %d, sumw1 = %f", i, sumw1) << endl << flush;}
       wMG_gam1 += sumw1; //how can this end up being negative in the end?....
@@ -1905,9 +1943,12 @@ void GamHistosFill::Loop()
     for (int i = 0; i < nht_gam2; ++i) {
       int nevt2 = isJMEnano ? vnevt2jmenano[i] : vnevt2[i];
       double sumw2 = isJMEnano ? vsumw2jmenano[i] : vsumw2[i]; //bug was the following: used in there instead of double..
+      double sumwnorm2 = vnormgensumw2jmenano[i]; //w85: need to still calculate this also for the stanard MC sample case, now just for jmenano
       hnevt2->SetBinContent(i+1, nevt2);
       nMG_gam2 += nevt2;
       hsumw2->SetBinContent(i+1, sumw2);
+      hsumwnorm2->SetBinContent(i+1, sumwnorm2); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
+      //hsumwnorm2->SetBinContent(i+1, (1./nMCbins)*sumwnorm2); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
       wMG_gam2 += sumw2;
 
       cout << "isJMEnano = " << isJMEnano << endl << flush;
@@ -1929,10 +1970,20 @@ void GamHistosFill::Loop()
     for (int i = 0; i < nht_gam3; ++i) {
       int nevt3 = isJMEnano ? vnevt3jmenano[i] : vnevt3[i];
       double sumw3 = isJMEnano ? vsumw3jmenano[i] : vsumw3[i];
+      double sumwnorm3 = vnormgensumw3jmenano[i]; //w85: need to still calculate this also for the stanard MC sample case, now just for jmenano
       hnevt3->SetBinContent(i+1, nevt3);
       nMG_gam3 += nevt3; //corrected
       //nMG_gam3 += vnevt3[i]; //was a bug still
       hsumw3->SetBinContent(i+1, sumw3);
+      hsumwnorm3->SetBinContent(i+1, sumwnorm3); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
+      //hsumwnorm3->SetBinContent(i+1, (1./nMCbins)*sumwnorm3); //w85: works only for the implemented case of JMENANO currently (otherwise no reliable results)
+
+      cout << "\n[DEBUGGING]: in PTG1000toInf, there are " << nht_gam3 << " bins. " << endl << flush;
+      //cout << "\n[DEBUGGING]: This is bin " << i+1 << " with sumwnorm3 = " << sumwnorm3 << " and hsumwnorm3->GetBinEntry(" << endl << flush;
+      cout << Form("[DEBUGGING]: This is bin %d with sumwnorm3 = %f and hsumwnorm3->GetBinContent(%d) = %f. (should be identical)",i+1,sumwnorm3,i+1, hsumwnorm3->GetBinContent(i+1)) << endl << flush;
+
+
+
       wMG_gam3 += sumw3;
 
       if(sumw3<0){cout << Form("negative weight in 3rd PTG bin, HT bin index %d, sumw3 = %f", i, sumw3) << endl << flush;}
@@ -3396,8 +3447,13 @@ void GamHistosFill::Loop()
   //int skip = 265126992; // 2018A first events with 191 photons, 23 jets
   //int skip = 14648973; // 2017C bad HDM
 
+  //cout <<  "\n\n\n STILL RUNNING ??? (before for loop) \n\n\n" << endl << flush;
+
+
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++) { //is this the start of the analysis loop? (trying to find event 0..)
+	//cout <<  "\n\n\n STILL RUNNING ??? (inside for loop) \n\n\n" << endl << flush;
+
 
     // Skip events, typically for debugging purposes
     //if (jentry<skip) continue;
@@ -3924,6 +3980,10 @@ void GamHistosFill::Loop()
     // fixing this for standard MC is semi-urgent, since I want to test the new HT10to40 bin! (which is not yet available in jmenano)
     // note that w and evtWeightWithPS are already obtained a few lines above ^
     if (isMG && isPTG) {
+      // keep track of genweight in generall (inclusive in PTG and HT, all events)
+      h_genweight_allbins->Fill(genWeight);
+      h_invGenweight_allbins->Fill(w);
+
       //find current ptht bin
       //int ipt = LHEPart_pt[22]; // LHEPart_pdgid == 22 (photon)
       //if(ipt>=10 && ipt<100){
@@ -3940,6 +4000,10 @@ void GamHistosFill::Loop()
 	// 3) calculate the appropriate wait for this PTG-HT bin (can later be supplemented with PS weights etc)
         double lumiw = h_lumiweight1->GetBinContent(iht); // getting the lumiweight for this PTG-HT-bin
         double sumwnorm = hsumwnorm1->GetBinContent(iht); //getting the weight based on summedGenWeight/summedGenEventCount calculation (separate script)
+	//fill genweight controlplots before modifying the weight, i.e. just what comes from genWeight branch.
+	h_invGenweight1->Fill(w); 	//note that this is actually 1./genWeight
+	h_genweight1->Fill(genWeight); 	//note that in the end we divide by this, so w=1/genWeight
+	//cout <<  "\n\n\n STILL RUNNING ??? \n\n\n" << endl << flush;
 	if(isJMEnano){ 
 	    w*= lumiw * sumwnorm; //for jmenano MC samples
 	    evtWeightWithPS *= lumiw * sumwnorm; // store an additional version of the event-binweight including also a chosen FSR PSweight
@@ -3970,6 +4034,10 @@ void GamHistosFill::Loop()
 	// new since w85:
         double lumiw = h_lumiweight2->GetBinContent(iht); //lumiweight for this PTG-HT-bin
         double sumwnorm = hsumwnorm2->GetBinContent(iht); //weight based on summedGenWeight/summedGenEventCount
+
+	//fill genweight controlplots before modifying the weight, i.e. just what comes from genWeight branch.
+	h_invGenweight2->Fill(w); 	//note that this is actually 1./genWeight
+	h_genweight2->Fill(genWeight); 	//note that in the end we divide by this, so w=1/genWeight
 	if(isJMEnano){ 
 	    w*= lumiw * sumwnorm; //for jmenano MC samples
 	    evtWeightWithPS *= lumiw * sumwnorm; // store an additional version of the event-binweight including also a chosen FSR PSweight
@@ -3997,6 +4065,8 @@ void GamHistosFill::Loop()
 	// new since w85:
         double lumiw = h_lumiweight3->GetBinContent(iht); //lumiweight for this PTG-HT-bin
         double sumwnorm = hsumwnorm3->GetBinContent(iht); //weight based on summedGenWeight/summedGenEventCount
+	h_invGenweight3->Fill(w); 	//note that this is actually 1./genWeight
+	h_genweight3->Fill(genWeight); 	//note that in the end we divide by this, so w=1/genWeight
 	if(isJMEnano){ 
 	    w*= lumiw * sumwnorm; //for jmenano MC samples
 	    evtWeightWithPS *= lumiw * sumwnorm; // store an additional version of the event-binweight including also a chosen FSR PSweight
@@ -4467,18 +4537,18 @@ void GamHistosFill::Loop()
         } //end of stochastic method for obtaining correction factor for JER smearing
 
         //store reco jet pt and before smearing
-        h_jet_pt_smearOff->Fill(Jet_pt[i]);
+        h_jet_pt_smearOff->Fill(Jet_pt[i], w); //w85: remember to also apply event weight w
 
         //apply the smearing, in case of negative value for the correction factor, set pT to zero.
         Jet_pt[i] = (smearJER > 0) ? (Jet_pt[i]*smearJER) : 0;
         Jet_CF[i] = smearJER; //store the correction factor
 
         //store smearing factor and reco jet pt AFTER smearing
-        h_jet_pt_smearOn->Fill(Jet_pt[i]);
+        h_jet_pt_smearOn->Fill(Jet_pt[i], w); //w85: remember to also apply event weight w
         h_jet_smearFactor->Fill(smearJER);
 
         //in case we do relative resolution vs gen-pt
-        h_jet_pt_smearOnAlternative->Fill(pt_reco*smearJERalternative); //does only differ for scaling method
+        h_jet_pt_smearOnAlternative->Fill(pt_reco*smearJERalternative, w); //does only differ for scaling method
         h_jet_smearFactorAlternative->Fill(smearJERalternative); //differs for scaling method (is vs gen pt)
 
 		  }//end of if(smearJets && isMC)
@@ -4719,6 +4789,9 @@ void GamHistosFill::Loop()
       // Plots for photon trigger efficiencies
       if (isMC)  hgam0_mc->Fill(ptgam, w);
       if (!isMC) hgam0_data->Fill(ptgam, w);
+
+      //w85 added one more (but in different folder) to check if event-weights work for MC
+      if (isMC) hgam0_control->Fill(ptgam, w);
       
       hgam0 ->Fill(ptgam, w);
       // Backup high pT
@@ -5616,6 +5689,7 @@ void GamHistosFill::Loop()
     prbal_psweightOff->Fill(ptgam, bal, w); //could also just clone prbal
     prbal_psweightOn->Fill(ptgam, bal, evtWeightWithPS);
 
+    //w85, note: these do not seem to work!
     h_jet_pt_psweightOff->Fill(Jet_pt[iJet], w); //note: make sure iJet is recalculated (resorting after JER SF)
     h_jet_pt_psweightOn->Fill(Jet_pt[iJet], evtWeightWithPS);//note: make sure iJet is recalculated (resorting after JER SF)
 

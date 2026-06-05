@@ -810,7 +810,8 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("Jet_chFPV2EF", Jet_chFPV2EF, &b_Jet_chFPV2EF);
    //fChain->SetBranchAddress("Jet_chFPV3EF", Jet_chFPV3EF, &b_Jet_chFPV3EF);
 
-  if(is25 || is26){ //need these branches to replace jetID
+  if(is25 || is26 || (is24 && isJMEnano)){ //need these branches to replace jetID, since w85: also need it for 24 JMENANO samples!
+  //if(is25 || is26){
     fChain->SetBranchAddress("Jet_chMultiplicity", Jet_chMultiplicity, &b_Jet_chMultiplicity);
     fChain->SetBranchAddress("Jet_neMultiplicity", Jet_neMultiplicity, &b_Jet_neMultiplicity);
   }
