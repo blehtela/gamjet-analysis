@@ -961,7 +961,7 @@ void GamHistosFill::Loop()
   FactorizedJetCorrector *jersf(0); //similar as to how we handle the JECs (see jec variable)
   JME::JetResolution *jetPTresolution(0); //w80
   if(smearJets){
-    if(strcmp(jersf.c_str(), "") != 0){ //if data era for JER SF is given 
+    if(strcmp(jersfver.c_str(), "") != 0){ //if data era for JER SF is given 
       cout << "JER SF applied (smearJets=true), scale factor is from: " << jersfver.c_str() << endl << flush;
     }
     else{
@@ -1715,6 +1715,7 @@ void GamHistosFill::Loop()
 
   TH1D *hxsec1(0), *hxsec2(0), *hxsec3(0), *hnevt1(0), *hnevt2(0), *hnevt3(0), *hsumw1(0), *hsumw2(0), *hsumw3(0);
   TH1D *hLHE_PTG1(0), *hLHE_PTG2(0), *hLHE_PTG3(0), *hPTG1(0), *hPTG2(0), *hPTG3(0);
+  TH1D *hLHE_allbins(0), *hPTGHT_allbins(0); //where all PTG-HT-bins are added
 
   TH1D *h_eventweight_allbins(0), *h_eventweight1(0), *h_eventweight2(0), *h_eventweight3(0);
   TH1D *h_genweight_allbins(0), *h_genweight1(0), *h_genweight2(0), *h_genweight3(0);
@@ -1797,6 +1798,10 @@ void GamHistosFill::Loop()
     hPTG1 = new TH1D("hPTG1","H_{T} spectrum for PTG10to100;H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); //not sure if this needed now? (keep it for now)
     hPTG2 = new TH1D("hPTG2","H_{T} spectrum for PTG100to200;H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
     hPTG3 = new TH1D("hPTG3","H_{T} spectrum for PTG200toInf;H_{T} (GeV);N_{evt} (weighted)",2485,15,2500);
+
+    //control plots with all PTG-HT-bins included
+    hLHE_allbins = new TH1D("hLHE_allbins","H_{T} spectrum (PTG-inclusive, all three bins: PTG10to100, PTG100to200, PTG200toInf) bin before before weights (LHE?);H_{T} (GeV);N_{evt} (unweighted)",nht_gam1,vht_gam1); //using the HT-binning from first PTG bin, which has smaller subbins in lowest HT (40to100, 100to200, 200to400)
+    hPTGHT_allbins = new TH1D("hPTGHT_allbins","H_{T} spectrum (PTG-inclusive, i.e. PTG10to100+PTG100to200+PTG200toInf);H_{T} (GeV);N_{evt} (weighted)",2485,15,2500); 
 
     curdir->cd();
 
@@ -2879,47 +2884,52 @@ void GamHistosFill::Loop()
   
   // Plots for photon trigger efficiencies
   // TBD: need to create these more systematically with a loop (yep, agree... will look into this, - Bettina)
-  TH1D *hgam0_data = new TH1D("hgam0_data","",197,15,1000);
-  TH1D *hgam0_mc = new TH1D("hgam0_mc","",197,15,1000);
-  TH1D *hgam0 = new TH1D("hgam0","",197,15,1000);
-  TH1D *hgam20 = new TH1D("hgam20","",197,15,1000);
-  TH1D *hgam22 = new TH1D("hgam22","",197,15,1000);
-  TH1D *hgam30 = new TH1D("hgam30","",197,15,1000);
-  TH1D *hgam33 = new TH1D("hgam33","",197,15,1000);
-  TH1D *hgam36 = new TH1D("hgam36","",197,15,1000);
-  TH1D *hgam50 = new TH1D("hgam50","",197,15,1000);
-  TH1D *hgam75 = new TH1D("hgam75","",197,15,1000);
-  TH1D *hgam90 = new TH1D("hgam90","",197,15,1000);
-  TH1D *hgam120 = new TH1D("hgam120","",197,15,1000);
-  TH1D *hgam150 = new TH1D("hgam150","",197,15,1000);
-  TH1D *hgam175 = new TH1D("hgam175","",197,15,1000);
-  TH1D *hgam200 = new TH1D("hgam200","",197,15,1000);
-  TH1D *hgam300 = new TH1D("hgam300","",197,15,1000);
-  TH1D *hgam30t = new TH1D("hgam30t","",197,15,1000);
-  TH1D *hgam40t = new TH1D("hgam40t","",197,15,1000); //new (24.05.2025)
-  TH1D *hgam45t = new TH1D("hgam45t","",197,15,1000); //new (24.05.2025)
-  TH1D *hgam50t = new TH1D("hgam50t","",197,15,1000); //new (27.05.2024)
-  TH1D *hgam100t = new TH1D("hgam100t","",197,15,1000);
-  TH1D *hgam110t = new TH1D("hgam110t","",197,15,1000);
-  TH1D *hgam120t = new TH1D("hgam120t","",197,15,1000);
-  TH1D *hgam22m = new TH1D("hgam22m","",197,15,1000);
-  TH1D *hgam30m = new TH1D("hgam30m","",197,15,1000);
-  TH1D *hgam36m = new TH1D("hgam36m","",197,15,1000);
-  TH1D *hgam50m = new TH1D("hgam50m","",197,15,1000);
-  TH1D *hgam75m = new TH1D("hgam75m","",197,15,1000);
-  TH1D *hgam90m = new TH1D("hgam90m","",197,15,1000);
-  TH1D *hgam120m = new TH1D("hgam120m","",197,15,1000);
-  TH1D *hgam165m = new TH1D("hgam165m","",197,15,1000);
-  TH1D *hgam165h = new TH1D("hgam165h","",197,15,1000);
-  TH1D *hgam100h = new TH1D("hgam100h","",197,15,1000);
-  TH1D *hgam20l = new TH1D("hgam20l","",197,15,1000);
-  TH1D *hgam30l = new TH1D("hgam30l","",197,15,1000);
-  TH1D *hgam40l = new TH1D("hgam40l","",197,15,1000);
-  TH1D *hgam50l = new TH1D("hgam50l","",197,15,1000);
-  TH1D *hgam60l = new TH1D("hgam60l","",197,15,1000);
-  TH1D *hgamtrig = new TH1D("hgamtrig","",197,15,1000);
-  TH1D *hgamtrig_data = new TH1D("hgamtrig_data","",197,15,1000);
-  TH1D *hgamtrig_mc = new TH1D("hgamtrig_mc","",197,15,1000);
+  // w85: instead of hardcoding the ever-same-range for all of them, introduce new variables.
+  int nbins_hgamx = 200;
+  int minpt_hgamx = 0;
+  int maxpt_hgamx = 2000; //w85: going up to 2 TeV
+  //TH1D *hgam0_data = new TH1D("hgam0_data","",197,15,1000); // kept this to show how it previously was done
+  TH1D *hgam0_data = new TH1D("hgam0_data","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam0_mc = new TH1D("hgam0_mc","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam0 = new TH1D("hgam0","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam20 = new TH1D("hgam20","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam22 = new TH1D("hgam22","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam30 = new TH1D("hgam30","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam33 = new TH1D("hgam33","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam36 = new TH1D("hgam36","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam50 = new TH1D("hgam50","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam75 = new TH1D("hgam75","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam90 = new TH1D("hgam90","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam120 = new TH1D("hgam120","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam150 = new TH1D("hgam150","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam175 = new TH1D("hgam175","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam200 = new TH1D("hgam200","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam300 = new TH1D("hgam300","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam30t = new TH1D("hgam30t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam40t = new TH1D("hgam40t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx); //new (24.05.2025)
+  TH1D *hgam45t = new TH1D("hgam45t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx); //new (24.05.2025)
+  TH1D *hgam50t = new TH1D("hgam50t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx); //new (27.05.2024)
+  TH1D *hgam100t = new TH1D("hgam100t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam110t = new TH1D("hgam110t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam120t = new TH1D("hgam120t","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam22m = new TH1D("hgam22m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam30m = new TH1D("hgam30m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam36m = new TH1D("hgam36m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam50m = new TH1D("hgam50m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam75m = new TH1D("hgam75m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam90m = new TH1D("hgam90m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam120m = new TH1D("hgam120m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam165m = new TH1D("hgam165m","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam165h = new TH1D("hgam165h","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam100h = new TH1D("hgam100h","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam20l = new TH1D("hgam20l","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam30l = new TH1D("hgam30l","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam40l = new TH1D("hgam40l","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam50l = new TH1D("hgam50l","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgam60l = new TH1D("hgam60l","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgamtrig = new TH1D("hgamtrig","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgamtrig_data = new TH1D("hgamtrig_data","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
+  TH1D *hgamtrig_mc = new TH1D("hgamtrig_mc","",nbins_hgamx,minpt_hgamx,maxpt_hgamx);
 
   // Flavor plots stored in a separate directory
   //renamed it back to 'flavor' for Mikko. Note: the histograms in this directory have not been checked during Run3.
@@ -4055,6 +4065,10 @@ void GamHistosFill::Loop()
         //evtWeightWithPS *= wht;
         hLHE_PTG1->Fill(LHE_HT); // cross-check hnevt afterwards
         hPTG1->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+
+	//also fill the PTG-inclusive plots (done in every PTG-if here)
+	hLHE_allbins->Fill(LHE_HT);
+	hPTGHT_allbins->Fill(LHE_HT, w);
       }//PTG10to100 (PTG-bin 1)
       //if(ipt>=100 && ipt<200){
       if(TString(_filename.c_str()).Contains("PTG100to200")){
@@ -4085,6 +4099,10 @@ void GamHistosFill::Loop()
  
         hLHE_PTG2->Fill(LHE_HT); // cross-check hnevt afterwards
         hPTG2->Fill(LHE_HT, w); // cross-check HT spectrum smoothness afterwards
+
+	//also fill the PTG-inclusive plots (done in every PTG-if here)
+	hLHE_allbins->Fill(LHE_HT);
+	hPTGHT_allbins->Fill(LHE_HT, w);
       }//PTG100to200
       //if(ipt>=200){
       if(TString(_filename.c_str()).Contains("PTG200toInf")){
@@ -4121,6 +4139,10 @@ void GamHistosFill::Loop()
         //for data we have trigger prescale weights? will discuss another time
         //for MC this lumiweight will smooth out everything, needed for fair MC-data-comparison
         // use lumi for 2024/2025/2026 ? (split sample in three parts), if you use same sample for three years, when you hadd in the end you add same event three times....
+
+	//also fill the PTG-inclusive plots (done in every PTG-if here)
+	hLHE_allbins->Fill(LHE_HT);
+	hPTGHT_allbins->Fill(LHE_HT, w);
       }
     }//if (isMC && isPTG)
 
