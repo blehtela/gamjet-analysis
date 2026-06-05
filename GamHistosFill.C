@@ -60,6 +60,7 @@ bool applyPSweight = true;
 int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
 
 //for binweighting
+bool cleanHighEventWeights = false;
 double maxEventWeight = 10000.; //events with an eventweight w higher than this are skipped (since w85)
 
 //store in jetmet eos (for big MC helpful...)
@@ -4147,7 +4148,7 @@ void GamHistosFill::Loop()
     }//if (isMC && isPTG)
 
     // w85: Cleaning from events that get very high event weight:
-    if( w > maxEventWeight ){
+    if( cleanHighEventWeights && (w > maxEventWeight) ){
 	count_tooHighEventWeight++;
 	continue;	//make sure this makes you jump out of the correct for-loop (i.e. skipping this event) - check histogram hgam0
     }
@@ -6215,7 +6216,12 @@ if (doGamjet2 && hg2) {
 
     //w85: throwing away events with too high event weight
     cout << "---------------------------------------------------------------------------------------------" << endl << flush;
-    cout << "\nSkipped " << count_tooHighEventWeight << " events due to too high event weight ( w > " << maxEventWeight << " ). \n" << endl << flush;
+    if(cleanHighEventWeights==false){
+    	cout << "\nNote: Events with very high weight are NOT filtered out (cleanHighEventWeights == false). \n" << endl << flush;
+    }
+    else{
+    	cout << "\nSkipped " << count_tooHighEventWeight << " events due to too high event weight ( w > " << maxEventWeight << " ). \n" << endl << flush;
+    }
 
     // Add extra plot for jet response vs photon pT
     if (isMC) {
