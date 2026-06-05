@@ -63,6 +63,7 @@ public :
    bool            isJMEnano; //flag to check if sample is a jmenano sample (needed to switch off jetId branch for summer2024P8-jmenano)
    string          dataset;
    string	   puera;  //data era used for pu reweighting
+   string	   jersfver;  //JER SF version name used for jet pt resolution smearing
    string          version;
    string          _filename; // file name for debugging purposes
    static const bool debugFiles = true;
@@ -576,7 +577,7 @@ public :
    TBranch        *b_HLT_Photon50_HoverELoose;
    TBranch        *b_HLT_Photon60_HoverELoose;
 
-  GamHistosFill(TTree *tree=0, int itype=1, string datasetname="X", string pueraname="",
+  GamHistosFill(TTree *tree=0, int itype=1, string datasetname="X", string pueraname="", string jersfvername="",
 		string versionname="vX");
    virtual ~GamHistosFill();
    virtual Int_t    Cut(Long64_t entry);
@@ -603,8 +604,8 @@ public :
 #endif
 
 #ifdef GamHistosFill_cxx
-GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string pueraname, string versionname)
-  : fChain(0), isMC(itype), dataset(datasetname), puera(pueraname), version(versionname)
+GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string pueraname, string jersfvername, string versionname)
+  : fChain(0), isMC(itype), dataset(datasetname), puera(pueraname), jersfver(jersfvername), version(versionname)
 {
 
   // Use data set to decide on active branches

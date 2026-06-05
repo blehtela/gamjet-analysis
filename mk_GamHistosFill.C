@@ -55,7 +55,8 @@ R__LOAD_LIBRARY(GamHistosFill_C.so)
 #endif
 
 
-void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w85") { //using w-version names for my code (Bettina), w60 (25F), w59 (25D), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
+void mk_GamHistosFill(string dataset = "X", string puera = "", string jersfver = "", string version = "w85") { //w85: add jersf version as input argument
+//void mk_GamHistosFill(string dataset = "X", string puera = "", string version = "w85") { //using w-version names for my code (Bettina), w60 (25F), w59 (25D), moved to w58 (includes 25D start), w57 was WITHOUT L2L3Res 2025C for dpnote
 //void mk_GamHistosFill(string inputlist = "X", string version = "w36") { //using w-version names for my code (Bettina). TO DO
 
 
@@ -215,6 +216,15 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     cout << "Using pileup for era " << puera << " for PU reweighting." << endl << flush;
   }
 
+  if (jersfver==""){
+    cout << "No JER SF (pT resolution smearing) applied." << endl << flush;
+  }
+  else {
+    cout << "Using scale factors (JER SF) of " << jersfver << " for jet energy resolution smearing." << endl << flush;
+  }
+
+
+
   
   if (addData) {
     ifstream fin(runLocal ? Form("input_files/dataFiles_local_Run%s.txt",dataset.c_str()) : 
@@ -229,7 +239,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     }
     cout << "Chained " << nFiles <<  " files" << endl << flush;
     
-    GamHistosFill filler(c,0,dataset,puera,version);
+    //GamHistosFill filler(c,0,dataset,puera,version);
+    GamHistosFill filler(c,0,dataset,puera,jersfver,version);
     filler.Loop();
   }
   
@@ -245,7 +256,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     }
     cout << "Chained " << nFiles <<  " files" << endl << flush;
   
-    GamHistosFill filler(c,1,dataset,puera,version);
+    //GamHistosFill filler(c,1,dataset,puera,version);
+    GamHistosFill filler(c,1,dataset,puera,jersfver,version);
     filler.Loop();
   }
 
@@ -261,7 +273,8 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string version = 
     }
     cout << "Chained " << nFiles <<  " files" << endl << flush;
   
-    GamHistosFill filler(c,1,dataset,puera,version);
+    //GamHistosFill filler(c,1,dataset,puera,version);
+    GamHistosFill filler(c,1,dataset,puera,jersfver,version);
     filler.Loop();
   }
 

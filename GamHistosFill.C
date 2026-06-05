@@ -954,17 +954,50 @@ void GamHistosFill::Loop()
 
   assert(jec);
 
-  // TO DO: customise this based on year - so far only running on summer2028P8 MC.
+
+  // TO DO: customise this based on year - so far only running on summer2028P8 MC. -- DONE in w85
   //no need to read the JERSF file for each jet, so in case pt smearing is wanted, load it once here.
   //same goes for pT resolution file
   FactorizedJetCorrector *jersf(0); //similar as to how we handle the JECs (see jec variable)
   JME::JetResolution *jetPTresolution(0); //w80
   if(smearJets){
+    if(strcmp(jersf.c_str(), "") != 0){ //if data era for JER SF is given 
+      cout << "JER SF applied (smearJets=true), scale factor is from: " << jersfver.c_str() << endl << flush;
+    }
+    else{
+      cout << "jet energy SF application required, but no valid input versio of JER SF given - check arguments and .txt files." << endl << flush;
+    }
+
     //jersf = getJERSF("Prompt26_2026B_JRV0M_MC_SF_AK4PFPuppi"); //w80 (first implementation)  - for comparison to data2026 -- need to update this and also for 2026.
     //jersf = getJERSF("Prompt25_2025CDEFG_JRV2M_MC_SF_AK4PFPuppi"); //w80 (first implementation)  - for comparison to data2025
-    jersf = getJERSF("Prompt25_2025CDEFG_JRV5M_MC_SF_AK4PFPuppi"); //w84 (updated with new JECs, but not run yet)  - for comparison to data2025
+    if(jersfver=="2024CDEFGHI"){
+    	jersf = getJERSF("Prompt24_2024_nib_JRV11M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
+    }
+    else if(jersfver=="2025CDEFG"){
+    	jersf = getJERSF("Prompt25_2025CDEFG_JRV5M_MC_SF_AK4PFPuppi"); //w84 (updated with new JECs, but not run yet)  - for comparison to data2025
+    }
+    else if(jersfver=="2026B"){
+    	jersf = getJERSF("Prompt24_2024_nib_JRV11M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
+    }
+    else if(jersfver=="2026B"){
+    	jersf = getJERSF("Prompt26_2026B_JRV2M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
+    }
+    else if(jersfver=="2026C"){
+    	jersf = getJERSF("Prompt26_2026C_JRV2M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
+    }
+    else{
+        cout << "\n>>> NO VALID JER SF VERSION NAME GIVEN !!! Double-check the input arguments or switch smearJets=false to not apply smearing." << endl << flush;
+    }
+    //so far use same resolution for all SF years (JERC recommendation):
     jetPTresolution = getJetPtResolution("Summer23BPixPrompt23_RunD_JRV1_MC_PtResolution_AK4PFPuppi"); //w80 (used for 23/24/25/26)
+
+    assert(jersf);
+    assert(jetPTresolution);
+  }//if(smearJets)
+  else{
+     cout << "\n>>> No JER SF applied. (can be changed with smearJets boolean)." << endl << flush;
   }
+
 
   
   string sera("");
@@ -1457,17 +1490,17 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS...  //TO DO: create better logic for filenaming, because it gets messy.
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_04Jun2026-EXTRATEST.root", 
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_%s_04Jun2026.root",  //just for one go
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_05Jun2026-EXTRATEST.root", 
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s_%s_05Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
-			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
+			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf2025_04Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_05Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
-			       dataset.c_str(), puera.c_str(), version.c_str()), //UPDATED
+			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
   }
   else{
