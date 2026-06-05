@@ -6217,7 +6217,7 @@ if (doGamjet2 && hg2) {
     //w85: throwing away events with too high event weight
     cout << "---------------------------------------------------------------------------------------------" << endl << flush;
     if(cleanHighEventWeights==false){
-    	cout << "\nNote: Events with very high weight are NOT filtered out (cleanHighEventWeights == false). \n" << endl << flush;
+    	cout << "\nNote: Events with very high weight are NOT filtered out (cleanHighEventWeights == false). Note that overall there might be none such events. \n" << endl << flush;
     }
     else{
     	cout << "\nSkipped " << count_tooHighEventWeight << " events due to too high event weight ( w > " << maxEventWeight << " ). \n" << endl << flush;
