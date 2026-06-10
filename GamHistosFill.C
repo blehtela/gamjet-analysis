@@ -54,6 +54,8 @@ std::mt19937 randNumGenerator = std::mt19937(randseed); //from namespace std (me
 string smearJERSFyear = "jersf2025"; //to put in the file name, so we don tneed to wonder about it later
 //NOTE: just make some config file for specifying JER SF, Pt Resolutoin, JEC, pileup, lumi, json, etc files
 //Make a new dev branch to do these developments
+// counting jet-ordering-switching
+int countJetOneLowerThanJetTwo(0);
 
 //for PS weights
 bool applyPSweight = true;
@@ -956,18 +958,38 @@ void GamHistosFill::Loop()
   assert(jec);
 
 
+
+    //check if possible to smear (need to write a better logic, but ok for now)
+    if(smearJets && (strcmp(jersfver.c_str(), "") != 0)){ //if data era for JER SF is given 
+      cout << "JER SF applied (smearJets=true), scale factor is from: " << jersfver.c_str() << endl << flush;
+    }
+    else if(smearJets && (strcmp(jersfver.c_str(), "") == 0)){
+      cout << "jet energy SF application required, but no valid input versio of JER SF given - check arguments and .txt files." << endl << flush;
+      cout << "-------->> Setting smearJets = false. No smearing will be applied." << endl << flush;
+      smearJets = false;
+    }
+    else{
+        cout << "-------->> smearJets = false. No smearing will be applied." << endl << flush;
+    }
+
+
+
   // TO DO: customise this based on year - so far only running on summer2028P8 MC. -- DONE in w85
   //no need to read the JERSF file for each jet, so in case pt smearing is wanted, load it once here.
   //same goes for pT resolution file
   FactorizedJetCorrector *jersf(0); //similar as to how we handle the JECs (see jec variable)
   JME::JetResolution *jetPTresolution(0); //w80
   if(smearJets){
+    /*
     if(strcmp(jersfver.c_str(), "") != 0){ //if data era for JER SF is given 
       cout << "JER SF applied (smearJets=true), scale factor is from: " << jersfver.c_str() << endl << flush;
     }
     else{
       cout << "jet energy SF application required, but no valid input versio of JER SF given - check arguments and .txt files." << endl << flush;
+      cout << "-------->> Setting smearJets = false. No smearing will be applied." << endl << flush;
+      smearJets = false;
     }
+    */
 
     //jersf = getJERSF("Prompt26_2026B_JRV0M_MC_SF_AK4PFPuppi"); //w80 (first implementation)  - for comparison to data2026 -- need to update this and also for 2026.
     //jersf = getJERSF("Prompt25_2025CDEFG_JRV2M_MC_SF_AK4PFPuppi"); //w80 (first implementation)  - for comparison to data2025
@@ -978,10 +1000,10 @@ void GamHistosFill::Loop()
     	jersf = getJERSF("Prompt25_2025CDEFG_JRV5M_MC_SF_AK4PFPuppi"); //w84 (updated with new JECs, but not run yet)  - for comparison to data2025
     }
     else if(jersfver=="2026B"){
-    	jersf = getJERSF("Prompt24_2024_nib_JRV11M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
-    }
-    else if(jersfver=="2026B"){
     	jersf = getJERSF("Prompt26_2026B_JRV2M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
+    }
+    else if(jersfver=="2026D"){
+    	jersf = getJERSF("Prompt26_2026D_JRV2M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
     }
     else if(jersfver=="2026C"){
     	jersf = getJERSF("Prompt26_2026C_JRV2M_MC_SF_AK4PFPuppi"); //w85 (05.06.2026)
@@ -1113,7 +1135,8 @@ void GamHistosFill::Loop()
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to397595_DCSRuns_391658to391668_397596to398315_.json"); //self-made hybrid json (Golden Oct 10th + Daily Oct 19th) for w64 (19.10.2025)
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398289_DCSRuns_391658to391668_398290to398903_.json"); //self-made hybrid json (Golden Nov 4th + Daily Nov 11th) for w66 (11.11.2025)
     //LoadJSON("files/CombinedJSONS_GoldenRuns_391668to398858_DCSRuns_391658to391668_398859to398903_.json"); //self-made hybrid json (Golden Nov 14th + Daily Nov 6th) for w66 (16.11.2025)
-    LoadJSON("files/Cert_Collisions2025_391658_398860_Golden.json"); //GOLDEN json (Nov 18th) for w67 (added on 05.12.2025)
+    //LoadJSON("files/Cert_Collisions2025_391658_398860_Golden.json"); //GOLDEN json (Nov 18th) for w67 (added on 05.12.2025)
+    LoadJSON("files/Cert_Collisions2025_391658_398903_Golden.json"); //NEW GOLDEN json (13.04.2026) for w86 (added on 10.06.2026)
   if (TString(ds.c_str()).Contains("2026")){
     //LoadJSON("files/Collisions26_13p6TeV_401623_401733_DCSOnly_TkPx.json"); //daily json (Mar 13th) for w74 (added on 13.03.2026)
     //LoadJSON("files/Collisions26_13p6TeV_401623_401961_DCSOnly_TkPx.json"); //daily json (Mar 16th) for w75 (added on 16.03.2026)
@@ -1126,15 +1149,20 @@ void GamHistosFill::Loop()
     //LoadJSON("files/Collisions26_13p6TeV_401623_403493_DCSOnly_TkPx.json"); //new DAILY ONLY (issue with combining..)  for w81
     //LoadJSON("files/CombinedJSONS_GoldenRuns_MLEnhancedGolden_401630to403457_DCSRuns_403458to403493_.json"); //new hybrid (issue with combining..)  for w81, 2026D added
     //LoadJSON("files/CombinedJSONS_GoldenRuns_401630to403774_DCSRuns_403775to403895_.json"); //MLenhanced + DCSdaily (15.05.2026), still w81 including new 26D files.
-	if (TString(ds.c_str()).Contains("2026B")){//w83 (21.05.2026)
-		LoadJSON("files/Cert_Collisions2026_401624_403493_golden.json"); //w83 (golden json)
+	if (TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026D")){//w83 (21.05.2026), also for D since w86 (10.06.2026)
+		//LoadJSON("files/Cert_Collisions2026_401624_403493_golden.json"); //w83 (golden json)
+		LoadJSON("files/Cert_Collisions2026_401624_403937_golden.json");	//w86 (02.06.2026) for 2026B and 2026D (does this include low pu actually?)
+
 	}
 	if (TString(ds.c_str()).Contains("2026C")){//w83 (21.05.2026)
-		LoadJSON("files/Cert_Collisions2026_lowPU_19May2026.json"); //w83 (low pu json)
+		//LoadJSON("files/Cert_Collisions2026_lowPU_19May2026.json"); //w83 (low pu json)
+		LoadJSON("files/Cert_Collisions2026_lowPU.json");	//w86 (19.05.2026) for 2026C (low pileup), same as w83
 	}
+	/*
 	if (TString(ds.c_str()).Contains("2026D")){//w83 (21.05.2026)
 		LoadJSON("files/Collisions26_MLEnhancedGolden_Latest_21May2026.json"); //w83 (ML enhanced golden json, latest)
 	}
+	*/
   } //added this bracket for w83 with three different jsons for 2026
 
 
@@ -1168,7 +1196,8 @@ void GamHistosFill::Loop()
 	avgPUmap = LoadAvgPUdata("avgpileup2024.csv");
   }
   else if(TString(ds.c_str()).Contains("2025")){
-	avgPUmap = LoadAvgPUdata("avgpileup2025.csv");
+	//avgPUmap = LoadAvgPUdata("avgpileup2025.csv");
+	avgPUmap = LoadAvgPUdata("avgpileup2025CDEFG.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){
 	//avgPUmap = LoadAvgPUdata("avgpileup2026.csv");
@@ -1212,12 +1241,21 @@ void GamHistosFill::Loop()
 	lumi200 = LoadLumi("files/lumi2024_golden_photon200_pb_w44.csv");
   }
   else if(TString(ds.c_str()).Contains("2025")){ //first added w50 (20.05.2025), updated w59 (07.09.2025), updated w60 (15.09.2025), updated w62 (21.09.2025), updated w63 (02.10.2025), updated w64 (19.10.2025), w66 (16.11.), w67 (05.12.)
+	/*
 	  lumi200 = LoadLumi("files/lumi2025_05december2025_photon200_pb_w67.csv");
 	  lumi110 = LoadLumi("files/lumi2025_05december2025_photon110eb_pb_w67.csv");
 	  lumi50 = LoadLumi("files/lumi2025_05december2025_photon50eb_pb_w67.csv");
 	  lumi45 = LoadLumi("files/lumi2025_05december2025_photon45eb_pb_w67.csv");
 	  lumi40 = LoadLumi("files/lumi2025_05december2025_photon40eb_pb_w67.csv");
 	  lumi30 = LoadLumi("files/lumi2025_05december2025_photon30eb_pb_w67.csv");
+	*/
+	//w86: updated to new golden JSON for 2025, which came out in April 2026 (removing some low pu runs?), still in pb, filename format changed.
+	  lumi200 = LoadLumi("files/lumi2025_10jun2026_photon200_w86.csv");
+	  lumi110 = LoadLumi("files/lumi2025_10jun2026_photon110eb_w86.csv");
+	  lumi50 = LoadLumi("files/lumi2025_10jun2026_photon50eb_w86.csv");
+	  lumi45 = LoadLumi("files/lumi2025_10jun2026_photon45eb_w86.csv");
+	  lumi40 = LoadLumi("files/lumi2025_10jun2026_photon40eb_w86.csv");
+	  lumi30 = LoadLumi("files/lumi2025_10jun2026_photon30eb_w86.csv");
   }
   else if(TString(ds.c_str()).Contains("2026")){ //first added w74 (13.03.2026), updated w75 (16.03.2026), updated w76 (20.03.2026), updated w77 (27.03.2026), updated w81 (07.05.2026)
 	  /*
@@ -1229,33 +1267,24 @@ void GamHistosFill::Loop()
 	  lumi30 = LoadLumi("files/lumi2026_15may2026_photon30eb_pb_w81.csv");
 	  */
 	
-	if(TString(ds.c_str()).Contains("2026B")){ //w83 (21.05.2026, based on golden json)
-		lumi200 = LoadLumi("files/lumi2026_21may2026_2026B_photon200_w83.csv");
-		lumi110 = LoadLumi("files/lumi2026_21may2026_2026B_photon110eb_w83.csv");
-		lumi50 = LoadLumi("files/lumi2026_21may2026_2026B_photon50eb_w83.csv");
-		lumi45 = LoadLumi("files/lumi2026_21may2026_2026B_photon45eb_w83.csv");
-		lumi40 = LoadLumi("files/lumi2026_21may2026_2026B_photon40eb_w83.csv");
-		lumi30 = LoadLumi("files/lumi2026_21may2026_2026B_photon30eb_w83.csv");
+	if(TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026D")){ //w83 (21.05.2026, based on golden json), w86 (new golden, B and D covered together)
+		lumi200 = LoadLumi("files/lumi2026_10jun2026_2026BD_photon200_w86.csv");
+		lumi110 = LoadLumi("files/lumi2026_10jun2026_2026BD_photon110eb_w86.csv");
+		lumi50 = LoadLumi("files/lumi2026_10jun2026_2026BD_photon50eb_w86.csv");
+		lumi45 = LoadLumi("files/lumi2026_10jun2026_2026BD_photon45eb_w86.csv");
+		lumi40 = LoadLumi("files/lumi2026_10jun2026_2026BD_photon40eb_w86.csv");
+		lumi30 = LoadLumi("files/lumi2026_10jun2026_2026BD_photon30eb_w86.csv");
 	}
-	if(TString(ds.c_str()).Contains("2026C")){ //w83 (21.05.2026, based on low PU json)
-		lumi200 = LoadLumi("files/lumi2026_21may2026_2026C_photon200_w83.csv");
-		lumi110 = LoadLumi("files/lumi2026_21may2026_2026C_photon110eb_w83.csv");
-		lumi50 = LoadLumi("files/lumi2026_21may2026_2026C_photon50eb_w83.csv");
-		lumi45 = LoadLumi("files/lumi2026_21may2026_2026C_photon45eb_w83.csv");
-		lumi40 = LoadLumi("files/lumi2026_21may2026_2026C_photon40eb_w83.csv");
-		lumi30 = LoadLumi("files/lumi2026_21may2026_2026C_photon30eb_w83.csv");
+	if(TString(ds.c_str()).Contains("2026C")){ //w83 (21.05.2026, based on low PU json), w86 (actually same json)
+		lumi200 = LoadLumi("files/lumi2026_10jun2026_2026C_photon200_w86.csv");
+		lumi110 = LoadLumi("files/lumi2026_10jun2026_2026C_photon110eb_w86.csv");
+		lumi50 = LoadLumi("files/lumi2026_10jun2026_2026C_photon50eb_w86.csv");
+		lumi45 = LoadLumi("files/lumi2026_10jun2026_2026C_photon45eb_w86.csv");
+		lumi40 = LoadLumi("files/lumi2026_10jun2026_2026C_photon40eb_w86.csv");
+		lumi30 = LoadLumi("files/lumi2026_10jun2026_2026C_photon30eb_w86.csv");
 	}
-	if(TString(ds.c_str()).Contains("2026D")){ //w83 (21.05.2026, based on current ML enhanced golden json, latest)
-		lumi200 = LoadLumi("files/lumi2026_21may2026_2026D_photon200_w83.csv");
-		lumi110 = LoadLumi("files/lumi2026_21may2026_2026D_photon110eb_w83.csv");
-		lumi50 = LoadLumi("files/lumi2026_21may2026_2026D_photon50eb_w83.csv");
-		lumi45 = LoadLumi("files/lumi2026_21may2026_2026D_photon45eb_w83.csv");
-		lumi40 = LoadLumi("files/lumi2026_21may2026_2026D_photon40eb_w83.csv");
-		lumi30 = LoadLumi("files/lumi2026_21may2026_2026D_photon30eb_w83.csv");
-	}
-
+	//26D in w83 (21.05.2026, based on current ML enhanced golden json, latest), in w86: together with B.
   }//if2026
-
 
 
 	//earlier...
@@ -1491,15 +1520,15 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS...  //TO DO: create better logic for filenaming, because it gets messy.
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_05Jun2026-EXTRATEST.root", 
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s_%s_05Jun2026.root",  //just for one go
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_10Jun2026-EXTRATEST.root", 
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s_%s_10Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_05Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_10Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -1738,22 +1767,22 @@ void GamHistosFill::Loop()
     // do one for weight on its own --> just a histogram that stores eventweight from genWeight branch for each event (should we also do this per HT bin?
     // one for HT for each PTG-bin (weighted, unweighted)
     //
-    h_eventweight_allbins =  new TH1D("h_eventweight_allbins", "All PTG-HT bins: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 2000, 0, 2);
-    h_eventweight1 =  new TH1D("h_eventweight1", "PTG10to100: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 2000, 0, 2);
-    h_eventweight2 =  new TH1D("h_eventweight2", "PTG100to200: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 2000, 0, 2);
-    h_eventweight3 =  new TH1D("h_eventweight3", "PTG200toInf: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 2000, 0, 2);
+    h_eventweight_allbins =  new TH1D("h_eventweight_allbins", "All PTG-HT bins: event weight (no PSweight applied) as (lumiw * sumw / genWeight);event weight;N_{events}", 6000, 0, 6); //more granular
+    h_eventweight1 =  new TH1D("h_eventweight1", "PTG10to100: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 600, 0, 6); //just to see where the eventweight goes approx.
+    h_eventweight2 =  new TH1D("h_eventweight2", "PTG100to200: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 600, 0, 6);
+    h_eventweight3 =  new TH1D("h_eventweight3", "PTG200toInf: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 600, 0, 6);
  
-    h_genweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 3);
-    h_invGenweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 3);
+    h_genweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 30);
+    h_invGenweight_allbins =  new TH1D("h_invGenweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 1000, 0, 0.1);
     //h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc (PTG-inclusive);lumi_weight;N_{events}", 300, 0, 3);
     h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc (PTG-inclusive);H_{T} in GeV;lumi_weight", 300, 0, 3);
 
-    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 200, 0, 20);
-    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 200, 0, 20);
-    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 200, 0, 20);
-    h_invGenweight1 =  new TH1D("h_invGenweight1", "inverse of generator weight (1./genWeight) for each event in PTG10to100 (inclusive in HT);1./genWeight;N_{events}", 300, 0, 3);
-    h_invGenweight2 =  new TH1D("h_invGenweight2", "inverse of generator weight (1./genWeight) for each event in PTG100to200 (inclusive in HT);1./genWeight;N_{events}", 300, 0, 3);
-    h_invGenweight3 =  new TH1D("h_invGenweight3", "inverse of generator weight (1./genWeight) for each event in PTG200toInf (inclusive in HT);1./genWeight;N_{events}", 300, 0, 3);
+    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 300, 0, 30);
+    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 300, 0, 30);
+    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 300, 0, 30);
+    h_invGenweight1 =  new TH1D("h_invGenweight1", "inverse of generator weight (1./genWeight) for each event in PTG10to100 (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.1); //300, 0, 3
+    h_invGenweight2 =  new TH1D("h_invGenweight2", "inverse of generator weight (1./genWeight) for each event in PTG100to200 (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.1);
+    h_invGenweight3 =  new TH1D("h_invGenweight3", "inverse of generator weight (1./genWeight) for each event in PTG200toInf (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.1);
 
 
 
@@ -4410,6 +4439,18 @@ void GamHistosFill::Loop()
     rawjets.SetPtEtaPhiM(0,0,0,0);
     rcjets.SetPtEtaPhiM(0,0,0,0);
     rcoffsets.SetPtEtaPhiM(0,0,0,0);
+
+
+    //whether or not leading-jet has been smeared already
+    bool leadJetSmeared = false;
+    bool secJetSmeared = false;
+    double leadJetOrigPt = -1;
+    double secJetOrigPt = -1;
+    double leadJetSmearedPt = -1;
+    double secJetSmearedPt = -1;
+
+
+
     for (int i = 0; i != nJet; ++i) {
       
       // Redo JEC on the fly (should be no previous use of corrected jets)
@@ -4595,6 +4636,19 @@ void GamHistosFill::Loop()
         //store reco jet pt and before smearing
         h_jet_pt_smearOff->Fill(Jet_pt[i], w); //w85: remember to also apply event weight w
 
+	//counting switching for leading jet (fix the ordering next)
+	if( leadJetSmeared==false && (i != Photon_jetIdx[iGam])){ //originally leading jet has index 0... although it could be a photon...
+		leadJetOrigPt = Jet_pt[i];
+		leadJetSmearedPt = (smearJER > 0) ? (Jet_pt[i]*smearJER) : 0;
+		leadJetSmeared = true; //even though smearing happens a few lines below
+	}
+	if( leadJetSmeared==true && secJetSmeared==false && (i != Photon_jetIdx[iGam])){
+		secJetOrigPt = Jet_pt[i];
+		secJetSmearedPt = (smearJER > 0) ? (Jet_pt[i]*smearJER) : 0;
+		secJetSmeared = true; //even though smearing happens a few lines below
+	}
+	
+
         //apply the smearing, in case of negative value for the correction factor, set pT to zero.
         Jet_pt[i] = (smearJER > 0) ? (Jet_pt[i]*smearJER) : 0;
         Jet_CF[i] = smearJER; //store the correction factor
@@ -4607,6 +4661,7 @@ void GamHistosFill::Loop()
         h_jet_pt_smearOnAlternative->Fill(pt_reco*smearJERalternative, w); //does only differ for scaling method
         h_jet_smearFactorAlternative->Fill(smearJERalternative); //differs for scaling method (is vs gen pt)
 
+	
 		  }//end of if(smearJets && isMC)
 
 	    //}
@@ -4657,6 +4712,16 @@ void GamHistosFill::Loop()
       	rcoffsets += (rawjet - rcjet);
       } // non-photon jet
     } // for i in nJet
+
+
+    //switching happened? (in w85 just to find out how severe this issue can be, need to fix it anyway)
+    if( (leadJetSmearedPt > 0) && (secJetSmearedPt > 0) && (secJetSmearedPt > leadJetSmearedPt)){
+	cout << "\nOriginally: jet1_pt = " << leadJetOrigPt << " and jet2_pt =" << secJetOrigPt << endl << flush;
+	cout << "After smearing: jet1_pt = " << leadJetSmearedPt << " and jet2_pt =" << secJetSmearedPt << endl << flush;
+	cout << "The leading jet switched places with the second-leading jet after smearing. " << endl << flush;
+	countJetOneLowerThanJetTwo++;
+    }
+
     
     // Select genjet matching leading and subleading reco jet
     // NOTE (25.4.2026): do we need to do this hear again after the smearing?
@@ -6222,6 +6287,13 @@ if (doGamjet2 && hg2) {
     else{
     	cout << "\nSkipped " << count_tooHighEventWeight << " events due to too high event weight ( w > " << maxEventWeight << " ). \n" << endl << flush;
     }
+
+    //about smearing
+    if(smearJets){
+ 	cout << "\nNumber of events where jet1 and jet2 switch pT-order after smearing: " << countJetOneLowerThanJetTwo << "\n" << endl << flush;
+    }
+
+
 
     // Add extra plot for jet response vs photon pT
     if (isMC) {
