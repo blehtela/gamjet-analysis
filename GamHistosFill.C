@@ -1772,17 +1772,17 @@ void GamHistosFill::Loop()
     h_eventweight2 =  new TH1D("h_eventweight2", "PTG100to200: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 600, 0, 6);
     h_eventweight3 =  new TH1D("h_eventweight3", "PTG200toInf: event weight (no PSweight applied) as (lumiw * sumwnorm / genWeight);event weight;N_{events}", 600, 0, 6);
  
-    h_genweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 30);
-    h_invGenweight_allbins =  new TH1D("h_invGenweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 1000, 0, 0.1);
+    h_genweight_allbins =  new TH1D("h_genweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 300, 0, 300);
+    h_invGenweight_allbins =  new TH1D("h_invGenweight_allbins", "generator weight as coming from genWeight branch for each event;genWeight;N_{events}", 10000, 0, 0.1);
     //h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc (PTG-inclusive);lumi_weight;N_{events}", 300, 0, 3);
     h_lumiweight_allbins = new TH1D("h_lumiweight_allbins", "lumi weight as lumi_data/lumi_mc (PTG-inclusive);H_{T} in GeV;lumi_weight", 300, 0, 3);
 
-    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 300, 0, 30);
-    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 300, 0, 30);
-    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 300, 0, 30);
-    h_invGenweight1 =  new TH1D("h_invGenweight1", "inverse of generator weight (1./genWeight) for each event in PTG10to100 (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.1); //300, 0, 3
-    h_invGenweight2 =  new TH1D("h_invGenweight2", "inverse of generator weight (1./genWeight) for each event in PTG100to200 (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.1);
-    h_invGenweight3 =  new TH1D("h_invGenweight3", "inverse of generator weight (1./genWeight) for each event in PTG200toInf (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.1);
+    h_genweight1 =  new TH1D("h_genweight1", "generator weight as coming from genWeight branch for each event in PTG10to100 (inclusive in HT);genWeight;N_{events}", 300, 0, 300);
+    h_genweight2 =  new TH1D("h_genweight2", "generator weight as coming from genWeight branch for each event in PTG100to200 (inclusive in HT);genWeight;N_{events}", 300, 0, 300);
+    h_genweight3 =  new TH1D("h_genweight3", "generator weight as coming from genWeight branch for each event in PTG200toInf (inclusive in HT);genWeight;N_{events}", 300, 0, 300);
+    h_invGenweight1 =  new TH1D("h_invGenweight1", "inverse of generator weight (1./genWeight) for each event in PTG10to100 (inclusive in HT);1./genWeight;N_{events}", 1000, 0, 0.01); //300, 0, 3
+    h_invGenweight2 =  new TH1D("h_invGenweight2", "inverse of generator weight (1./genWeight) for each event in PTG100to200 (inclusive in HT);1./genWeight;N_{events}", 6000, 0, 0.06);
+    h_invGenweight3 =  new TH1D("h_invGenweight3", "inverse of generator weight (1./genWeight) for each event in PTG200toInf (inclusive in HT);1./genWeight;N_{events}", 10000, 0, 0.1);
 
 
 
