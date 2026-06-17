@@ -667,7 +667,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
   is25 = (ds=="2025B" || ds=="2025Cv1" ||  ds=="2025Cv2" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  //ds=="2025F" ||//added first on 20.05.2025 (w50), added 25Cv2 and 25D on 06.08.2025 (w58), added 25E on 15.09.2025 (still w59), added 25F on 15.09.2025 (move to w60)
 	  ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || //added split of F in Fv1 and Fv2, and 25G on 19.10.2025 (w64)
           ds=="2025C-TrkRadDamage" || //added TrkRadDamage on 02.10.2025 (w63)
-	  TString(ds.c_str()).Contains("2025") || // is this ok? (03.05.2026, w80)
+	  TString(ds.c_str()).Contains("2025") || // is this ok? (03.05.2026, w80) //w86: also relying on this for data in eg0123 etc
           ds=="winter2025P8" ||
           ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
       		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 

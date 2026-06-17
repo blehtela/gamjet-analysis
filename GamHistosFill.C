@@ -46,7 +46,8 @@ bool doJetveto = true; //like in dijet: eta-phi maps
 bool doPFComposition = true; //Gamjet2 (added by Mikko), also adding now Gamjet1 (bettina)
 
 //for jet smearing
-bool smearJets = true; //false;
+//bool smearJets = true; //false;
+bool smearJets = false;
 int smearNMax = 3;      //same value as in Sami's Z+jet analysis
 int randseed = 26042026;
 //mutable  (can only make it mutable if it is declared as member var in .h ...so not now)
@@ -58,8 +59,11 @@ string smearJERSFyear = "jersf2025"; //to put in the file name, so we don tneed 
 int countJetOneLowerThanJetTwo(0);
 
 //for PS weights
-bool applyPSweight = true;
-int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
+bool applyPSweight = true; //for the PSweight folder only
+bool applyPSweightToAll = true; //false; //true; // for ALL histograms that usually get w (eventweight) only
+//int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
+int psweightIndex = 2; //index of PSweight to be used for weighting the events, index2 = 0.5
+
 
 //for binweighting
 bool cleanHighEventWeights = false;
@@ -896,33 +900,33 @@ void GamHistosFill::Loop()
 
 	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", ""); //w57 (no L2L3Res, 24.06.2025) RUN WITHOUT L2L3Res for comparison (dpnote)
   }
-  if (ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025Cv1-jmenano"|| ds=="2025Cv2-jmenano"){
+  if (ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025Cv1-jmenano"|| ds=="2025Cv2-jmenano" || TString(ds.c_str()).Contains("2025Cv1eg") || TString(ds.c_str()).Contains("2025Cv2eg")){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
   	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
   	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025C_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (V5M L2L3Res, 29.05.2026)
 
   }
-  if (ds=="2025D" || ds=="2025Dtestfile" || ds=="2025D-jmenano"){
+  if (ds=="2025D" || ds=="2025Dtestfile" || ds=="2025D-jmenano" || TString(ds.c_str()).Contains("2025Deg")){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025D_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (V4M L2L3Res, 29.05.2026)
   }
-  if (ds=="2025E" || ds=="2025E-jmenano"){
+  if (ds=="2025E" || ds=="2025E-jmenano" || TString(ds.c_str()).Contains("2025Eeg")){
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025)
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (V5M L2L3Res, 29.05.2026)
   }
-  if (ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025Fv1-jmenano"|| ds=="2025Fv2-jmenano"){ //still using 25E JECs for both versions of 25F. //updated to 25F JECs in w68 with V3M.
+  if (ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025Fv1-jmenano"|| ds=="2025Fv2-jmenano" || TString(ds.c_str()).Contains("2025Fv1eg") || TString(ds.c_str()).Contains("2025Fv1eg")){ //still using 25E JECs for both versions of 25F. //updated to 25F JECs in w68 with V3M.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
     	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025F_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (V5M L2L3Res, 22.05.2026)
 
   }
-  if (ds=="2025G" || ds=="2025G-jmenano"){	// using 25E corrections for 25G for now. //updated to 25F JECs in w68 with V3M.
+  if (ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("2025Geg")){	// using 25E corrections for 25G for now. //updated to 25F JECs in w68 with V3M.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025E_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w62 (V2M L2L3Res, 21.09.2025) STILL SAME AS 25E.
     	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V3M_DATA_L2L3Residual_AK4PFPuppi"); //w68 (V3M L2L3Res, 15.12.2025) //first JECs for 25F.
   	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
@@ -1065,7 +1069,8 @@ void GamHistosFill::Loop()
 	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80)
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
-	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("winter2025QCD")) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025").
+	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("winter2025QCD") || 
+	TString(ds.c_str()).Contains("2025") ) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025"). //w86, contains(2025) to cover also data with 25Deg0123
   if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026C") || TString(ds.c_str()).Contains("2026D")) sera="2026"; //or should it be also here treated as an era of 2025?
   assert(sera!="");
 
@@ -1419,7 +1424,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("2025Cv2") ||
         TString(ds.c_str()).Contains("2025C-TrkRadDamage") ||
         TString(ds.c_str()).Contains("2025D") ||  //also covers for 2025Dtestfile
-        TString(ds.c_str()).Contains("2025E") ||
+        TString(ds.c_str()).Contains("2025E") ||  //also covers 25Eeg0 etc
         TString(ds.c_str()).Contains("2025Fv1") ||
         TString(ds.c_str()).Contains("2025Fv2") ||
         TString(ds.c_str()).Contains("2025G") ||	//also covers 2025G-jmenano
@@ -1520,15 +1525,16 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS...  //TO DO: create better logic for filenaming, because it gets messy.
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_10Jun2026-EXTRATEST.root", 
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s_%s_10Jun2026.root",  //just for one go
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_17Jun2026-EXTRATEST.root", 
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_17Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
-			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
+			       dataset.c_str(), puera.c_str(), jersfver.c_str(), applyPSweightToAll ? (Form("_psweightIndex%d_",psweightIndex)) : "",
+				version.c_str()), //UPDATED
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_10Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_17Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -4033,6 +4039,14 @@ void GamHistosFill::Loop()
     double w = (isMC ? (1./genWeight) : 1); //new weight to implement binweighting for jmenano // w85
     //keep event weight including ps weight as a separate variable, to plot also the difference with/without ps weight var
     double evtWeightWithPS = ((isMC && applyPSweight) ? w*PSWeight[psweightIndex]: w); //if applying PS weight scale var, do it here
+
+
+    // w86: for the PSweight runs of this code (11.06.2026):
+    if(isMC && applyPSweightToAll){
+	w *= PSWeight[psweightIndex];
+    }
+
+
     if (isMG && !isPTG) {
       int iht = hxsec->FindBin(LHE_HT);
       double xsec = hxsec->GetBinContent(iht);
@@ -6291,6 +6305,12 @@ if (doGamjet2 && hg2) {
     //about smearing
     if(smearJets){
  	cout << "\nNumber of events where jet1 and jet2 switch pT-order after smearing: " << countJetOneLowerThanJetTwo << "\n" << endl << flush;
+    }
+
+
+    //about PSweights:
+    if(applyPSweightToAll){
+ 	cout << "\n>>> [NOTE:] PS weights: ALL HISTOGRAMS GOT THE PS WEIGHT APPLIED! psweightIndex = " << psweightIndex << "\n" << endl << flush;
     }
 
 
