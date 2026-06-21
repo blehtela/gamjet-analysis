@@ -568,6 +568,13 @@ void GamHistosFill::Loop()
     if (isRun3) fChain->SetBranchStatus("Jet_btagUParTAK4CvL",1);
     if (isRun3) fChain->SetBranchStatus("Jet_btagUParTAK4CvB",1);
 
+    //PNet tagging branches and one more UParT branch (w87, added on 21.06.2026)
+    //used for updating the old 'flavor' folder
+    if (isRun3) fChain->SetBranchStatus("Jet_btagPNetQvG",1);   //quark vs gluon
+    if (isRun3) fChain->SetBranchStatus("Jet_btagUParTAK4B",1); //b-tagging
+
+
+
     //if (isMC && isRun3) {
     if (isMG) {
       fChain->SetBranchStatus("LHE_HT",1);
@@ -755,7 +762,7 @@ void GamHistosFill::Loop()
       ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" ||
 			TString(ds.c_str()).Contains("summer2024QCD") || //should cover summer2024QCD a,b,c,d,e,f,g,h,i (10 parts)
-			TString(ds.c_str()).Contains("summer2024P8") || //should cover summer2024P8 all PTG and HT bins (15 parts), added for w74 (11.03.2026), should also cover tiny-test version (w80, 26.04.2026)
+			TString(ds.c_str()).Contains("summer2024P8") || //should cover summer2024P8 all PTG and HT bins (15 parts), added for w74 (11.03.2026), should also cover tiny-test version (w80, 26.04.2026), now 16 parts (w87, low HT bin)
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
 	jec = getFJC("", "RunIII2024Summer24_V2_MC_L2Relative_AK4PUPPI", "" ); //updated on 12.06.2025 with w56 (note: is there V3?)
@@ -1066,7 +1073,7 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2024")) sera = "2024"; //works unless two year-numbers appear in dataset, which should not be typically.. && TString(ds.c_str()).Contains("nib")
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
-	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80)
+	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80) //now also new low HT-bin (16bins)
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("winter2025QCD") || 
@@ -1509,6 +1516,17 @@ void GamHistosFill::Loop()
     bthr = 0.4184;
     cthr = 0.137+frac*(0.66-0.137);
   }
+  //w87: updated on 21.06.2026 (thresholds for 2024, w87 - updating Mikko's flavor folder, by Bettina)
+  double bthr_tight(-1.0), cvbthr_tight(-1.0), cvlthr_tight(-1.0), qvgthr_tight(-1.0); //additional thresholds
+  if (TString(ds.c_str()).Contains("24")  ||
+      TString(ds.c_str()).Contains("25")  ||
+      TString(ds.c_str()).Contains("26")) {
+    // from BTV for 2024, using tight working point:
+    bthr_tight = 0.4648;    //used with UParT
+    cvbthr_tight = 0.421;   //used with UParT
+    cvlthr_tight = 0.650;   //used with UParT
+    qvgthr_tight = 0.450;   //used with PNet
+  }
 
   // Create histograms. Copy format from existing files from Lyon
   // Keep only histograms actually used by global fit (reprocess.C)
@@ -1882,6 +1900,8 @@ void GamHistosFill::Loop()
     //don't know why it was so low in the old implementation (see 2022, only HT-binned) - can use event numbers from DAS!
     //or get the skimmed files' event numbers from my extra script (however: they are not even used in the binweighting i think... just in a histo)
     //NOTE (17.5.2026): these are the evtnums for the fullFiles (need to add the one for the skimmed ones, but doesnt enter weight at this point)
+    
+    //w87 (21.06.2026): Need to update the arrays, since there is a new HT10to40 bin for PTG10to100
 
     // NOTE: USE THE ONES FROM DAS FOR THE CALCULATION of the MC lumi (used in the lumi-weight) --> lumi_MC = nevt(DAS)/xs(sample) --> precalculate this, so the ratio does not need to be done in each event.
     // could do this in the CalcGenWeight script actually.
@@ -2969,6 +2989,7 @@ void GamHistosFill::Loop()
 
   // Flavor plots stored in a separate directory
   //renamed it back to 'flavor' for Mikko. Note: the histograms in this directory have not been checked during Run3.
+  //update for w87: filling of histos has not been doublecheck (yet), but i updated taggers and working points (bettina, 21.6.2026)
   fout->mkdir("flavor"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
   //fout->mkdir("flavor_old"); //renamed this to flavor_old in w72, since this has not been updated during 24/25/26
   fout->cd("flavor");
@@ -4796,7 +4817,7 @@ void GamHistosFill::Loop()
       tagged_cjet = true;
     }
     */
-    bool tagged_cjet = (Jet_btagUParTAK4CvL[iJet] > CvL_tight && Jet_btagUParTAK4CvB[iJet] < CvB_tight);
+    bool tagged_cjet = (Jet_btagUParTAK4CvL[iJet] > CvL_tight && Jet_btagUParTAK4CvB[iJet] > CvB_tight); // greater than threshold to identify the first mentioned species
     //cout << "Jet_btagUParTAK4CvL[iJet]" << Jet_btagUParTAK4CvL[iJet] << endl << flush;
     //cout << "tagged_cjet = " << tagged_cjet << endl << flush; //see what happens when outputting the value... it should be false for nonexisting branches
     if(tagged_cjet){
@@ -5653,11 +5674,23 @@ void GamHistosFill::Loop()
 				       Jet_btagDeepFlavCvL[iJet]);
 	    Jet_qgl[iJet] = Jet_btagDeepFlavQG[iJet];
 	  }
-	  bool isb = (Jet_btagDeepB[iJet] > bthr);
-	  bool isc = (Jet_btagDeepC[iJet] > cthr && !isb);
-	  bool isq = (Jet_qgl[iJet]>=0.5 && Jet_qgl[iJet] && !isb && !isc);
-	  bool isg = (Jet_qgl[iJet]>=0 && Jet_qgl[iJet]<0.5 && !isb && !isc);
-	  bool isn = (!isb && !isc && !isq && !isg);
+    //w87: due to changes starting from w87, need to declare the variables already here, set to false initially
+    bool isb(false), isc(false), isq(false), isg(false), isn(false);
+    if(!isRun3){ //how it was handled before in Mikko's code for the flavor folder, i.e. before w87
+	    bool isb = (Jet_btagDeepB[iJet] > bthr);
+	    bool isc = (Jet_btagDeepC[iJet] > cthr && !isb);
+	    bool isq = (Jet_qgl[iJet]>=0.5 && Jet_qgl[iJet] && !isb && !isc);
+	    bool isg = (Jet_qgl[iJet]>=0 && Jet_qgl[iJet]<0.5 && !isb && !isc);
+	    bool isn = (!isb && !isc && !isq && !isg);
+    }
+    else{//w87: new handling of flavour tagging for Run3 (21.06.2026, Bettina), note: should it be only 24/25/26 ?
+	    bool isb = (Jet_btagUParTAK4B[iJet] > bthr_tight);
+	    bool isc = (Jet_btagUParTAK4CvL[iJet] > cvlthr_tight && Jet_btagUParTAK4CvB[iJet] > cvbthr_tight && !isb); //not sure about last condition (!isb)
+	    bool isq = (Jet_btagPNetQvG[iJet] > qvgthr_tight && !isb && !isc);
+	    bool isg = (Jet_btagPNetQvG[iJet]>=0 && Jet_btagPNetQvG[iJet]<= qvgthr_tight && !isb && !isc); //also !isq per definition
+	    bool isn = (!isb && !isc && !isq && !isg); //not tagged as anything
+    }
+
 	  
 	  for (int ivar = 0; ivar != nvar; ++ivar) {
 	    for (int itag = 0; itag != ntag; ++itag) {

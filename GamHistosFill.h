@@ -129,6 +129,9 @@ public :
    Float_t         Jet_btagUParTAK4CvB[nJetMax]; // Run3, w72 (23.02.2026)
    Float_t         Jet_btagUParTAK4CvL[nJetMax]; // Run3, w72 (23.02.2026)
 
+   Float_t         Jet_btagUParTAK4B[nJetMax]; 	// Run3, w87 (21.06.2026)
+   Float_t         Jet_btagPNetQvG[nJetMax]; 	// Run3, w87 (21.06.2026)
+
    UChar_t         Jet_chMultiplicity[nJetMax]; //nanoAOD v15 (need it for jetID)
    UChar_t         Jet_neMultiplicity[nJetMax]; //nanoAOD v15 (need it for jetID)
 
@@ -351,6 +354,9 @@ public :
 
    TBranch        *b_Jet_btagUParTAK4CvB;   //!
    TBranch        *b_Jet_btagUParTAK4CvL;   //!
+
+   TBranch        *b_Jet_btagUParTAK4B;   //!
+   TBranch        *b_Jet_btagPNetQvG;   //!
  
    TBranch        *b_Jet_chEmEF;   //!
    TBranch        *b_Jet_chFPV0EF;   //!
@@ -804,6 +810,10 @@ void GamHistosFill::Init(TTree *tree)
      //new for w72 (23.02.2026), for c-tagging
      fChain->SetBranchAddress("Jet_btagUParTAK4CvB", Jet_btagUParTAK4CvB, &b_Jet_btagUParTAK4CvB);
      fChain->SetBranchAddress("Jet_btagUParTAK4CvL", Jet_btagUParTAK4CvL, &b_Jet_btagUParTAK4CvL);
+
+     //new for w87 (21.06.2026), for flavour tagging in general (old 'flavor' folder in output files)
+     fChain->SetBranchAddress("Jet_btagUParTAK4B", Jet_btagUParTAK4B, &b_Jet_btagUParTAK4B);
+     fChain->SetBranchAddress("Jet_btagPNetQvG", Jet_btagPNetQvG, &b_Jet_btagPNetQvG);
    }
    fChain->SetBranchAddress("Jet_chEmEF", Jet_chEmEF, &b_Jet_chEmEF);
    //if (!(is22 || is23 || is24 || is25)) fChain->SetBranchAddress("Jet_chFPV0EF", Jet_chFPV0EF, &b_Jet_chFPV0EF);
