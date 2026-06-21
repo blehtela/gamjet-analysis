@@ -1543,8 +1543,8 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS...  //TO DO: create better logic for filenaming, because it gets messy.
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_18Jun2026-EXTRATEST.root", 
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_18Jun2026.root",  //just for one go
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_22Jun2026-EXTRATEST.root", 
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_22Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), applyPSweightToAll ? (Form("_psweightIndex%d_",psweightIndex)) : "",
@@ -1552,7 +1552,7 @@ void GamHistosFill::Loop()
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_18Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_22Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
