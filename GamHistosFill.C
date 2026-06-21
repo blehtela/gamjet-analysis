@@ -1714,7 +1714,8 @@ void GamHistosFill::Loop()
   // issue is that we have bigger HT-bins for the higher PTG bins... create one TH1D for each PTG bin?
   double vpt_gam[] = {0, 10, 100, 200, 3000}; //PTG binning (3000 = Inf) //dont really need this, just make if-conditions accordingly
   //double vht_gam[] = {0, 40, 70, 100, 200, 400, 600, 6500}; // G-4Jets
-  double vht_gam1[] = {40, 100, 200, 400, 600, 1000, 6500}; // G-4Jets
+  //double vht_gam1[] = {40, 100, 200, 400, 600, 1000, 6500}; // G-4Jets //before w87
+  double vht_gam1[] = {10, 40, 100, 200, 400, 600, 1000, 6500}; // G-4Jets //since w87, added HT10to40 for PTG10to100
   double vht_gam2[] = {40, 200, 400, 600, 1000, 6500}; // G-4Jets
   double vht_gam3[] = {40, 400, 600, 1000, 6500}; // G-4Jets
 
@@ -1860,6 +1861,7 @@ void GamHistosFill::Loop()
     curdir->cd();
 
     // NUMBER OF EVENTS AND SUM OF WEIGHTS PER BIN
+    // TO DO: w87, updated (HT10to40) for jmenano but need to update it also for STANDARD MC!!! TO DO!!!
     // Reference number of events, retrieved manually with
     // TChain c("Events"); c.AddFile("<path to files>/*.root"); c.GetEntries();
     // Also re-calculated this code before event loop when needed
@@ -1907,30 +1909,31 @@ void GamHistosFill::Loop()
     // could do this in the CalcGenWeight script actually.
     // for the lumi_data, use one full year like e.g. 2024CDEFGHI with brilcalc (is one value per year), goldenJSON for 2024 to brilcalc (or from PdmV)
     //from PdmV for 2024:  	109.95 /fb, for 2025:, for 2026: //start testing with lumi-value for 2024, should get also the others for 25/26. (from PdmV)
-    int vnevt1jmenano[6] = {141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
-    int vnevt2jmenano[5] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
-    int vnevt3jmenano[4] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
+    int vnevt1jmenano[nht_gam1] = {148622674, 141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
+    int vnevt2jmenano[nht_gam2] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
+    int vnevt3jmenano[nht_gam3] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
     //NOTE (17.05.2026): these are the evtnums based on my own script for SKIMMED FILES (those we should use in lumi-scaling, not for genweight.)
     //int vnevt1jmenano[6] = {28891616, 38169817, 49120893, 188516685, 120130199, 42581488}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
     //int vnevt2jmenano[5] = {105214756, 95303408, 41543855, 20056068, 6290441}; //number of events retrieved with extra script for Summer24
     //int vnevt3jmenano[4] = {127097845, 26419681, 13457034, 5219203}; //number of events retrieved with extra script for Summer24
-    double vsumw1jmenano[6] = {9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1
-    double vsumw2jmenano[5] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
-    double vsumw3jmenano[4] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
+    //TO DO: add the first bin's sumw (HT10to40), currently set to -1.0
+    double vsumw1jmenano[nht_gam1] = {-1.0, 9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    double vsumw2jmenano[nht_gam2] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
+    double vsumw3jmenano[nht_gam3] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
 
     // developments added in w85, fixing binweighting
     // --------------------------------------------------------------------------------------------------------------------
     //TO DO: work in progress --> here put summedGenWeight/summedGenEventcount (obtained with my other script)
     //insert the numbers from the other script, essentially the: summedGenWeight/summedGenEventCount 
-    double vnormgensumw1jmenano[6] = {684146.394272, 206275.381721, 41911.962040, 4367.439010, 1164.045809, 162.632411}; //sum of weights for ptgam bin 1, divided by sum of gen evt counts
-    double vnormgensumw2jmenano[5] = {4037.952164, 2050.650420, 299.427554, 101.796905, 18.288361}; //sum of weights for ptgam bin 2, divided by sum of gen evt counts
-    double vnormgensumw3jmenano[4] = {507.156594, 149.123754, 57.806312, 12.029758}; //sum of weights for ptgam bin 3, divided by sum of gen evt counts
+    double vnormgensumw1jmenano[nht_gam1] = {1205554.426526, 684146.394272, 206275.381721, 41911.962040, 4367.439010, 1164.045809, 162.632411}; //sum of weights for ptgam bin 1, divided by sum of gen evt counts
+    double vnormgensumw2jmenano[nht_gam2] = {4037.952164, 2050.650420, 299.427554, 101.796905, 18.288361}; //sum of weights for ptgam bin 2, divided by sum of gen evt counts
+    double vnormgensumw3jmenano[nht_gam3] = {507.156594, 149.123754, 57.806312, 12.029758}; //sum of weights for ptgam bin 3, divided by sum of gen evt counts
 
 
 
     // CROSS SECTION PER BIN - moved this further up in w85, since now i need it already for the lumi-weight calculation per bin
-    // Values from Fikri, 28th January 2025 (mattermost)
-    double vxsec1[nht_gam1] = {123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
+    // Values from Fikri, 28th January 2025 (mattermost), and in June 2026 for new HT bin HT10to40
+    double vxsec1[nht_gam1] = {164300.0, 123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
     double vxsec2[nht_gam2] = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
     double vxsec3[nht_gam3] = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
  
