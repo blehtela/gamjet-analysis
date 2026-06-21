@@ -60,7 +60,7 @@ int countJetOneLowerThanJetTwo(0);
 
 //for PS weights
 bool applyPSweight = true; //for the PSweight folder only
-bool applyPSweightToAll = true; //false; //true; // for ALL histograms that usually get w (eventweight) only
+bool applyPSweightToAll = false; //true; // for ALL histograms that usually get w (eventweight) only
 //int psweightIndex = 4; //index of PSweight to be used for weighting the events, index4 = 0.25
 int psweightIndex = 2; //index of PSweight to be used for weighting the events, index2 = 0.5
 
