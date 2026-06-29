@@ -1543,8 +1543,8 @@ void GamHistosFill::Loop()
   //test in May 2026 for the huge MC files to not fill up my small AFS...  //TO DO: create better logic for filenaming, because it gets messy.
   TFile *fout(0);
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
-    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_22Jun2026-EXTRATEST.root", 
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_22Jun2026.root",  //just for one go
+    //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_23Jun2026-EXTRATEST.root", 
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_29Jun2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), applyPSweightToAll ? (Form("_psweightIndex%d_",psweightIndex)) : "",
@@ -1552,7 +1552,7 @@ void GamHistosFill::Loop()
 			    "RECREATE");
   }
   else if(TString(ds.c_str()).Contains("test")){
-    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_22Jun2026.root", //added date just for tests today
+    fout = new TFile(Form("rootfiles/GamHistosFill_%s_%s_pu-%s_%s_jersf-%s_29Jun2026.root", //added date just for tests today
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), version.c_str()), //UPDATED
 			  "RECREATE");
@@ -5677,31 +5677,62 @@ void GamHistosFill::Loop()
 				       Jet_btagDeepFlavCvL[iJet]);
 	    Jet_qgl[iJet] = Jet_btagDeepFlavQG[iJet];
 	  }
-    //w87: due to changes starting from w87, need to declare the variables already here, set to false initially
-    bool isb(false), isc(false), isq(false), isg(false), isn(false);
-    if(!isRun3){ //how it was handled before in Mikko's code for the flavor folder, i.e. before w87
+
+	/*
 	    bool isb = (Jet_btagDeepB[iJet] > bthr);
 	    bool isc = (Jet_btagDeepC[iJet] > cthr && !isb);
 	    bool isq = (Jet_qgl[iJet]>=0.5 && Jet_qgl[iJet] && !isb && !isc);
 	    bool isg = (Jet_qgl[iJet]>=0 && Jet_qgl[iJet]<0.5 && !isb && !isc);
 	    bool isn = (!isb && !isc && !isq && !isg);
+	*/
+
+    //w87: due to changes starting from w87, need to declare the variables already here, set to false initially
+    bool isb(false), isc(false), isq(false), isg(false), isn(false);
+    if(!isRun3){ //how it was handled before in Mikko's code for the flavor folder, i.e. before w87
+	    isb = (Jet_btagDeepB[iJet] > bthr);
+	    isc = (Jet_btagDeepC[iJet] > cthr && !isb);
+	    isq = (Jet_qgl[iJet]>=0.5 && Jet_qgl[iJet] && !isb && !isc);
+	    isg = (Jet_qgl[iJet]>=0 && Jet_qgl[iJet]<0.5 && !isb && !isc);
+	    isn = (!isb && !isc && !isq && !isg);
     }
     else{//w87: new handling of flavour tagging for Run3 (21.06.2026, Bettina), note: should it be only 24/25/26 ?
-	    bool isb = (Jet_btagUParTAK4B[iJet] > bthr_tight);
-	    bool isc = (Jet_btagUParTAK4CvL[iJet] > cvlthr_tight && Jet_btagUParTAK4CvB[iJet] > cvbthr_tight && !isb); //not sure about last condition (!isb)
-	    bool isq = (Jet_btagPNetQvG[iJet] > qvgthr_tight && !isb && !isc);
-	    bool isg = (Jet_btagPNetQvG[iJet]>=0 && Jet_btagPNetQvG[iJet]<= qvgthr_tight && !isb && !isc); //also !isq per definition
-	    bool isn = (!isb && !isc && !isq && !isg); //not tagged as anything
+	    isb = (Jet_btagUParTAK4B[iJet] > bthr_tight);
+	    isc = (Jet_btagUParTAK4CvL[iJet] > cvlthr_tight && Jet_btagUParTAK4CvB[iJet] > cvbthr_tight && !isb); //not sure about last condition (!isb)
+	    isq = (Jet_btagPNetQvG[iJet] > qvgthr_tight && !isb && !isc);
+	    isg = (Jet_btagPNetQvG[iJet]>=0 && Jet_btagPNetQvG[iJet]<= qvgthr_tight && !isb && !isc); //also !isq per definition
+	    isn = (!isb && !isc && !isq && !isg); //not tagged as anything
     }
 
+      	if (false && jentry%10000==0){  //remove the 'false' to make this show in tests.
+		cout << "\n\n" << endl << flush;
+		cout << "-----------------------------------------------------------------------------------------------------------------" << endl << flush;
+		cout << "only printing for jentry%10000==0 the partonFlavour (PDG id) for this genjet, and the tagging results:" << endl << flush;
+		cout << "(now iGenJet = " << iGenJet << ") flv = GenJet_partonFlavour[iGenJet] = " << flv << endl << flush;
+		cout << ">> isb = " << isb << ", isc = " << isc << ", isq = " << isq << ", isg = " << isg << ", isn = " << isn << endl << flush;
+		cout << "-----------------------------------------------------------------------------------------------------------------\n" << endl << flush;
+	}
+ 
 	  
 	  for (int ivar = 0; ivar != nvar; ++ivar) {
-	    for (int itag = 0; itag != ntag; ++itag) {
+	    for (int itag = 0; itag != ntag; ++itag) { //does this not go upwards?
 	      for (int iflv = 0; iflv != nflv; ++iflv) {
 
 		string& svr = avar[ivar]; const char *cv = svr.c_str();
 		string& stg = atag[itag]; const char *ct = stg.c_str();
 		string& sfl = aflv[iflv]; const char *cf = sfl.c_str();
+
+		/*
+      		if (jentry%10000==0 && ivar==0 && itag<2){ 
+			cout << "-----------------------------------------------------------------------------------------------------------------" << endl << flush;
+			cout << "only printing for jentry%10000==0 and ivar==0 (counts) and itag < 2 (i or b)" << endl << flush;
+			cout << "ivar = " << ivar << "(svr = " << cv << ")" << endl << flush;
+			cout << "itag = " << itag << "(stg = " << ct << ")" << endl << flush;
+			cout << "iflv = " << iflv << "(sfl = " << cf << ")" << endl << flush;
+			cout << "isb = " << isb << ", isc = " << isc << ", isq = " << isq << ", isg = " << isg << ", isn = " << isn << endl << flush;
+			cout << "-----------------------------------------------------------------------------------------------------------------" << endl << flush;
+		}
+		*/
+ 
 
 		if (((sfl=="i") ||
 		     (sfl=="b" && abs(flv)==5) ||
