@@ -650,7 +650,7 @@ void GamHistosFill::Loop()
   if (ds=="2018D4") jecl1rc = getFJC("Summer19UL18_RunD_V5_DATA_L1RC");
   //if (ds=="2018ABCD")jecl1rc=getFJC("Summer19UL18_RunABCD_V5_DATA_L1RC");
 
-  if (isRun3) {
+  if (isRun3) { //note (11.08.2026): should do this now also for Run2, since we have new nanoAODv15 with puppi?
     //if (isMC)
     //jecl1rc = getFJC("Winter23Prompt23_V2_MC_L1RC_AK4PFchs");
     //else
@@ -667,9 +667,63 @@ void GamHistosFill::Loop()
   if (ds=="2016APVQCD") jecl1rc = getFJC("Summer19UL16APV_V7_MC_L1RC");
   if (ds=="2017QCD")    jecl1rc = getFJC("Summer19UL17_V5_MC_L1RC");
   if (ds=="2018QCD")    jecl1rc = getFJC("Summer19UL18_V5_MC_L1RC");
-  assert(jecl1rc || isRun3);
+
+  //w88: Run2 with JMENanoAODv15
+  if(!isRun3 && isJMEnano){
+    jecl1rc = 0;
+  }
+
+  //assert(jecl1rc || isRun3);
+  assert(jecl1rc || isRun3 || (!isRun3 && isJMEnano)); //w88, new JMENanoAODv15 which has puppi, handle JECs like for Run3.
 
   // FactorizedJetCorrector for redoing JEC on the fly.
+  //w88: Added for Run2 on 11.08.2026
+  //2016 (Bv1, Bv2, C, D, E, Fhipm, Fnohipm, G, H)
+  //if(TString(ds.c_str()).Contains("2016") && isJMEnano){
+  //  jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026D_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (new JECs, V2M, 29.05.2026) 
+  //}
+  if(ds=="2016Bv1-jmenano" || ds=="2016Bv2-jmenano" || ds=="2016C-jmenano" || ds=="2016D-jmenano"){
+    jec = getFJC("", "Summer20UL16APVNanoV15_RunBCD_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16APVNanoV15_RunBCD_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2016E-jmenano" || ds=="2016Fhipm-jmenano"){
+    jec = getFJC("", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2L3Residual_AK4PFPuppi."); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2016Fnohipm-jmenano" || ds=="2016G-jmenano" || ds=="2016H-jmenano"){
+    jec = getFJC("", "Summer20UL16NanoV15_RunFGH_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16NanoV15_RunFGH_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+
+  //2017 (B, C, D, E, F)
+  if(ds=="2017B-jmenano"){
+    jec = getFJC("", "Summer20UL17NanoV15_RunB_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL17NanoV15_RunB_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2017C-jmenano"){
+    jec = getFJC("", "Summer20UL17NanoV15_RunC_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL17NanoV15_RunC_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2017D-jmenano"){
+    jec = getFJC("", "Summer20UL17NanoV15_RunD_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL17NanoV15_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2017E-jmenano"){
+    jec = getFJC("", "Summer20UL17NanoV15_RunE_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL17NanoV15_RunE_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2017F-jmenano"){
+    jec = getFJC("", "Summer20UL17NanoV15_RunF_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL17NanoV15_RunF_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+ 
+  //2018 (A, B, C, D)
+  if(ds=="2018A-jmenano"){
+    jec = getFJC("", "Summer20UL18NanoV15_RunA_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL18NanoV15_RunA_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2018B-jmenano"){
+    jec = getFJC("", "Summer20UL18NanoV15_RunB_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL18NanoV15_RunB_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2018C-jmenano"){
+    jec = getFJC("", "Summer20UL18NanoV15_RunC_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL18NanoV15_RunC_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+  if(ds=="2018D-jmenano"){
+    jec = getFJC("", "Summer20UL18NanoV15_RunD_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL18NanoV15_RunD_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
+  }
+
+  //Run3
   //2022
   if (ds=="2022C" || ds=="2022Cnib1") {
     jec = getFJC("", "Summer22Run3_V1_MC_L2Relative_AK4PUPPI",
