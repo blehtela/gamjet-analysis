@@ -1083,11 +1083,11 @@ void GamHistosFill::Loop()
 
   // Load JSON files
   if (TString(ds.c_str()).Contains("2016"))
-    LoadJSON("files/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt");
+    LoadJSON("files/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"); //doublechecked (11.08.2026)
   if (TString(ds.c_str()).Contains("2017"))
-    LoadJSON("files/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt");
+    LoadJSON("files/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"); //doublechecked (11.08.2026)
   if (TString(ds.c_str()).Contains("2018"))
-    LoadJSON("files/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt");
+    LoadJSON("files/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"); //doublechecked (11.08.2026)
   if (TString(ds.c_str()).Contains("2022"))
     LoadJSON("files/Cert_Collisions2022_355100_362760_Golden.json");
   if (TString(ds.c_str()).Contains("2023"))
