@@ -1,0 +1,4 @@
+/store/data/Run2016F/SinglePhoton/NANOAOD/UL2016_JMENanoAODv15-v4/2520000/694c1fed-8b40-4b45-b097-4db042a7a72a.root
+/store/data/Run2016F/SinglePhoton/NANOAOD/UL2016_JMENanoAODv15-v4/2520000/4a430968-5b9e-4692-8083-c1f20f5f35a5.root
+/store/data/Run2016F/SinglePhoton/NANOAOD/UL2016_JMENanoAODv15-v4/2520000/d3ea93aa-6a46-49c2-80ea-2589762e5224.root
+/store/data/Run2016F/SinglePhoton/NANOAOD/UL2016_JMENanoAODv15-v4/2520000/fc206d76-3cc6-426f-8f74-e8f2cdc0083c.root
