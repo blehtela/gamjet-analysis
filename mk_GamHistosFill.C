@@ -76,16 +76,25 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string jersfver =
 		  dataset=="2016E"  || dataset=="2016F" || 
 		  dataset=="2016FG" || dataset=="2016H" || 
 		  dataset=="2016BCD"|| dataset=="2016EF"|| dataset=="2016FGH" ||
+      //w88: added jmenano for Run2 on 11.08.2018
+		  dataset=="2016Bv1-jmenano"|| dataset=="2016Bv2-jmenano"|| dataset=="2016C-jmenano" ||
+		  dataset=="2016D-jmenano"|| dataset=="2016E-jmenano"|| dataset=="2016Fhipm-jmenano" ||
+	    dataset=="2016Fnohipm-jmenano"|| dataset=="2016G-jmenano"|| dataset=="2016H-jmenano" ||
 		  //dataset=="2016BCDEF" ||
 		  dataset=="2017B" || dataset=="2017C" || dataset=="2017D" || 
 		  dataset=="2017E" || dataset=="2017F" ||
+      //w88: added jmenano for Run2 on 11.08.2018
+		  dataset=="2017B-jmenano" || dataset=="2017C-jmenano" || dataset=="2017D-jmenano" || 
+		  dataset=="2017E-jmenano" || dataset=="2017F-jmenano" ||
 		  //dataset=="2017BCDEF" || 
 		  dataset=="2018A"  || dataset=="2018B" ||
 		  dataset=="2018C"  || dataset=="2018D" ||
 		  dataset=="2018A1" || dataset=="2018A2" ||
 		  dataset=="2018D1" || dataset=="2018D2" ||
 		  dataset=="2018D3" || dataset=="2018D4" ||
-                  //dataset=="2018ABCD");
+      //w88: added jmenano for Run2 on 11.08.2018
+			dataset=="2018A-jmenano" || dataset=="2018B-jmenano" || dataset=="2018C-jmenano" || dataset=="2018D-jmenano" || 
+      //dataset=="2018ABCD");
 		  dataset=="2022C"  || dataset=="2022D" || dataset=="2022E" ||
 		  dataset=="2022F"  || dataset=="2022G" ||
 		  dataset=="2022Cnib1"  || dataset=="2022Dnib1" || dataset=="2022Enib1" || dataset=="2022Fnib1"  || dataset=="2022Gnib1" || //nibs and fibs 2022

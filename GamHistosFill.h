@@ -621,13 +621,15 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	     ds=="2016APVP8" || ds=="2016APVQCD");
   is16fgh = (ds=="2016FG" || ds=="2016H" || ds=="2016FGH" ||
 	     ds=="2016P8" || ds=="2016QCD");
-  is16 = (is16apv || is16fgh);
+  is16 = (is16apv || is16fgh || TString(ds.c_str()).Contains("2016"));  //covers also 2016[Bv1,Bv2,C,D,E,Fhipm,Fnohipm,G,H]-jmenano 
   is17 = (ds=="2017B" || ds=="2017C" || ds=="2017D" || ds=="2017E" ||
-	  ds=="2017F" || ds=="2017BCDEF" || ds=="2017P8" || ds=="2017QCD");
+	        ds=="2017F" || ds=="2017BCDEF" || ds=="2017P8" || ds=="2017QCD" ||
+          TString(ds.c_str()).Contains("2017"));  //covers also 2017[B,C,D,E,F]-jmenano 
   is18 = (ds=="2018A" || ds=="2018B" || ds=="2018C" || ds=="2018D" || 
-	  ds=="2018A1" || ds=="2018A2" ||
-	  ds=="2018D1" || ds=="2018D2" || ds=="2018D3" || ds=="2018D4" ||
-	  ds=="2018ABCD" || ds=="2018P8" || ds=="2018QCD");
+	        ds=="2018A1" || ds=="2018A2" ||
+	        ds=="2018D1" || ds=="2018D2" || ds=="2018D3" || ds=="2018D4" ||
+	        ds=="2018ABCD" || ds=="2018P8" || ds=="2018QCD" ||
+          TString(ds.c_str()).Contains("2018"));  //covers also 2018[A,B,C,D]-jmenano 
   is22 = (ds=="2022C" || ds=="2022D" || ds=="2022E" || ds=="2022F" || ds=="2022G" || 
 	  ds=="2022Cnib1" || ds=="2022Dnib1" || ds=="2022Enib1" || ds=="2022Fnib1" || ds=="2022Gnib1" || //nibs and fibs
 	  ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022QCD" || ds=="2022EEP8" ||
@@ -711,7 +713,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="winter2025QCDk"); 
   isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25) (the Contains also covers tiny-test)
   isLowPU = (TString(ds.c_str()).Contains("2026C"));
-  isJMEnano = (TString(ds.c_str()).Contains("jmenano")); //for switching off Jet_jetId branch in case of 2024 MC jmenano
+  isJMEnano = (TString(ds.c_str()).Contains("jmenano")); //for switching off Jet_jetId branch in case of 2024 MC jmenano //bool should also work for Run2 jmenano
   isRun3 = (is22 || is23 || is24 || is25 || is26);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24 || is25 || is26);
