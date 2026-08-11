@@ -689,6 +689,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2L3Residual_AK4PFPuppi."); //w88 (Run2 UL JECs, 11.08.2026) 
   }
   if(ds=="2016Fnohipm-jmenano" || ds=="2016G-jmenano" || ds=="2016H-jmenano"){
+    cout << "\nTESTING NOW TO SET THE JECs FOR 2016 2nd part: \n" << endl << flush;
     jec = getFJC("", "Summer20UL16NanoV15_RunFGH_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16NanoV15_RunFGH_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
   }
 
@@ -1284,6 +1285,8 @@ void GamHistosFill::Loop()
 
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
+  // NOTE: TO DO --> do this also for the Run2 UL data (w88, 11.08.2026)
+
   //w32 also used for w33
   //update lumi on 25.10.2024 (w40)
   //update lumi last on 01.11.2024 (w41), also used for w42, w43, w44
@@ -4034,7 +4037,8 @@ void GamHistosFill::Loop()
 
       // Calculate L1RC correction
       double corrl1rc(1.); // isRun3
-      if (isRun2) { //note 12.12.2025: is this only needed for Run2 because in Run3 we have puppijets? (i think so)
+      //if (isRun2) { //note 12.12.2025: is this only needed for Run2 because in Run3 we have puppijets? (i think so)
+      if(isRun2 && !isJMEnano){ //w88: no need to do it for JMENanoAODv15 (UL), 11.08.2026
       	jecl1rc->setJetPt(phoj.Pt());
       	jecl1rc->setJetEta(phoj.Eta());
       	jecl1rc->setJetA(Jet_area[idx]);
@@ -4046,7 +4050,8 @@ void GamHistosFill::Loop()
       // Calculate L1RC correction without "zero suppression"
       double refpt = 30; // phoj.Pt~0 leads to negative offset cutoff
       double corrl1rc0(1.); // isRun3
-      if (isRun2) {
+      //if (isRun2) {
+      if(isRun2 && !isJMEnano){ //w88: no need to do it for JMENanoAODv15 (UL), 11.08.2026
       	jecl1rc->setJetPt(refpt);
       	jecl1rc->setJetEta(phoj0.Eta());
       	jecl1rc->setJetA(Jet_area[idx]);
@@ -4086,7 +4091,8 @@ void GamHistosFill::Loop()
 	fox *= (1-Jet_rawFactor[iFox]); //Raw energy of the jet that we chose to be fake-photon
 	// Calculate L1RC correction
 	double corrl1rc(1.); // isRun3
-	if (isRun2) { //remove pileup (not needed in Run3, puppi), so energy comes from genjet
+	//if (isRun2) { //remove pileup (not needed in Run3, puppi), so energy comes from genjet
+  if(isRun2 && !isJMEnano){ //w88: no need to do it for JMENanoAODv15 (UL), 11.08.2026
 	  jecl1rc->setJetPt(fox.Pt());
 	  jecl1rc->setJetEta(fox.Eta());
 	  jecl1rc->setJetA(Jet_area[iFox]);
@@ -4450,14 +4456,13 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("2022QCD")){ mctype="2022QCD";}
 			if(TString(dataset.c_str()).Contains("2022EEP8")){ mctype="2022EEP8";} //new, for y2022
 			if(TString(dataset.c_str()).Contains("2022EEQCD")){ mctype="2022EEQCD";}
-/*
-	//need to use only the "stem" of the era name for finding the pu reweighting histogram, which is called e.g. pileup_summer2024QCD)
-    	if(TString(ce).Contains("QCDa") || TString(ce).Contains("QCDb") || TString(ce).Contains("QCDc") || TString(ce).Contains("QCDd") || TString(ce).Contains("QCDe") || 
-		TString(ce).Contains("QCDf") || TString(ce).Contains("QCDg") || TString(ce).Contains("QCDh") || TString(ce).Contains("QCDi") || TString(ce).Contains("QCDj")){
-		ce = (se.substr(0, se.size()-1)).c_str(); //remove the small letter
-    	}
-*/
-
+      /*
+      	//need to use only the "stem" of the era name for finding the pu reweighting histogram, which is called e.g. pileup_summer2024QCD)
+          	if(TString(ce).Contains("QCDa") || TString(ce).Contains("QCDb") || TString(ce).Contains("QCDc") || TString(ce).Contains("QCDd") || TString(ce).Contains("QCDe") || 
+      		TString(ce).Contains("QCDf") || TString(ce).Contains("QCDg") || TString(ce).Contains("QCDh") || TString(ce).Contains("QCDi") || TString(ce).Contains("QCDj")){
+      		ce = (se.substr(0, se.size()-1)).c_str(); //remove the small letter
+          	}
+      */
 
 	
 			TH1D *hm = _pu[mctype][1]; //workaround since working with split input file lists; use one mc histo for all bins
@@ -4487,7 +4492,7 @@ void GamHistosFill::Loop()
       /*
       TH1D *hd(0);
       if(strcmp(puera.c_str(),"2024D")==0){
-	hd = _pu["2024D"][50];
+	      hd = _pu["2024D"][50];
       }
       */
       TH1D *hd = _pu[puera.c_str()][50]; //trying first in w41
@@ -4511,7 +4516,8 @@ void GamHistosFill::Loop()
       evtWeightWithPS *= wt;
     }
     // Normalize data luminosity (except for 22-23)
-    if (!isMC && pass_trig && !isRun3) { // i think i did this somewhere else already
+    //if (!isMC && pass_trig && !isRun3) { // i think i did this somewhere else already
+    if (!isMC && pass_trig && !isRun3 && !isJMEnano) { //w88: handle it differently for Run2 JMENANO ... do it like for Run3 (TO DO)
       double lumi = _lumi[sera][itrg];
       assert(lumi>0);
       w *= 1./lumi;
@@ -4789,7 +4795,8 @@ void GamHistosFill::Loop()
       	// Calculate L1RC correction
       	rawjet = (1-Jet_rawFactor[i]) * jeti; //NOTE: is this still correct after JER SF??
       	double corrl1rc(1.); // isRun3
-      	if (isRun2) {
+      	//if (isRun2) {
+        if(isRun2 && !isJMEnano){ //w88: no need to do it for JMENanoAODv15 (UL), 11.08.2026
       	  jecl1rc->setJetPt(rawjet.Pt());
       	  jecl1rc->setJetEta(rawjet.Eta());
       	  jecl1rc->setJetA(Jet_area[i]);
@@ -4842,7 +4849,7 @@ void GamHistosFill::Loop()
       rawmet.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
     }
     else {
-      rawmet.SetPtEtaPhiM(ChsMET_pt, 0, ChsMET_phi, 0);
+      rawmet.SetPtEtaPhiM(ChsMET_pt, 0, ChsMET_phi, 0); //note: could i use puppiMET for UL Run2? (11.08.2026)
     }
     if (isQCD && iFox!=-1) rawmet += fox - gam; // fox=rawjet-PU, gam=genjet
     else rawmet += rawgam - gam; // replace PF photon with Reco photon
