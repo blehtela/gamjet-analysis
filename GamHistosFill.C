@@ -1142,7 +1142,8 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2017"))
     LoadJSON("files/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt"); //doublechecked (11.08.2026)
   if (TString(ds.c_str()).Contains("2018"))
-    LoadJSON("files/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"); //doublechecked (11.08.2026)
+    LoadJSON("files/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt"); //doublechecked (11.08.2026) //worked with brilcalc, but here format issues? try for now the other (below)
+    //LoadJSON("files/json2018.txt");
   if (TString(ds.c_str()).Contains("2022"))
     LoadJSON("files/Cert_Collisions2022_355100_362760_Golden.json");
   if (TString(ds.c_str()).Contains("2023"))
@@ -1286,6 +1287,18 @@ void GamHistosFill::Loop()
 
   //Get recorded luminosity for different triggers, pb=in picobarn:
   // NOTE: TO DO --> do this also for the Run2 UL data (w88, 11.08.2026)
+  // a bit differently now for Run2, only for lowest unprescaled trigger (for simplicity to start with)
+
+  LumiMap lumiLowestNoPS;
+  if(TString(ds.c_str()).Contains("2016")){
+	lumiLowestNoPS = LoadLumi("files/lumi_run2_ul2016_11aug2026_2016_photon175_w88.csv");
+  }
+  else if(TString(ds.c_str()).Contains("2017")){
+	lumiLowestNoPS = LoadLumi("files/lumi_run2_ul2017_11aug2026_20162017_photon200_w88.csv");
+  }
+  else if(TString(ds.c_str()).Contains("2018")){
+	lumiLowestNoPS = LoadLumi("files/lumi_run2_ul2018_11aug2026_201620172018_photon200_w88.csv");
+  }
 
   //w32 also used for w33
   //update lumi on 25.10.2024 (w40)
@@ -2333,10 +2346,14 @@ void GamHistosFill::Loop()
   //double xmax = 400000.5; //updated on 16.09.2025 (w60 second run) //395000.5; //updated on 20.05.2025 for 2025 data
   //double xmax = 403000.5; //updated on 13.03.2026 (w74 second run, for 2026 data) 
   double xmax = 405000.5; //updated on 26.05.2026 (w83 later runs, for 2026 data) 
-	double xmin = 355000.5;
+  //double xmin = 355000.5; //Run3 only
+  double xmin = 271000.5; // after adding Run2
+  //if(isRun2){
+  //      xmin = 271000;
+  //}
 	double histnx = xmax-xmin; //should be int of course
   //TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",26000,355000.5,383000.5); //updated all to xmin and xmax and number of bins
-	TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",histnx,xmin,xmax);
+  TH1D *pr30n = new TH1D("pr30n",";Run;N_{events};",histnx,xmin,xmax);
   TH1D *pr50n = new TH1D("pr50n",";Run;N_{events};",histnx,xmin,xmax);
   TH1D *pr110n = new TH1D("pr110n",";Run;N_{events};",histnx,xmin,xmax);
   TH1D *pr230n = new TH1D("pr230n",";Run;N_{events};",histnx,xmin,xmax);
