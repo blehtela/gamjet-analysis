@@ -790,7 +790,8 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("luminosityBlock", &luminosityBlock, &b_luminosityBlock);
    fChain->SetBranchAddress("event", &event, &b_event);
 
-   if (isRun2) {
+   //if (isRun2) {
+   if (isRun2 && !isJMEnano) {
      fChain->SetBranchAddress("ChsMET_phi", &ChsMET_phi, &b_ChsMET_phi);
      fChain->SetBranchAddress("ChsMET_pt", &ChsMET_pt, &b_ChsMET_pt);
      //fChain->SetBranchAddress("ChsMET_sumEt", &ChsMET_sumEt, &b_ChsMET_sumEt);
@@ -798,8 +799,8 @@ void GamHistosFill::Init(TTree *tree)
 
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("Jet_area", Jet_area, &b_Jet_area);
-   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_btagDeepB", Jet_btagDeepB, &b_Jet_btagDeepB);
-   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_btagDeepC", Jet_btagDeepC, &b_Jet_btagDeepC);
+   if (!(is22 || is23 || is24 || is25 || is26 || (isRun2 && isJMEnano))) fChain->SetBranchAddress("Jet_btagDeepB", Jet_btagDeepB, &b_Jet_btagDeepB);
+   if (!(is22 || is23 || is24 || is25 || is26 || (isRun2 && isJMEnano))) fChain->SetBranchAddress("Jet_btagDeepC", Jet_btagDeepC, &b_Jet_btagDeepC);
    //fChain->SetBranchAddress("Jet_btagDeepCvB", Jet_btagDeepCvB, &b_Jet_btagDeepCvB);
    //fChain->SetBranchAddress("Jet_btagDeepCvL", Jet_btagDeepCvL, &b_Jet_btagDeepCvL);
    if (is22 || is23 || is24 || is25 || is26) {
@@ -843,10 +844,10 @@ void GamHistosFill::Init(TTree *tree)
    fChain->SetBranchAddress("Jet_phi", Jet_phi, &b_Jet_phi);
    fChain->SetBranchAddress("Jet_pt", Jet_pt, &b_Jet_pt);
    //fChain->SetBranchAddress("Jet_puIdDisc", Jet_puIdDisc, &b_Jet_puIdDisc);
-   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
+   if (!(is22 || is23 || is24 || is25 || is26 || (isRun2 && isJMEnano))) fChain->SetBranchAddress("Jet_qgl", Jet_qgl, &b_Jet_qgl);
    fChain->SetBranchAddress("Jet_rawFactor", Jet_rawFactor, &b_Jet_rawFactor);
    //if(!(is25 || is26)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId); //only if not nanoAOD v15 (starting 2025) NOTE: also some '24 are now migrated to v15...
-   if(!(is24 && isJMEnano) && !(is25 || is26) && !(isMC && is24 && isJMEnano)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);  //w80 updated
+   if(!(is24 && isJMEnano) && !(is25 || is26) && !(isMC && is24 && isJMEnano) && !(isRun2 && isJMEnano)) fChain->SetBranchAddress("Jet_jetId", Jet_jetId, &b_Jet_jetId);  //w80 updated
    //fChain->SetBranchAddress("Jet_nConstituents", Jet_nConstituents, &b_Jet_nConstituents);
    //fChain->SetBranchAddress("Jet_nElectrons", Jet_nElectrons, &b_Jet_nElectrons);
    //fChain->SetBranchAddress("Jet_nMuons", Jet_nMuons, &b_Jet_nMuons);
@@ -863,14 +864,14 @@ void GamHistosFill::Init(TTree *tree)
 
    fChain->SetBranchAddress("nPhoton", &nPhoton, &b_nPhoton);
    //if (!is16)
-   if (!(is16 || is22 || is23 || is24 || is25 || is26)) 
+   if (!(is16 || is22 || is23 || is24 || is25 || is26 || (isRun2 && isJMEnano))) 
      fChain->SetBranchAddress("Photon_eCorr", Photon_eCorr, &b_Photon_eCorr);
    else
      b_Photon_eCorr = 0;
    fChain->SetBranchAddress("Photon_energyErr", Photon_energyErr, &b_Photon_energyErr);
    fChain->SetBranchAddress("Photon_eta", Photon_eta, &b_Photon_eta);
    fChain->SetBranchAddress("Photon_hoe", Photon_hoe, &b_Photon_hoe);
-   if (!(is22 || is23 || is24 || is25 || is26)) fChain->SetBranchAddress("Photon_mass", Photon_mass, &b_Photon_mass);
+   if (!(is22 || is23 || is24 || is25 || is26 || (isRun2 && isJMEnano))) fChain->SetBranchAddress("Photon_mass", Photon_mass, &b_Photon_mass);
    //fChain->SetBranchAddress("Photon_mvaID", Photon_mvaID, &b_Photon_mvaID);
    //fChain->SetBranchAddress("Photon_mvaID_Fall17V1p1", Photon_mvaID_Fall17V1p1, &b_Photon_mvaID_Fall17V1p1);
    //fChain->SetBranchAddress("Photon_pfRelIso03_all", Photon_pfRelIso03_all, &b_Photon_pfRelIso03_all);
@@ -911,9 +912,9 @@ void GamHistosFill::Init(TTree *tree)
      //fChain->SetBranchAddress("RawPuppiMET_sumEt", &RawPuppiMET_sumEt, &b_RawPuppiMET_sumEt);
    }
 
-   if (!isRun3)
+   if (!isRun3 && !(isRun2 && isJMEnano))
      fChain->SetBranchAddress("fixedGridRhoFastjetAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
-   if (isRun3)
+   if (isRun3 || (isRun2 && isJMEnano))
      fChain->SetBranchAddress("Rho_fixedGridRhoFastjetAll", &Rho_fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
      //fChain->SetBranchAddress("Rho_fixedGridRhoAll", &fixedGridRhoFastjetAll, &b_fixedGridRhoFastjetAll);
    		fChain->SetBranchAddress("Rho_fixedGridRhoFastjetCentral", &Rho_fixedGridRhoFastjetCentral, &b_fixedGridRhoFastjetCentral);

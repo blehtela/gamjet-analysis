@@ -431,7 +431,8 @@ void GamHistosFill::Loop()
     if (!isMC) fChain->SetBranchStatus("luminosityBlock",1);
     if (!isMC && debugFiles) fChain->SetBranchStatus("event",1);
 
-    if (isRun3) {
+    //if (isRun3) {
+    if (isRun3 || (isRun2 && isJMEnano)) { //not sure, but adding also for JMENanoAODv15 for Run2?
       // Same cut as for dijet sample
       //fChain->SetBranchStatus("Flag_METFilters",1);
       // https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#Run_3_recommendations
@@ -475,9 +476,10 @@ void GamHistosFill::Loop()
     //if (isMC && !isRun3)  fChain->SetBranchStatus("nPSWeight",1);
     //if (isMC && !isRun3)  fChain->SetBranchStatus("PSWeight",1);
 
-    if (!isRun3)
+    //if (!isRun3)
+    if (!isRun3 && !(isRun2 && isJMEnano))
       fChain->SetBranchStatus("fixedGridRhoFastjetAll",1);
-    if (isRun3)
+    if (isRun3 || (isRun2 && isJMEnano)) //since w88 also for Run2 JMENanoAODv15
       fChain->SetBranchStatus("Rho_fixedGridRhoFastjetAll",1);
       fChain->SetBranchStatus("Rho_fixedGridRhoFastjetCentral",1); //new w39
       fChain->SetBranchStatus("Rho_fixedGridRhoFastjetCentralChargedPileUp",1); //new w39
@@ -485,11 +487,13 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("PV_npvs",1);
     fChain->SetBranchStatus("PV_npvsGood",1);
 
-    if (isRun2) {
+    //if (isRun2) {
+    if (isRun2 && !isJMEnano) {
       fChain->SetBranchStatus("ChsMET_pt",1);
       fChain->SetBranchStatus("ChsMET_phi",1);
     }
-    if (isRun3) {
+    //if (isRun3) {
+    if (isRun3 || (isRun2 && isJMEnano)) {
       fChain->SetBranchStatus("RawPuppiMET_pt",1);
       fChain->SetBranchStatus("RawPuppiMET_phi",1);
     }
@@ -498,7 +502,8 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Photon_pt",1);
     fChain->SetBranchStatus("Photon_eta",1);
     fChain->SetBranchStatus("Photon_phi",1);
-    if (!(is22||is23||is24||is25 || is26)) fChain->SetBranchStatus("Photon_mass",1);
+    //if (!(is22||is23||is24||is25 || is26)) fChain->SetBranchStatus("Photon_mass",1);
+    if (!(is22||is23||is24||is25||is26) && !(isRun2 && isJMEnano)) fChain->SetBranchStatus("Photon_mass",1); //w88, for nanoV15 branch not existing
     fChain->SetBranchStatus("Photon_hoe",1);
     if (is17 && isMC && isQCD)
       fChain->SetBranchStatus("Photon_cutBasedBitmap",1);
@@ -523,11 +528,12 @@ void GamHistosFill::Loop()
     fChain->SetBranchStatus("Jet_area",1);
     //if(!is25 && !is26){ fChain->SetBranchStatus("Jet_jetId",1); } //not in nanoAODv15 and higher
     //if(!is25 && !is26 && !(isMC && is24 && isJMEnano) && !(is24 && isJMEnano)){ fChain->SetBranchStatus("Jet_jetId",1); }
-    if(!is25 && !is26 && !(is24 && isJMEnano)){ 
+    //if(!is25 && !is26 && !(is24 && isJMEnano)){ 
+    if(!is25 && !is26 && !(is24 && isJMEnano) && !(isRun2 && isJMEnano)){ 
 	    fChain->SetBranchStatus("Jet_jetId",1); 
     }
     else{
-	cout << "[debugging]: This sample should not have any Jet_jetId branch." << endl << flush;
+      cout << "[debugging]: This sample should not have any Jet_jetId branch." << endl << flush;
     }
 
 
@@ -536,7 +542,7 @@ void GamHistosFill::Loop()
     //multiplicity needed for replacing jetID in 2025
     //w85: important note - also needed for 24 jmenano samples!
     //if(is25 || is26){
-    if(is25 || is26 || (is24 && isJMEnano)){
+    if(is25 || is26 || (is24 && isJMEnano) || (isRun2 && isJMEnano)){
       fChain->SetBranchStatus("Jet_chMultiplicity",1);
       fChain->SetBranchStatus("Jet_neMultiplicity",1);
     }
@@ -555,11 +561,14 @@ void GamHistosFill::Loop()
 
     if (isMC) fChain->SetBranchStatus("Jet_genJetIdx",1);
     
-    if (!isRun3) fChain->SetBranchStatus("Jet_btagDeepB",1);
-    if (!isRun3) fChain->SetBranchStatus("Jet_btagDeepC",1);
-    if (!isRun3) fChain->SetBranchStatus("Jet_qgl",1);
+    //if (!isRun3) fChain->SetBranchStatus("Jet_btagDeepB",1);
+    //if (!isRun3) fChain->SetBranchStatus("Jet_btagDeepC",1);
+    //if (!isRun3) fChain->SetBranchStatus("Jet_qgl",1);
+    if (!isRun3 && !(isRun2 && isJMEnano)) fChain->SetBranchStatus("Jet_btagDeepB",1);
+    if (!isRun3 && !(isRun2 && isJMEnano)) fChain->SetBranchStatus("Jet_btagDeepC",1);
+    if (!isRun3 && !(isRun2 && isJMEnano)) fChain->SetBranchStatus("Jet_qgl",1);
     //
-    if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavB",1);
+    if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavB",1); //note on w88: can i activate this for all nanov15, so for UL Run2 also?
     if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavCvB",1);
     if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavCvL",1);
     if (isRun3) fChain->SetBranchStatus("Jet_btagDeepFlavQG",1);
@@ -669,12 +678,13 @@ void GamHistosFill::Loop()
   if (ds=="2018QCD")    jecl1rc = getFJC("Summer19UL18_V5_MC_L1RC");
 
   //w88: Run2 with JMENanoAODv15
-  if(!isRun3 && isJMEnano){
+  //if(!isRun3 && isJMEnano){
+  if(isRun2 && isJMEnano){
     jecl1rc = 0;
   }
 
   //assert(jecl1rc || isRun3);
-  assert(jecl1rc || isRun3 || (!isRun3 && isJMEnano)); //w88, new JMENanoAODv15 which has puppi, handle JECs like for Run3.
+  assert(jecl1rc || isRun3 || (isRun2 && isJMEnano)); //w88, new JMENanoAODv15 which has puppi, handle JECs like for Run3.
 
   // FactorizedJetCorrector for redoing JEC on the fly.
   //w88: Added for Run2 on 11.08.2026
@@ -686,7 +696,7 @@ void GamHistosFill::Loop()
     jec = getFJC("", "Summer20UL16APVNanoV15_RunBCD_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16APVNanoV15_RunBCD_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
   }
   if(ds=="2016E-jmenano" || ds=="2016Fhipm-jmenano"){
-    jec = getFJC("", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2L3Residual_AK4PFPuppi."); //w88 (Run2 UL JECs, 11.08.2026) 
+    jec = getFJC("", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2Relative_AK4PFPuppi", "Summer20UL16APVNanoV15_RunEF_V1_DATA_L2L3Residual_AK4PFPuppi"); //w88 (Run2 UL JECs, 11.08.2026) 
   }
   if(ds=="2016Fnohipm-jmenano" || ds=="2016G-jmenano" || ds=="2016H-jmenano"){
     cout << "\nTESTING NOW TO SET THE JECs FOR 2016 2nd part: \n" << endl << flush;
@@ -1615,7 +1625,7 @@ void GamHistosFill::Loop()
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
     //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_23Jun2026-EXTRATEST.root", 
     //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_29Jun2026.root",  //just for one go
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_11Aug2026.root",  //just for one go
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_13Aug2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), applyPSweightToAll ? (Form("_psweightIndex%d_",psweightIndex)) : "",
@@ -3889,13 +3899,14 @@ void GamHistosFill::Loop()
 
     // Safety check for rho being NaN
     //update - this variable (branch name) depends on which Run (Run3 or not), add this
-    if (!isRun3){
+    //cout << "Rho_fixedGridRhoFastjetAll (will be set to 34): " << Rho_fixedGridRhoFastjetAll << endl << flush;
+    if (!isRun3 && !(isRun2 && isJMEnano)){
       if (!(fixedGridRhoFastjetAll>=0 && fixedGridRhoFastjetAll<150))
         fixedGridRhoFastjetAll = 34; // average conditions
     }
-    else if (isRun3){
+    else if (isRun3 || (isRun2 && isJMEnano)){
       if (!(Rho_fixedGridRhoFastjetAll>=0 && Rho_fixedGridRhoFastjetAll<150))
-        Rho_fixedGridRhoFastjetAll = 34; // average conditions
+        Rho_fixedGridRhoFastjetAll = 34; // average conditions, should probably be higher for Run3?
     } 
     
     // Sanity check PS weights
@@ -3965,7 +3976,8 @@ void GamHistosFill::Loop()
     // Select tight photons and photon matching gen photon
     for (int i = 0; i != nPhoton; ++i) {
 
-      if (isRun3) Photon_mass[i] = 0;
+      //if (isRun3) Photon_mass[i] = 0;
+      if (isRun3 || (isRun2 && isJMEnano)) Photon_mass[i] = 0; //JMENanoAODv15
       gami.SetPtEtaPhiM(Photon_pt[i],  Photon_eta[i],
 			Photon_phi[i], Photon_mass[i]);
       
@@ -4577,7 +4589,7 @@ void GamHistosFill::Loop()
         jec->setJetPt(rawJetPt);
         jec->setJetEta(Jet_eta[i]);
         jec->setJetPhi(Jet_phi[i]); //added this line to make BPix work (should be marked as w3)
-	      if (isRun2) {
+	      if (isRun2 && !isJMEnano) { //not needed for JMEnanoAODv15
 	        jec->setJetA(Jet_area[i]);
 	        jec->setRho(fixedGridRhoFastjetAll);
 	      }
@@ -4862,7 +4874,8 @@ void GamHistosFill::Loop()
     } // isMC
 
     // Set MET vectors
-    if (isRun3) {
+    //if (isRun3) {
+    if (isRun3 || (isRun2 && isJMEnano)) {
       rawmet.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
     }
     else {
@@ -4941,7 +4954,8 @@ void GamHistosFill::Loop()
     }
     
     // Sanity checks for HDM inputs
-    if (!(fabs(mpf1+mpfn+mpfu-mpf)<1e-4)) {
+    //if (!(fabs(mpf1+mpfn+mpfu-mpf)<1e-4)) {
+    if (!(fabs(mpf1+mpfn+mpfu-mpf)<5e-4)) { // was too strict for UL... is there an issue with puppiMET for UL? ... loosen now from 1e-4 to 5e-4
       cout << "\nHDM input error: mpf=" << mpf << " mpf1=" << mpf1
 	   << " mpfn=" << mpfn << " mpfu=" << mpfu << endl;
       cout << "Difference = " << mpf1+mpfn+mpfu-mpf << endl << flush;
@@ -5121,7 +5135,9 @@ void GamHistosFill::Loop()
 
       //bool pass_jetid = ((is25 || is26) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
       //bool pass_jetid = ((is25 || is26 || (isMC && is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
-      bool pass_jetid = ((is25 || is26 || (is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+      //bool pass_jetid = ((is25 || is26 || (is24 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+      bool pass_jetid = ((is25 || is26 || (is24 && isJMEnano) || (isRun2 && isJMEnano)) ? (iJet!=-1 && Jet_passJetIdTightLepVeto) : (iJet!=-1 && Jet_jetId[iJet]>=4)); //to also account for nanoAODv15
+
 
 
 
@@ -5745,12 +5761,13 @@ void GamHistosFill::Loop()
 	  mvar["mpf1"] = mpf1;
 	  mvar["mpfn"] = mpfn;
 	  mvar["mpfu"] = mpfu;
-	  mvar["rho"] = isRun3 ? Rho_fixedGridRhoFastjetAll : fixedGridRhoFastjetAll; //added the if statement (? :) here (12.12.2025)
+	  mvar["rho"] = (isRun3 || (isRun2 && isJMEnano)) ? Rho_fixedGridRhoFastjetAll : fixedGridRhoFastjetAll; //added the if statement (? :) here (12.12.2025)
 	  mvar["rjet"] = (ptgam!=0 ? jet.Pt() / ptgam : 0);
 	  mvar["gjet"] = (ptgam!=0 ? genjet.Pt() / ptgam : 0);
 	  mvar["rgen"] = (genjet.Pt()!=0 ? jet.Pt() / genjet.Pt() : 0);
 
-	  if (isRun3) { // temporary patch
+	  //if (isRun3) { // temporary patch
+	  if (isRun3 || (isRun2 && isJMEnano)) { // temporary patch
 	    Jet_btagDeepB[iJet] = Jet_btagDeepFlavB[iJet];
 	    Jet_btagDeepC[iJet] = 0.5*(Jet_btagDeepFlavCvB[iJet] +
 				       Jet_btagDeepFlavCvL[iJet]);
@@ -5767,7 +5784,8 @@ void GamHistosFill::Loop()
 
     //w87: due to changes starting from w87, need to declare the variables already here, set to false initially
     bool isb(false), isc(false), isq(false), isg(false), isn(false);
-    if(!isRun3){ //how it was handled before in Mikko's code for the flavor folder, i.e. before w87
+    //if(!isRun3){ //how it was handled before in Mikko's code for the flavor folder, i.e. before w87
+    if(!isRun3 && !(isRun2 && isJMEnano)){ //how it was handled before in Mikko's code for the flavor folder, i.e. before w87
 	    isb = (Jet_btagDeepB[iJet] > bthr);
 	    isc = (Jet_btagDeepC[iJet] > cthr && !isb);
 	    isq = (Jet_qgl[iJet]>=0.5 && Jet_qgl[iJet] && !isb && !isc);
@@ -6053,10 +6071,11 @@ void GamHistosFill::Loop()
 	  }
 	  if (ptgam>230) {
 	    pmuvsmu->Fill(Pileup_nTrueInt, Pileup_nTrueInt, w);
-      if(!isRun3){
+      //if(!isRun3){
+      if(!isRun3 && !(isRun2 && isJMEnano)){
 	      prhovsmu->Fill(Pileup_nTrueInt, fixedGridRhoFastjetAll, w); //before Run3
       }
-      else if(isRun3){
+      else if(isRun3 || (isRun2 && isJMEnano)){
 	      prhovsmu->Fill(Pileup_nTrueInt, Rho_fixedGridRhoFastjetAll, w); //Run3
       }
 	    pnpvgoodvsmu->Fill(Pileup_nTrueInt, PV_npvsGood, w);
@@ -6085,10 +6104,10 @@ void GamHistosFill::Loop()
 	  }
 
 	  pmuvspt->Fill(ptgam, Pileup_nTrueInt, w);
-    if(!isRun3){
+    if(!isRun3 && !(isRun2 && isJMEnano)){
 	    prhovspt->Fill(ptgam, fixedGridRhoFastjetAll, w);
     }
-    else if(isRun3){
+    else if(isRun3 || (isRun2 && isJMEnano)){
 	    prhovspt->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);
     }
 	  pnpvgoodvspt->Fill(ptgam, PV_npvsGood, w);
@@ -6152,7 +6171,7 @@ void GamHistosFill::Loop()
 	    mh.prmpf1->Fill(ptgam, mpf1, w*wps);
 	    mh.prmpfn->Fill(ptgam, mpfn, w*wps);
 	    mh.prmpfu->Fill(ptgam, mpfu, w*wps);
-      if(isRun3){
+      if(isRun3 || (isRun2 && isJMEnano)){
 	      mh.prho->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);
       }
       else{
@@ -6204,8 +6223,8 @@ void GamHistosFill::Loop()
 	  h->pmnux->Fill(ptgam, mpfnux, w);
 	  
 	  // Composition
-	  if(!isRun3){h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);}
-	  else if(isRun3){h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	  if(!isRun3 && !(isRun2 && isJMEnano)){h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	  else if(isRun3 || (isRun2 && isJMEnano)){h->prho->Fill(ptgam, fixedGridRhoFastjetAll, w);}
 	  h->pchf->Fill(ptgam, Jet_chHEF[iJet], w);
 	  h->pnhf->Fill(ptgam, Jet_neHEF[iJet], w);
 	  h->pnef->Fill(ptgam, Jet_neEmEF[iJet], w);
@@ -6281,8 +6300,8 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 	  //from Mikko's modifications
 	  if (doPFComposition) {
 	    h1->p2pt->Fill(eta, ptgam, Jet_pt[iJet], w);
-	    if(!isRun3){h1->p2rho->Fill(eta, ptgam, fixedGridRhoFastjetAll, w);}
-	    else if(isRun3){h1->p2rho->Fill(eta, ptgam, Rho_fixedGridRhoFastjetAll, w);}
+	    if(!isRun3 && !(isRun2 && isJMEnano)){h1->p2rho->Fill(eta, ptgam, fixedGridRhoFastjetAll, w);}
+	    else if(isRun3 || (isRun2 && isJMEnano)){h1->p2rho->Fill(eta, ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	    h1->p2chf->Fill(eta, ptgam, Jet_chHEF[iJet], w);
 	    h1->p2nhf->Fill(eta, ptgam, Jet_neHEF[iJet], w);
 	    h1->p2nef->Fill(eta, ptgam, Jet_neEmEF[iJet], w);
@@ -6291,8 +6310,8 @@ if (doGamjet1 && hg1) { //added on 21st of October 2025
 
 	    if (abseta<1.3) { //check if in barrel, so here for the check keep abseta
 	      h1->ppt13->Fill(ptgam, Jet_pt[iJet], w);
-	      if(!isRun3){h1->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);}
-	      else if(isRun3){h1->prho13->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);}
+	      if(!isRun3 && !(isRun2 && isJMEnano)){h1->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	      else if(isRun3 || (isRun2 && isJMEnano)){h1->prho13->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	      h1->pchf13->Fill(ptgam, Jet_chHEF[iJet], w);
 	      h1->pnhf13->Fill(ptgam, Jet_neHEF[iJet], w);
 	      h1->pnef13->Fill(ptgam, Jet_neEmEF[iJet], w);
@@ -6354,8 +6373,8 @@ if (doGamjet2 && hg2) {
 	  //from Mikko's modifications
 	  if (doPFComposition) {
 	    h->p2pt->Fill(abseta, ptgam, Jet_pt[iJet], w);
-	    if(!isRun3){h->p2rho->Fill(abseta, ptgam, fixedGridRhoFastjetAll, w);}
-	    else if(isRun3){h->p2rho->Fill(abseta, ptgam, Rho_fixedGridRhoFastjetAll, w);}
+	    if(!isRun3 && !(isRun2 && isJMEnano)){h->p2rho->Fill(abseta, ptgam, fixedGridRhoFastjetAll, w);}
+	    else if(isRun3 || (isRun2 && isJMEnano)){h->p2rho->Fill(abseta, ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	    h->p2chf->Fill(abseta, ptgam, Jet_chHEF[iJet], w);
 	    h->p2nhf->Fill(abseta, ptgam, Jet_neHEF[iJet], w);
 	    h->p2nef->Fill(abseta, ptgam, Jet_neEmEF[iJet], w);
@@ -6364,8 +6383,8 @@ if (doGamjet2 && hg2) {
 
 	    if (abseta<1.3) {
 	      h->ppt13->Fill(ptgam, Jet_pt[iJet], w);
-	      if(!isRun3){h->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);}
-	      else if(isRun3){h->prho13->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);}
+	      if(!isRun3 && !(isRun2 && isJMEnano)){h->prho13->Fill(ptgam, fixedGridRhoFastjetAll, w);}
+	      else if(isRun3 || (isRun2 && isJMEnano)){h->prho13->Fill(ptgam, Rho_fixedGridRhoFastjetAll, w);}
 	      h->pchf13->Fill(ptgam, Jet_chHEF[iJet], w);
 	      h->pnhf13->Fill(ptgam, Jet_neHEF[iJet], w);
 	      h->pnef13->Fill(ptgam, Jet_neEmEF[iJet], w);
