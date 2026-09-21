@@ -4875,11 +4875,11 @@ void GamHistosFill::Loop()
 
     // Set MET vectors
     //if (isRun3) {
-    if (isRun3 || (isRun2 && isJMEnano)) {
+    if (isRun3 || (isRun2 && isJMEnano)) { //use Puppi MET also for nano v15 ultra-legacy Run2
       rawmet.SetPtEtaPhiM(RawPuppiMET_pt, 0, RawPuppiMET_phi, 0);
     }
     else {
-      rawmet.SetPtEtaPhiM(ChsMET_pt, 0, ChsMET_phi, 0); //note: could i use puppiMET for UL Run2? (11.08.2026)
+      rawmet.SetPtEtaPhiM(ChsMET_pt, 0, ChsMET_phi, 0); //note: could i use puppiMET for UL Run2? (11.08.2026) - Yes. (18.08.2026)
     }
     if (isQCD && iFox!=-1) rawmet += fox - gam; // fox=rawjet-PU, gam=genjet
     else rawmet += rawgam - gam; // replace PF photon with Reco photon
@@ -4954,8 +4954,8 @@ void GamHistosFill::Loop()
     }
     
     // Sanity checks for HDM inputs
-    //if (!(fabs(mpf1+mpfn+mpfu-mpf)<1e-4)) {
-    if (!(fabs(mpf1+mpfn+mpfu-mpf)<5e-4)) { // was too strict for UL... is there an issue with puppiMET for UL? ... loosen now from 1e-4 to 5e-4
+    if (!(fabs(mpf1+mpfn+mpfu-mpf)<1e-4)) { //back to this after trying to fix MET
+    //if (!(fabs(mpf1+mpfn+mpfu-mpf)<5e-4)) { // was too strict for UL... is there an issue with puppiMET for UL? ... loosen now from 1e-4 to 5e-4
       cout << "\nHDM input error: mpf=" << mpf << " mpf1=" << mpf1
 	   << " mpfn=" << mpfn << " mpfu=" << mpfu << endl;
       cout << "Difference = " << mpf1+mpfn+mpfu-mpf << endl << flush;
