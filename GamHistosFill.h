@@ -906,7 +906,7 @@ void GamHistosFill::Init(TTree *tree)
    //fChain->SetBranchAddress("RawMET_pt", &RawMET_pt, &b_RawMET_pt);
    //fChain->SetBranchAddress("RawMET_sumEt", &RawMET_sumEt, &b_RawMET_sumEt);
 
-   if (isRun3) {
+   if (isRun3 || (isRun2 && isJMEnano)) {
      fChain->SetBranchAddress("RawPuppiMET_phi", &RawPuppiMET_phi, &b_RawPuppiMET_phi);
      fChain->SetBranchAddress("RawPuppiMET_pt", &RawPuppiMET_pt, &b_RawPuppiMET_pt);
      //fChain->SetBranchAddress("RawPuppiMET_sumEt", &RawPuppiMET_sumEt, &b_RawPuppiMET_sumEt);
