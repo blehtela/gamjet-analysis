@@ -4009,6 +4009,7 @@ void GamHistosFill::Loop()
       if ( isRun3) gam *= 1./1.017; // MPF=1.74+/-0.07%, DB=1.41+/-0.16%
     }
     if (iGam!=-1 && !isRun3) {
+    //if (iGam!=-1 && !isRun3 && !(isRun2 && isJMEnano)) { //22.09.2026: fix if-conditon for new jmenano v15 Run2-samples, might have been done wrongly?
       // [0]+log(x)*([1]+log(x)*[2]) in range [15,1750] to MC pphoj0
       //1  p0           4.57516e-02   3.91871e-04   1.09043e-07   4.17033e-05
       //2  p1          -1.27462e-02   1.50968e-04   2.08432e-08   3.92715e-03
