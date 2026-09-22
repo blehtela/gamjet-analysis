@@ -957,7 +957,7 @@ void GamHistosFill::Loop()
       //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w78 (still with 2026B JECs)
       //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026C_V1M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (first 2026C JECs)
       //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026C_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (new JECs, V2M, 29.05.2026)
-      jec = getFJC("", "`RunIII2026LowPUSummer26_PhiDependent_L2Relative_AK4PUPPI", "Prompt26_Run2026B_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w90 (new L2 relative, use 26B residuals for now, 23.09.2026)
+      jec = getFJC("", "RunIII2026LowPUSummer26_PhiDependent_L2Relative_AK4PUPPI", "Prompt26_Run2026B_V2M_DATA_L2L3Residual_AK4PFPuppi"); //w90 (new L2 relative, use 26B residuals for now, 23.09.2026)
   }
   if (ds=="2026D" || TString(ds.c_str()).Contains("2026D")){
       //jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "Prompt26_Run2026B_V0M_DATA_L2L3Residual_AK4PFPuppi"); //w81 (05.05.2026, still with 2026B JECs) 
