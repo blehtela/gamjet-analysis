@@ -1,0 +1,14 @@
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_1of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_2of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_3of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_4of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_5of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_6of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_7of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_8of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_9of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_10of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_11of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_12of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_13of14.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCSummer26/GJets-JMEnano/date-28Sep2026_time-114527_commit-fbc64d3/MCSummer26_JMEnano_2026_GamJet_GJetsHT400to600PTG100to200_Skim_14of14.root
