@@ -17,6 +17,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <array> //w91, to use C++ standard arrays that are assignable (used in binweighting)
 #include <sstream>
 #include <map>
 
@@ -1917,33 +1918,112 @@ void GamHistosFill::Loop()
     // could do this in the CalcGenWeight script actually.
     // for the lumi_data, use one full year like e.g. 2024CDEFGHI with brilcalc (is one value per year), goldenJSON for 2024 to brilcalc (or from PdmV)
     //from PdmV for 2024:  	109.95 /fb, for 2025:, for 2026: //start testing with lumi-value for 2024, should get also the others for 25/26. (from PdmV)
+    /*
     int vnevt1jmenano[nht_gam1] = {148622674, 141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
     int vnevt2jmenano[nht_gam2] = {129869655, 115281797, 48084549, 22198528, 6710208}; //number of events retrieved with extra script for Summer24
     int vnevt3jmenano[nht_gam3] = {138291701, 28104593, 14089031, 5386943}; //number of events retrieved with extra script for Summer24
+    */
+    //w91: update, assign nevt (based on num of evts for sample on DAS, full files) depending on MC year! (earlier used only 24, now also 26)
+    // use C++ standard array instead, to make it assignable inside if condition, not anymore: int vnevt2jmenano[nht_gam2];
+    array<int,nht_gam1> vnevt1jmenano;
+    array<int,nht_gam2> vnevt2jmenano;
+    array<int,nht_gam3> vnevt3jmenano;
+    if(TString(ds.c_str()).Contains("summer2024P8-jmenano")){ 
+    	vnevt1jmenano = {148622674, 141328893, 135819109, 132101434, 394233323, 202685010, 60694654}; //for Summer24 (DAS)
+    	vnevt2jmenano = {129869655, 115281797, 48084549, 22198528, 6710208}; //Summer24 (DAS)
+    	vnevt3jmenano = {138291701, 28104593, 14089031, 5386943}; //Summer24 (DAS)
+    }
+    else if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){ 
+    	vnevt1jmenano = {39438078, 37965242, 35360257, 41718697, 45821573, 37655001, 39815746}; //for Summer26 (DAS)
+    	vnevt2jmenano = {31259479, 35946407, 27555256, 32599232, 31969086}; //Summer26 (DAS)
+    	vnevt3jmenano = {21095944, 21577306, 17370366, 21592744}; //Summer26 (DAS)
+    }
+    else{
+	cout << " --------------------------------------------------------------------------------------- " << endl << flush;
+	cout << " >>>>>  FOR THIS MC-SAMPLE, NO EVENT NUMBERS HAVE BEEN ADDED TO THE CODE. TO DO (for correct lumi weight)!  <<<<< " << endl << flush;
+	cout << " --------------------------------------------------------------------------------------- " << endl << flush;
+    }
+
+ 
     //NOTE (17.05.2026): these are the evtnums based on my own script for SKIMMED FILES (those we should use in lumi-scaling, not for genweight.)
     //int vnevt1jmenano[6] = {28891616, 38169817, 49120893, 188516685, 120130199, 42581488}; //number of events retrieved with extra script for Summer24 (now DAS, full files)
     //int vnevt2jmenano[5] = {105214756, 95303408, 41543855, 20056068, 6290441}; //number of events retrieved with extra script for Summer24
     //int vnevt3jmenano[4] = {127097845, 26419681, 13457034, 5219203}; //number of events retrieved with extra script for Summer24
-    //TO DO: add the first bin's sumw (HT10to40), currently set to -1.0
-    double vsumw1jmenano[nht_gam1] = {-1.0, 9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    //TO DO: add the first bin's sumw (HT10to40), currently set to -1.0 // w91 (30.09.2026): updated also for HT10to40 in 24 (calculated already in June)
+    /*
+    double vsumw1jmenano[nht_gam1] = {1.34079e+14, 9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
     double vsumw2jmenano[nht_gam2] = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
     double vsumw3jmenano[nht_gam3] = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
+    */
+
+    //w91: declare cpp standard arrays with fixed size (if size was not fixed, a vector would be more flexible)
+    array<double,nht_gam1> vsumw1jmenano;
+    array<double,nht_gam2> vsumw2jmenano;
+    array<double,nht_gam3> vsumw3jmenano;
+
+    //w91: depending on which mc -- note that this quantity is only used in control plots!!!  (for actual bin weighting use vnormgensum1jmenano etc)
+    if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){//w91 (30.09.2026)
+    	vsumw1jmenano  = {4.6723e+13, 2.07957e+13, 6.39905e+12, 1.72632e+12, 2.20671e+11, 4.61452e+10, 6.81801e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    	vsumw2jmenano = {1.08982e+11, 7.49985e+10, 7.56597e+09, 2.71705e+09, 5.78075e+08}; //sum of weights for ptgam bin 2
+    	vsumw3jmenano = {1.08409e+10, 3.12837e+09, 1.06796e+09, 2.02301e+08}; //sum of weights for ptgam bin 3
+    }
+    else{//for anything else still use the 2024 mc values (update it if using e.g. winter2026 or other, TO DO!)
+    	vsumw1jmenano  = {1.34079e+14, 9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    	vsumw2jmenano = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
+    	vsumw3jmenano = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
+    }
+
+
 
     // developments added in w85, fixing binweighting
     // --------------------------------------------------------------------------------------------------------------------
     //TO DO: work in progress --> here put summedGenWeight/summedGenEventcount (obtained with my other script)
     //insert the numbers from the other script, essentially the: summedGenWeight/summedGenEventCount 
+    /*
     double vnormgensumw1jmenano[nht_gam1] = {1205554.426526, 684146.394272, 206275.381721, 41911.962040, 4367.439010, 1164.045809, 162.632411}; //sum of weights for ptgam bin 1, divided by sum of gen evt counts
     double vnormgensumw2jmenano[nht_gam2] = {4037.952164, 2050.650420, 299.427554, 101.796905, 18.288361}; //sum of weights for ptgam bin 2, divided by sum of gen evt counts
     double vnormgensumw3jmenano[nht_gam3] = {507.156594, 149.123754, 57.806312, 12.029758}; //sum of weights for ptgam bin 3, divided by sum of gen evt counts
-
+    */
+    array<double,nht_gam1> vnormgensumw1jmenano;
+    array<double,nht_gam2> vnormgensumw2jmenano;
+    array<double,nht_gam3> vnormgensumw3jmenano;
+ 
+    //set (HT-PTG-bin) sample binweight, this is always same GJ process (signal sample, in LO), so no big changes...
+    if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){//w91 (30.09.2026)
+    	vnormgensumw1jmenano = {1205582.384398, 683940.152143, 206244.425766, 41897.414289, 4367.303007, 1163.487058, 162.619766}; //sum of weights ptgam bin 1, divided by sum of gen evt counts
+    	vnormgensumw2jmenano = {4036.072075, 2050.795001, 299.376455, 101.733361, 18.284599}; //sum of weights ptgam bin 2, divided by sum of gen evt counts
+    	vnormgensumw3jmenano = {507.164636, 149.158008, 57.800677, 12.030243}; //sum of weights ptgam bin 3, divided by sum of gen evt counts
+    }
+    else {//for anything else still use the 2024 mc values (update it if using e.g. winter2026 or other, TO DO!)
+    	vnormgensumw1jmenano = {1205554.426526, 684146.394272, 206275.381721, 41911.962040, 4367.439010, 1164.045809, 162.632411}; //sum of weights for ptgam bin 1, divided by sum of gen evt counts
+    	vnormgensumw2jmenano = {4037.952164, 2050.650420, 299.427554, 101.796905, 18.288361}; //sum of weights for ptgam bin 2, divided by sum of gen evt counts
+    	vnormgensumw3jmenano = {507.156594, 149.123754, 57.806312, 12.029758}; //sum of weights for ptgam bin 3, divided by sum of gen evt counts
+    }
 
 
     // CROSS SECTION PER BIN - moved this further up in w85, since now i need it already for the lumi-weight calculation per bin
     // Values from Fikri, 28th January 2025 (mattermost), and in June 2026 for new HT bin HT10to40
+    // w91: now i checked the XS myself, and might be that the ones below do not hold for other years than 22...
+    /*
     double vxsec1[nht_gam1] = {164300.0, 123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
     double vxsec2[nht_gam2] = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
     double vxsec3[nht_gam3] = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
+    */
+    array<double,nht_gam1> vxsec1;
+    array<double,nht_gam2> vxsec2;
+    array<double,nht_gam3> vxsec3;
+ 
+    //set xs in pb
+    if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){ //should cover summer2026P8 all bins, new xsec values which i looked up (w91, 30.09.)
+    	vxsec1 = {164100.0, 123400.0, 32190.0, 5498.0, 482.3, 117.5, 15.12}; // xsec in pb, for all HT bins in first pTgam bin 
+    	vxsec2 = {554.0, 200.0, 29.77, 9.666, 1.628}; // xsec in pb, for all HT bins in second pTgam bin
+    	vxsec3 = {43.76, 11.75, 4.75, 1.019}; // xsec in pb, for all HT bins in third pTgam bin
+    }
+    else{//use the "old" xs values, which i got from Fikri 01/2025, but could doublecheck them also at some point (matters mainly for lumiweight, but since samples are LO should be close to one then anyway...
+    	vxsec1 = {164300.0, 123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
+    	vxsec2 = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
+    	vxsec3 = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
+    }
  
 
     // ----------------------- //
@@ -1953,7 +2033,19 @@ void GamHistosFill::Loop()
     // calculating the luminosity weight, which is essentially lumi_data / lumi_MC, where lumi_data is read from PdmV twiki,
     // and lumi_MC is calculated as nevt(DAS)/xs(sample). This quantity therefore has to only be calculated once per MC sample bin.
     //int nhtptgBins = 15;
-    double lumi_data_fb = 109.95; // this is in inverse fb, check in which unit the XS was given (was given in pb... so need to convert)
+    //double lumi_data_fb = 109.95; // this is in inverse fb, check in which unit the XS was given (was given in pb... so need to convert)
+    //since w91, discriminate between years (depending on which year MC refers to)
+    double lumi_data_fb = -99.9;
+    if(is24){ //for 2024 mc
+	lumi_data_fb = 109.82;
+    }
+    else if(is25){
+	lumi_data_fb = 110.38;
+    }
+    else if(is26){
+	lumi_data_fb = isLowPU ? 2.11 : 25.31; //2.11/fb for 26C, 25.31 for 26BD.
+    }
+    assert(lumi_data_fb>0); //test that a lumi valu has been set!
     double lumi_data = 10e3 * lumi_data_fb;
     double lumiweight1[nht_gam1];
     double lumiweight2[nht_gam2];
@@ -2005,7 +2097,7 @@ void GamHistosFill::Loop()
     // gen-weight calculation //
     // ---------------------- //
     // see below, use vnormgensumw3jmenano etc.
-    // example for firt PTG bin, where j is the current HT bin in first PTG bin:
+    // example for first PTG bin, where j is the current HT bin in first PTG bin:
     //
     // genweightPTG1[j] = vnormgensuw1[j]/genWeight;
     //
@@ -2086,8 +2178,6 @@ void GamHistosFill::Loop()
       cout << "\n[DEBUGGING]: in PTG1000toInf, there are " << nht_gam3 << " bins. " << endl << flush;
       //cout << "\n[DEBUGGING]: This is bin " << i+1 << " with sumwnorm3 = " << sumwnorm3 << " and hsumwnorm3->GetBinEntry(" << endl << flush;
       cout << Form("[DEBUGGING]: This is bin %d with sumwnorm3 = %f and hsumwnorm3->GetBinContent(%d) = %f. (should be identical)",i+1,sumwnorm3,i+1, hsumwnorm3->GetBinContent(i+1)) << endl << flush;
-
-
 
       wMG_gam3 += sumw3;
 
