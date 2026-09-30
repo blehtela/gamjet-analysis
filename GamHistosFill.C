@@ -939,6 +939,10 @@ void GamHistosFill::Loop()
   	//jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V4M_DATA_L2L3Residual_AK4PFPuppi"); //w83 (V4M L2L3Res, 22.05.2026)
   	jec = getFJC("", "Winter25Run3_V1_MC_L2Relative_AK4PUPPI", "Prompt25_Run2025G_V5M_DATA_L2L3Residual_AK4PFPuppi"); //w84 (V5M L2L3Res, 29.05.2026)
   }
+  //mc2026 (w91, added first for low PU: summer2026P8)
+  if (TString(ds.c_str()).Contains("summer2026P8")){ //should cover summer2026P8 all PTG and HT bins (16 parts), added for w91 (30.09.2026) [later also add QCD?]
+	jec = getFJC("", "RunIII2026LowPUSummer26_PhiDependent_L2Relative_AK4PUPPI", "" ); //updated on 12.06.2025 with w56 (note: is there V3?)
+  }
   //data 2026 (preparation for w74)
   if (ds=="2026A"){	// using 25G corrections for 26A for now. (or leave away completely?)
       jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", ""); //w78, no L2L3residuals for 2026A?
@@ -1080,6 +1084,7 @@ void GamHistosFill::Loop()
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("winter2025QCD") || 
 	TString(ds.c_str()).Contains("2025") ) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025"). //w86, contains(2025) to cover also data with 25Deg0123
   if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026C") || TString(ds.c_str()).Contains("2026D")) sera="2026"; //or should it be also here treated as an era of 2025?
+  if (TString(ds.c_str()).Contains("summer2026P8")) sera = "2026"; //currently only summer2026P8 in use (w91, low pu)
   assert(sera!="");
 
   // Load JSON files
@@ -1448,7 +1453,8 @@ void GamHistosFill::Loop()
     if (TString(ds.c_str()).Contains("2026A") ||
 	      TString(ds.c_str()).Contains("2026B") ||
 	      TString(ds.c_str()).Contains("2026C") ||
-	      TString(ds.c_str()).Contains("2026D"))
+	      TString(ds.c_str()).Contains("2026D") ||
+	      TString(ds.c_str()).Contains("summer2026P8")) //w91
         //fjv = new TFile("files/jetveto2025CDEFG_V3M.root","READ");  //old map, updated in w68 with V3M.
         fjv = new TFile("files/jetveto2026B_V0M.root","READ");        //updated in w77 with V0M. Also in use for w78 (also on 2026C)
   }
@@ -4380,6 +4386,9 @@ void GamHistosFill::Loop()
 
       //cout << "Doing pileup reweighting based on era " << puera.c_str() << endl << flush;
 			string mctype;
+			// TO DO: add PU-reweighting for 2026 MC!!
+			// if(TString(dataset.c_str()).Contains("summer2026P8")){ mctype="summer2026P8";} //need to still calculate this.
+			//
 			if(TString(dataset.c_str()).Contains("winter2025P8")){ mctype="winter2025P8";} //NEW: not used yet
 			if(TString(dataset.c_str()).Contains("winter2025QCD")){ mctype="winter2025QCD";} //covers also 11 parts a-k
 
@@ -6562,6 +6571,9 @@ void GamHistosFill::LoadPU(){
   trigs["summer2024P8-jmenano-tiny-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
   trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
+
+  //placeholder w91, not implemented yet!
+  trigs["summer2026P8-jmenano"].push_back("mc"); //photon mc
 
   //need to fix the following by some simple if condition when setting the eras.... for now like this
   trigs["summer2024QCDa"].push_back("mc"); //qcd mc (summer)
