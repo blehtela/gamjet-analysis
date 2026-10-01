@@ -133,6 +133,7 @@ void mk_GamHistosFill(string dataset = "X", string puera = "", string jersfver =
   		dataset=="2023P8-BPix" || //added the BPix MC files
   		dataset=="winter2024P8" || dataset=="summer2024P8" ||  TString(dataset.c_str()).Contains("summer2024P8") || //w80: accounts also for other summer2024P8
 		TString(dataset.c_str()).Contains("summer2026P8") || //w91: accounts also for other summer2026P8 and all individual bins, jmenano or not.
+		TString(dataset.c_str()).Contains("winter2026P8") || //w92: accounts also for other winter2026P8 and all individual bins, jmenano or not.
 		dataset=="summer2024P8_PTG10to100-HT40to100" || dataset=="summer2024P8_PTG10to100-HT100to200" || dataset=="summer2024P8_PTG10to100-HT200to400" ||
 		dataset=="summer2024P8_PTG10to100-HT400to600" || dataset=="summer2024P8_PTG10to100-HT600to1000" || dataset=="summer2024P8_PTG10to100-HT1000toInf" ||
 		dataset=="summer2024P8_PTG100to200-HT40to200" || dataset=="summer2024P8_PTG100to200-HT200to400" || dataset=="summer2024P8_PTG100to200-HT400to600" ||

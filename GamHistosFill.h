@@ -60,7 +60,7 @@ public :
    bool            isMG;
    bool            isPTG; //flag for ptht-binned samples
    bool            isLowPU; //flag for low PU runs (so far only used for 26C, added in w79, April 2026)
-   bool            isJMEnano; //flag to check if sample is a jmenano sample (needed to switch off jetId branch for summer2024P8-jmenano, same goes for summer2026P8-jmenano etc)
+   bool            isJMEnano; //flag to check if sample is a jmenano sample (needed to switch off jetId branch for summer2024P8-jmenano, same goes for summer2026P8-jmenano, winter2026P8-jmenano, etc)
    string          dataset;
    string	   puera;  //data era used for pu reweighting
    string	   jersfver;  //JER SF version name used for jet pt resolution smearing
@@ -684,6 +684,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 	  ds=="2026A" || ds=="2026B" || ds=="2026Beg0" || ds=="2026Beg1" || ds=="2026Beg2" || ds=="2026Beg3" || ds=="2026Beg4" || ds=="2026Beg5" || //could just check "Contains("2026B")"...
           ds=="2026C" || ds=="2026Ceg0" || ds=="2026Ceg1" || ds=="2026Ceg2" || ds=="2026Ceg3" || ds=="2026Ceg4" || ds=="2026Ceg5"); //added 2026A on 10.03.2026 (w74), 2026B on 13.03.2026 (also w74), splitted lists (w76), added 2026C on 07.04.2026 (w78)
 	  TString(ds.c_str()).Contains("summer2026P8"); //w91 (30.09.2026): added this to catch all bins for summer2026P8-jmenano
+	  TString(ds.c_str()).Contains("winter2026P8"); //w92 (01.10.2026): added this to catch all bins for winter2026P8-jmenano
   isQCD = (ds=="2016QCD" || ds=="2016QCDAPV" || ds=="2017QCD" ||
 	        ds=="2018QCD" || ds=="2022QCD" || ds=="2022EEQCD" ||
           ds=="2023QCD" || ds=="2023QCD-BPix" || 
@@ -706,12 +707,13 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test" ||  ds=="summer2024P8-tiny-test" || //added already here
 	   TString(ds.c_str()).Contains("summer2024P8")	|| //to make it a bit easier (should adjust the rest also, accounts for all 15 parts), covers also test and tiny-test (w80)
 	   TString(ds.c_str()).Contains("summer2026P8")	|| //adding summer2026P8 mc (w91, 30.09.2026)
+	   TString(ds.c_str()).Contains("winter2026P8")	|| //adding winter2026P8 mc (w92, 01.10.2026)
            ds=="winter2025P8" ||
            ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
       		 ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
 		       ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
            ds=="winter2025QCDk"); 
-  isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || TString(ds.c_str()).Contains("summer2026P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25) (the Contains also covers tiny-test)
+  isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || TString(ds.c_str()).Contains("summer2026P8") || TString(ds.c_str()).Contains("winter2026P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25) (the Contains also covers tiny-test)
   isLowPU = (TString(ds.c_str()).Contains("2026C") || TString(ds.c_str()).Contains("summer2026P8"));
   isJMEnano = (TString(ds.c_str()).Contains("jmenano")); //for switching off Jet_jetId branch in case of 2024 MC jmenano
   isRun3 = (is22 || is23 || is24 || is25 || is26);
