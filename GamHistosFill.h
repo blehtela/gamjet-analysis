@@ -715,7 +715,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
            ds=="winter2025QCDk"); 
   isPTG = (ds=="2022P8-PTG" || ds=="summer2024P8" || ds=="summer2024P8-test" || TString(ds.c_str()).Contains("summer2024P8") || TString(ds.c_str()).Contains("summer2026P8") || TString(ds.c_str()).Contains("winter2026P8") || ds=="winter2025P8"); //pthtbinned samples (they are also isMG and is24 or is25) (the Contains also covers tiny-test)
   isLowPU = (TString(ds.c_str()).Contains("2026C") || TString(ds.c_str()).Contains("summer2026P8"));
-  isJMEnano = (TString(ds.c_str()).Contains("jmenano")); //for switching off Jet_jetId branch in case of 2024 MC jmenano
+  isJMEnano = (TString(ds.c_str()).Contains("jmenano")); //for switching off Jet_jetId branch in case of 2024 MC jmenano (also for the 2026 mc samples with nano-flaour being jmenano)
   isRun3 = (is22 || is23 || is24 || is25 || is26);
   isRun2 = (is16  || is17 || is18);
   assert(is16 || is17 || is18 || is22 || is23 || is24 || is25 || is26);
