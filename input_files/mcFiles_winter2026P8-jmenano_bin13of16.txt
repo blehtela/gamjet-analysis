@@ -1,0 +1,9 @@
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_1of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_2of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_3of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_4of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_5of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_6of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_7of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_8of9.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT40to400PTG200toInf_Skim_9of9.root

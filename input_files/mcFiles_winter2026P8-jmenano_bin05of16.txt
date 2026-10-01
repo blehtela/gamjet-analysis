@@ -1,0 +1,10 @@
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_1of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_2of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_3of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_4of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_5of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_6of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_7of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_8of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_9of10.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2026/MCWinter26/GJets-JMEnano/date-01Oct2026_time-230659_commit-fbc64d3/MCWinter26_JMEnano_2026_GamJet_GJetsHT400to600PTG10to100_Skim_10of10.root
