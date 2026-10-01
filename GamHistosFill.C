@@ -4404,16 +4404,29 @@ void GamHistosFill::Loop()
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 )) ||
-	// updated with 2025 stuff (same as 24 plus 40 and 45 trg), kept same for 2026
-	(isRun3 && (is25 || is26) &&
+	// updated with 2025 stuff (same as 24 plus 40 and 45 trg), kept same for 2026; update in w92 (fixed the issue with 30GeV trigger selection "?")
+	(isRun3 && (is25 || is26) && !isLowPU &&
 	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
 	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
 	 //(HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
 	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<110 && (itrg=50))  ||
 	 (HLT_Photon45EB_TightID_TightIso && pt>=45 && pt<50 && (itrg=45)) ||
 	 (HLT_Photon40EB_TightID_TightIso && pt>=40 && pt<45 && (itrg=40)) ||
-	 //(HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  ||
-   (!isLowPU ? (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30)) : (HLT_Photon30_HoverELoose_L1SingleEG20 && pt>=30 &&pt<50  && (itrg=30)))  || //for low PU, in case the Photon30EB does not fire
+	 (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  || //high pu
+   	 //(!isLowPU ? (HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30)) : (HLT_Photon30_HoverELoose_L1SingleEG20 && pt>=30 &&pt<50  && (itrg=30)))  || //for low PU, in case the Photon30EB does not fire
+	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
+	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
+	 )) ||
+	// w92: handle it separately for low PU (i.e. use different 30GeV trigger!), to avoid the issue with ?-operator
+	(isRun3 && (is25 || is26) && isLowPU &&
+	((HLT_Photon200                    && pt>=230         && (itrg=200)) ||
+	 (HLT_Photon110EB_TightID_TightIso && pt>=110&&pt<230 && (itrg=110)) ||
+	 //(HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<230 && (itrg=50))  ||
+	 (HLT_Photon50EB_TightID_TightIso  && pt>=50 &&pt<110 && (itrg=50))  ||
+	 (HLT_Photon45EB_TightID_TightIso && pt>=45 && pt<50 && (itrg=45)) ||
+	 (HLT_Photon40EB_TightID_TightIso && pt>=40 && pt<45 && (itrg=40)) ||
+	 //(HLT_Photon30EB_TightID_TightIso  && pt>=30 &&pt<50  && (itrg=30))  || // high pu
+	 (HLT_Photon30_HoverELoose_L1SingleEG20 && pt>=30 &&pt<50  && (itrg=30))  || //for low PU, instead of the usual Photon30EB
 	 (HLT_Photon20_HoverELoose         && pt>=20 && pt<30 && (itrg=20))
 	 //|| (true && (itrg=1))// trigger bypass for EGamma on photonTrigs.C
 	 ))
