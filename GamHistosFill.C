@@ -942,7 +942,10 @@ void GamHistosFill::Loop()
   }
   //mc2026 (w91, added first for low PU: summer2026P8)
   if (TString(ds.c_str()).Contains("summer2026P8")){ //should cover summer2026P8 all PTG and HT bins (16 parts), added for w91 (30.09.2026) [later also add QCD?]
-	jec = getFJC("", "RunIII2026LowPUSummer26_PhiDependent_L2Relative_AK4PUPPI", "" ); //updated on 12.06.2025 with w56 (note: is there V3?)
+	jec = getFJC("", "RunIII2026LowPUSummer26_PhiDependent_L2Relative_AK4PUPPI", "" );
+  }
+  if (TString(ds.c_str()).Contains("winter2026P8")){ //should cover winter2026P8 all PTG and HT bins (16 parts), added for w92 (01.10.2026) [later also add QCD?]
+	jec = getFJC("", "Run3Winter26_PhiDependent_L2Relative_AK4PUPPI_fixedFormatting", "" ); //w92: using same L2relative corr as for the corresponding high pu data in 2026
   }
   //data 2026 (preparation for w74)
   if (ds=="2026A"){	// using 25G corrections for 26A for now. (or leave away completely?)
@@ -1085,7 +1088,7 @@ void GamHistosFill::Loop()
 	ds=="2025Fv1" || ds=="2025Fv2" || ds=="2025G" || ds=="2025G-jmenano" || TString(ds.c_str()).Contains("winter2025QCD") || 
 	TString(ds.c_str()).Contains("2025") ) sera = "2025"; //added on 20.05.2025 (w50), added QCD on 01.06.2025 (w54), could check this overall... with Contains("2025"). //w86, contains(2025) to cover also data with 25Deg0123
   if (ds=="2026A" || ds=="2026B" || TString(ds.c_str()).Contains("2026B") || TString(ds.c_str()).Contains("2026C") || TString(ds.c_str()).Contains("2026D")) sera="2026"; //or should it be also here treated as an era of 2025?
-  if (TString(ds.c_str()).Contains("summer2026P8")) sera = "2026"; //currently only summer2026P8 in use (w91, low pu)
+  if (TString(ds.c_str()).Contains("summer2026P8") || TString(ds.c_str()).Contains("winter2026P8")) sera = "2026"; //currently only summer2026P8 in use (w91, low pu); now added winter2026P8 (w92, high pu)
   assert(sera!="");
 
   // Load JSON files
@@ -1455,6 +1458,7 @@ void GamHistosFill::Loop()
 	      TString(ds.c_str()).Contains("2026B") ||
 	      TString(ds.c_str()).Contains("2026C") ||
 	      TString(ds.c_str()).Contains("2026D") ||
+	      TString(ds.c_str()).Contains("winter2026P8") || //w92
 	      TString(ds.c_str()).Contains("summer2026P8")) //w91
         //fjv = new TFile("files/jetveto2025CDEFG_V3M.root","READ");  //old map, updated in w68 with V3M.
         fjv = new TFile("files/jetveto2026B_V0M.root","READ");        //updated in w77 with V0M. Also in use for w78 (also on 2026C)
@@ -1553,7 +1557,7 @@ void GamHistosFill::Loop()
   if(storeEOSjetmet && !(TString(ds.c_str()).Contains("test"))){
     //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf2025_%s_23Jun2026-EXTRATEST.root", 
     //fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_29Jun2026.root",  //just for one go
-    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_30Sep2026.root",  //just for one go
+    fout = new TFile(Form("/eos/cms/store/group/phys_jetmet/blehtela/jerc/gamjet/%s/GamHistosFill_%s_%s_pu-%s_jersf-%s%s_%s_01Oct2026.root",  //just for one go
              version.c_str(),
 			       isMC ? "mc" : "data",
 			       dataset.c_str(), puera.c_str(), jersfver.c_str(), applyPSweightToAll ? (Form("_psweightIndex%d_",psweightIndex)) : "",
@@ -1933,10 +1937,15 @@ void GamHistosFill::Loop()
     	vnevt2jmenano = {129869655, 115281797, 48084549, 22198528, 6710208}; //Summer24 (DAS)
     	vnevt3jmenano = {138291701, 28104593, 14089031, 5386943}; //Summer24 (DAS)
     }
-    else if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){ 
+    else if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){  //w91
     	vnevt1jmenano = {39438078, 37965242, 35360257, 41718697, 45821573, 37655001, 39815746}; //for Summer26 (DAS)
     	vnevt2jmenano = {31259479, 35946407, 27555256, 32599232, 31969086}; //Summer26 (DAS)
     	vnevt3jmenano = {21095944, 21577306, 17370366, 21592744}; //Summer26 (DAS)
+    }
+    else if(TString(ds.c_str()).Contains("winter2026P8-jmenano")){  //w92
+    	vnevt1jmenano = {21393054, 18904891, 20035404, 22035211, 19256043, 21215037, 17221487}; //for Winter26 (DAS)
+    	vnevt2jmenano = {19977386, 22772246, 20048430, 21006794, 20375873}; //Winter26 (DAS)
+    	vnevt3jmenano = {17744214, 20139741, 18813868, 21620705}; //Winter26 (DAS)
     }
     else{
 	cout << " --------------------------------------------------------------------------------------- " << endl << flush;
@@ -1963,12 +1972,17 @@ void GamHistosFill::Loop()
 
     //w91: depending on which mc -- note that this quantity is only used in control plots!!!  (for actual bin weighting use vnormgensum1jmenano etc)
     if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){//w91 (30.09.2026)
-    	vsumw1jmenano  = {4.6723e+13, 2.07957e+13, 6.39905e+12, 1.72632e+12, 2.20671e+11, 4.61452e+10, 6.81801e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    	vsumw1jmenano = {4.6723e+13, 2.07957e+13, 6.39905e+12, 1.72632e+12, 2.20671e+11, 4.61452e+10, 6.81801e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
     	vsumw2jmenano = {1.08982e+11, 7.49985e+10, 7.56597e+09, 2.71705e+09, 5.78075e+08}; //sum of weights for ptgam bin 2
     	vsumw3jmenano = {1.08409e+10, 3.12837e+09, 1.06796e+09, 2.02301e+08}; //sum of weights for ptgam bin 3
     }
+    else if(TString(ds.c_str()).Contains("winter2026P8-jmenano")){//w92 (01.10.2026)
+    	vsumw1jmenano = {2.23153e+13, 1.23623e+13, 4.36458e+12, 9.74206e+11, 8.51881e+10, 2.20287e+10, 2.87398e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    	vsumw2jmenano = {7.47046e+10, 4.17706e+10, 5.66927e+09, 2.01674e+09, 4.34142e+08}; //sum of weights for ptgam bin 2
+    	vsumw3jmenano = {9.61247e+09, 3.14689e+09, 8.19672e+08, 2.72939e+08}; //sum of weights for ptgam bin 3
+    }
     else{//for anything else still use the 2024 mc values (update it if using e.g. winter2026 or other, TO DO!)
-    	vsumw1jmenano  = {1.34079e+14, 9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
+    	vsumw1jmenano = {1.34079e+14, 9.66827e+13, 2.80146e+13, 5.53656e+12, 1.72174e+12, 2.35928e+11, 9.8707e+09}; //sum of weights for ptgam bin 1, is this based on full files?? / doublecheck, not using it right now (only in controlplots) 
     	vsumw2jmenano = {5.24382e+11, 2.36433e+11, 1.43974e+10, 2.25946e+09, 1.22729e+08}; //sum of weights for ptgam bin 1
     	vsumw3jmenano = {7.01307e+10, 4.19161e+09, 8.14419e+08, 6.48062e+07 }; //sum of weights for ptgam bin 1
     }
@@ -1994,6 +2008,11 @@ void GamHistosFill::Loop()
     	vnormgensumw2jmenano = {4036.072075, 2050.795001, 299.376455, 101.733361, 18.284599}; //sum of weights ptgam bin 2, divided by sum of gen evt counts
     	vnormgensumw3jmenano = {507.164636, 149.158008, 57.800677, 12.030243}; //sum of weights ptgam bin 3, divided by sum of gen evt counts
     }
+    else if(TString(ds.c_str()).Contains("winter2026P8-jmenano")){//w92 (01.10.2026)
+    	vnormgensumw1jmenano = {1205761.714354, 684105.409283 , 206246.085200, 41897.011116, 4366.906524, 1163.461865, 162.617859}; //sum of weights ptgam bin 1, divided by sum of gen evt counts
+    	vnormgensumw2jmenano = {4036.605234, 2050.420124, 299.378986, 101.757102, 18.284933}; //sum of weights ptgam bin 2, divided by sum of gen evt counts
+    	vnormgensumw3jmenano = {507.054488, 149.156339, 57.793810, 12.031124}; //sum of weights ptgam bin 3, divided by sum of gen evt counts
+    }
     else {//for anything else still use the 2024 mc values (update it if using e.g. winter2026 or other, TO DO!)
     	vnormgensumw1jmenano = {1205554.426526, 684146.394272, 206275.381721, 41911.962040, 4367.439010, 1164.045809, 162.632411}; //sum of weights for ptgam bin 1, divided by sum of gen evt counts
     	vnormgensumw2jmenano = {4037.952164, 2050.650420, 299.427554, 101.796905, 18.288361}; //sum of weights for ptgam bin 2, divided by sum of gen evt counts
@@ -2014,12 +2033,14 @@ void GamHistosFill::Loop()
     array<double,nht_gam3> vxsec3;
  
     //set xs in pb
-    if(TString(ds.c_str()).Contains("summer2026P8-jmenano")){ //should cover summer2026P8 all bins, new xsec values which i looked up (w91, 30.09.)
+    if(TString(ds.c_str()).Contains("summer2026P8-jmenano") || TString(ds.c_str()).Contains("winter2026P8-jmenano")){ 
+	//should cover summer2026P8 all bins, new xsec values which i looked up (w91, 30.09.)
+	//should cover winter2026P8 all bins, new xsec values which i looked up (w92, 01.10.)
     	vxsec1 = {164100.0, 123400.0, 32190.0, 5498.0, 482.3, 117.5, 15.12}; // xsec in pb, for all HT bins in first pTgam bin 
     	vxsec2 = {554.0, 200.0, 29.77, 9.666, 1.628}; // xsec in pb, for all HT bins in second pTgam bin
     	vxsec3 = {43.76, 11.75, 4.75, 1.019}; // xsec in pb, for all HT bins in third pTgam bin
     }
-    else{//use the "old" xs values, which i got from Fikri 01/2025, but could doublecheck them also at some point (matters mainly for lumiweight, but since samples are LO should be close to one then anyway...
+    else{//use the "old" xs values, which i got from Fikri 01/2025, but could doublecheck them also at some point (matters mainly for lumiweight, but since samples are LO should be close to one then anyway... (might be outdated from 22 or so!!)
     	vxsec1 = {164300.0, 123200.0, 32190.0, 5514.0, 483.8, 117.4, 15.11}; // xsec in pb, for all HT bins in first pTgam bin 
     	vxsec2 = {557.0, 202.4, 29.95, 9.646, 1.632}; // xsec in pb, for all HT bins in second pTgam bin
     	vxsec3 = {43.92, 11.77, 4.743, 1.018}; // xsec in pb, for all HT bins in third pTgam bin
@@ -4491,6 +4512,7 @@ void GamHistosFill::Loop()
 			string mctype;
 			// TO DO: add PU-reweighting for 2026 MC!!
 			// if(TString(dataset.c_str()).Contains("summer2026P8")){ mctype="summer2026P8";} //need to still calculate this.
+			// if(TString(dataset.c_str()).Contains("winter2026P8")){ mctype="winter2026P8";} //need to still calculate this.
 			//
 			if(TString(dataset.c_str()).Contains("winter2025P8")){ mctype="winter2025P8";} //NEW: not used yet
 			if(TString(dataset.c_str()).Contains("winter2025QCD")){ mctype="winter2025QCD";} //covers also 11 parts a-k
@@ -6675,8 +6697,9 @@ void GamHistosFill::LoadPU(){
   trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
   trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
 
-  //placeholder w91, not implemented yet!
+  //placeholder w91 and w92, not implemented yet!
   trigs["summer2026P8-jmenano"].push_back("mc"); //photon mc
+  trigs["winter2026P8-jmenano"].push_back("mc"); //photon mc
 
   //need to fix the following by some simple if condition when setting the eras.... for now like this
   trigs["summer2024QCDa"].push_back("mc"); //qcd mc (summer)
