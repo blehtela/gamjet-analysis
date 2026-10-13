@@ -763,6 +763,7 @@ void GamHistosFill::Loop()
       ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || ds=="2024QCD-v14" ||
 			TString(ds.c_str()).Contains("summer2024QCD") || //should cover summer2024QCD a,b,c,d,e,f,g,h,i (10 parts)
+			TString(ds.c_str()).Contains("summer2024QCDem") || //should be covered by the above already, added it to remind myself (w93, 13.10.2026)
 			TString(ds.c_str()).Contains("summer2024P8") || //should cover summer2024P8 all PTG and HT bins (15 parts), added for w74 (11.03.2026), should also cover tiny-test version (w80, 26.04.2026), now 16 parts (w87, low HT bin)
 			ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf") { //7th of Aug2024, w32 onwards; 14.8. for QCD w33
 	//jec = getFJC("", "Winter24Run3_V1_MC_L2Relative_AK4PUPPI", "" ); //use this?
@@ -1082,6 +1083,7 @@ void GamHistosFill::Loop()
   if (TString(ds.c_str()).Contains("2024")) sera = "2024"; //works unless two year-numbers appear in dataset, which should not be typically.. && TString(ds.c_str()).Contains("nib")
   if (ds=="winter2024P8" || ds=="summer2024P8" || ds=="winter2024P8a" ||ds=="winter2024P8b" ||ds=="winter2024P8c" ||ds=="winter2024P8d" ||
 			ds=="winter2024P8-test" || ds=="summer2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" || TString(ds.c_str()).Contains("summer2024QCD") ||  //added "contains"... cover a-j
+	TString(ds.c_str()).Contains("summer2024QCDem") || //added on 13.10.2026 (w93), but technically covered already by previous OR... tidy up!
 	TString(ds.c_str()).Contains("summer2024P8") ||  //added "contains"... covers all 15 HT-PTG bins //covers also the tiny-test version (w80) //now also new low HT-bin (16bins)
 			ds=="2024QCD-v14" || ds=="2024P8") sera = "2024"; //currently only winter2024P8 in use (w32), now also QCD (w33)
   if (ds=="winter2025P8" || ds=="2025B" || ds=="2025Cv1" || ds=="2025Cv2" || ds=="2025C-TrkRadDamage" || ds=="2025D" || ds=="2025Dtestfile" || ds=="2025E" ||  
@@ -1426,6 +1428,7 @@ void GamHistosFill::Loop()
         TString(ds.c_str()).Contains("summer2024P8-test") || //not needed due to "Contains(summer2024P8)" two lines above
         TString(ds.c_str()).Contains("winter2024P8-v14") || //also for MC now 2024.
         TString(ds.c_str()).Contains("2024QCD") || //also for MC now 2024. //should cover also summer2024QCD, but will write explicity
+        TString(ds.c_str()).Contains("summer2024QCDem") || //w93: for EM enriched background... but should be covered already by below and above..
 	      TString(ds.c_str()).Contains("summer2024QCD") || //covers also the 10 parts a-j
 	      TString(ds.c_str()).Contains("summer2024P8") || //covers also the 15 parts as in PTG-HT bins (w74, 11.03.2026), and tiny-test (w80, 26.04.2026)
         TString(ds.c_str()).Contains("2024QCD-v14")) //also for MC now 2024.
@@ -4521,6 +4524,7 @@ void GamHistosFill::Loop()
 			if(TString(dataset.c_str()).Contains("summer2024P8")){ mctype="summer2024P8";}	//should cover all 15 parts, covers also tiny-test (w80)
 			if(TString(dataset.c_str()).Contains("2024QCD")){ mctype="2024QCD";}
 			if(TString(dataset.c_str()).Contains("summer2024QCD")){ mctype="summer2024QCD";} //covers also 10 parts a-j
+			if(TString(dataset.c_str()).Contains("summer2024QCDem")){ mctype="summer2024QCDem";} //covers also 12 parts bin 01-12. Not used yet. (w93)
 
 			if(TString(dataset.c_str()).Contains("2023P8")){ mctype="2023P8";} //new, for y2023
 			if(TString(dataset.c_str()).Contains("2023QCD")){ mctype="2023QCD";}
@@ -6696,6 +6700,8 @@ void GamHistosFill::LoadPU(){
   trigs["summer2024P8-jmenano-tiny-test"].push_back("mc"); //photon mc
   trigs["2024QCD"].push_back("mc"); //qcd mc (winter)
   trigs["summer2024QCD"].push_back("mc"); //qcd mc (summer)
+  trigs["summer2024QCDem"].push_back("mc"); //qcd mc (summer) // placeholder
+
 
   //placeholder w91 and w92, not implemented yet!
   trigs["summer2026P8-jmenano"].push_back("mc"); //photon mc
@@ -6792,7 +6798,7 @@ void GamHistosFill::LoadPU(){
 
   for (int i = 0; i != neras; ++i) {//here "era" can also just mean year... but technically can be done per era as key in  map
     string se = eras[i]; const char *ce = se.c_str();
-    //need to use only the "stem" of the era name for finding the pu reweighting histogram, which is called e.g. pileup_summer2024QCD)
+    //need to use only the "stem" of the era name for finding the pu reweighting histogram, which is called e.g. pileup_summer2024QCD) //check this later also for EM enriched case!!
     if(TString(ce).Contains("QCDa") || TString(ce).Contains("QCDb") || TString(ce).Contains("QCDc") || TString(ce).Contains("QCDd") || TString(ce).Contains("QCDe") || 
 	TString(ce).Contains("QCDf") || TString(ce).Contains("QCDg") || TString(ce).Contains("QCDh") || TString(ce).Contains("QCDi") || TString(ce).Contains("QCDj")){
 	ce = (se.substr(0, se.size()-1)).c_str(); //remove the small letter

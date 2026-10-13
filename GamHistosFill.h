@@ -665,6 +665,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		//ds.c_str().Contains("summer2024QCD") || //testing with contains
     TString(ds.c_str()).Contains("2024") || //covers also 2024[C,D,E,F,G,H,Iv1,Iv2]-jmenano // same for nibs
     TString(ds.c_str()).Contains("summer2024P8") || //w80: added this - in next cleanup, can remove the more specific ds names !
+    TString(ds.c_str()).Contains("summer2024QCDem") || //w93: added this for QCD EM enriched - could still simplify a lot...
 		ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
 //should do this with "Contains()" fct... more compact
@@ -692,6 +693,7 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
 		      ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		      ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
 	        ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||//); //added 2024QCD already here
+    		TString(ds.c_str()).Contains("summer2024QCDem") || //w93: added this for QCD EM enriched - could still simplify a lot...
           ds=="winter2025QCD" || //added winter2025QCD on 01.06.2025 (w54)
       		ds=="winter2025QCDa" || ds=="winter2025QCDb" || ds=="winter2025QCDc" || ds=="winter2025QCDd" || ds=="winter2025QCDe" || 
 		      ds=="winter2025QCDf" || ds=="winter2025QCDg" || ds=="winter2025QCDh" || ds=="winter2025QCDi" || ds=="winter2025QCDj" ||
@@ -699,11 +701,12 @@ GamHistosFill::GamHistosFill(TTree *tree, int itype, string datasetname, string 
   isMG = (ds=="winter2024P8" || ds=="winter2024P8a" || ds=="winter2024P8b" || ds=="winter2024P8c" || 
 					 ds=="2022P8" || ds=="2022P8-PTG" || ds=="2022EEP8" || 
 					 ds=="2022QCD" || ds=="2022EEQCD" || //added winter24 here, too.. checking
-           ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
+           		ds=="2023P8" || ds=="2023QCD" || ds=="2023P8-BPix" || ds=="2023QCD-BPix" || //); //should 2023P8 and 2023P8_BPix be added here, too? (for correct weight in HT bins)
 					 ds=="winter2024P8" || ds=="winter2024P8-test" || ds=="winter2024P8-v14" || ds=="2024QCD" || ds=="summer2024QCD" ||
 		       ds=="summer2024QCDa" || ds=="summer2024QCDb" || ds=="summer2024QCDc" || ds=="summer2024QCDd" || ds=="summer2024QCDe" || 
 		       ds=="summer2024QCDf" || ds=="summer2024QCDg" || ds=="summer2024QCDh" || ds=="summer2024QCDi" || ds=="summer2024QCDj" ||
 					 ds=="2024QCD-v14" || ds=="2024QCDa" || ds=="2024QCDb" || ds=="2024QCDc" || ds=="2024QCDd" || ds=="2024QCDe" || ds=="2024QCDf" ||
+		TString(ds.c_str()).Contains("summer2024QCDem") || //w93: added this for QCD EM enriched - could still simplify a lot...
            ds=="2024P8" || ds=="summer2024P8" || ds=="summer2024P8-test" ||  ds=="summer2024P8-tiny-test" || //added already here
 	   TString(ds.c_str()).Contains("summer2024P8")	|| //to make it a bit easier (should adjust the rest also, accounts for all 15 parts), covers also test and tiny-test (w80)
 	   TString(ds.c_str()).Contains("summer2026P8")	|| //adding summer2026P8 mc (w91, 30.09.2026)
