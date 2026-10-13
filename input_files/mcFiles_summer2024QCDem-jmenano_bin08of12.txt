@@ -1,0 +1,16 @@
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_1of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_2of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_3of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_4of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_5of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_6of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_7of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_8of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_9of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_10of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_11of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_12of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_13of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_14of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_15of16.root
+root://hip-cms-se.csc.fi/store/user/blehtela/jerc/skims/GamJet/2024/MCSummer24/QCDem-JMEnano/date-12Oct2026_time-171533_commit-fbc64d3/MCSummer24_JMEnano_2024_GamJet_QCDEMEnrichedPT300to470_Skim_16of16.root
